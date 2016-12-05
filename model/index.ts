@@ -27,10 +27,6 @@ export interface Claim {
 
     type: ClaimType
 
-    judgements: Claim[]
-    lastJudgement: Judgement
-    isValid: boolean
-
     attributeCount: number
     attributes: Attribute[]
     attribute: (string) => string

@@ -6,4 +6,5 @@ export interface PoetHashDiscovered {
 
 export interface PoetBlockReady {
     hash: string
+    block: Model.PoetBlock
 }

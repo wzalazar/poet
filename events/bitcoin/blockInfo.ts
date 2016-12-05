@@ -3,6 +3,18 @@ export interface BlockInfo {
     id: string
 }
 
+export interface PoetTxInfo {
+    position: number
+    hash: string
+    poetId: string
+}
+
+export interface PoetInfo {
+    height: number
+    id: string
+    poet: PoetTxInfo[]
+}
+
 export function validateBlockInfoList(blocks: BlockInfo[]): boolean {
     if (!blocks.length) {
         return false

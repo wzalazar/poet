@@ -1,0 +1,21 @@
+package Poet;
+syntax = "proto3";
+
+message Claim {
+      optional bytes id = 1;
+      optional bytes publicKey = 2;
+      optional bytes signature = 3;
+      optional string type = 4;
+      repeated Attribute attributes = 5;
+}
+
+message ClaimSerializationForSigning {
+      optional bytes publicKey = 1;
+      optional string type = 2;
+      repeated Attribute attributes = 3;
+}
+
+message Attribute {
+      optional string key = 1;
+      optional string value = 2;
+}
