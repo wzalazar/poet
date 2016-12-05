@@ -1,7 +1,7 @@
-import { assert } from './common'
+import { assert } from '../common'
 
-import { BlockInfo, validateBlockInfoList } from './events/blockInfo'
-import { Pop, Push, POP, PUSH, PopOrPush, ReorgAction } from './events/reorgActions'
+import { BlockInfo, validateBlockInfoList } from '../events/bitcoin/blockInfo'
+import { Pop, Push, POP, PUSH, PopOrPush, ReorgAction } from '../events/bitcoin/reorgActions'
 
 
 export function reorgOps(lastBlockInfo: BlockInfo[], newBlockInfo: BlockInfo[]): ReorgAction[] {

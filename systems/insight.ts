@@ -1,15 +1,73 @@
+import * as Promise from 'bluebird'
 import * as socketIO from 'socket.io-client'
+import * as fetch from 'isomorphic-fetch'
 
-const io = socketIO('wss://test-insight.bitpay.com')
+const bitcore = require('bitcore-lib')
 
-io.on('connect', () => {
-    io.emit('suscribe', 'mg6CMr7TkeERALqxwPdqq6ksM2czQzKh5C')
+const parseJson = res => res.json()
+const getTransaction = body => body.rawtx
+const turnToBitore = bitcore.Transaction
+const filterData = t => t.outputs.filter(o => o.script.isDataOut())
+const pickData = outputs => outputs.length
+    ? outputs[0].script.getData().toString()
+    : null
 
-    io.on('mg6CMr7TkeERALqxwPdqq6ksM2czQzKh5C', (tx) => {
-        console.log(JSON.stringify(tx, null, 2))
-    })
-})
+export interface HashListener {
+    (hash: string): any
+}
 
-// Priv: 343689da46542f2af204a3ced0ce942af1c25476932aa3a48af5e683df93126b
-// Pub: 03155e888e65e9304d8139cc34007c86db3adde6d7297cd31f7f7f6fdd42dfb4dc
-// Addr: mg6CMr7TkeERALqxwPdqq6ksM2czQzKh5C
+export default class PoetInsightListener {
+    insightUrl: string
+    address: string
+    socket: SocketIOClient.Socket
+    listeners: HashListener[]
+
+    constructor(insightUrl, address) {
+        this.insightUrl = insightUrl
+        this.address = address
+        this.listeners = []
+
+        this.socket = socketIO('wss://' + this.insightUrl)
+
+        this.initSocket()
+    }
+
+    initSocket() {
+        this.socket.on('connect', () => {
+            console.log('connected')
+            this.socket.emit('subscribe', 'inv')
+            this.socket.on('tx', (tx) => {
+                if (this.containsPoet(tx)) {
+                    this.fetchHash(tx.txid).then((hash: string) => {
+                        if (hash) {
+                            this.listeners.forEach(listener => {
+                                listener(hash)
+                            })
+                        }
+                    })
+                }
+            })
+        })
+    }
+
+    containsPoet(tx) {
+        return tx.vout.reduce(
+            (prev, next) => prev || !!next[this.address], false
+        )
+    }
+
+    fetchHash(tx) {
+        const url = `https://${this.insightUrl}/api/rawtx/${tx}`
+
+        return fetch(url)
+            .then(parseJson)
+            .then(getTransaction)
+            .then(turnToBitore)
+            .then(filterData)
+            .then(pickData)
+    }
+
+    suscribe(listener) {
+        this.listeners.push(listener)
+    }
+}

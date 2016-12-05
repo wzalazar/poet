@@ -18,10 +18,14 @@
   "author": "BTC Media Inc.",
   "license": "MIT",
   "dependencies": {
+    "@types/bluebird": "^3.0.36",
+    "@types/isomorphic-fetch": "0.0.31",
     "@types/rx": "^2.5.34",
     "@types/socket.io-client": "^1.4.29",
     "bitcore-explorers": "^1.0.1",
     "bitcore-lib": "^0.13.19",
+    "bluebird": "^3.4.6",
+    "isomorphic-fetch": "^2.2.1",
     "rxjs": "^5.0.0-rc.4",
     "socket.io-client": "^1.7.1"
   }

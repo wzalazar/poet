@@ -16,6 +16,7 @@ export const CERTIFICATE : Certificate = 'Certificate'
 export const REVOKATION : Revokation = 'Revokation'
 
 export type ClaimType = CreativeWork | Title | License | Certificate | Revokation
+export type Judgement = Certificate | Revokation
 
 export interface Claim {
     id: string
@@ -25,6 +26,10 @@ export interface Claim {
     signature: string
 
     type: ClaimType
+
+    judgements: Claim[]
+    lastJudgement: Judgement
+    isValid: boolean
 
     attributeCount: number
     attributes: Attribute[]
