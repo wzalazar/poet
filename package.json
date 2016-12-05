@@ -1,0 +1,20 @@
+{
+  "name": "poet",
+  "version": "1.0.0",
+  "description": "A subjective truth engine system",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.eordano.com:eordano/poet"
+  },
+  "keywords": [
+    "poet",
+    "bitcoin",
+    "torrent"
+  ],
+  "author": "BTC Media Inc.",
+  "license": "MIT"
+}
