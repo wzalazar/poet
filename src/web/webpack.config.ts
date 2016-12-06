@@ -8,43 +8,43 @@ var ROOT_PATH = path.join(path.resolve(__dirname), '../../')
 module.exports = {
     devtool: 'cheap-module-source-map',
     entry: [
-        path.resolve(ROOT_PATH, 'src/web/main'),
+        'webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr',
+        'react-hot-loader/patch',
+        path.resolve(ROOT_PATH, 'src/web/main.jsx'),
     ],
     module: {
         loaders: [{
                 test: /\.jsx?$/,
                 exclude: /node_modules/,
-                loader: 'react-hot-loader/webpack'
-            },
-            {
-                test: /\.jsx?$/,
-                exclude: /node_modules/,
                 loader: 'babel-loader',
                 query: {
                     presets: ['react', 'es2015'],
-                    plugins: ['transform-regenerator']
+                    plugins: [
+                        'react-hot-loader/babel',
+                        'transform-regenerator',
+                        ['import', {
+                            libraryName: 'antd',
+                            style: true
+                        }]
+                    ]
                 }
             },
             {
-                test: /\.css$/,
-                loaders: ['style', 'css']
-            },
-            {
-                test: /\.scss$/,
-                loaders: ['style', 'css', 'sass']
+                test: /\.less$/,
+                loader: "style-loader!css-loader!less-loader"
             }
         ]
     },
     resolve: {
-        extensions: ['', '.js', '.jsx']
+        extensions: ['.js', '.jsx', '.less']
     },
     output: {
-        path: path.resolve(ROOT_PATH, 'dist'),
+        path: path.resolve(ROOT_PATH, 'src/web/dist'),
         publicPath: '/',
         filename: 'main.js'
     },
     devServer: {
-        contentBase: path.resolve(ROOT_PATH, 'dist'),
+        contentBase: path.resolve(ROOT_PATH, 'src/web/dist'),
         historyApiFallback: true,
         hot: true,
         inline: true,
@@ -54,7 +54,7 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
         new HtmlwebpackPlugin({
             title: 'Poet - Bard',
-            template: path.resolve(ROOT_PATH, 'meta/index.html')
+            template: path.resolve(ROOT_PATH, 'src/web/index.html')
         })
     ]
 }
