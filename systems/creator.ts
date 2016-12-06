@@ -25,23 +25,13 @@ var claim
 var claimSerialization
 var attribute
 
-const proto = protobuf.load(path.join(__dirname, '../model/claim.proto'))
+export default protobuf.load(path.join(__dirname, '../model/claim.proto'))
     .then((builder) => {
         claim              = builder.lookup('Poet.Claim')
         claimSerialization = builder.lookup('Poet.ClaimSerializationForSigning')
         attribute          = builder.lookup('Poet.Attribute')
-    })
-    .then(() => {
-        const creator = new ClaimCreator()
-        const claim = creator.createClaim({
-            type: 'CreativeWork',
-            attributes: {
-                "author": "Esteban",
-            }
-        })
-        console.log(claim)
-        console.log(creator.objectToProto(claim))
-        console.log(creator.protoToClaimObject(creator.objectToProto(claim)))
+
+        return new ClaimCreator()
     })
     .catch(e => {
         console.log(e, e.stack)
@@ -53,18 +43,18 @@ export class ClaimCreator {
         '0203d1e2fab0aba2ad5399c44a7e4f5259c26e03f957cb6d57161b6f49114803cf'
     ]
 
-    selfNotaryPriv = new bitcore.PrivateKey('ab1265f85b5f009902246b9a1ad847ef030b626174cf7a91ba2e704a264bb559')
+    txPriv = new bitcore.PrivateKey('ab1265f85b5f009902246b9a1ad847ef030b626174cf7a91ba2e704a264bb559')
 
-    constructor() {
-    }
-
-    createClaim(data): Claim {
-        const id = this.getId(data)
-        const signature = common.sign(this.selfNotaryPriv, id)
+    createSignedClaim(data, privateKey): Claim {
+        const key = typeof privateKey === 'string'
+                ? new bitcore.PrivateKey(privateKey)
+                : privateKey
+        const id = this.getId(data, key)
+        const signature = common.sign(key, id)
 
         return {
             id: id.toString('hex'),
-            publicKey: this.selfNotaryPriv.publicKey.toString(),
+            publicKey: key.publicKey.toString(),
             signature: signature.toString('hex'),
 
             type: data.type,
@@ -72,13 +62,13 @@ export class ClaimCreator {
         }
     }
 
-    getId(data): Buffer {
-        return common.sha256(this.getEncodedForSigning(data))
+    getId(data, key: Object): Buffer {
+        return common.sha256(this.getEncodedForSigning(data, key))
     }
 
-    getEncodedForSigning(data): Buffer {
+    getEncodedForSigning(data, privateKey: Object): Buffer {
         return claimSerialization.encode(claimSerialization.create({
-            publicKey: this.selfNotaryPriv.publicKey.toBuffer(),
+            publicKey: privateKey['publicKey'].toBuffer(),
             type: data.type,
             attributes: Object.keys(data.attributes).map(attr => {
                 return attribute.create({
@@ -130,7 +120,7 @@ export class ClaimCreator {
                 .from(utxos)
                 .change(poetAddress)
                 .addData(data)
-                .sign(this.selfNotaryPriv)
+                .sign(this.txPriv)
             )
             .then(insight.broadcast)
     }
