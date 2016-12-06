@@ -20,16 +20,12 @@ export type Judgement = Certificate | Revokation
 
 export interface Claim {
     id: string
-    locator: string
 
     publicKey: string
     signature: string
 
     type: ClaimType
-
-    attributeCount: number
     attributes: Attribute[]
-    attribute: (string) => string
 }
 
 export interface PoetBlock {

@@ -21,7 +21,6 @@
     "@types/bluebird": "^3.0.36",
     "@types/ioredis": "0.0.21",
     "@types/isomorphic-fetch": "0.0.31",
-    "@types/protobufjs": "^5.0.31",
     "@types/rx": "^2.5.34",
     "@types/socket.io-client": "^1.4.29",
     "@types/webtorrent": "0.0.29",

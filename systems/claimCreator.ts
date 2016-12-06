@@ -1,3 +1,4 @@
+import * as path from 'path'
 import * as Promise from 'bluebird'
 import * as protobuf from 'protobufjs'
 
@@ -20,17 +21,33 @@ const insight = {
 
 const poetAddress = 'mg6CMr7TkeERALqxwPdqq6ksM2czQzKh5C'
 
-let claim
-let claimSerialization
-let attribute
+var claim
+var claimSerialization
+var attribute
 
-const proto = protobuf.loadProtoFile('../model/claim.proto', (err, builder) => {
-    claim              = builder.lookup('Poet.Claim')
-    claimSerialization = builder.lookup('Poet.ClaimSerializationForsigning')
-    attribute          = builder.lookup('Poet.Attribute')
-})
+const proto = protobuf.load(path.join(__dirname, '../model/claim.proto'))
+    .then((builder) => {
+        claim              = builder.lookup('Poet.Claim')
+        claimSerialization = builder.lookup('Poet.ClaimSerializationForSigning')
+        attribute          = builder.lookup('Poet.Attribute')
+    })
+    .then(() => {
+        const creator = new ClaimCreator()
+        const claim = creator.createClaim({
+            type: 'CreativeWork',
+            attributes: {
+                "author": "Esteban",
+            }
+        })
+        console.log(claim)
+        console.log(creator.objectToProto(claim))
+        console.log(creator.protoToClaimObject(creator.objectToProto(claim)))
+    })
+    .catch(e => {
+        console.log(e, e.stack)
+    })
 
-class ClaimCreator {
+export class ClaimCreator {
 
     trustedNotaries = [
         '0203d1e2fab0aba2ad5399c44a7e4f5259c26e03f957cb6d57161b6f49114803cf'
@@ -38,16 +55,17 @@ class ClaimCreator {
 
     selfNotaryPriv = new bitcore.PrivateKey('ab1265f85b5f009902246b9a1ad847ef030b626174cf7a91ba2e704a264bb559')
 
+    constructor() {
+    }
+
     createClaim(data): Claim {
         const id = this.getId(data)
-        const hash = bitcore.crypto.Hash.sha256(proto)
-        const signature = bitcore.crypto.Signature
+        const signature = common.sign(this.selfNotaryPriv, id)
 
         return {
-            id: hash.toString(),
-            locator: '',
-            publicKey: this.selfNotaryPriv.publicKey.toBuffer(),
-            signature: signature,
+            id: id.toString('hex'),
+            publicKey: this.selfNotaryPriv.publicKey.toString(),
+            signature: signature.toString('hex'),
 
             type: data.type,
             attributes: data.attributes
@@ -59,24 +77,47 @@ class ClaimCreator {
     }
 
     getEncodedForSigning(data): Buffer {
-        return claimSerializationBuilder.encode({
+        return claimSerialization.encode(claimSerialization.create({
             publicKey: this.selfNotaryPriv.publicKey.toBuffer(),
             type: data.type,
-            attributes: Object.keys(data.attributes).map(attribute => {
-                attributeBuilder.create({
-                    key: attribute,
-                    value: data.attributes[attribute]
+            attributes: Object.keys(data.attributes).map(attr => {
+                return attribute.create({
+                    key: attr,
+                    value: data.attributes[attr]
                 })
             })
-        }).finish()
+        })).finish()
     }
 
     protoToClaimObject(proto) {
-        return null
+        const attributes = {}
+
+        proto.attributes.forEach(attr => {
+            attributes[attr.key] = attr.value
+        })
+
+        return {
+            id: proto.id.toString('hex'),
+            publicKey: proto.publicKey.toString('hex'),
+            signature: proto.signature.toString('hex'),
+            type: proto.type,
+            attributes
+        }
     }
 
     objectToProto(obj) {
-        return null
+        return claim.create({
+            id: new Buffer(obj.id, 'hex'),
+            publicKey: new Buffer(obj.publicKey, 'hex'),
+            signature: new Buffer(obj.signature, 'hex'),
+            type: obj.type,
+            attributes: Object.keys(obj.attributes).map(attr => {
+                return attribute.create({
+                    key: attr,
+                    value: obj.attributes[attr]
+                })
+            })
+        })
     }
 
     createTx(claimId: Buffer) {
