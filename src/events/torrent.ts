@@ -1,4 +1,4 @@
-import { PoetBlock } from '../model'
+import { PoetBlock } from '../model/claim'
 
 export interface RequireDownload {
     hash: string

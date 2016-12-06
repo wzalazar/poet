@@ -1,30 +1,30 @@
 const bitcore = require('bitcore-lib')
 
 export function assert(value: boolean, message: string) {
-    if (!value) {
-        throw new Error(message)
-    }
+  if (!value) {
+    throw new Error(message)
+  }
 }
 
-export function sha256(value: string | Buffer) {
-    return bitcore.crypto.Hash.sha256(
-        value instanceof Buffer
-            ? value
-            : new Buffer(value)
-    )
+export function sha256(value: string | Uint8Array) {
+  return bitcore.crypto.Hash.sha256(
+    value instanceof Uint8Array
+      ? value
+      : new Buffer(value)
+  )
 }
 
-export function sign(privateKey: string, value: Buffer): Buffer {
-    return bitcore.crypto.ECDSA.sign(
-        value,
-        new bitcore.PrivateKey(privateKey)
-    ).toBuffer()
+export function sign(privateKey: string, value: Uint8Array): Uint8Array {
+  return bitcore.crypto.ECDSA.sign(
+    value,
+    new bitcore.PrivateKey(privateKey)
+  ).toBuffer()
 }
 
-export function verify(publicKey, signature: Buffer, value: Buffer): Boolean {
-    return bitcore.crypto.ECDSA.verify(
-        value,
-        bitcore.crypto.Signature.fromBuffer(signature),
-        publicKey
-    )
+export function verify(publicKey, signature: Uint8Array, value: Uint8Array): Boolean {
+  return bitcore.crypto.ECDSA.verify(
+    value,
+    bitcore.crypto.Signature.fromBuffer(signature),
+    publicKey
+  )
 }

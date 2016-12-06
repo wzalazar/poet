@@ -10,30 +10,29 @@ const redisGet = redis['getAsync']
 const redisSet = redis['setAsync']
 
 export default class TorrentSystem {
-    private client
+  private client
 
-    constructor() {
-        this.client = new WebTorrent()
-    }
+  constructor() {
+    this.client = new WebTorrent()
+  }
 
-    fakeDownload(hash: string) {
-        return redisGet(hash).then(JSON.parse)
-    }
+  fakeDownload(hash: string) {
+    return redisGet(hash).then(JSON.parse)
+  }
 
-    fakeUpload(hash: string, obj) {
-        return redisSet(hash, JSON.stringify(obj))
-    }
+  fakeUpload(hash: string, obj) {
+    return redisSet(hash, JSON.stringify(obj))
+  }
 
-    download(hash: string) {
-        const data = this.client.add('magnet:?xt=urn:btih:' + hash)
+  download(hash: string) {
+    const data = this.client.add('magnet:?xt=urn:btih:' + hash)
 
-        data.on('torrent', metadata => {
-            metadata.on('download', () => {
-            })
-        })
-    }
+    data.on('torrent', metadata => {
+      metadata.on('download', () => {
+      })
+    })
+  }
 
-    seed(hash: string, obj) {
-
-    }
+  seed(hash: string, obj) {
+  }
 }

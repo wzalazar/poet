@@ -1,4 +1,4 @@
-import * as Model from '../model'
+import * as Model from '../model/claim'
 
 export interface PoetHashDiscovered {
     hash: string
