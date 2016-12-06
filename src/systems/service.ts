@@ -35,7 +35,7 @@ socket.attach(app)
 app.use(new Body())
 
 socket.on('connection', (ctx: Object) => {
-  console.log('connected', ctx)
+  console.log('client connected')
 })
 
 export default {

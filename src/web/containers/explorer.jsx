@@ -14,7 +14,7 @@ class ExplorerContainer extends React.Component {
   render() {
     return (<Container>
       <h2>Explorer</h2>
-      <p>Connection status: { this.props.connection.state }</p>
+      { /*<p>Connection status: { this.props.connection.state }</p> */}
     </Container>)
   }
 }

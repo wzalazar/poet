@@ -51,7 +51,6 @@ export default class PoetInsightListener {
 
   initSocket() {
     this.socket.on('connect', () => {
-      console.log('connected')
       this.socket.emit('subscribe', 'inv')
       this.socket.on('block', (block) => {
         this.manageNewBlock()
