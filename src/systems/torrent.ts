@@ -3,7 +3,7 @@ import * as Redis from 'ioredis'
 
 import * as Promise from 'bluebird'
 
-import { PoetBlock } from '../model'
+import { PoetBlock } from '../model/claim'
 
 const redis = Promise.promisifyAll(new Redis())
 const redisGet = redis['getAsync']

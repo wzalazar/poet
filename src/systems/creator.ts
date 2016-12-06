@@ -2,7 +2,7 @@ import * as path from 'path'
 import * as Promise from 'bluebird'
 import * as protobuf from 'protobufjs'
 
-import { Claim, CreativeWork } from '../model'
+import { Claim, CreativeWork } from '../model/claim'
 import * as common from '../common'
 
 const bitcore = require('bitcore-lib')
