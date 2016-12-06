@@ -36,7 +36,10 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['.js', '.jsx', '.less']
+        extensions: ['.js', '.jsx', '.less'],
+        alias: {
+            'styled-components$': 'styled-components/lib/index.js',
+        },
     },
     output: {
         path: path.resolve(ROOT_PATH, 'src/web/dist'),

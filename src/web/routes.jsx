@@ -8,9 +8,9 @@ import { Landing } from './containers/landing'
 
 import { Explorer } from './containers/explorer'
 
-import { Onboarding } from './porfolio/onboarding'
 import { Portfolio } from './portfolio/main'
 import { Overview } from './portfolio/overview'
+import { Onboarding } from './portfolio/onboarding'
 import { NewWork } from './portfolio/newWork'
 
 export function routes() {

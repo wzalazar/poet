@@ -2,6 +2,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
+import RedBox from 'redbox-react'
 
 // Routing
 import { Router, Route, browserHistory } from 'react-router'
@@ -16,23 +17,30 @@ import { configureStore } from './store'
 // Get routes
 import { routes } from './routes'
 
+// Style
+import 'antd/dist/antd.less'
+
 // Instantiation
 const store = configureStore()
 const history = syncHistoryWithStore(browserHistory, store)
 
 function drawApp(getRoutes) {
-  ReactDOM.render(
-    <AppContainer>
-      <Provider store={store}>
-        <div>
-          <Router history={history}>
-            { getRoutes() }
-          </Router>
-        </div>
-      </Provider>
-    </AppContainer>,
-    document.getElementById('app')
-  )
+  try {
+    ReactDOM.render(
+      <AppContainer>
+        <Provider store={store}>
+          <div>
+            <Router history={history}>
+              { getRoutes() }
+            </Router>
+          </div>
+        </Provider>
+      </AppContainer>,
+      document.getElementById('app')
+    )
+  } catch (e) {
+    ReactDom.render(<RedBox error={e} />, document.getElementById('app'))
+  }
 }
 
 // Finally, draw!
