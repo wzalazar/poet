@@ -8,9 +8,9 @@ export function assert(value: boolean, message: string) {
 
 export function sha256(value: string | Uint8Array) {
   return bitcore.crypto.Hash.sha256(
-    value instanceof Uint8Array
-      ? value
-      : new Buffer(value)
+    typeof value === 'string'
+    ? new Buffer(value)
+    : value
   )
 }
 

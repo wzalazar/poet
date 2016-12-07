@@ -2,11 +2,12 @@ import { createStore, combineReducers } from 'redux'
 
 import { routerReducer } from 'react-router-redux'
 
-import { connectStoreToEvents } from './events'
+import { connectionReducer, connectStoreToEvents } from './events'
 
 export function configureStore() {
   const store = createStore(combineReducers({
-      routing: routerReducer
+      routing: routerReducer,
+      connection: connectionReducer
     }), 
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )

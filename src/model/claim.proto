@@ -9,6 +9,13 @@ message Claim {
       repeated Attribute attributes = 5;
 }
 
+message PoetBlock {
+      optional bytes id = 1;
+      repeated Claim claims = 2;
+      optional bytes publicKey = 3;
+      optional bytes signature = 4;
+}
+
 message ClaimSerializationForSigning {
       optional bytes publicKey = 1;
       optional string type = 2;

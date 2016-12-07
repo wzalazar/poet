@@ -2,7 +2,7 @@ import * as path from 'path'
 import * as Promise from 'bluebird'
 import * as protobuf from 'protobufjs'
 
-import { Claim, CreativeWork } from '../model/claim'
+import { Claim, PoetBlock, CreativeWork } from '../model/claim'
 import * as common from '../common'
 
 const bitcore = require('bitcore-lib')
@@ -21,15 +21,17 @@ const insight = {
 
 const poetAddress = 'mg6CMr7TkeERALqxwPdqq6ksM2czQzKh5C'
 
-var claim: protobuf.Type
+var claimBuilder: protobuf.Type
 var claimSerialization: protobuf.Type
 var attribute: protobuf.Type
+var poetBlock: protobuf.Type
 
 export default (protobuf.load(path.join(__dirname, '../model/claim.proto')) as Promise<protobuf.Root>)
   .then((builder: protobuf.Root) => {
-    claim              = builder.lookup('Poet.Claim') as protobuf.Type
+    claimBuilder       = builder.lookup('Poet.Claim') as protobuf.Type
     claimSerialization = builder.lookup('Poet.ClaimSerializationForSigning') as protobuf.Type
     attribute          = builder.lookup('Poet.Attribute') as protobuf.Type
+    poetBlock          = builder.lookup('Poet.PoetBlock') as protobuf.Type
 
     return new ClaimCreator()
   })
@@ -50,6 +52,8 @@ export class ClaimCreator {
   ]
 
   txPriv = new bitcore.PrivateKey('ab1265f85b5f009902246b9a1ad847ef030b626174cf7a91ba2e704a264bb559')
+
+  bitcoinPriv = new bitcore.PrivateKey('343689da46542f2af204a3ced0ce942af1c25476932aa3a48af5e683df93126b')
 
   createSignedClaim(data, privateKey: string): Claim {
     const key = typeof privateKey === 'string'
@@ -72,16 +76,32 @@ export class ClaimCreator {
     return common.sha256(this.getEncodedForSigning(data, key))
   }
 
+  getAttributes(attrs) {
+    console.log('Getting attributes from', attrs)
+    function inner() {
+      if (attrs instanceof Array) {
+        return attrs.map(attr => {
+          return attribute.create(attr)
+        })
+      } else {
+        return Object.keys(attrs).map(attr => {
+          return attribute.create({
+            key: attr,
+            value: attrs[attr]
+          })
+        })
+      }
+    }
+    const res = inner()
+    console.log('attrs is', res)
+    return res
+  }
+
   getEncodedForSigning(data, privateKey: Object): Uint8Array {
     return claimSerialization.encode(claimSerialization.create({
       publicKey: privateKey['publicKey'].toBuffer(),
       type: data.type,
-      attributes: Object.keys(data.attributes).map(attr => {
-        return attribute.create({
-          key: attr,
-          value: data.attributes[attr]
-        })
-      })
+      attributes: this.getAttributes(data.attributes)
     })).finish()
   }
 
@@ -102,34 +122,47 @@ export class ClaimCreator {
   }
 
   objectToProto(obj) {
-    return claim.create({
+    return claimBuilder.create({
       id: new Buffer(obj.id, 'hex'),
       publicKey: new Buffer(obj.publicKey, 'hex'),
       signature: new Buffer(obj.signature, 'hex'),
       type: obj.type,
-      attributes: Object.keys(obj.attributes).map(attr => {
-        return attribute.create({
-          key: attr,
-          value: obj.attributes[attr]
-        })
-      })
+      attributes: this.getAttributes(obj.attributes)
     })
   }
 
-  createTx(claimId: Buffer) {
-    const data = bitcore.util.buffer.concat(
+  createBlock(claims: Claim[]): PoetBlock {
+    var protoClaims = claims.map(claim => {
+      return claimBuilder.encode(this.objectToProto(claim)).finish()
+    })
+    const block = poetBlock.create({
+      id: new Buffer(''),
+      claims: claims.map(this.objectToProto.bind(this))
+    })
+    const id = common.sha256(poetBlock.encode(block).finish())
+    return {
+      id,
+      claims
+    }
+  }
+
+  createTransaction(blockId: Buffer) {
+    const data = Buffer.concat([
       new Buffer('BARD-'),
-      claimId
-    )
+      blockId
+    ])
     return insight.getUnspentUtxos(poetAddress)
       .then(utxos => new bitcore.Transaction()
           .from(utxos)
           .change(poetAddress)
           .addData(data)
-          .sign(this.txPriv)
+          .sign(this.bitcoinPriv)
       )
-      .then(insight.broadcast)
     }
+
+  broadcastTx(tx) {
+    return insight.broadcast(tx)
+  }
 }
 
 // Notary 

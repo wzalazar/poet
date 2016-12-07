@@ -29,6 +29,6 @@ export interface Claim {
 }
 
 export interface PoetBlock {
-    hash: string
+    id: Buffer
     claims: Claim[]
 }

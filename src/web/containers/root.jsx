@@ -6,7 +6,6 @@ import { browserHistory } from 'react-router'
 const SubMenu = Menu.SubMenu
 
 export class Root extends React.Component {
-
   constructor(props, context) {
     super(props, context)
     this.state = { selected: 'landing' }
@@ -18,7 +17,6 @@ export class Root extends React.Component {
   }
 
   render() {
-    <Menu/>
     return (<div className="root">
       <Anchor>
         <Menu mode="horizontal"

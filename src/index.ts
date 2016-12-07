@@ -4,10 +4,14 @@ import { default as PoetInsightListener } from './systems/insight'
 
 import { default as DownloadSystem } from './systems/download'
 
+import { ClaimCreator } from './systems/creator'
+
 import {reorgOps} from './logic/reorg'
 
+const creator = new ClaimCreator()
+
 const bitcore = require('bitcore-lib')
-const { socket, app } = Service
+const { io, socket, app } = Service
 
 const addr = 'mg6CMr7TkeERALqxwPdqq6ksM2czQzKh5C'
 const insight = 'test-insight.bitpay.com'
@@ -42,6 +46,14 @@ system.subscribe(hash => {
 
 downloadSystem.subscribe((hash, block) => {
     socket.emit('downloaded', { hash, block })
+})
+
+io.on('message', (ctx, data) => {
+    if (data.action === 'create claim') {
+        const claim = creator.createSignedClaim(data, data.privateKey)
+        const block = creator.createBlock([claim])
+        creator.createTransaction(block.id).then(creator.broadcastTx)
+    }
 })
 
 Service.app.listen(3000)

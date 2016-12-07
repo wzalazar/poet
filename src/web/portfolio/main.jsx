@@ -8,7 +8,7 @@ const Container = styled.div`
   padding-right: 5%;
 `
 
-const ClaimCreator = styled.form`
+const ClaimCreator = styled.div`
   padding: 30px;
   border: 1px solid #333;
   border-radius: 4px;
@@ -32,7 +32,7 @@ const SendButton = styled.button`
   color: white;
   border: none;
   border-radius: 4px;
-  padding: a fopx 15px 5px 15px;
+  padding: 5px 15px 5px 15px;
 `
 
 const SendContainer = styled.div`
@@ -45,10 +45,12 @@ class AddField extends React.Component {
     this.state = {}
   }
 
-  submit() {
+  submit(ev) {
+    ev.preventDefault()
     const value = this.state
     this.resetState()
     this.props.onSubmit(value.key, value.value)
+    this.refs.key.focus()
   }
 
   resetState() {
@@ -65,11 +67,11 @@ class AddField extends React.Component {
   }
 
   render() {
-    return (<div>
+    return (<form onSubmit={this.submit.bind(this)}>
       <input ref="key" defaultValue={this.state.key} onChange={this.setValues.bind(this)} />
       <input ref="value" defaultValue={this.state.value} onChange={this.setValues.bind(this)} />
-      <button onClick={this.submit.bind(this)}>Add</button>
-    </div>)
+      <button>Add</button>
+    </form>)
   }
 }
 
@@ -79,7 +81,8 @@ class PortfolioMain extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
-      fields: []
+      fields: [],
+      privateKey: ''
     }
   }
 
@@ -87,6 +90,10 @@ class PortfolioMain extends React.Component {
     const fields = [].concat(this.state.fields)
     fields.push({ key, value })
     this.setState({ fields })
+  }
+
+  submit() {
+    this.props.sendClaim(this.refs.privateKey.value, this.state.fields)
   }
 
   render() {
@@ -97,18 +104,18 @@ class PortfolioMain extends React.Component {
         <ClaimCreationTitle>New Claim</ClaimCreationTitle>
         <InputGroup>
           <Label htmlFor="privateKey">Private Key</Label>
-          <TextInput name="privateKey" ref="privateKey"/>
+          <input name="privateKey" ref="privateKey"/>
         </InputGroup>
         <ul>
         {
-          this.state.fields.map(field => {
-             return <li key={field.key}> <strong>{ field.key} </strong>: {field.value} </li>
+          this.state.fields.map((field, index) => {
+             return <li key={field.key + index}> <strong>{ field.key} </strong>: {field.value} </li>
           })
         }
         </ul>
         <AddField onSubmit={this.addField.bind(this)} />
         <SendContainer>
-          <SendButton>Create Claim</SendButton>
+          <SendButton onClick={this.submit.bind(this)}>Create Claim</SendButton>
         </SendContainer>
       </ClaimCreator>
     </Container>)
@@ -116,5 +123,10 @@ class PortfolioMain extends React.Component {
 }
 
 export const Portfolio = connect(state => ({
-  connection: state.connection
-}), {})(PortfolioMain)
+  sendClaim: function(privateKey, attributes) {
+    console.log('Submiting claim', privateKey, attributes)
+    state.connection.socket.send(
+      { action: 'create claim', type: 'CreativeWork', privateKey, attributes }
+    )
+  }
+}))(PortfolioMain)

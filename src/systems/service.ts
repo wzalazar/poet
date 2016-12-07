@@ -41,5 +41,6 @@ socket.on('connection', (ctx: Object) => {
 export default {
   app,
   compiler,
-  socket
+  io: app['io'],
+  socket: app['_io']
 }
