@@ -16,7 +16,7 @@ app.use(Logger())
 
 ;
 ['search', 'explorer', 'portfolio'].forEach((name: string) => {
-    app.use(rewrite(new RegExp('\/' + name + '(.*)'), '/'))
+    app.use(rewrite(new RegExp('^\/' + name + '(.*)'), '/'))
 })
 
 const compiler = new Webpack(config)
@@ -37,6 +37,14 @@ app.use(new Body())
 socket.on('connection', (ctx: Object) => {
   console.log('client connected')
 })
+
+app.use(Route.get('/api/search', (ctx, next) => {
+  ctx.body = JSON.stringify({
+    results: [
+      { id: '0000' }
+    ]
+  })
+}))
 
 export default {
   app,

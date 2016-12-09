@@ -39,7 +39,7 @@ function drawApp(getRoutes) {
       document.getElementById('app')
     )
   } catch (e) {
-    ReactDom.render(<RedBox error={e} />, document.getElementById('app'))
+    ReactDOM.render(<RedBox error={e} />, document.getElementById('app'))
   }
 }
 

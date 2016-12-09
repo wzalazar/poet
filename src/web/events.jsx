@@ -1,4 +1,5 @@
 import { default as SocketIO } from 'socket.io-client'
+import { update } from './common'
 
 export const Connected = 'Socket connected'
 export const Disconnected = 'Socket disconnected'
@@ -8,10 +9,6 @@ export const Discovered = 'discovered'
 export const Reorg = 'reorg'
 export const BlockFound = 'blockfound'
 export const Downloaded = 'downloaded'
-
-function update() {
-  return Object.assign.apply({}, arguments)
-}
 
 function insertToSet(set, element) {
   if (set.indexOf(element) === -1) {
