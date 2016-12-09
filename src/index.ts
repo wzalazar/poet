@@ -52,6 +52,7 @@ io.on('message', (ctx, data) => {
     if (data.action === 'create claim') {
         const claim = creator.createSignedClaim(data, data.privateKey)
         const block = creator.createBlock([claim])
+        downloadSystem.postBlock(block)
         creator.createTransaction(block.id).then(creator.broadcastTx)
     }
 })

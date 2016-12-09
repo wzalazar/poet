@@ -4,6 +4,7 @@ import * as protobuf from 'protobufjs'
 
 import { Claim, PoetBlock, CreativeWork } from '../model/claim'
 import * as common from '../common'
+import { default as builders } from '../model/loaders'
 
 const bitcore = require('bitcore-lib')
 const explorers = require('bitcore-explorers')
@@ -26,18 +27,12 @@ var claimSerialization: protobuf.Type
 var attribute: protobuf.Type
 var poetBlock: protobuf.Type
 
-export default (protobuf.load(path.join(__dirname, '../model/claim.proto')) as Promise<protobuf.Root>)
-  .then((builder: protobuf.Root) => {
-    claimBuilder       = builder.lookup('Poet.Claim') as protobuf.Type
-    claimSerialization = builder.lookup('Poet.ClaimSerializationForSigning') as protobuf.Type
-    attribute          = builder.lookup('Poet.Attribute') as protobuf.Type
-    poetBlock          = builder.lookup('Poet.PoetBlock') as protobuf.Type
-
-    return new ClaimCreator()
-  })
-  .catch(e => {
-    console.log(e, e.stack)
-  })
+builders.then(built => {
+  claimBuilder = built.claimBuilder
+  claimSerialization = built.claimSerialization
+  attribute = built.attribute
+  poetBlock = built.poetBlock
+})
 
 function hex(buffer: Buffer | Uint8Array): string {
   return buffer instanceof Buffer
@@ -77,24 +72,18 @@ export class ClaimCreator {
   }
 
   getAttributes(attrs) {
-    console.log('Getting attributes from', attrs)
-    function inner() {
-      if (attrs instanceof Array) {
-        return attrs.map(attr => {
-          return attribute.create(attr)
+    if (attrs instanceof Array) {
+      return attrs.map(attr => {
+        return attribute.create(attr)
+      })
+    } else {
+      return Object.keys(attrs).map(attr => {
+        return attribute.create({
+          key: attr,
+          value: attrs[attr]
         })
-      } else {
-        return Object.keys(attrs).map(attr => {
-          return attribute.create({
-            key: attr,
-            value: attrs[attr]
-          })
-        })
-      }
+      })
     }
-    const res = inner()
-    console.log('attrs is', res)
-    return res
   }
 
   getEncodedForSigning(data, privateKey: Object): Uint8Array {
@@ -147,6 +136,7 @@ export class ClaimCreator {
   }
 
   createTransaction(blockId: Buffer) {
+    console.log('Creating tx for', blockId.toString('hex'))
     const data = Buffer.concat([
       new Buffer('BARD-'),
       blockId

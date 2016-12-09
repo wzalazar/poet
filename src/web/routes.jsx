@@ -6,7 +6,8 @@ import { Root } from './containers/root'
 
 import { Landing } from './containers/landing'
 
-import { Explorer } from './containers/explorer'
+import { Explorer } from './search/main'
+import { Search } from './search/result'
 
 import { Portfolio } from './portfolio/main'
 import { Overview } from './portfolio/overview'
@@ -18,6 +19,7 @@ export function routes() {
     <IndexRoute component={Landing} />
 
     <Route path="/explorer" component={Explorer} />
+    <Route path="/search" component={Search} />
 
     <Route path="/onboarding" component={Onboarding} />
 

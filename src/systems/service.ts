@@ -15,8 +15,8 @@ const app = new koa()
 app.use(Logger())
 
 ;
-['explorer', 'portfolio'].forEach((name: string) => {
-    app.use(rewrite('/' + name, '/'))
+['search', 'explorer', 'portfolio'].forEach((name: string) => {
+    app.use(rewrite(new RegExp('\/' + name + '(.*)'), '/'))
 })
 
 const compiler = new Webpack(config)
