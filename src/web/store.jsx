@@ -4,12 +4,14 @@ import { routerReducer } from 'react-router-redux'
 
 import { connectionReducer, connectStoreToEvents } from './events'
 import { default as searchReducer } from './search/reducer'
+import { default as genericReducer } from './generic'
 
 export function configureStore() {
   const store = createStore(combineReducers({
       routing: routerReducer,
       connection: connectionReducer,
-      search: searchReducer
+      search: searchReducer,
+      generic: genericReducer
     }), 
     compose(
       applyMiddleware(thunk),

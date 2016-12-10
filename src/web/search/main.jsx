@@ -1,22 +1,12 @@
 import * as React from 'react'
-
 import { Table } from 'antd'
-
 import styled from 'styled-components'
 
-const TitleLatest = styled.h3`
-  margin-top: 20px;
-  font-size: 16px;
-  margin-bottom: 20px;
-`
+import { CollectionValue, ApiValue, Container, Title } from '../atoms'
 
-const Container = styled.div`
-  padding-top: 80px;
-  padding-left: 5%;
-  padding-right: 5%;
-`
-
-import { connect } from 'react-redux'
+const BlockList = CollectionValue('all_blocks', (data) => {
+  return JSON.stringify(data)
+})
 
 class ExplorerContainer extends React.Component {
   render() {
@@ -30,13 +20,8 @@ class ExplorerContainer extends React.Component {
       key: 'height'
     }]
     return (<Container>
-      <h2>Explorer</h2>
-      { this.props.blockMapping &&
-        <div>
-          <TitleLatest>Latest Poet blocks</TitleLatest>
-          <Table dataSource={this.props.blockMapping} columns={columns} pagination={false}/>
-        </div>
-      }
+      <Title>Explorer</Title>
+      <BlockList />
       { this.props.blocks &&
         <div>
           <TitleLatest>Latest bitcoin blocks</TitleLatest>
