@@ -24,6 +24,11 @@ import 'antd/dist/antd.less'
 const store = configureStore()
 const history = syncHistoryWithStore(browserHistory, store)
 
+if (!localStorage.getItem('privateKey')) {
+  const privateKey = new bitcore.privateKey()
+  localStorage.setItem('privateKey', privateKey.toString())
+}
+
 function drawApp(getRoutes) {
   try {
     ReactDOM.render(

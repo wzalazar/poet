@@ -14,6 +14,8 @@ import { Overview } from './portfolio/overview'
 import { Onboarding } from './portfolio/onboarding'
 import { NewWork } from './portfolio/newWork'
 
+import { Profile } from './containers/profile'
+
 export function routes() {
   return <Route path='/' component={Root}>
     <IndexRoute component={Landing} />
@@ -22,6 +24,7 @@ export function routes() {
     <Route path="/search" component={Search} />
 
     <Route path="/onboarding" component={Onboarding} />
+    <Route path="/profile" component={Profile} />
 
     <Route path="/portfolio" component={Portfolio}>
       <IndexRoute component={Overview} />

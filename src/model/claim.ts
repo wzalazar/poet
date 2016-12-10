@@ -6,12 +6,14 @@ export interface Attribute {
 export type CreativeWork = 'CreativeWork'
 export type Title = 'Title'
 export type License = 'License'
+export type Profile = 'Profile'
 export type Certificate = 'Certificate'
 export type Revokation = 'Revokation'
 
 export const CREATIVE_WORK : CreativeWork = 'CreativeWork'
 export const TITLE : Title = 'Title'
 export const LICENSE : License = 'License'
+export const PROFILE : Profile = 'Profile'
 export const CERTIFICATE : Certificate = 'Certificate'
 export const REVOKATION : Revokation = 'Revokation'
 

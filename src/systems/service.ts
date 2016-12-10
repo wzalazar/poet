@@ -15,7 +15,7 @@ const app = new koa()
 app.use(Logger())
 
 ;
-['search', 'explorer', 'portfolio'].forEach((name: string) => {
+['profile', 'search', 'explorer', 'portfolio'].forEach((name: string) => {
     app.use(rewrite(new RegExp('^\/' + name + '(.*)'), '/'))
 })
 
