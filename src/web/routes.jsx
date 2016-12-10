@@ -8,23 +8,29 @@ import { Landing } from './containers/landing'
 
 import { Explorer } from './search/main'
 import { Search } from './search/result'
+import { BlockDetail } from './search/block'
+import { ClaimDetail } from './search/claim'
+import { ProfileDetail } from './search/profile'
 
 import { Portfolio } from './portfolio/main'
 import { Overview } from './portfolio/overview'
 import { Onboarding } from './portfolio/onboarding'
 import { NewWork } from './portfolio/newWork'
 
-import { Profile } from './containers/profile'
+import { Settings } from './containers/settings'
 
 export function routes() {
   return <Route path='/' component={Root}>
     <IndexRoute component={Landing} />
 
     <Route path="/explorer" component={Explorer} />
-    <Route path="/search" component={Search} />
+    <Route path="/search/:id" component={Search} />
+    <Route path="/block/:id" component={BlockDetail} />
+    <Route path="/claim/:id" component={ClaimDetail} />
+    <Route path="/profile/:id" component={ProfileDetail} />
 
     <Route path="/onboarding" component={Onboarding} />
-    <Route path="/profile" component={Profile} />
+    <Route path="/settings" component={Settings} />
 
     <Route path="/portfolio" component={Portfolio}>
       <IndexRoute component={Overview} />

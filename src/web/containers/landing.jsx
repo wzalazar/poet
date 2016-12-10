@@ -59,7 +59,7 @@ export class Landing extends React.Component {
   }
   search(ev) {
     ev.preventDefault()
-    browserHistory.push('/search?q=' + this.state.q)
+    browserHistory.push('/search/' + this.state.q)
   }
   render() {
     return (<Page>

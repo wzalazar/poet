@@ -19,7 +19,7 @@ export function updateLeave(root, pathElements, updateValue) {
 
 const IGNORE_INITIAL_SPACE_FOR_ALL_ACTION_TYPES = 6
 function findPath(str) {
-  return str.slice(str.indexOf(' ', IGNORE_INITIAL_SPACE_FOR_ALL_ACTION_TYPES))
+  return str.slice(str.indexOf(' ', IGNORE_INITIAL_SPACE_FOR_ALL_ACTION_TYPES) + 1)
 }
 
 const types = [MARK_LOADING, SET_RESULT, ERRORED]
@@ -40,14 +40,14 @@ export default function(store, action) {
       newValue = { loading: true }
       break
     case SET_RESULT:
-      newValue = { loading: false, result: action.result }
+      newValue = { loading: false, result: action.payload }
       break
     case ERRORED:
-      newValue = { loading: false, error: action.error }
+      newValue = { loading: false, error: action.payload }
       break
     default:
-      return store
+      return store || {}
   }
-  const leavePath = action.type.substr(findPath(action.type)).split('/')
+  const leavePath = findPath(action.type).split('/')
   return updateLeave(store, leavePath, newValue)
 }

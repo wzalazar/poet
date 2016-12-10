@@ -6,7 +6,7 @@ import { Title, Container, Label, Field, SendButton, SendContainer } from '../at
 
 import { connect } from 'react-redux'
 
-class ProfileContainer extends React.Component {
+class SettingsContainer extends React.Component {
   constructor() {
     super(...arguments)
     this.state = {
@@ -45,7 +45,7 @@ class ProfileContainer extends React.Component {
   }
 }
 
-export const Profile = connect(state => ({
+export const Settings = connect(state => ({
   sendClaim: function(attributes) {
     const privateKey = localStorage.getItem('privateKey')
     state.connection.socket.send(
@@ -54,4 +54,4 @@ export const Profile = connect(state => ({
         type: 'Profile', privateKey, attributes }
     )
   }
-}))(ProfileContainer)
+}))(SettingsContainer)

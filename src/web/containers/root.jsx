@@ -26,7 +26,7 @@ export class Root extends React.Component {
           <Menu.Item key='landing' >Poet</Menu.Item>
           <Menu.Item key='explorer'>Explorer</Menu.Item>
           <Menu.Item key='portfolio'>Portfolio</Menu.Item>
-          <Menu.Item key='profile'>Profile</Menu.Item>
+          <Menu.Item key='settings'>Settings</Menu.Item>
         </Menu>
       </Anchor>
       { this.props.children }

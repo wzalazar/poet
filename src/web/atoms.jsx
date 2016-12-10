@@ -1,3 +1,5 @@
+import React from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 export const Title = styled.h3`
@@ -65,7 +67,10 @@ class SimpleValueContainer extends React.Component {
     if (error) {
       return <tt>{JSON.stringify([error, error.stack], null, 2)}</tt>
     }
-    return this.props.draw(result)
+    if (result) {
+      return this.props.draw(result)
+    }
+    return <div>loading, error, result</div>
   }
 }
 
@@ -80,18 +85,18 @@ export const SimpleValue = (fetchActionCreator, pathCreator, render) => {
   }, {
     launchFetch: (props) => {
       return (dispatch) => {
-        const pathToStatus = pathCreator(ownProps, state)
-        dispatch({ type: 'mark loading ' + pathToStatus, pathToStatus })
+        const pathToStatus = pathCreator(props)
+        dispatch({ type: 'mark loading ' + pathToStatus })
         fetchActionCreator(props).then(res => res.json())
           .then(result => {
             dispatch({ type: 'set result ' + pathToStatus, payload: result })
           })
           .catch(error => {
-            dispatch({ type: 'errored ' + pathToStatus, error })
+            dispatch({ type: 'errored ' + pathToStatus, payload: error })
           })
       }
     }
-  })
+  })(SimpleValueContainer)
 }
 
 export const ApiValue = (pathToData, render) => {

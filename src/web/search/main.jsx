@@ -1,11 +1,19 @@
 import * as React from 'react'
 import { Table } from 'antd'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
+import { Link } from 'react-router'
 
 import { CollectionValue, ApiValue, Container, Title } from '../atoms'
 
+const BlockRow = (data) => {
+  return <p><Link to={`/block/${data.id}`}>Block</Link></p>
+}
+
 const BlockList = CollectionValue('all_blocks', (data) => {
-  return JSON.stringify(data)
+  return (<div>{
+    data.map(datum => <BlockRow {...datum} />)
+  }</div>)
 })
 
 class ExplorerContainer extends React.Component {
