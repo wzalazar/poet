@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
+import { update } from './common'
 
 export const Title = styled.h3`
   font-size: 16px;
@@ -61,52 +62,40 @@ class SimpleValueContainer extends React.Component {
   }
   render() {
     const { result, loading, error } = this.props
-    if (loading && !result) {
-      return this.loading()
-    }
     if (error) {
       return <tt>{JSON.stringify([error, error.stack], null, 2)}</tt>
     }
     if (result) {
-      return this.props.draw(result)
+      return <div>{this.props.draw(result)}</div>
     }
-    return <div>loading, error, result</div>
+    return this.loading()
   }
 }
 
-export const SimpleValue = (fetchActionCreator, pathCreator, render) => {
+export const SimpleValue = (pathCreator, render) => {
   return connect((state, ownProps) => {
     const pathToStatus = pathCreator(ownProps, state)
-    const elements = pathToStatus.split('/')
-    return Object.assign(
+    console.log('connect:', pathToStatus, state.generic[pathToStatus])
+    return update(
       { draw: render },
-      elements.reduce((prev, next) => prev[next], state.generic),
+      state.generic[pathToStatus]
     )
   }, {
     launchFetch: (props) => {
-      return (dispatch) => {
-        const pathToStatus = pathCreator(props)
-        dispatch({ type: 'mark loading ' + pathToStatus })
-        fetchActionCreator(props).then(res => res.json())
-          .then(result => {
-            dispatch({ type: 'set result ' + pathToStatus, payload: result })
-          })
-          .catch(error => {
-            dispatch({ type: 'errored ' + pathToStatus, payload: error })
-          })
+      return {
+        type: 'API_FETCH_REQUEST',
+        payload: pathCreator(props)
       }
     }
   })(SimpleValueContainer)
 }
 
-export const ApiValue = (pathToData, render) => {
-  return SimpleValue(
-    props => fetch('/api/' + pathToData + '/' + props.id),
-    props => pathToData + '/' + props.id,
-    render
-  )
+const makeConnection = f => {
+  return (pathToData, render) => {
+    return SimpleValue(props => pathToData + f(props), render)
+  }
 }
 
-export const CollectionValue = (pathToData, render) => {
-  return SimpleValue(() => fetch('/api/' + pathToData), () => pathToData, render)
-}
+export const ApiValue = makeConnection(props => '/' + props.id)
+export const ApiValueFromRoute = makeConnection(props => '/' + props.params.id)
+export const CollectionValue = makeConnection(_ => '')

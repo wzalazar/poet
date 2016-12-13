@@ -17,7 +17,7 @@ export class Root extends React.Component {
   }
 
   render() {
-    return (<div className="root">
+    return (<div>
       <Anchor>
         <Menu mode="horizontal"
             style={{ position: 'absolute', top: 0, width: '100%' }}

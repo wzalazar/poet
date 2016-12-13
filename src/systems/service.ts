@@ -7,9 +7,14 @@ const Body = require('koa-body')
 const Socket = require('koa-socket')
 const Logger = require('koa-logger')
 const Route = require('koa-route')
+const Router = require('koa-router')
 const rewrite = require('koa-rewrite')
 
 const config = require('../web/webpack.config')
+
+const api = Router({
+  prefix: '/api'
+})
 
 const app = new koa()
 app.use(Logger())
@@ -50,8 +55,8 @@ const title = {
   '1111': { id: '1221', type: 'Title', publicKey: '02', attributes: { for: "1111", owner: "02" } }
 }
 const profile = {
-  '02': claims[2],
-  '03': claims[4]
+  '02': claims['1331'],
+  '03': claims['1551']
 }
 const blocks = {
   '5555': {
@@ -61,7 +66,7 @@ const blocks = {
     bitcoinBlockOrder: 430000,
     transactionOrder: 300,
     outputOrder: 3,
-    claims: [ claims[0], claims[1] ]
+    claims: [ claims['1221'], claims['1331'] ]
   },
   '6666': {
     id: '6666',
@@ -70,7 +75,7 @@ const blocks = {
     bitcoinBlockOrder: 430002,
     transactionOrder: 300,
     outputOrder: 2,
-    claims: [ claims[2] ]
+    claims: [ claims['1441'] ]
   },
   '7777': {
     id: '7777',
@@ -79,31 +84,34 @@ const blocks = {
     bitcoinBlockOrder: 430050,
     transactionOrder: 200,
     outputOrder: 1,
-    claims: [ claims[3], claims[4] ]
+    claims: [ claims['1111'], claims['1551'] ]
   }
 }
 
-app.use(Route.get('/api/search/:query', (ctx, next) => {
-  ctx.body = JSON.stringify([claims[1], claims[0], claims[3]])
-}))
-app.use(Route.get('/api/claim/:id', (ctx, next) => {
-  ctx.body = JSON.stringify(claims[ctx.params.id])
-}))
-app.use(Route.get('/api/titleFor/:id', (ctx, next) => {
-  ctx.body = JSON.stringify(title[ctx.params.id])
-}))
-app.use(Route.get('/api/profileFor/:id', (ctx, next) => {
-  ctx.body = JSON.stringify(profile[ctx.params.id])
-}))
-app.use(Route.get('/api/claim/:id', (ctx, next) => {
-  ctx.body = JSON.stringify(claims[ctx.params.id])
-}))
-app.use(Route.get('/api/block/:id', (ctx, next) => {
-  ctx.body = JSON.stringify(blocks[ctx.params.id])
-}))
-app.use(Route.get('/api/all_blocks', (ctx, next) => {
-  ctx.body = JSON.stringify(Object.keys(blocks).map(key => blocks[key]))
-}))
+api.get('/search/:query', async (ctx, next) => {
+    ctx.body = JSON.stringify([claims['1111'], claims['1331'], claims['1551']])
+  })
+  .get('/claim/:id', async (ctx, next) => {
+    ctx.body = JSON.stringify(claims[ctx.params.id])
+  })
+  .get('/titleFor/:id', async (ctx, next) => {
+    ctx.body = JSON.stringify(title[ctx.params.id])
+  })
+  .get('/profileFor/:id', async (ctx, next) => {
+    ctx.body = JSON.stringify(profile[ctx.params.id])
+  })
+  .get('/claim/:id', async (ctx, next) => {
+    ctx.body = JSON.stringify(claims[ctx.params.id])
+  })
+  .get('/block/:id', async (ctx, next) => {
+    ctx.body = JSON.stringify(blocks[ctx.params.id])
+  })
+  .get('/all_blocks', async (ctx, next) => {
+    ctx.body = JSON.stringify(Object.keys(blocks).map(key => blocks[key]))
+  })
+
+app.use(api.routes())
+app.use(api.allowedMethods())
 
 export default {
   app,

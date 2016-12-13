@@ -4,17 +4,8 @@ const MARK_LOADING = 'mark loading '
 const SET_RESULT = 'set result '
 const ERRORED = 'errored  '
 
-export function updateLeave(root, pathElements, updateValue) {
-  if (!pathElements.length) {
-    return update(root, updateValue)
-  }
-  return update(root, {
-    [pathElements[0]]: updateLeave(
-      root[pathElements[0]] || {},
-      pathElements.slice(1),
-      updateValue
-    )
-  })
+export function updateLeave(root, path, updateValue) {
+  return update(root, { [path]: updateValue })
 }
 
 const IGNORE_INITIAL_SPACE_FOR_ALL_ACTION_TYPES = 6
@@ -48,6 +39,6 @@ export default function(store, action) {
     default:
       return store || {}
   }
-  const leavePath = findPath(action.type).split('/')
+  const leavePath = findPath(action.type)
   return updateLeave(store, leavePath, newValue)
 }

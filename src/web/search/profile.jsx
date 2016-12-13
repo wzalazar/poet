@@ -6,7 +6,7 @@ import { Container, Title, ApiValue } from '../atoms'
 export const ProfileDetail = ApiValue('profile',
   result => {
     return (<Container>
-      <Title>Profile {result}</Title>
+      <Title>Profile {JSON.stringify(result)}</Title>
     </Container>)
   }
 )

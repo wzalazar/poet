@@ -10,6 +10,7 @@ module.exports = {
     entry: [
         'webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr',
         'react-hot-loader/patch',
+        'babel-polyfill',
         path.resolve(ROOT_PATH, 'src/web/main.jsx'),
     ],
     module: {

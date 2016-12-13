@@ -1,13 +1,12 @@
 import * as React from 'react'
 
 import { Table } from 'antd'
-import { Container, Title, ApiValue } from '../atoms'
+import { Container, Title, ApiValueFromRoute } from '../atoms'
 
-export const Search = ApiValue((props, ownProps) => {
-  },
+export const Search = ApiValueFromRoute('search',
   result => {
     return (<Container>
-      <Title>Results for <strong>"{this.props.query}"</strong></Title>
+      <Title>Results for <strong>"{JSON.stringify(result, null, 2)}"</strong></Title>
     </Container>)
   }
 )
