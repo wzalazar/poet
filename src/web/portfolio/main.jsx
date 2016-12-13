@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
@@ -13,7 +14,7 @@ class PortfolioMain extends React.Component {
   render() {
     return (<Container>
       <h2>Portfolio</h2>
-      <LinkButton to='/portfolio/new'>New Work</LinkButton>
+      <Link to='/portfolio/new'>New Work</Link>
     </Container>)
   }
 }

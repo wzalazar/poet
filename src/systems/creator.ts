@@ -110,6 +110,16 @@ export class ClaimCreator {
     }
   }
 
+  serializedToClaim(claim: string) {
+    return this.protoToClaimObject(
+      claimBuilder.decode(new Buffer(claim, 'hex'))
+    )
+  }
+
+  serializeForSave(proto) {
+    return new Buffer(claimBuilder.encode(proto).finish()).toString('hex')
+  }
+
   objectToProto(obj) {
     return claimBuilder.create({
       id: new Buffer(obj.id, 'hex'),
@@ -133,6 +143,13 @@ export class ClaimCreator {
       id,
       claims
     }
+  }
+
+  getEncodedBlockForSaving(block) {
+    return new Buffer(poetBlock.encode(poetBlock.create({
+      id: block.id,
+      claims: block.claims.map(this.objectToProto.bind(this))
+    })).finish()).toString('hex')
   }
 
   createTransaction(blockId: Buffer) {

@@ -37,7 +37,7 @@ class AddField extends React.Component {
   }
 }
 
-class PortfolioMain extends React.Component {
+class NewWorkContainer extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.state = {
@@ -75,11 +75,11 @@ class PortfolioMain extends React.Component {
   }
 }
 
-export const Portfolio = connect(state => ({
+export const NewWork = connect(state => ({
   sendClaim: function(attributes) {
     const privateKey = localStorage.getItem('privateKey')
     state.connection.socket.send(
       { action: 'create claim', type: 'CreativeWork', privateKey, attributes }
     )
   }
-}))(PortfolioMain)
+}))(NewWorkContainer)
