@@ -7,7 +7,9 @@ import { Link } from 'react-router'
 import { CollectionValue, ApiValue, Container, Title } from '../atoms'
 
 const BlockRow = (data) => {
-  return <p><Link to={`/block/${data.id}`}>Block</Link></p>
+  return (<div>
+  <p><Link to={`/block/${data.id}`}>Block {data.id}</Link> ({data.claims.length} claims)</p>
+  </div>)
 }
 
 const BlockList = CollectionValue('all_blocks', (data) => {

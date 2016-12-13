@@ -66,7 +66,7 @@ class SimpleValueContainer extends React.Component {
       return <tt>{JSON.stringify([error, error.stack], null, 2)}</tt>
     }
     if (result) {
-      return <div>{this.props.draw(result)}</div>
+      return <div>{this.props.draw(result, this.props)}</div>
     }
     return this.loading()
   }
@@ -77,7 +77,10 @@ export const SimpleValue = (pathCreator, render) => {
     const pathToStatus = pathCreator(ownProps, state)
     console.log('connect:', pathToStatus, state.generic[pathToStatus])
     return update(
-      { draw: render },
+      {
+        draw: render,
+        path: pathToStatus
+      },
       state.generic[pathToStatus]
     )
   }, {

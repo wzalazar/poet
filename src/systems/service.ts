@@ -49,12 +49,14 @@ const claims = {
  '1221': { id: '1221', type: 'Title', publicKey: '02', attributes: { for: "1111", owner: "02" } },
  '1331': { id: '1331', type: 'Profile', publicKey: "02", attributes: { "name": "John Doe", "contactInfo": "john@doe.com" } },
  '1441': { id: '1441', type: 'Certificate', publicKey: "03", attributes: { for: "1221" } },
- '1551': { id: '1551', type: 'Profile', publicKey: "03", attributes: {name: "First Notary", contactInfo: "notary@po.et" } }
+ '1551': { id: '1551', type: 'Profile', publicKey: "03", attributes: {name: "First Notary", contactInfo: "notary@po.et" } },
+ '1666': { id: '1661', type: 'Profile', publicKey: "01", attributes: {name: "Random User", contactInfo: "user@po.et" } }
 }
 const title = {
   '1111': { id: '1221', type: 'Title', publicKey: '02', attributes: { for: "1111", owner: "02" } }
 }
 const profile = {
+  '01': claims['1661'],
   '02': claims['1331'],
   '03': claims['1551']
 }
@@ -97,8 +99,29 @@ api.get('/search/:query', async (ctx, next) => {
   .get('/titleFor/:id', async (ctx, next) => {
     ctx.body = JSON.stringify(title[ctx.params.id])
   })
-  .get('/profileFor/:id', async (ctx, next) => {
+  .get('/profileByPublicKey/:id', async (ctx, next) => {
     ctx.body = JSON.stringify(profile[ctx.params.id])
+  })
+  .get('/issuerFor/:id', async (ctx, next) => {
+    const profileClaim = profile[claims[ctx.params.id].publicKey]
+    if (!profileClaim) {
+      this.status = 404
+      return
+    }
+    ctx.body = JSON.stringify(profileClaim)
+  })
+  .get('/ownerFor/:id', async (ctx, next) => {
+    const titleClaim = title[ctx.params.id]
+    if (!titleClaim) {
+      this.status = 404
+      return
+    }
+    const profileClaim = profile[titleClaim.attributes.owner]
+    if (!profileClaim) {
+      this.status = 404
+      return
+    }
+    ctx.body = JSON.stringify(profileClaim)
   })
   .get('/claim/:id', async (ctx, next) => {
     ctx.body = JSON.stringify(claims[ctx.params.id])
