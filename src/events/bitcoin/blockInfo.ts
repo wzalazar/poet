@@ -4,9 +4,10 @@ export interface BlockInfo {
 }
 
 export interface PoetTxInfo {
-    position: number
     hash: string
     poetId: string
+    blockOrder: number
+    outputIndex: number
 }
 
 export interface PoetInfo {

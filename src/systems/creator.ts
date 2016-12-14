@@ -94,7 +94,7 @@ export class ClaimCreator {
     })).finish()
   }
 
-  protoToClaimObject(proto) {
+  protoToClaimObject(proto): Claim {
     const attributes = {}
 
     proto.attributes.forEach(attr => {
@@ -110,9 +110,26 @@ export class ClaimCreator {
     }
   }
 
+  protoToBlockObject(proto): PoetBlock {
+    const claims = proto.claims.map(claim => {
+      return this.protoToClaimObject(claim)
+    })
+
+    return {
+      id: proto.id.toString('hex'),
+      claims
+    }
+  }
+
   serializedToClaim(claim: string) {
     return this.protoToClaimObject(
       claimBuilder.decode(new Buffer(claim, 'hex'))
+    )
+  }
+
+  serializedToBlock(block: string) {
+    return this.protoToBlockObject(
+      poetBlock.decode(new Buffer(block, 'hex'))
     )
   }
 
@@ -120,7 +137,7 @@ export class ClaimCreator {
     return new Buffer(claimBuilder.encode(proto).finish()).toString('hex')
   }
 
-  objectToProto(obj) {
+  objectToProto(obj: Claim) {
     return claimBuilder.create({
       id: new Buffer(obj.id, 'hex'),
       publicKey: new Buffer(obj.publicKey, 'hex'),
@@ -155,7 +172,8 @@ export class ClaimCreator {
   createTransaction(blockId: Buffer) {
     console.log('Creating tx for', blockId.toString('hex'))
     const data = Buffer.concat([
-      new Buffer('BARD-'),
+      new Buffer('BARD'),
+      new Buffer([0, 0, 0, 1]),
       blockId
     ])
     return insight.getUnspentUtxos(poetAddress)

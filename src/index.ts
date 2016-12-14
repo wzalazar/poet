@@ -6,6 +6,8 @@ import { default as DownloadSystem } from './systems/download'
 
 import { ClaimCreator } from './systems/creator'
 
+import { API } from './systems/api'
+
 import {reorgOps} from './logic/reorg'
 
 const creator = new ClaimCreator()
@@ -56,5 +58,7 @@ io.on('message', (ctx, data) => {
         creator.createTransaction(block.id).then(creator.broadcastTx)
     }
 })
+
+const api = new API(api, creator, database)
 
 Service.app.listen(3000)

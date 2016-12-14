@@ -27,7 +27,7 @@ export interface Claim {
     signature: string
 
     type: ClaimType
-    attributes: Attribute[]
+    attributes: Object
 }
 
 export interface PoetBlock {

@@ -87,7 +87,8 @@ export default class PoetInsightListener {
       if (this.containsPoetForBitcore(tx)) {
         return {
           hash: tx.hash,
-          position: index,
+          blockOrder: index,
+          outputIndex: 0,
           poetId: this.getPoetHashFromBitcoreTx(tx)
         }
       }
