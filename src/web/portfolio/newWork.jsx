@@ -28,9 +28,9 @@ class AddField extends React.Component {
   render() {
     return (<form onSubmit={this.submit.bind(this)}>
       <Label>Attribute Name</Label>
-      <Field ref="key" value={this.state.key} onChange={this.handleChange} />
+      <Field name="key" value={this.state.key} onChange={this.handleChange} />
       <Label>Value</Label>
-      <Field ref="value" value={this.state.value} onChange={this.shandleChange} />
+      <Field name="value" value={this.state.value} onChange={this.handleChange} />
       <br/>
       <SendButton>Add</SendButton>
     </form>)
@@ -42,7 +42,7 @@ class NewWorkContainer extends React.Component {
     super(props, context)
     this.state = {
       fields: [],
-      privateKey: ''
+      type: 'CreativeWork'
     }
   }
 
@@ -53,13 +53,22 @@ class NewWorkContainer extends React.Component {
   }
 
   submit() {
-    this.props.sendClaim(this.refs.privateKey.value, this.state.fields)
+    this.props.sendClaim(this.refs.type.value, this.state.fields)
   }
 
   render() {
     return (<Container>
       <Title>Portfolio</Title>
       <h3>Create Claim</h3>
+      <h4>Type</h4>
+      <select ref="type">
+        <option selected value="CreativeWork">Creative Work</option>
+        <option value="Title">Title</option>
+        <option value="License">License</option>
+        <option value="Certificate">Certificate</option>
+        <option value="Revokation">Revokation</option>
+        <option value="Profile">Profile</option>
+      </select>
       <ul>
       {
         this.state.fields.map((field, index) => {
@@ -76,10 +85,10 @@ class NewWorkContainer extends React.Component {
 }
 
 export const NewWork = connect(state => ({
-  sendClaim: function(attributes) {
+  sendClaim: function(type, attributes) {
     const privateKey = localStorage.getItem('privateKey')
     state.connection.socket.send(
-      { action: 'create claim', type: 'CreativeWork', privateKey, attributes }
+      { action: 'create claim', type: type, privateKey, attributes }
     )
   }
 }))(NewWorkContainer)

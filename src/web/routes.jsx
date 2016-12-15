@@ -32,9 +32,7 @@ export function routes() {
     <Route path="/onboarding" component={Onboarding} />
     <Route path="/settings" component={Settings} />
 
-    <Route path="/portfolio" component={Portfolio}>
-      <IndexRoute component={Overview} />
-      <Route path="/new" component={NewWork} />
-    </Route>
+    <Route path="/portfolio" component={Overview} />
+    <Route path="/portfolio/new" component={NewWork} />
   </Route>
 }

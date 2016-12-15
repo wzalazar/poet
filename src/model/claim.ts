@@ -31,6 +31,6 @@ export interface Claim {
 }
 
 export interface PoetBlock {
-    id: Buffer
+    id: string
     claims: Claim[]
 }

@@ -39,7 +39,6 @@ socket.on('connection', (ctx: Object) => {
   console.log('client connected')
 })
 
-
 export default {
   app,
   compiler,

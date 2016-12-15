@@ -128,9 +128,13 @@ export class ClaimCreator {
   }
 
   serializedToBlock(block: string) {
-    return this.protoToBlockObject(
-      poetBlock.decode(new Buffer(block, 'hex'))
-    )
+    try {
+      const decoded = poetBlock.decode(new Buffer(block, 'hex'))
+      const obj = this.protoToBlockObject(decoded)
+      return obj
+    } catch (e) {
+      console.log(e, e.stack)
+    }
   }
 
   serializeForSave(proto) {
@@ -155,7 +159,7 @@ export class ClaimCreator {
       id: new Buffer(''),
       claims: claims.map(this.objectToProto.bind(this))
     })
-    const id = common.sha256(poetBlock.encode(block).finish())
+    const id = common.sha256(poetBlock.encode(block).finish()).toString('hex')
     return {
       id,
       claims
@@ -169,12 +173,12 @@ export class ClaimCreator {
     })).finish()).toString('hex')
   }
 
-  createTransaction(blockId: Buffer) {
-    console.log('Creating tx for', blockId.toString('hex'))
+  createTransaction(blockId: string) {
+    console.log('Creating tx for', blockId)
     const data = Buffer.concat([
       new Buffer('BARD'),
       new Buffer([0, 0, 0, 1]),
-      blockId
+      new Buffer(blockId, 'hex')
     ])
     return insight.getUnspentUtxos(poetAddress)
       .then(utxos => new bitcore.Transaction()

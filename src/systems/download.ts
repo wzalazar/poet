@@ -19,9 +19,6 @@ export default class DownloadSystem {
   }
 
   postBlock(block: PoetBlock) {
-    this.redis.set(block.id.toString('hex'),
-      poetBlock.encode(block).finish()
-    )
   }
 
   downloadBlock(hash: string) {

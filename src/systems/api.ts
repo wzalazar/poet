@@ -34,6 +34,7 @@ export default class Api {
     .get('/profileByPublicKey/:id', async (ctx, next) => {
       const claim = await ds.getProfileForPublicKey(ctx.params.id)
       ctx.body = JSON.stringify(claim)
+      await next()
     })
     .get('/issuerFor/:id', async (ctx, next) => {
       const claim = await ds.getClaim(ctx.params.id)
@@ -54,7 +55,10 @@ export default class Api {
       ctx.body = JSON.stringify(block)
     })
     .get('/all_blocks', async (ctx, next) => {
-      ctx.body = JSON.stringify(await ds.getAllBlocks())
+      const allBlocks = await ds.getAllBlocks()
+      console.log(allBlocks)
+      ctx.body = JSON.stringify(allBlocks)
+      await next()
     })
     .get('/all_claims', async (ctx, next) => {
       ctx.body = JSON.stringify(await ds.getAllClaims())

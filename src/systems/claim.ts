@@ -1,11 +1,12 @@
-import { PoetBlock, Claim, TITLE, CERTIFICATE, PROFILE, REVOKATION } from '../model/claim'
+Promise = require('bluebird')
+import { PoetBlock, Claim, TITLE, LICENSE, CERTIFICATE, PROFILE, REVOKATION } from '../model/claim'
 import { PoetInfo } from '../events/bitcoin/blockInfo'
 import * as IORedis from 'ioredis'
 import { ClaimCreator } from './creator'
 
 import { default as Builders } from '../model/loaders'
 
-export default class DownloadSystem {
+export default class ClaimDb {
   redis: IORedis.Redis
   creator: ClaimCreator
 
@@ -57,6 +58,7 @@ export default class DownloadSystem {
         if (claim.attributes.for) {
           await this.redis.set(this.makeTitleFor(claim.attributes.for), claim.id)
         }
+        break;
       case LICENSE:
         if (claim.attributes.for) {
           await this.redis.sadd(this.makeLicenseSetKey(claim.attributes.for), claim.id)
@@ -68,12 +70,38 @@ export default class DownloadSystem {
           await this.redis.sadd(this.makeJudgementKey(claim.attributes.for), claim.id)
         }
         break;
+      default:
+        break;
     }
     await this.redis.sadd('claims', claim.id)
     return await this.redis.set(
       this.makeClaimId(claim.id),
       this.creator.serializeForSave(claim)
     )
+  }
+
+  async storeBlock(block: PoetBlock) {
+    await Promise.all(
+      block.claims.map(claim => this.storeClaim(claim))
+    )
+    await this.redis.sadd('blocks', block.id)
+    await this.redis.set(
+      this.makeBlockId(block.id),
+      this.creator.getEncodedBlockForSaving(block)
+    )
+  }
+
+  async markBlockOnBlockchain(info: PoetInfo) {
+    await Promise.all(info.poet.map(txInfo => {
+      const id = txInfo.poetId
+      return Promise.all([
+        this.redis.set('bitcoinOutputOrder-' + id, txInfo.outputIndex),
+        this.redis.set('bitcoinTransactionOrder-' + id, txInfo.blockOrder),
+        this.redis.set('bitcoinTransaction-' + id, txInfo.hash),
+        this.redis.set('bitcoinBlock-' + id, info.id),
+        this.redis.set('bitcoinBlockOrder-' + id, info.height),
+      ])
+    }))
   }
 
   async getTitleFor(claimId) {
@@ -103,29 +131,5 @@ export default class DownloadSystem {
       return this.getClaim(id)
     }))
     return claims
-  }
-
-  async storeBlock(block: PoetBlock) {
-    await Promise.all(
-      block.claims.map(claim => this.storeClaim(claim))
-    )
-    await this.redis.sadd('blocks', block.id)
-    await this.redis.set(
-      this.makeBlockId(block.id.toString('hex')),
-      this.creator.getEncodedBlockForSaving(block)
-    )
-  }
-
-  async markBlockOnBlockchain(info: PoetInfo) {
-    await Promise.all(info.poet.map(txInfo => {
-      const id = txInfo.poetId
-      return await Promise.all([
-        this.redis.set('bitcoinOutputOrder-' + id, txInfo.outputIndex),
-        this.redis.set('bitcoinTransactionOrder-' + id, txInfo.blockOrder),
-        this.redis.set('bitcoinTransaction-' + id, txInfo.hash),
-        this.redis.set('bitcoinBlock-' + id, info.id),
-        this.redis.set('bitcoinBlockOrder-' + id, info.height),
-      ])
-    })
   }
 }
