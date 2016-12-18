@@ -1,15 +1,16 @@
 import * as koa from 'koa'
 
 const Webpack = require('webpack')
-const webpackMiddleware = require('koa-webpack')
+const { devMiddleware, hotMiddleware } = require('koa-webpack-middleware')
 const Body = require('koa-body')
 const Socket = require('koa-socket')
 const Logger = require('koa-logger')
 const Route = require('koa-route')
 const Router = require('koa-router')
 const rewrite = require('koa-rewrite')
+require('babel-polyfill')
 
-const config = require('../web/webpack.config')
+const webpackConfig = require('../web/webpack.config')
 
 const app = new koa()
 app.use(Logger())
@@ -20,15 +21,18 @@ app.use(Logger())
     app.use(rewrite(new RegExp('^\/' + name + '(.*)'), '/'))
 })
 
-const compiler = new Webpack(config)
-const webpack = webpackMiddleware({
-  compiler,
-  dev: {
-      hot: true,
-      inline: true
+const compiler = new Webpack(webpackConfig)
+const dev = devMiddleware(compiler, {
+  noinfo: true,
+  headers: {
+    'content-type': 'text/html'
+  },
+  stats: {
+    colors: true
   }
 })
-app.use(webpack)
+app.use(dev)
+app.use(hotMiddleware(compiler, {}))
 
 const socket = new Socket()
 socket.attach(app)

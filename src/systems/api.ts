@@ -58,7 +58,8 @@ export default class Api {
       const allBlocks = await ds.getAllBlocks()
       console.log(allBlocks)
       ctx.body = JSON.stringify(allBlocks)
-      await next()
+      console.log(ctx)
+      next()
     })
     .get('/all_claims', async (ctx, next) => {
       ctx.body = JSON.stringify(await ds.getAllClaims())

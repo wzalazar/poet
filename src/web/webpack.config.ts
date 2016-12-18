@@ -53,6 +53,8 @@ module.exports = {
     },
     devServer: {
         contentBase: path.resolve(ROOT_PATH, 'src/web/dist'),
+        publicPath: '/',
+        indexEntry: 'main.js',
         historyApiFallback: true,
         hot: true,
         inline: true,
