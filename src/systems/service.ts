@@ -8,22 +8,25 @@ const Logger = require('koa-logger')
 const Route = require('koa-route')
 const Router = require('koa-router')
 const rewrite = require('koa-rewrite')
+const mount = require('koa-mount')
 require('babel-polyfill')
 
 const webpackConfig = require('../web/webpack.config')
 
 const app = new koa()
 app.use(Logger())
-
+app.use(Body())
 ;
 ['block', 'claim', 'profile', 'settings', 'search', 'explorer',
- 'portfolio'].forEach((name: string) => {
-    app.use(rewrite(new RegExp('^\/' + name + '(.*)'), '/'))
+ 'portfolio', 'main.js'].forEach((name: string) => {
+    app.use(rewrite(new RegExp('^\/' + name + '(.*)'), '/assets/'))
 })
+app.use(rewrite(new RegExp('^\/?$'), '/assets/'))
 
 const compiler = new Webpack(webpackConfig)
 const dev = devMiddleware(compiler, {
   noinfo: true,
+  publicPath: '/',
   headers: {
     'content-type': 'text/html'
   },
@@ -31,13 +34,20 @@ const dev = devMiddleware(compiler, {
     colors: true
   }
 })
-app.use(dev)
-app.use(hotMiddleware(compiler, {}))
+const hot = hotMiddleware(compiler, {})
+const webpackApp = new koa()
+webpackApp.use(async(ctx, next) => {
+  await next()
+  ctx.response.set('content-type', 'text/html')
+})
+webpackApp.use(Body())
+webpackApp.use(dev)
+webpackApp.use(hot)
+
+app.use(mount('/assets', webpackApp))
 
 const socket = new Socket()
 socket.attach(app)
-
-app.use(new Body())
 
 socket.on('connection', (ctx: Object) => {
   console.log('client connected')

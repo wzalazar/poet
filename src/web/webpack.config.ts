@@ -8,7 +8,7 @@ var ROOT_PATH = path.join(path.resolve(__dirname), '../../')
 module.exports = {
     devtool: 'cheap-module-source-map',
     entry: [
-        'webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr',
+        'webpack-hot-middleware/client?path=http://localhost:3000/assets/__webpack_hmr',
         'react-hot-loader/patch',
         'babel-polyfill',
         path.resolve(ROOT_PATH, 'src/web/main.jsx'),
@@ -48,7 +48,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(ROOT_PATH, 'src/web/dist'),
-        publicPath: '/',
+        publicPath: '/assets',
         filename: 'main.js'
     },
     devServer: {
