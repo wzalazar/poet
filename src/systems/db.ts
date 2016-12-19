@@ -6,7 +6,7 @@ import { ClaimCreator } from './creator'
 
 import { default as Builders } from '../model/loaders'
 
-export default class ClaimDb {
+export default class Db {
   redis: IORedis.Redis
   creator: ClaimCreator
 

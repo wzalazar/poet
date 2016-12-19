@@ -168,7 +168,7 @@ export class ClaimCreator {
 
   getEncodedBlockForSaving(block) {
     return new Buffer(poetBlock.encode(poetBlock.create({
-      id: block.id,
+      id: new Buffer(block.id, 'hex'),
       claims: block.claims.map(this.objectToProto.bind(this))
     })).finish()).toString('hex')
   }

@@ -13,7 +13,7 @@ export const OwnerNameWithLink = ApiValue('ownerFor',
 
 export const ClaimRow = row => {
   return (<div>
-    <h4> {row.type} <Link to={`/claim/${row.id}`}> {row.id}: { row.attributes.name } </Link> </h4>
+  <h4> {row.type} <Link to={`/claim/${row.id}`}> {row.id} { row.attributes.name && (': ' + row.attributes.name) } </Link> </h4>
   </div>)
 }
 

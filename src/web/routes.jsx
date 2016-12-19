@@ -13,7 +13,6 @@ import { ClaimDetail } from './search/claim'
 import { ProfileDetail } from './search/profile'
 
 import { Portfolio } from './portfolio/main'
-import { Overview } from './portfolio/overview'
 import { Onboarding } from './portfolio/onboarding'
 import { NewWork } from './portfolio/newWork'
 
@@ -32,7 +31,7 @@ export function routes() {
     <Route path="/onboarding" component={Onboarding} />
     <Route path="/settings" component={Settings} />
 
-    <Route path="/portfolio" component={Overview} />
+    <Route path="/portfolio" component={Portfolio} />
     <Route path="/portfolio/new" component={NewWork} />
   </Route>
 }

@@ -8,7 +8,7 @@ import { ClaimCreator } from './systems/creator'
 
 import { default as Api } from './systems/api'
 
-import { default as ClaimDb } from './systems/claim'
+import { default as ClaimDb } from './systems/db'
 
 import {reorgOps} from './logic/reorg'
 

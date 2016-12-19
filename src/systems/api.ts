@@ -1,4 +1,4 @@
-import { default as DownloadSystem } from './claim'
+import { default as DownloadSystem } from './db'
 
 const Router = require('koa-router')
 
