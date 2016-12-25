@@ -38,7 +38,9 @@ const hot = hotMiddleware(compiler, {})
 const webpackApp = new koa()
 webpackApp.use(async(ctx, next) => {
   await next()
-  ctx.response.set('content-type', 'text/html')
+  if (ctx.response.get('Content-Type') === 'application/octet-stream') {
+    ctx.response.set('Content-Type', 'text/html')
+  }
 })
 webpackApp.use(Body())
 webpackApp.use(dev)

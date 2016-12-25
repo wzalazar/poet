@@ -16,12 +16,6 @@ message PoetBlock {
       optional bytes signature = 4;
 }
 
-message ClaimSerializationForSigning {
-      optional bytes publicKey = 1;
-      optional string type = 2;
-      repeated Attribute attributes = 3;
-}
-
 message Attribute {
       optional string key = 1;
       optional string value = 2;

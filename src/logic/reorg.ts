@@ -24,6 +24,15 @@ export function reorgOps(lastBlockInfo: BlockInfo[], newBlockInfo: BlockInfo[]):
 
     let first = 0, second = 0
 
+    advanceUntilIDMatches()
+    if (!betweenBoundary()) {
+        throw new Error('No common ancestor found between blockchains')
+    }
+    advanceWhileIDMatches()
+
+    return lastBlockInfo.slice(first).reverse().map(op(POP))
+        .concat(newBlockInfo.slice(second).map(op(PUSH)))
+
     function idMatch(): boolean {
         return lastBlockInfo[first].id === newBlockInfo[second].id
     }
@@ -54,15 +63,6 @@ export function reorgOps(lastBlockInfo: BlockInfo[], newBlockInfo: BlockInfo[]):
             id: value.id, type: operation, height: value.height
         })
     }
-
-    advanceUntilIDMatches()
-    if (!betweenBoundary()) {
-        throw new Error('No common ancestor found between blockchains')
-    }
-    advanceWhileIDMatches()
-
-    return lastBlockInfo.slice(first).reverse().map(op(POP))
-        .concat(newBlockInfo.slice(second).map(op(PUSH)))
 }
 
 function combineOps<T>(pushOp: (PushOp) => T, popOp: (PopOp) => T) {

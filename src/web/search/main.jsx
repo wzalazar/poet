@@ -14,7 +14,7 @@ const BlockRow = (data) => {
 
 const BlockList = CollectionValue('all_blocks', (data) => {
   return (<div>{
-    data.map(datum => <BlockRow {...datum} />)
+    data.map(datum => <BlockRow  key={'blockrow-' + datum.id} {...datum} />)
   }</div>)
 })
 

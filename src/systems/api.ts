@@ -25,14 +25,26 @@ export default class Api {
     this.api
     .get('/claim/:id', async (ctx, next) => {
       const claim = await ds.getClaim(ctx.params.id)
+      if (!claim) {
+        ctx.status = 404
+        return
+      }
       ctx.body = JSON.stringify(claim)
     })
     .get('/titleFor/:id', async (ctx, next) => {
       const claim = await ds.getTitleFor(ctx.params.id)
+      if (!claim) {
+        ctx.status = 404
+        return
+      }
       ctx.body = JSON.stringify(claim)
     })
     .get('/profileByPublicKey/:id', async (ctx, next) => {
       const claim = await ds.getProfileForPublicKey(ctx.params.id)
+      if (!claim) {
+        ctx.status = 404
+        return
+      }
       ctx.body = JSON.stringify(claim)
       await next()
     })
@@ -47,18 +59,28 @@ export default class Api {
     })
     .get('/ownerFor/:id', async (ctx, next) => {
       const titleClaim = await ds.getTitleFor(ctx.params.id)
+      if (!titleClaim) {
+        ctx.status = 404
+        return
+      }
       const profileClaim = await ds.getProfileForPublicKey(titleClaim.attributes['for'])
+      if (!profileClaim) {
+        ctx.status = 404
+        return
+      }
       ctx.body = JSON.stringify(profileClaim)
     })
     .get('/block/:id', async (ctx, next) => {
       const block = await ds.getBlock(ctx.params.id)
+      if (!block) {
+        ctx.status = 404
+        return
+      }
       ctx.body = JSON.stringify(block)
     })
     .get('/all_blocks', async (ctx, next) => {
       const allBlocks = await ds.getAllBlocks()
-      console.log(allBlocks)
       ctx.body = JSON.stringify(allBlocks)
-      console.log(ctx)
       next()
     })
     .get('/all_claims', async (ctx, next) => {

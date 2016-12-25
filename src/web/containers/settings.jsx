@@ -22,7 +22,7 @@ class SettingsContainer extends React.Component {
   }
 
   store() {
-    this.props.sendClaim(this.state)
+    this.props.sendClaim(Object.assign({}, this.state))
     localStorage.setItem('privateKey', this.state.privateKey)
     localStorage.setItem('name', this.state.name)
     localStorage.setItem('contactInfo', this.state.contactInfo)
@@ -48,6 +48,7 @@ class SettingsContainer extends React.Component {
 export const Settings = connect(state => ({
   sendClaim: function(attributes) {
     const privateKey = localStorage.getItem('privateKey')
+    delete attributes.privateKey
     state.connection.socket.send(
       {
         action: 'create claim',

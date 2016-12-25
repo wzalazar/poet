@@ -76,7 +76,7 @@ export default class Db {
     await this.redis.sadd('claims', claim.id)
     return await this.redis.set(
       this.makeClaimId(claim.id),
-      this.creator.serializeForSave(claim)
+      this.creator.serializeClaimForSave(claim)
     )
   }
 
@@ -87,7 +87,7 @@ export default class Db {
     await this.redis.sadd('blocks', block.id)
     await this.redis.set(
       this.makeBlockId(block.id),
-      this.creator.getEncodedBlockForSaving(block)
+      this.creator.serializeBlockForSave(block)
     )
   }
 
