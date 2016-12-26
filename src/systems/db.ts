@@ -41,11 +41,17 @@ export default class Db {
 
   async getBlock(id: string) {
     const block = await this.redis.get(this.makeBlockId(id))
+    if (!block) {
+      return
+    }
     return this.creator.serializedToBlock(block)
   }
 
   async getClaim(id: string) {
     const claim = await this.redis.get(this.makeClaimId(id))
+    if (!claim) {
+      return
+    }
     return this.creator.serializedToClaim(claim)
   }
 

@@ -2,15 +2,18 @@ import { update } from './common'
 
 const MARK_LOADING = 'mark loading '
 const SET_RESULT = 'set result '
-const ERRORED = 'errored  '
+const ERRORED = 'error for '
 
 export function updateLeave(root, path, updateValue) {
   return update(root, { [path]: updateValue })
 }
 
-const IGNORE_INITIAL_SPACE_FOR_ALL_ACTION_TYPES = 6
+function secondSpacePosition(str) {
+  return str.indexOf(' ', str.indexOf(' ') + 1)
+}
+
 function findPath(str) {
-  return str.slice(str.indexOf(' ', IGNORE_INITIAL_SPACE_FOR_ALL_ACTION_TYPES) + 1)
+  return str.slice(secondSpacePosition(str) + 1)
 }
 
 const types = [MARK_LOADING, SET_RESULT, ERRORED]
@@ -26,6 +29,7 @@ function getActionType(str) {
 export default function(store, action) {
   let newValue
   const match = getActionType(action.type)
+  console.log(match, action.type)
   switch(match) {
     case MARK_LOADING:
       newValue = { loading: true }

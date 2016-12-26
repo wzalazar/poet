@@ -63,6 +63,9 @@ class SimpleValueContainer extends React.Component {
   render() {
     const { result, loading, error } = this.props
     if (error) {
+      if (error === 'not found') {
+        return <div>Not found</div>
+      }
       return <tt>{JSON.stringify([error, error.stack], null, 2)}</tt>
     }
     if (result) {

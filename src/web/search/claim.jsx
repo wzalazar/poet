@@ -11,31 +11,31 @@ export const ClaimDetail = ApiValueFromRoute('claim',
       case 'Profile':
         return (<Container>
           <Title>Profile for {result.attributes.name}</Title>
-          <p>PublicKey: { result.publicKey } </p>
-          <p>Contact Info: { result.attributes.contactInfo } </p>
-          <p>Raw:</p>
+          <div>PublicKey: { result.publicKey } </div>
+          <div>Contact Info: { result.attributes.contactInfo } </div>
+          <div>Raw:</div>
           <pre> {JSON.stringify(result, null, 2)}</pre>
         </Container>)
       case 'Title':
         return (<Container>
           <Title>Title of Ownership</Title>
-          <p>For Creative: <CreativeWorkWithLink id={result.attributes.for} /></p>
-          <p>Owner: <OwnerNameWithLink id={result.attributes.for} /></p>
+          <div>For Creative: <CreativeWorkWithLink id={result.attributes.for} /></div>
+          <div>Owner: <OwnerNameWithLink id={result.attributes.for} /></div>
           <pre> {JSON.stringify(result, null, 2)}</pre>
         </Container>)
       case 'CreativeWork':
         return (<Container>
           <Title>Creative Work: { result.attributes.name }</Title>
-          <p>Issuer: <IssuerNameWithLink id={result.id} /></p>
-          <p>Owner: <OwnerNameWithLink id={result.id} /></p>
+          <div>Issuer: <IssuerNameWithLink id={result.id} /></div>
+          <div>Owner: <OwnerNameWithLink id={result.id} /></div>
           <pre> {JSON.stringify(result, null, 2)}</pre>
         </Container>)
        default:
         return (<Container>
           <Title>Claim of type {result.type}</Title>
-          <p>Claim id: {result.id}</p>
-          <p>PublicKey: { result.publicKey } </p>
-          <p>Raw:</p>
+          <div>Claim id: {result.id}</div>
+          <div>PublicKey: { result.publicKey } </div>
+          <div>Raw:</div>
           <pre> {JSON.stringify(result, null, 2)}</pre>
         </Container>)
     }
