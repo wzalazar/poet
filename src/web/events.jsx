@@ -20,7 +20,7 @@ function insertToSet(set, element) {
 export function connectionReducer(store, action) {
   switch (action.type) {
     case Connected:
-      return update(store, { socket: action.payload })
+      return update(store, { connected: true })
     case Discovered:
       return update(store, {
         knownBlockHashes: insertToSet(store.knownHashes || [], action.payload)
@@ -41,6 +41,8 @@ export function connectionReducer(store, action) {
           [action.payload.hash]: action.payload.block
         })
       })
+    case Disconnected:
+      return update(store, { connected: false })
     default:
       break
   }
@@ -50,7 +52,7 @@ export function connectionReducer(store, action) {
 export function connectStoreToEvents(store) {
   const io = SocketIO()
   io.on('connect', () => {
-    store.dispatch({ type: Connected, payload: io })
+    store.dispatch({ type: Connected })
   })
   io.on('disconnect', () => {
     store.dispatch({ type: Disconnected })

@@ -63,7 +63,9 @@ export default class Api {
         ctx.status = 404
         return
       }
-      const profileClaim = await ds.getProfileForPublicKey(titleClaim.attributes['for'])
+      console.log(titleClaim)
+      const profileClaim = await ds.getProfileForPublicKey(titleClaim.publicKey)
+      
       if (!profileClaim) {
         ctx.status = 404
         return

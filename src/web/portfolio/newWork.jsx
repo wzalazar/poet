@@ -84,11 +84,11 @@ class NewWorkContainer extends React.Component {
   }
 }
 
-export const NewWork = connect(state => ({
-  sendClaim: function(type, attributes) {
+export const NewWork = connect(state => ({}), {
+  sendClaim: dispatch => (type, attributes) => {
     const privateKey = localStorage.getItem('privateKey')
-    state.connection.socket.send(
+    dispatch(
       { action: 'create claim', type: type, privateKey, attributes }
     )
   }
-}))(NewWorkContainer)
+})(NewWorkContainer)

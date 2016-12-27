@@ -5,8 +5,10 @@ const SET_RESULT = 'set result '
 const ERRORED = 'error for '
 
 export function updateLeave(root, path, updateValue) {
-  return update(root, { [path]: updateValue })
+  return Object.assign({}, root, { [path]: updateValue })
 }
+
+const types = [MARK_LOADING, SET_RESULT, ERRORED]
 
 function secondSpacePosition(str) {
   return str.indexOf(' ', str.indexOf(' ') + 1)
@@ -15,8 +17,6 @@ function secondSpacePosition(str) {
 function findPath(str) {
   return str.slice(secondSpacePosition(str) + 1)
 }
-
-const types = [MARK_LOADING, SET_RESULT, ERRORED]
 
 function getActionType(str) {
   for (let type of types) {

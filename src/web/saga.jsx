@@ -1,4 +1,4 @@
-import { fork, call, put, take } from 'redux-saga/effects'
+import {  call, put } from 'redux-saga/effects'
 import { takeEvery } from 'redux-saga'
 
 function apiFetch(url) {
@@ -7,9 +7,12 @@ function apiFetch(url) {
       if (r.status === 404) {
         return { error: 'not found' }
       }
+      if (r.status !== 200) {
+        return r.body().then(error => ({ error }))
+      }
       return r.json().then(json => ({ body: json }))
     })
-    .catch (err => ({ error: err }))
+    .catch(error => ({ error }))
 }
 
 function* fetchData(action) {
@@ -25,6 +28,11 @@ function* fetchData(action) {
   }
 }
 
+function* listenCreate(action) {
+  
+}
+
 export default function* watchForGenericCalls() {
+  yield takeEvery('create claim', listenCreate)
   yield takeEvery('API_FETCH_REQUEST', fetchData)
 }

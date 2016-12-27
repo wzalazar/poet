@@ -29,6 +29,7 @@
     "@types/socket.io-client": "^1.4.29",
     "@types/webtorrent": "0.0.29",
     "antd": "^2.5.1",
+    "awesome-typescript-loader": "^3.0.0-beta.17",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.8",
     "babel-plugin-transform-regenerator": "^6.16.1",
