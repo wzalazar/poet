@@ -17,6 +17,8 @@ function insertToSet(set, element) {
   return set
 }
 
+export const io = SocketIO()
+
 export function connectionReducer(store, action) {
   switch (action.type) {
     case Connected:
@@ -50,7 +52,6 @@ export function connectionReducer(store, action) {
 }
 
 export function connectStoreToEvents(store) {
-  const io = SocketIO()
   io.on('connect', () => {
     store.dispatch({ type: Connected })
   })

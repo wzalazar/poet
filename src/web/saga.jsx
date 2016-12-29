@@ -1,5 +1,7 @@
-import {  call, put } from 'redux-saga/effects'
+import { call, put } from 'redux-saga/effects'
 import { takeEvery } from 'redux-saga'
+
+import { io } from './events'
 
 function apiFetch(url) {
   return fetch('/api/' + url)
@@ -28,11 +30,12 @@ function* fetchData(action) {
   }
 }
 
-function* listenCreate(action) {
-  
+function* sendWebsocket(action) {
+  io.send(action.payload)
+  yield put({ type: 'clear for all_blocks' })
 }
 
 export default function* watchForGenericCalls() {
-  yield takeEvery('create claim', listenCreate)
   yield takeEvery('API_FETCH_REQUEST', fetchData)
+  yield takeEvery('send websocket message', sendWebsocket)
 }

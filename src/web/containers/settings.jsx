@@ -1,6 +1,7 @@
 import * as React from 'react'
 import fetch from 'isomorphic-fetch'
 import { Table } from 'antd'
+import { browserHistory } from 'react-router'
 
 import { Title, Container, Label, Field, SendButton, SendContainer } from '../atoms'
 
@@ -45,14 +46,21 @@ class SettingsContainer extends React.Component {
   }
 }
 
-export const Settings = connect(state => ({
-  sendClaim: function(attributes) {
-    const privateKey = localStorage.getItem('privateKey')
+export const Settings = connect(state => ({}), {
+  sendClaim: (attributes) => dispatch => {
     delete attributes.privateKey
-    state.connection.socket.send(
+    const privateKey = localStorage.getItem('privateKey')
+    dispatch(
       {
-        action: 'create claim',
-        type: 'Profile', privateKey, attributes }
+        type: 'send websocket message',
+        payload: {
+          action: 'create claim',
+          type: 'Profile',
+          privateKey,
+          attributes
+        }
+      }
     )
+    browserHistory.push('/explorer')
   }
-}))(SettingsContainer)
+})(SettingsContainer)

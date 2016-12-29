@@ -2,6 +2,7 @@ import * as React from 'react'
 
 import { connect } from 'react-redux'
 import styled from 'styled-components'
+import { browserHistory } from 'react-router'
 
 import { Title, Container, Label, Field, SendButton, SendContainer } from '../atoms'
 
@@ -85,10 +86,19 @@ class NewWorkContainer extends React.Component {
 }
 
 export const NewWork = connect(state => ({}), {
-  sendClaim: dispatch => (type, attributes) => {
+  sendClaim: (type, attributes) => dispatch => {
     const privateKey = localStorage.getItem('privateKey')
     dispatch(
-      { action: 'create claim', type: type, privateKey, attributes }
+      {
+        type: 'send websocket message',
+        payload: {
+          action: 'create claim',
+          type,
+          privateKey,
+          attributes
+        }
+      }
     )
+    browserHistory.push('/explorer')
   }
 })(NewWorkContainer)

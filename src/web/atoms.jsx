@@ -21,8 +21,8 @@ export const Label = styled.p`
 `
 export const Field = styled.input`
   font-size: 14px;
-  width: 420px;
-  padding: 8px 5px 8px 8px;
+  width: 220px;
+  padding: 4px 2px 4px 2px;
 `
 
 export const LinkButton = styled.button`
@@ -35,12 +35,12 @@ export const LinkButton = styled.button`
 `
 
 export const SendButton = styled.button`
-  font-size: 18px;
+  font-size: 14px;
   background-color: #424242;
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 5px 15px 5px 15px;
+  padding: 2px 5px 2px 5px;
 `
 
 export const SendContainer = styled.div`
@@ -55,6 +55,12 @@ class SimpleValueContainer extends React.Component {
     const { result, loading, error } = this.props
     if (!loading && !result && !error) {
       this.props.launchFetch(this.props)
+    }
+  }
+  componentWillReceiveProps(newProps, oldProps) {
+    const { result, loading, error } = newProps
+    if (!loading && !result && !error) {
+      this.props.launchFetch(newProps)
     }
   }
   loading() {
