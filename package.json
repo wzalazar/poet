@@ -13,6 +13,7 @@
   "dependencies": {
     "@types/react": "^0.14.55",
     "@types/react-dom": "^0.14.20",
+    "@types/react-redux": "^4.4.35",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-redux": "^5.0.1",
