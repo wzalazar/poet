@@ -12,4 +12,4 @@ export class IncreaseCountButtonContainer extends React.Component<IncreaseCountB
   }
 }
 
-export const IncreaseCountButton = connect(() => ({}), { increase: () => ({ type: 'increase' }) })(IncreaseCountButtonContainer)
+export const IncreaseCountButton = connect(() => ({}), { increase: () => ({ type: 'increase requested' }) })(IncreaseCountButtonContainer)
