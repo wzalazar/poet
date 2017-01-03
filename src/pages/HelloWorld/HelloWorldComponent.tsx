@@ -1,17 +1,18 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
+import { State } from '../../state';
+
 import { IncreaseCountButton } from "./IncreaseCountButton";
 import { DecreaseCountButton } from './DecreaseCountButton';
-import { HelloWorldState } from './HelloWorldState';
 
 import './HelloWorld.scss';
 
-export interface HelloProps {
+export interface HelloWorldProps {
   count: number
 }
 
-class HelloWorldComponent extends React.Component<HelloProps, undefined> {
+class HelloWorldComponent extends React.Component<HelloWorldProps, undefined> {
 
   render() {
     return (
@@ -24,4 +25,4 @@ class HelloWorldComponent extends React.Component<HelloProps, undefined> {
   }
 }
 
-export const HelloWorld = connect((state: any) => state.helloWorldState)(HelloWorldComponent);
+export const HelloWorld = connect((state: State) => state.helloWorldState)(HelloWorldComponent);
