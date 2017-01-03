@@ -17,8 +17,6 @@ export default function createPoetStore() {
     )
   );
 
-  console.log('initialState', initialState);
-
   sagaMiddleware.run(sagas);
 
   return store;

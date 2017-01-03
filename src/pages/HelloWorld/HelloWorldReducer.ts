@@ -3,16 +3,16 @@ import { Action } from 'redux';
 import { HelloWorldState, helloWorldState } from './HelloWorldState';
 
 export function helloWorldReducer(state: HelloWorldState = helloWorldState, action: Action): HelloWorldState {
-  console.log('helloWorldReducer', state);
-  if (action.type == 'increase') {
-    return {
-      count: state.count + 1
-    };
+  switch (action.type) {
+    case 'increase':
+      return {
+        count: state.count + 1
+      };
+    case 'decrease':
+      return {
+        count: state.count - 1
+      };
+    default:
+      return state;
   }
-  if (action.type == 'decrease') {
-    return {
-      count: state.count - 1
-    };
-  }
-  return state
 }
