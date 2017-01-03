@@ -1,11 +1,18 @@
 import { Action } from 'redux';
 
-export function countReducer(count: number = 0, action: Action) {
+import { HelloWorldState, helloWorldState } from './HelloWorldState';
+
+export function helloWorldReducer(state: HelloWorldState = helloWorldState, action: Action): HelloWorldState {
+  console.log('helloWorldReducer', state);
   if (action.type == 'increase') {
-    return count + 1;
+    return {
+      count: state.count + 1
+    };
   }
   if (action.type == 'decrease') {
-    return count - 1;
+    return {
+      count: state.count - 1
+    };
   }
-  return count
+  return state
 }

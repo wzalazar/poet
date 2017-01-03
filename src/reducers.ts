@@ -1,7 +1,7 @@
 import { combineReducers, Action } from 'redux'
 
-import { countReducer } from './pages/HelloWorld/HelloWorldReducer';
+import { helloWorldReducer } from './pages/HelloWorld/HelloWorldReducer';
 
 export const reducers = combineReducers({
-  count: countReducer
+  helloWorldState: helloWorldReducer
 }) as (state: any, action: Action) => any;
