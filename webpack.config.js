@@ -3,6 +3,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const vendor = ['react', 'react-dom', 'react-redux', 'redux', 'redux-saga'];
 
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 module.exports = {
   entry: {
     'app': [
@@ -27,7 +29,8 @@ module.exports = {
   module: {
     loaders: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-      { test: /\.tsx?$/, loaders: ['react-hot', 'babel', 'awesome-typescript-loader'] }
+      { test: /\.tsx?$/, loaders: ['react-hot', 'babel', 'awesome-typescript-loader'] },
+      { test: /\.scss$/, loader: ExtractTextPlugin.extract('css!sass') }
     ],
 
     preLoaders: [

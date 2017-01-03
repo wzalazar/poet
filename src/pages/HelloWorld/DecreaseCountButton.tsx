@@ -8,7 +8,7 @@ interface DecreaseCountButtonProps {
 
 class DecreaseCountButtonContainer extends React.Component<DecreaseCountButtonProps, undefined> {
   render() {
-    return <a href="#" onClick={this.props.decrease}>{this.props.children}</a>;
+    return <a className="button" href="#" onClick={this.props.decrease}>{this.props.children}</a>;
   }
 }
 

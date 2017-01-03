@@ -8,7 +8,7 @@ interface IncreaseCountButtonProps {
 
 class IncreaseCountButtonContainer extends React.Component<IncreaseCountButtonProps, undefined> {
   render() {
-    return <a href="#" onClick={this.props.increase}>{this.props.children}</a>;
+    return <a className="button" href="#" onClick={this.props.increase}>{this.props.children}</a>;
   }
 }
 
