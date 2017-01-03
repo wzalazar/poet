@@ -1,18 +1,17 @@
-import { createStore, Action, compose, applyMiddleware, combineReducers } from 'redux'
+import { createStore, compose, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 
 import sagas from './sagas';
-import { countReducer } from './pages/HelloWorld/HelloWorldReducer';
+import { reducers } from './reducers';
+import { initialState } from './InitialState';
 
 export default function createPoetStore() {
   const enhancer: any = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   const sagaMiddleware = createSagaMiddleware();
 
   const store = createStore(
-    combineReducers({
-      count: countReducer
-    }) as (state: any, action: Action) => any,
-    { count: 55 },
+    reducers,
+    initialState,
     enhancer(
       applyMiddleware(sagaMiddleware)
     )
