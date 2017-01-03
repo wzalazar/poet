@@ -5,7 +5,10 @@ const vendor = ['react', 'react-dom', 'react-redux', 'redux', 'redux-saga'];
 
 module.exports = {
   entry: {
-    'app': './src/index.tsx',
+    'app': [
+      'webpack-hot-middleware/client',
+      './src/index.tsx',
+    ],
     'vendor': vendor
   },
   output: {
@@ -24,7 +27,7 @@ module.exports = {
   module: {
     loaders: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-      { test: /\.tsx?$/, loader: 'awesome-typescript-loader' }
+      { test: /\.tsx?$/, loaders: ['react-hot', 'babel', 'awesome-typescript-loader'] }
     ],
 
     preLoaders: [
@@ -36,6 +39,8 @@ module.exports = {
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({ name: "vendor", filename: "vendor.js" }),
     new webpack.optimize.CommonsChunkPlugin({ name: 'meta', chunks: ['vendor'], filename: "meta.js" }),
-    new HtmlWebpackPlugin({ title: 'Poet App', template: 'src/index.html' })
+    new HtmlWebpackPlugin({ title: 'Poet App', template: 'src/index.html' }),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin(),
   ]
 };
