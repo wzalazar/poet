@@ -2,6 +2,8 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Action } from "redux";
 
+import * as constants from '../../constants';
+
 interface DecreaseCountButtonProps {
   decrease: () => Action
 }
@@ -12,4 +14,6 @@ class DecreaseCountButtonContainer extends React.Component<DecreaseCountButtonPr
   }
 }
 
-export const DecreaseCountButton = connect(() => ({}), { decrease: () => ({ type: 'decrease requested' }) })(DecreaseCountButtonContainer)
+export const DecreaseCountButton = connect(() => ({}), {
+  decrease: () => ({ type: constants.requestDecrement })
+})(DecreaseCountButtonContainer);
