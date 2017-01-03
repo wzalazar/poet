@@ -42,7 +42,7 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({ name: "vendor", filename: "vendor.js" }),
     new webpack.optimize.CommonsChunkPlugin({ name: 'meta', chunks: ['vendor'], filename: "meta.js" }),
     new HtmlWebpackPlugin({ title: 'Poet App', template: 'src/index.html' }),
-    new ExtractTextPlugin("styles.css")
+    new ExtractTextPlugin("styles.css"),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
   ]
