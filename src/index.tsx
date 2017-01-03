@@ -6,16 +6,20 @@ import { default as createSagaMiddleware, takeEvery } from 'redux-saga'
 import { put } from 'redux-saga/effects'
 
 import './extensions/Window'
-import { Hello } from './pages/HelloWorld/Hello'
-import { State } from './state';
-import { countIncreaseReducer } from './pages/HelloWorld/HelloWorldReducer';
+import { Hello } from './pages/HelloWorld/HelloWorld'
+import { countReducer } from './pages/HelloWorld/HelloWorldReducer';
 
 function* increase() {
   yield put({ type: 'increase' });
 }
 
+function* decrease() {
+  yield put({ type: 'decrease' });
+}
+
 const fetchSaga = function*() {
   yield takeEvery('increase requested', increase);
+  yield takeEvery('decrease requested', decrease);
 };
 
 const enhancer: any = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -23,8 +27,8 @@ const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
   combineReducers({
-    count: countIncreaseReducer
-  }) as (state: any, action: Action) => State,
+    count: countReducer
+  }) as (state: any, action: Action) => any,
   { count: 55 },
   enhancer(
     applyMiddleware(sagaMiddleware)
