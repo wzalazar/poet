@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-const vendor = ['react', 'react-dom', 'react-redux', 'redux', 'redux-saga'];
+const vendor = ['react', 'react-dom', 'react-redux', 'redux', 'redux-saga', 'react-router'];
 
 module.exports = {
   entry: {
@@ -18,7 +18,7 @@ module.exports = {
   },
 
   // Enable sourcemaps for debugging webpack's output.
-  devtool: 'source-map',
+  devtool: 'cheap-eval-source-map',
 
   resolve: {
       // Add '.ts' and '.tsx' as resolvable extensions.

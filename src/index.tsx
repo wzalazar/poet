@@ -14,12 +14,11 @@ class H extends React.Component<undefined, undefined> {
   }
 }
 
-const routes = pages.map(page => page.routeHook());
+const routes = pages.map((page, index) => page.routeHook('' + index)).reduce((a, b) => a.concat(b), []);
 
 ReactDOM.render((
     <Provider store={store}>
       <Router history={browserHistory}>
-        <IndexRoute component={H} />>
         { routes }
       </Router>
     </Provider>

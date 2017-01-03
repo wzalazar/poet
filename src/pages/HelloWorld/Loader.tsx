@@ -1,12 +1,14 @@
-import * as React from 'react'
+import * as React from "react"
 import { HelloWorldProps, HelloWorldComponent } from "./Container"
-import { PageLoader, ReducerDescription } from "../../PageLoader"
+import { PageLoader, ReducerDescription } from "../../components/PageLoader"
 import { Action } from "redux"
 import { Saga, takeEvery } from "redux-saga"
 import { put } from "redux-saga/effects"
 import { Route } from "react-router"
 
 import ComponentClass = React.ComponentClass
+
+import * as constants from '../../constants'
 
 export class HelloWorld extends PageLoader<number, HelloWorldProps> {
 
@@ -16,8 +18,8 @@ export class HelloWorld extends PageLoader<number, HelloWorldProps> {
     return 5;
   }
 
-  routeHook() {
-    return [<Route path="/" component={this.container()} />]
+  routeHook(key: string) {
+    return [<Route path="/" key={key} component={this.container()} />]
   }
 
   reducerHook<State>(): ReducerDescription<number> {
@@ -25,9 +27,9 @@ export class HelloWorld extends PageLoader<number, HelloWorldProps> {
       subState: 'helloWorld',
       reducer: (counter: number, action: Action) => {
         switch (action.type) {
-          case 'increment':
+          case constants.increment:
             return counter + 1;
-          case 'decrement':
+          case constants.decrement:
             return counter - 1;
           default:
             return counter || 0
@@ -38,21 +40,20 @@ export class HelloWorld extends PageLoader<number, HelloWorldProps> {
 
   sagaHook(): Saga {
     function* increment() {
-      yield put({ type: 'increment' });
+      yield put({ type: constants.increment });
     }
     function* decrement() {
-      yield put({ type: 'decrement' });
+      yield put({ type: constants.decrement });
     }
     return function*() {
-      yield takeEvery('increment request', increment);
-      yield takeEvery('decrement request', decrement);
+      yield takeEvery(constants.requestIncrement, increment);
+      yield takeEvery(constants.requestDecrement, decrement);
     }
   }
 
   select(state: any, ownProps: any): HelloWorldProps {
     return {
-      count: state.count
+      count: state.helloWorld
     }
   }
-
 }
