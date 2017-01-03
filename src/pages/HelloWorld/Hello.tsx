@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {IncreaseCountButton} from "./IncreaseCountButton";
-import {State} from "../state";
+import {State} from "../../state";
 
 export interface HelloProps {
   count: number;

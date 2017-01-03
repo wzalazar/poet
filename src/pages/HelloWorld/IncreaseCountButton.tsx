@@ -1,6 +1,6 @@
 import * as React from "react";
-import {connect} from "react-redux";
-import {Action} from "redux";
+import { connect } from "react-redux";
+import { Action } from "redux";
 
 export interface IncreaseCountButtonProps {
   increase: () => Action
@@ -8,7 +8,7 @@ export interface IncreaseCountButtonProps {
 
 export class IncreaseCountButtonContainer extends React.Component<IncreaseCountButtonProps, undefined> {
   render() {
-    return <a href="#" onClick={this.props.increase} >{this.props.children}</a>;
+    return <a href="#" onClick={this.props.increase}>{this.props.children}</a>;
   }
 }
 
