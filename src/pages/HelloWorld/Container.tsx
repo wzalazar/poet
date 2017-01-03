@@ -1,7 +1,4 @@
 import * as React from "react";
-import { connect } from "react-redux";
-
-import { State } from '../../state';
 
 import { IncreaseCountButton } from "./IncreaseCountButton";
 import { DecreaseCountButton } from './DecreaseCountButton';
@@ -12,8 +9,7 @@ export interface HelloWorldProps {
   count: number
 }
 
-class HelloWorldComponent extends React.Component<HelloWorldProps, undefined> {
-
+export class HelloWorldComponent extends React.Component<HelloWorldProps, undefined> {
   render() {
     return (
       <div className="helloWorld">
@@ -24,5 +20,3 @@ class HelloWorldComponent extends React.Component<HelloWorldProps, undefined> {
     )
   }
 }
-
-export const HelloWorld = connect((state: State) => state.helloWorldState)(HelloWorldComponent);
