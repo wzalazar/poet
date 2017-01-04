@@ -1,0 +1,17 @@
+.navbar {
+  background-color: blue;
+  color: white;
+  margin: 0;
+  padding: 0;
+
+  h1 {
+    display: inline-block;
+  }
+
+  ul {
+    display: inline-block;
+    li {
+      display: inline-block;
+    }
+  }
+}
