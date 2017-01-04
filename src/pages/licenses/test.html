@@ -1,0 +1,114 @@
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+        <style>
+            body {
+                display: flex;
+                flex-direction: row;
+                background-color: #e6e6e6;
+            }
+            .leftColumn {
+                display: flex;
+                flex-direction: column;
+                width: 182px;
+                background-color: #404040;
+                border: 1px solid #979797;
+                border-radius: 2px;
+                padding-top: 18.5px;
+                padding-left: 12.5px;
+                box-sizing: border-box;
+            }
+            .leftColumn .user {
+                display: flex;
+                flex-direction: row;
+                border-bottom: 1px solid #747474;
+                padding-bottom: 12px;
+            }
+            .leftColumn .user .menu {
+                padding-left: 8px;
+                padding-top: 4px;
+            }
+            .leftColumn .user .menu .username {
+                font-family: "Source Sans Pro";
+                font-size: 12px;
+                line-height: 18px;
+                color: #FFFFFF;
+            }
+            .leftColumn .user .menu .logout {
+                font-family: "Source Sans Pro";
+                font-size: 9px;
+                line-height: 18px;
+                color: #FF5500;
+                text-decoration: none;
+            }
+            .leftColumn .user .avatar {
+                width: 50px;
+                height: 50px;
+                border-radius: 500px;
+                background-color: #D8D8D8;
+            }
+            .leftColumn .navigation {
+                font-family: "Source Sans Pro";
+                font-size: 12px;
+                line-height: 18px;
+                color: #FFFFFF;
+            }
+            .leftColumn .navigation ul {
+                list-style: none;
+            }
+            .leftColumn .navigation ul li {
+                list-style: none;
+                line-height: 18px;
+                margin-bottom: 27px;
+            }
+            .leftColumn .navigation ul li.selected {
+                color: #79ADEA;
+                font-weight: bold;
+                border-right: 2px solid #79ADEA;
+            }
+            .licenses {
+                border: 1px solid gray;
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="leftColumn">
+            <div class="user">
+                <div class="avatar"></div>
+                <div class="menu">
+                    <div class="username">User Name</div>
+                    <a href="#" class="logout">Logout</a>
+                </div>
+            </div>
+            <div class="navigation">
+                <ul>
+                    <li>Creative Works</li>
+                    <li class="selected">Licenses</li>
+                    <li>Notifications</li>
+                    <li>Revenue</li>
+                    <li>Settings</li>
+                </ul>
+            </div>
+        </div>
+        <div class="licenses">
+            <div class="list">
+                <div class="filters">
+                    <ul>
+                        <li>All</li>
+                        <li>Authored</li>
+                        <li>Purchased</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="search">
+                <span>Search</span>
+            </div>
+            <div class="details">
+
+            </div>
+        </div>
+    </body>
+</html>
