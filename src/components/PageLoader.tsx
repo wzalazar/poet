@@ -1,8 +1,7 @@
-import * as React from "react"
-
-import { Reducer } from "redux"
-import { Saga } from "redux-saga"
-import { connect, StatelessComponent, ComponentClass } from "react-redux"
+import * as React from "react";
+import {Reducer} from "redux";
+import {Saga} from "redux-saga";
+import {connect, StatelessComponent, ComponentClass} from "react-redux";
 
 export interface ReducerDescription<T> {
   subState: string

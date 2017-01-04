@@ -3,13 +3,13 @@ import * as React from "react";
 import { IncreaseCountButton } from "./IncreaseCountButton";
 import { DecreaseCountButton } from './DecreaseCountButton';
 
-import './HelloWorld.scss';
+import './style.scss';
 
 export interface HelloWorldProps {
   count: number
 }
 
-export class HelloWorldComponent extends React.Component<HelloWorldProps, undefined> {
+export class HelloWorldLayout extends React.Component<HelloWorldProps, undefined> {
   render() {
     return (
       <div className="helloWorld">

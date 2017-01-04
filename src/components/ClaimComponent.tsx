@@ -1,4 +1,4 @@
-import { ResourceProps, ApiResource } from './apiResource'
+import { ResourceProps, ApiResource } from './ApiResource'
 import { HexString } from '../common'
 
 export interface ClaimProps extends ResourceProps {

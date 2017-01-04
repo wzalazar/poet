@@ -1,18 +1,16 @@
-import * as React from "react"
-import { HelloWorldProps, HelloWorldComponent } from "./Container"
-import { PageLoader, ReducerDescription } from "../../components/PageLoader"
-import { Action } from "redux"
-import { Saga, takeEvery } from "redux-saga"
-import { put } from "redux-saga/effects"
-import { Route } from "react-router"
+import * as React from "react";
+import {Action} from "redux";
+import {put} from "redux-saga/effects";
+import {Route} from "react-router";
+import {Saga, takeEvery} from "redux-saga";
 
-import ComponentClass = React.ComponentClass
-
-import * as constants from '../../constants'
+import * as constants from "../../constants";
+import {HelloWorldProps, HelloWorldLayout} from "./Layout";
+import {PageLoader, ReducerDescription} from "../../components/PageLoader";
 
 export class HelloWorld extends PageLoader<number, HelloWorldProps> {
 
-  component = HelloWorldComponent;
+  component = HelloWorldLayout;
 
   initialState(){
     return 5;

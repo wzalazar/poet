@@ -1,5 +1,4 @@
-import * as React from 'react'
-import { HexString } from '../common'
+import * as React from "react";
 
 export interface ResourceProps {
   error: any

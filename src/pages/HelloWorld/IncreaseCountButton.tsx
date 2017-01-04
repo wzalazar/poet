@@ -1,6 +1,6 @@
 import * as React from "react";
-import { connect } from "react-redux";
 import { Action } from "redux";
+import { connect } from "react-redux";
 
 import * as constants from '../../constants';
 
