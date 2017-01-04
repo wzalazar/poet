@@ -108,13 +108,14 @@
             .licenses {
                 border: 1px solid gray;
                 display: flex;
-                flex-direction: column;
+                flex-direction: row;
                 flex-grow: 1;
                 color: #666666;
             }
             .licenses > .list {
                 display: flex;
                 flex-direction: column;
+                flex-grow: 1;
             }
             .licenses > .list .filters {
                 border-bottom: 1px solid #979797;
@@ -135,6 +136,11 @@
                 padding-bottom: 14px;
                 min-width: 39px;
                 text-align: center;
+                cursor: pointer;
+            }
+            .licenses > .list .filters ul li:hover {
+                color: #4A90E2;
+                border-bottom: 3px solid #6CA5E8;
             }
             .licenses > .list .filters ul li.selected {
                 border-bottom: 3px solid #6CA5E8;
@@ -195,6 +201,64 @@
                 line-height: 18px;
                 color: #666666;
             }
+            .licenses > .details {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+                flex-basis: 200px;
+                background-color: #FFFFFF;
+                border-left: 1px solid #979797;
+
+            }
+            .licenses > .details > .actions {
+                color: #666666;
+                font-size: 10px;
+                line-height: 24px;
+                box-sizing: border-box;
+                border-bottom: 1px solid #E6E6E6;
+                display: flex;
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+            .licenses > .details > .actions > ul {
+                list-style: none;
+                display: flex;
+                margin: 0;
+                padding: 2px 0;
+            }
+            .licenses > .details > .actions > ul > li {
+                display: inline-block;
+                line-height: 24px;
+                margin-right: 24px;
+                cursor: pointer;
+            }
+            .licenses > .details > .actions > ul > li:hover {
+                color: #4A90E2;
+            }
+            .licenses > .details > .actions > ul.right {
+                margin-left: auto;
+            }
+            .licenses > .details > .title {
+                padding: 20px;
+                font-size: 14px;
+            }
+            .licenses > .details > .title > h3 {
+                font-size: 14px;
+                font-weight: bold;
+            }
+            .licenses > .details > .title > .price {
+                margin-left: auto;
+                font-size: 21px;
+                font-weight: bold;
+                text-align: right;
+                line-height: 23px;
+            }
+            .licenses > .details > .title > p {
+
+            }
+            .licenses > .details > hr {
+
+            }
         </style>
     </head>
     <body>
@@ -226,7 +290,7 @@
                         <li class="selected">All</li>
                         <li>Authored</li>
                         <li>Purchased</li>
-                        <li>Transfered</li>
+                        <li>Transferred</li>
                     </ul>
                 </div>
                 <div class="search">
@@ -249,7 +313,21 @@
                 </div>
             </div>
             <div class="details">
-
+                <div class="actions">
+                    <ul class="left">
+                        <li>Transfer</li>
+                        <li>Revoke</li>
+                    </ul>
+                    <ul class="right">
+                        <li>View in Blockchain Explorer</li>
+                    </ul>
+                </div>
+                <div class="title">
+                    <h3>License Title</h3>
+                    <div class="price">$0.00 USD</div>
+                    <p>A Poet Commons (PC) license enables the free distribution of an otherwise copyrighted work. Give people the right to share, use, and build upon a work that they have created, but must attribute the original owner of the work.</p>
+                </div>
+                <hr/>
             </div>
         </div>
     </body>
