@@ -1,4 +1,3 @@
-import * as Promise from 'bluebird'
 import * as socketIO from 'socket.io-client'
 import * as fetch from 'isomorphic-fetch'
 
@@ -55,14 +54,11 @@ export default class PoetInsightListener {
       this.socket.on('block', (block) => {
         this.manageNewBlock()
       })
-      this.socket.on('tx', (tx) => {
-        if (this.containsPoetForSocket(tx)) {
-          this.fetchHash(tx.txid).then((hash: string) => {
-            if (hash) {
-              this.listeners.forEach(listener => {
-                listener(hash)
-              })
-            }
+      this.socket.on('tx', async (tx) => {
+        const poetData = await this.containsPoetForSocket(tx)
+        if (poetData) {
+          this.listeners.forEach(listener => {
+            listener(poetData)
           })
         }
       })
@@ -70,12 +66,12 @@ export default class PoetInsightListener {
   }
 
   manageNewBlock() {
-    fetch(`https://${this.insightUrl}/api/blocks?limit=6`)
+    return fetch(`https://${this.insightUrl}/api/blocks?limit=100`)
       .then(parseJson)
       .then(getBlocks)
       .then(blocks => {
         const newState = blocks.map(block => ({
-          id: block.hash,
+          id: block['id'],
           height: block.height
         })).reverse()
         this.blockListeners.forEach(listener => listener(newState))
@@ -84,14 +80,15 @@ export default class PoetInsightListener {
 
   scanBitcoreBlock(block, height) {
     const txs = block.transactions.map((tx, index): PoetTxInfo | null => {
-      if (this.containsPoetForBitcore(tx)) {
-        return {
-          hash: tx.hash,
-          blockOrder: index,
-          outputIndex: 0,
-          poetId: this.getPoetHashFromBitcoreTx(tx)
-        }
+      const poetData = this.containsPoetForBitcore(tx)
+      if (!poetData) {
+        return
       }
+      return Object.assign({}, poetData, {
+        blockHeight: height,
+        blockHash: block.hash,
+        transactionOrder: index
+      })
     }).filter(tx => !!tx)
     const blockInfo: PoetInfo = {
       height: height,
@@ -102,34 +99,37 @@ export default class PoetInsightListener {
   }
 
   containsPoetForBitcore(tx) {
-    const addressBuffer = new bitcore.Address(this.address).hashBuffer
-    const check = function(script) {
-      return script.classify() === bitcore.Script.types.PUBKEYHASH_OUT
-          && addressBuffer.compare(script.getData()) === 0
+    const check = function(script, index) {
+      if (script.classify() !== bitcore.Script.types.DATA_OUT)
+        return
+      const data = script.getData()
+      return data[0] === 'B'
+          && data[1] === 'A'
+          && data[2] === 'R'
+          && data[3] === 'D'
+          && {
+            txHash       : tx.hash,
+            outputNumber : index,
+            poetHash     : data.slice(4)
+          }
     }
     return tx.outputs.reduce(
-      (prev, next) => prev || check(next.script), false
+      (prev, next, index) => prev || check(next.script, index), false
     )
   }
 
   containsPoetForSocket(tx) {
-    return tx.vout.reduce(
-      (prev, next) => prev || !!next[this.address], false
-    )
+    return this.fetchTxByHash(tx.hash)
+      .then(this.containsPoetForBitcore)
   }
 
-  getPoetHashFromBitcoreTx(tx) {
-    return pickData(filterData(tx))
-  }
-
-  fetchHash(tx) {
-    const url = `https://${this.insightUrl}/api/rawtx/${tx}`
+  fetchTxByHash(txhash) {
+    const url = `https://${this.insightUrl}/api/rawtx/${txhash}`
 
     return fetch(url)
       .then(parseJson)
       .then(getTransaction)
       .then(turnToBitore)
-      .then(this.getPoetHashFromBitcoreTx)
   }
 
   subscribe(listener: HashListener) {
