@@ -8,10 +8,12 @@ const app = express();
 const compiler = webpack(config);
 
 app.use(require('webpack-dev-middleware')(compiler, {
-    noInfo: false,
-    stats: {
-      colors: true
-    }
+  noInfo: true,
+  progress: true,
+  quiet: true,
+  stats: {
+    colors: true
+  }
 }));
 
 app.use(require('webpack-hot-middleware')(compiler));

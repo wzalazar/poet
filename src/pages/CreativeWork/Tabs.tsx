@@ -54,7 +54,9 @@ export default class Tabs extends React.Component<undefined, TabState> {
     if (![...this.tabs().keys()].includes(tabName))
       throw new Error(`Tab ${tabName} doesn't exist. Available tabs are: ${[...this.tabs().keys()].join(', ')}`);
 
-    this.state.selectedTab = tabName;
+    this.setState({
+      selectedTab: tabName
+    });
   }
 
   render() {
