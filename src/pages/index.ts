@@ -1,9 +1,9 @@
 import { LandingLoader } from './Landing/Loader'
 import { UserLoader } from './User/Loader'
-import { License } from './License/Loader'
+import { CreativeWork } from "./CreativeWork/Loader";
 
 export default [
   LandingLoader,
-  License,
+  CreativeWork,
   UserLoader
 ]

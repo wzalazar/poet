@@ -1,7 +1,7 @@
 import { ResourceProps, ApiResource } from './ApiResource'
 import { HexString } from '../common'
 
-export interface ClaimProps extends ResourceProps {
+export interface ClaimProps {
   error: any
   loading: any
   id: HexString
@@ -11,5 +11,5 @@ export interface ClaimProps extends ResourceProps {
 }
 
 export abstract class ClaimComponent extends ApiResource<ClaimProps, undefined> {
-  apiPath = '/claim/' + this.props.id
+  apiPath = '/claim/' + this.props.result.id
 }

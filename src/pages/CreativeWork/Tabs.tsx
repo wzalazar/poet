@@ -2,34 +2,20 @@ import * as React from "react";
 
 import './style.scss';
 
-interface Claim {
-
-}
-
-export interface ContentTabProps {
-
-}
-
-export interface HistoryTabProps {
-  author: string;
-  award: string;
-  character: string;
-
-  content: string;
-}
-
-export interface TabsProps {
-  content: ContentTabProps;
-  history: HistoryTabProps;
-}
-
-export interface TabsState {
+interface TabState {
   selectedTab: string;
-}
+};
 
-export default class Tabs extends React.Component<TabsProps, TabsState> {
+export default class Tabs extends React.Component<undefined, TabState> {
 
-  get tabs(): Map<string, () => JSX.Element> {
+  constructor() {
+    super(...arguments);
+    this.state = {
+      selectedTab: 'content'
+    };
+  }
+
+  tabs(): Map<string, () => JSX.Element> {
     const tabs = new Map<string, () => JSX.Element>();
 
     tabs.set('content', this.renderContentTab);
@@ -41,19 +27,21 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
   renderContentTab(): JSX.Element {
     return (
       <div className="contentTab">
-        { this.props.content }
+        <h1>Content</h1>
       </div>
     );
   }
 
   renderHistoryTab(): JSX.Element {
     return (
-      <div> { this.props.history } </div>
+      <div className="historyTab">
+        <h1>History</h1>
+      </div>
     );
   }
 
   renderSelectedTab(): JSX.Element {
-    const render = this.tabs.get(this.state.selectedTab);
+    const render = this.tabs().get(this.state.selectedTab);
 
     if (!render)
       throw new Error('Could not find rendered function for the selected tab.');
@@ -62,8 +50,8 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
   }
 
   tabSelected(tabName: string) {
-    if (!(tabName in this.tabs.keys()))
-      throw new Error(`Tab ${tabName} doesn't exist. Available tabs are: ${[...this.tabs.keys()].join()}`);
+    if (!(tabName in this.tabs().keys()))
+      throw new Error(`Tab ${tabName} doesn't exist. Available tabs are: ${[...this.tabs().keys()].join()}`);
 
     this.state.selectedTab = tabName;
   }
@@ -74,7 +62,7 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
         <div className="header">
           <ul>
             {
-              [...this.tabs.keys()].map(tabName => (
+              [...this.tabs().keys()].map(tabName => (
                 <li onClick={this.tabSelected.bind(this, tabName)}>{tabName}</li>
               ))
             }

@@ -8,22 +8,22 @@ import * as constants from "../../constants";
 import {PageLoader, ReducerDescription} from "../../components/PageLoader";
 import {LandingLayout} from "./Layout";
 
-export class LandingLoader extends PageLoader<null, undefined> {
+export class LandingLoader extends PageLoader<Object, Object> {
 
   component = LandingLayout;
 
-  initialState(): null{
-    return null;
+  initialState(): Object{
+    return {};
   }
 
   routeHook(key: string) {
     return [<Route path="/" key={key} component={this.container()} />]
   }
 
-  reducerHook<State>(): ReducerDescription<number> {
+  reducerHook<State>(): ReducerDescription<Object> {
     return {
       subState: 'Landing',
-      reducer: (state: null, action: Action) => {
+      reducer: (state: Object, action: Action) => {
         return state || this.initialState();
       }
     }
@@ -42,7 +42,7 @@ export class LandingLoader extends PageLoader<null, undefined> {
     }
   }
 
-  select(state: any, ownProps: any): null {
-    return null;
+  select(state: any, ownProps: any): Object {
+    return {};
   }
 }
