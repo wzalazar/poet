@@ -13,24 +13,6 @@ export interface OverviewProps {
   type: string;
 }
 
-type PropsToElement<T> = (_: T) => JSX.Element;
-type GetProps<T> = (_: any) => T
-
-class Presenter<Props> {
-
-  view: PropsToElement<Props>;
-  selector: GetProps<Props>;
-
-  constructor(view: PropsToElement<Props>, selector: GetProps<Props>) {
-    this.view = view;
-    this.selector = selector;
-  }
-
-  getClass() {
-    return connect(this.selector)(this.view)
-  }
-}
-
 function overviewView(props: OverviewProps) {
   const tableData = new Map();
   tableData.set('Author', props.author);
@@ -63,14 +45,16 @@ function overviewView(props: OverviewProps) {
   )
 }
 
-const claimSelector = (state: any) => ({
-  title: 'adsasdf',
-  author: 'Satoshi',
-  published: new Date(),
-  lastModified: new Date(),
-  customLabel: 'Label',
-  tags: ['asdf', 'asdf'],
-  type: 'Article',
-});
+function mapStateToProps(state: any) {
+  return ({
+    title: 'adsasdf',
+    author: 'Satoshi',
+    published: new Date(),
+    lastModified: new Date(),
+    customLabel: 'Label',
+    tags: ['asdf', 'asdf'],
+    type: 'Article',
+  });
+}
 
-export default new Presenter<OverviewProps>(overviewView, claimSelector).getClass();
+export default connect(mapStateToProps)(overviewView)
