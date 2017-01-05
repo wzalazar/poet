@@ -1,0 +1,45 @@
+version: "2"
+
+services:
+  bitcoind:
+    build:
+      context: ..
+      dockerfile: ./Docker/bitcoin-testing.dockerfile
+    networks:
+      - bitcoin
+      - outside
+    volumes:
+      - ./bitcoin-testing:/.bitcoin
+  db:
+    image: postgres
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    networks:
+      - db
+  redis:
+    image: redis
+    volumes:
+      - ./redis:/data
+    networks:
+      - redis
+  explorer:
+    build:
+      context: ..
+      dockerfile: ./Docker/explorer.dockerfile
+    volumes:
+      - ../src:/poet/src
+    networks:
+      - db
+      - redis
+      - bitcoin
+      - outside
+
+networks:
+  db:
+    internal: true
+  redis:
+    internal: true
+  bitcoin:
+    internal: true
+  outside:
+    external: true

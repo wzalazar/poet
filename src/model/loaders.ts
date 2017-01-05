@@ -12,7 +12,6 @@ const promise: Promise<builders> = (protobuf.load(path.join(__dirname, '../model
   .then((builder: protobuf.Root) => {
     return {
       claimBuilder       : builder.lookup('Poet.Claim') as protobuf.Type,
-      claimSerialization : builder.lookup('Poet.ClaimSerializationForSigning') as protobuf.Type,
       attribute          : builder.lookup('Poet.Attribute') as protobuf.Type,
       poetBlock          : builder.lookup('Poet.PoetBlock') as protobuf.Type,
     }

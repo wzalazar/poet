@@ -1,0 +1,55 @@
+version "2"
+
+services:
+  db:
+    image: postgres
+    networks:
+      - db
+  rabbit:
+    image: rabbitmq:3-management
+    networks:
+      - rabbit
+  bitcoin:
+    dockerfile: bitcoin-testnet.dockerfile
+    networks:
+      - bitcoin
+  bitcoinScanner:
+    dockerfile: bitcoin-scanner.dockerfile
+    networks:
+      - bitcoin
+      - rabbit
+  torrentManager:
+    dockerfile: torrent-manager.dockerfile
+    networks:
+      - rabbit
+  claimStream:
+    dockerfile: claim-stream.dockerfile
+    networks:
+      - db
+      - rabbit
+  trustedStream:
+    dockerfile: trusted-stream.dockerfile
+    networks:
+      - db
+      - rabbit
+
+  explorer:
+    dockerfile: explorer.dockerfile
+    networks:
+      - db
+
+  web:
+    dockerfile: router.dockerfile
+    environment:
+      - TESTING=1
+    command: npm start
+    volumes:
+      - .:/code
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+
+networks:
+  rabbit
