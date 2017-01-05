@@ -31,7 +31,7 @@ export class License extends PageLoader<number, LicenseProps> {
 
   reducerHook<State>(): ReducerDescription<number> {
     return {
-      subState: 'license',
+      subState: 'License',
       reducer: (counter: number, action: Action) => {
         switch (action.type) {
           case constants.increment:

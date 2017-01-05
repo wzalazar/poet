@@ -1,12 +1,11 @@
 import * as React from "react";
 import {Action} from "redux";
 import {put} from "redux-saga/effects";
-import {Route} from "react-router";
 import {Saga, takeEvery} from "redux-saga";
 
 import * as constants from "../../constants";
 import {PageLoader, ReducerDescription} from "../../components/PageLoader";
-import { UserLayout } from "./Layout";
+import {UserLayout} from "./Layout";
 
 export interface UserState {
   loggedIn: boolean

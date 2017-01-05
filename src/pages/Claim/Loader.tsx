@@ -5,15 +5,15 @@ import {Route} from "react-router";
 import {Saga, takeEvery} from "redux-saga";
 
 import * as constants from "../../constants";
-import {HelloWorldProps, HelloWorldLayout} from "./Layout";
 import {PageLoader, ReducerDescription} from "../../components/PageLoader";
+import {LandingLayout} from "./Layout";
 
-export class HelloWorld extends PageLoader<number, HelloWorldProps> {
+export class LandingLoader extends PageLoader<null, undefined> {
 
-  component = HelloWorldLayout;
+  component = LandingLayout;
 
-  initialState(){
-    return 5;
+  initialState(): null{
+    return null;
   }
 
   routeHook(key: string) {
@@ -22,16 +22,9 @@ export class HelloWorld extends PageLoader<number, HelloWorldProps> {
 
   reducerHook<State>(): ReducerDescription<number> {
     return {
-      subState: 'helloWorld',
-      reducer: (counter: number, action: Action) => {
-        switch (action.type) {
-          case constants.increment:
-            return counter + 1;
-          case constants.decrement:
-            return counter - 1;
-          default:
-            return counter || 0
-        }
+      subState: 'Landing',
+      reducer: (state: null, action: Action) => {
+        return state || this.initialState();
       }
     }
   }
@@ -49,9 +42,7 @@ export class HelloWorld extends PageLoader<number, HelloWorldProps> {
     }
   }
 
-  select(state: any, ownProps: any): HelloWorldProps {
-    return {
-      count: state.helloWorld
-    }
+  select(state: any, ownProps: any): null {
+    return null;
   }
 }
