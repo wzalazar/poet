@@ -23,9 +23,9 @@ function overviewView(props: OverviewProps) {
   tableData.set('Type', props.type);
 
   return (
-    <div>
+    <div className="overview">
       <h1>{props.title}</h1>
-      <table className="overview">
+      <table>
         <colgroup>
           <col className="keys"/>
           <col className="values"/>
@@ -47,7 +47,7 @@ function overviewView(props: OverviewProps) {
 
 function mapStateToProps(state: any) {
   return ({
-    title: 'adsasdf',
+    title: 'Distributed: Markets Event To Convene Blockchain Payments, FinServices Innovator in Atlanta',
     author: 'Satoshi',
     published: new Date(),
     lastModified: new Date(),
