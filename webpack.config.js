@@ -1,3 +1,5 @@
+const path = require('path');
+
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
@@ -10,13 +12,15 @@ module.exports = {
   entry: {
     'app': [
       'webpack-hot-middleware/client',
+      './src/bootstrap.ts',
       './src/index.tsx',
     ],
     'vendor': vendor
   },
   output: {
       filename: '[name].[hash].js',
-      path: __dirname + '/dist'
+      path: path.join(__dirname, 'dist'),
+      publicPath: "/"
   },
 
   // Enable sourcemaps for debugging webpack's output.

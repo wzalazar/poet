@@ -8,8 +8,10 @@ const app = express();
 const compiler = webpack(config);
 
 app.use(require('webpack-dev-middleware')(compiler, {
-  noInfo: true,
-  publicPath: config.output.publicPath
+    noInfo: false,
+    stats: {
+      colors: true
+    }
 }));
 
 app.use(require('webpack-hot-middleware')(compiler));

@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import '../../extensions/Array'
 import './style.scss';
 
 interface TabState {
@@ -50,8 +51,8 @@ export default class Tabs extends React.Component<undefined, TabState> {
   }
 
   tabSelected(tabName: string) {
-    if (!(tabName in this.tabs().keys()))
-      throw new Error(`Tab ${tabName} doesn't exist. Available tabs are: ${[...this.tabs().keys()].join()}`);
+    if (![...this.tabs().keys()].includes(tabName))
+      throw new Error(`Tab ${tabName} doesn't exist. Available tabs are: ${[...this.tabs().keys()].join(', ')}`);
 
     this.state.selectedTab = tabName;
   }
@@ -63,7 +64,7 @@ export default class Tabs extends React.Component<undefined, TabState> {
           <ul>
             {
               [...this.tabs().keys()].map(tabName => (
-                <li onClick={this.tabSelected.bind(this, tabName)}>{tabName}</li>
+                <li key={tabName} onClick={this.tabSelected.bind(this, tabName)}>{tabName}</li>
               ))
             }
           </ul>
