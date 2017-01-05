@@ -44,12 +44,14 @@ function overviewView(props: OverviewProps) {
     <div>
       <h1>{props.title}</h1>
       <table className="overview">
-        <col className="keys"/>
-        <col className="values"/>
+        <colgroup>
+          <col className="keys"/>
+          <col className="values"/>
+        </colgroup>
         <tbody>
         {
           [...tableData.keys()].map(key => (
-            <tr>
+            <tr key={key}>
               <td>{key}</td>
               <td>{tableData.get(key).toString()}</td>
             </tr>
