@@ -12,7 +12,7 @@ export default function createPoetStore() {
   const reducerList: any = {};
 
   for (let page of pages) {
-    const reducerDescription = page.reducerHook();
+    const reducerDescription = (page as any).reducerHook();
     if (reducerDescription) {
       reducerList[reducerDescription.subState] = reducerDescription.reducer;
       initialState[reducerDescription.subState] = page.initialState()

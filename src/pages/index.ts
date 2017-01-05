@@ -1,7 +1,9 @@
 import { HelloWorld } from './HelloWorld/Loader'
+import { UserLoader } from './User/Loader'
 import { License } from './license/Loader';
 
 export default [
-  License,
-  HelloWorld
+  HelloWorld,
+  UserLoader,
+  License
 ]
