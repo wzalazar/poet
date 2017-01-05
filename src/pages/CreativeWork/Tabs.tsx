@@ -5,7 +5,7 @@ import './style.scss';
 
 interface TabState {
   selectedTab: string;
-};
+}
 
 export default class Tabs extends React.Component<undefined, TabState> {
 
@@ -16,16 +16,18 @@ export default class Tabs extends React.Component<undefined, TabState> {
     };
   }
 
-  tabs(): Map<string, () => JSX.Element> {
+  private tabs(): Map<string, () => JSX.Element> {
     const tabs = new Map<string, () => JSX.Element>();
 
     tabs.set('content', this.renderContentTab);
     tabs.set('history', this.renderHistoryTab);
+    tabs.set('stats', this.renderStatsTab);
+    tabs.set('technical', this.renderTechnicalTab);
 
     return tabs;
   }
 
-  renderContentTab(): JSX.Element {
+  private renderContentTab(): JSX.Element {
     return (
       <div className="contentTab">
         <h1>Content</h1>
@@ -33,7 +35,7 @@ export default class Tabs extends React.Component<undefined, TabState> {
     );
   }
 
-  renderHistoryTab(): JSX.Element {
+  private renderHistoryTab(): JSX.Element {
     return (
       <div className="historyTab">
         <h1>History</h1>
@@ -41,7 +43,23 @@ export default class Tabs extends React.Component<undefined, TabState> {
     );
   }
 
-  renderSelectedTab(): JSX.Element {
+  private renderStatsTab(): JSX.Element {
+    return (
+      <div className="statsTab">
+        <h1>Stats</h1>
+      </div>
+    );
+  }
+
+  private renderTechnicalTab(): JSX.Element {
+    return (
+      <div className="technicalTab">
+        <h1>Technical</h1>
+      </div>
+    );
+  }
+
+  private renderSelectedTab(): JSX.Element {
     const render = this.tabs().get(this.state.selectedTab);
 
     if (!render)
@@ -50,7 +68,7 @@ export default class Tabs extends React.Component<undefined, TabState> {
     return render();
   }
 
-  tabSelected(tabName: string) {
+  private tabSelected(tabName: string) {
     if (![...this.tabs().keys()].includes(tabName))
       throw new Error(`Tab ${tabName} doesn't exist. Available tabs are: ${[...this.tabs().keys()].join(', ')}`);
 
@@ -66,7 +84,7 @@ export default class Tabs extends React.Component<undefined, TabState> {
           <ul>
             {
               [...this.tabs().keys()].map(tabName => (
-                <li key={tabName} onClick={this.tabSelected.bind(this, tabName)}>{tabName}</li>
+                <li key={tabName} onClick={this.tabSelected.bind(this, tabName)} className={this.state.selectedTab == tabName ? 'selected' : ''}>{tabName}</li>
               ))
             }
           </ul>
