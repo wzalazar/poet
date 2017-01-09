@@ -7,9 +7,7 @@ export default class Api {
 
   constructor(downloadSystem, app) {
 
-    this.api = Router({
-      prefix: '/api'
-    })
+    this.api = Router()
 
     this.setupRoutes(downloadSystem)
 

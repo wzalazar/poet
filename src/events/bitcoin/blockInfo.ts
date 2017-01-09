@@ -4,14 +4,15 @@ export interface BlockInfo {
 }
 
 export interface PoetTxInfo {
-    hash: string
-    poetId: string
-    blockOrder: number
+    blockHash?: string
+    blockHeight?: number
+    txHash: string
     outputIndex: number
+    poetHash: string
 }
 
-export interface PoetInfo {
-    height: number
-    id: string
+export interface BitcoinBlockInfo {
+    blockHeight: number
+    blockHash: string
     poet: PoetTxInfo[]
 }

@@ -3,7 +3,6 @@ import * as path from 'path'
 
 interface builders {
   claimBuilder       : protobuf.Type
-  claimSerialization : protobuf.Type
   attribute          : protobuf.Type
   poetBlock          : protobuf.Type
 }

@@ -5,7 +5,8 @@
   "main": "./src/index.js",
   "scripts": {
     "test": "mocha test",
-    "start": "./node_modules/.bin/ts-node ./src/index.ts"
+    "start": "./node_modules/.bin/ts-node ./src/index.ts",
+    "bitcoin-scanner": "./node_modules/.bin/ts-node ./src/bin/bitcoinScanner.ts"
   },
   "repository": {
     "type": "git",
@@ -19,12 +20,14 @@
   "author": "BTC Media Inc.",
   "license": "MIT",
   "dependencies": {
+    "@types/amqplib": "^0.5.0",
     "@types/bluebird": "^3.0.36",
     "@types/ioredis": "0.0.21",
     "@types/isomorphic-fetch": "0.0.31",
     "@types/koa": "^2.0.34",
     "@types/socket.io-client": "^1.4.29",
     "@types/webtorrent": "0.0.29",
+    "amqplib": "^0.5.1",
     "bitcore-explorers": "^1.0.1",
     "bitcore-lib": "^0.13.19",
     "bluebird": "^3.4.6",

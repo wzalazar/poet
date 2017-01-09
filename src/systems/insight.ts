@@ -1,47 +1,35 @@
 import * as socketIO from 'socket.io-client'
 import * as fetch from 'isomorphic-fetch'
 
-import { BlockInfo } from '../events/bitcoin/blockInfo'
-import { PoetInfo, PoetTxInfo } from '../events/bitcoin/blockInfo'
+import { BitcoinBlockInfo, PoetTxInfo } from '../events/bitcoin/blockInfo'
 
 const bitcore = require('bitcore-lib')
 
 const parseJson = res => res.json()
-const pluck = name => obj => obj[name]
-const getTransaction = pluck('rawtx')
-const getBlocks = pluck('blocks')
-const turnToBitore = bitcore.Transaction
-const filterData = t => t.outputs.filter(o => o.script.isDataOut())
-const pickData = outputs => outputs.length
-  ? outputs[0].script.getData().toString()
-  : null
+const pluckMember = name => obj => obj[name]
+const getTransaction = pluckMember('rawtx')
+const getBuffer = data => new Buffer(data, 'hex')
+const turnToBitcoreTx = bitcore.Transaction
+const turnToBitcoreBlock = bitcore.Block
 
 export interface HashListener {
   (hash: string): any
 }
 
-export interface BlockStateListener {
-  (blocks: BlockInfo[]): any
-}
-
 export interface PoetInfoListener {
-  (block: PoetInfo): any
+  (block: BitcoinBlockInfo): any
 }
 
 export default class PoetInsightListener {
   insightUrl: string
-  address: string
   socket: SocketIOClient.Socket
-  listeners: HashListener[]
-  blockListeners: BlockStateListener[]
-  blockPoetListeners: PoetInfoListener[]
+  txListeners: HashListener[]
+  bitcoinBlockListeners: PoetInfoListener[]
 
-  constructor(insightUrl, address) {
+  constructor(insightUrl) {
     this.insightUrl = insightUrl
-    this.address = address
-    this.listeners = []
-    this.blockListeners = []
-    this.blockPoetListeners = []
+    this.txListeners = []
+    this.bitcoinBlockListeners = []
 
     this.socket = socketIO('wss://' + this.insightUrl)
 
@@ -51,31 +39,31 @@ export default class PoetInsightListener {
   initSocket() {
     this.socket.on('connect', () => {
       this.socket.emit('subscribe', 'inv')
-      this.socket.on('block', (block) => {
-        this.manageNewBlock()
-      })
-      this.socket.on('tx', async (tx) => {
-        const poetData = await this.containsPoetForSocket(tx)
-        if (poetData) {
-          this.listeners.forEach(listener => {
-            listener(poetData)
-          })
-        }
-      })
+      this.socket.on('block', this.manageNewBlock.bind(this))
+      this.socket.on('tx', this.manageNewTx.bind(this))
     })
   }
 
-  manageNewBlock() {
-    return fetch(`https://${this.insightUrl}/api/blocks?limit=100`)
-      .then(parseJson)
-      .then(getBlocks)
-      .then(blocks => {
-        const newState = blocks.map(block => ({
-          id: block['id'],
-          height: block.height
-        })).reverse()
-        this.blockListeners.forEach(listener => listener(newState))
+  async manageNewTx(tx) {
+    const poetData = await this.containsPoetForSocket(tx);
+    if (poetData) {
+      this.txListeners.forEach(txListener => {
+        txListener(poetData)
       })
+    }
+  }
+
+  async manageNewBlock(block) {
+    const bitcoreBlock = await fetch(`https://${this.insightUrl}/api/rawblock/${block.hash}`)
+      .then(parseJson)
+      .then(pluckMember('rawblock'))
+      .then(getBuffer)
+      .then(turnToBitcoreBlock)
+    this.scanBitcoreBlock(bitcoreBlock, block.height)
+  }
+
+  notifyPoetData(newState) {
+    this.bitcoinBlockListeners.forEach(listener => listener(newState))
   }
 
   scanBitcoreBlock(block, height) {
@@ -85,17 +73,17 @@ export default class PoetInsightListener {
         return
       }
       return Object.assign({}, poetData, {
-        blockHeight: height,
-        blockHash: block.hash,
-        transactionOrder: index
+        blockHeight      : height,
+        blockHash        : block.hash,
+        transactionOrder : index
       })
     }).filter(tx => !!tx)
-    const blockInfo: PoetInfo = {
-      height: height,
-      id: block.hash,
-      poet: txs
+    const blockInfo: BitcoinBlockInfo = {
+      blockHeight : height,
+      blockHash   : block.hash,
+      poet        : txs
     }
-    this.blockPoetListeners.forEach(listener => listener(blockInfo))
+    this.notifyPoetData(blockInfo)
   }
 
   containsPoetForBitcore(tx) {
@@ -129,18 +117,14 @@ export default class PoetInsightListener {
     return fetch(url)
       .then(parseJson)
       .then(getTransaction)
-      .then(turnToBitore)
+      .then(turnToBitcoreTx)
   }
 
-  subscribe(listener: HashListener) {
-    this.listeners.push(listener)
+  subscribeTx(listener: HashListener) {
+    this.txListeners.push(listener)
   }
 
-  subscribeBlock(listener: BlockStateListener) {
-    this.blockListeners.push(listener)
-  }
-
-  subscribeLegacyBlock(listener: PoetInfoListener) {
-    this.blockPoetListeners.push(listener)
+  subscribeBlock(listener: PoetInfoListener) {
+    this.bitcoinBlockListeners.push(listener)
   }
 }
