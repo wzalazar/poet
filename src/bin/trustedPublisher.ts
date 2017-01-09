@@ -3,18 +3,19 @@ import * as Route from 'koa-route'
 import * as Body from 'koa-body'
 
 import { Claim, PoetBlock } from "../model/claim"
-import { ClaimCreator } from "../systems/creator"
+import { default as getCreator } from "../systems/creator"
 
 export interface TrustedPublisherOptions {}
 
 export default async function createServer(options?: TrustedPublisherOptions) {
   const koa = new Koa()
-  const creator = new ClaimCreator();
+  const creator = await getCreator();
 
   koa.use(Body())
 
   koa.use(Route.post('/claim', async ctx => {
-    const claimData: Claim = ctx.body.claim as Claim
+    const claimData: Claim = ctx.request.body as Claim
+    console.log('Claim data is', claimData)
     const block: PoetBlock = creator.createBlock([claimData])
 
     try {
@@ -39,7 +40,8 @@ export default async function createServer(options?: TrustedPublisherOptions) {
 
 export async function start(options?: TrustedPublisherOptions) {
   const server = await createServer(options)
-  await server.listen()
+  await server.listen(3000)
+  console.log('started', server)
 }
 
 if (!module.parent) {
