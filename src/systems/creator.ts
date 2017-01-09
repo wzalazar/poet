@@ -1,14 +1,13 @@
-import * as path from 'path'
-import * as Promise from 'bluebird'
-import * as protobuf from 'protobufjs'
-
-import { Claim, PoetBlock, CreativeWork } from '../model/claim'
-import * as common from '../common'
-import { default as builders } from '../model/loaders'
+import * as Promise from "bluebird"
+import * as protobuf from "protobufjs"
 
 const bitcore = require('bitcore-lib')
 const explorers = require('bitcore-explorers')
 bitcore.Networks.defaultNetwork = bitcore.Networks.testnet
+
+import { Claim, PoetBlock } from "../model/claim"
+import * as common from "../common"
+import { default as builders } from "../model/loaders"
 
 const insightInstance = new explorers.Insight()
 function promisifyInsight(name: string) {
@@ -194,7 +193,7 @@ export class ClaimCreator {
           .addData(data)
           .sign(this.bitcoinPriv)
       )
-    }
+  }
 
   broadcastTx(tx) {
     return insight.broadcast(tx)
