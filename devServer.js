@@ -1,16 +1,17 @@
 const path = require('path')
 const express = require('express')
-const webpack = require('webpack')
+const app = express();
 
+const webpack = require('webpack')
 const config = require('./webpack.config');
 
-const app = express();
 const compiler = webpack(config);
 
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,
   progress: true,
   quiet: true,
+  publicPath: "/",
   stats: {
     colors: true
   }
@@ -18,8 +19,16 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 app.use(require('webpack-hot-middleware')(compiler));
 
-app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+app.use('*', function (req, res, next) {
+  var filename = path.join(compiler.outputPath, 'index.html');
+  compiler.outputFileSystem.readFile(filename, function(err, result){
+    if (err) {
+      return next(err);
+    }
+    res.set('content-type','text/html');
+    res.send(result);
+    res.end();
+  });
 });
 
 app.listen(3000, 'localhost', function (err) {
