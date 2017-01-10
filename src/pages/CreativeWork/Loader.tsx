@@ -3,9 +3,8 @@ import { Action } from "redux";
 import { Route } from "react-router";
 import { Saga } from "redux-saga";
 
-import { PageLoader, ReducerDescription } from "../../components/PageLoader";
+import PageLoader, { ReducerDescription } from "../../components/PageLoader";
 import { CreativeWorkLayout } from "./Layout";
-
 
 interface CreativeWorkState {
 }

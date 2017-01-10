@@ -2,48 +2,43 @@ import { createStore, compose, applyMiddleware, combineReducers } from "redux";
 import createSagaMiddleware, { Saga } from "redux-saga";
 import { fork } from "redux-saga/effects";
 
+import './extensions/Array';
+
+import PageLoader from './components/PageLoader';
+
 import pageCreators from "./pages";
 import sagaList from './sagas'
-import { PageLoader } from './components/PageLoader';
-import fetchReducer from './reducers/FetchReducer'
+import reducers from './reducers';
 
 function bindSagas(pages: PageLoader<any, any>[]): Saga {
-  const sagas: Saga[] = pages.map(page => page.sagaHook).concat(...sagaList).map(saga => saga());
+  const sagas: Saga[] = pages
+    .map(page => page.sagaHook)
+    .concat(sagaList)
+    .map(saga => saga())
+    .filterTruthy();
 
   return function*() {
     for (let saga of sagas) {
-      if (saga) {
-        yield fork(saga);
-      }
+      yield fork(saga);
     }
   }
 
 }
 
 function bindReducers(pages: PageLoader<any, any>[]): any {
-  const reducerList: any = {};
+  const pageReducers = pages
+    .map(page => page.reducerHook())
+    .filterTruthy()
+    .toObject(reducerDescription => ({key: reducerDescription.subState, value: reducerDescription.reducer}));
 
-  for (let page of pages) {
-    const reducerDescription = (page as any).reducerHook();
-    if (reducerDescription) {
-      reducerList[reducerDescription.subState] = reducerDescription.reducer;
-    }
-  }
-
-  reducerList.fetch = fetchReducer;
-
-  return reducerList;
+  return { ...pageReducers, ...reducers };
 }
 
 function bindInitialState(pages: PageLoader<any, any>[]): any {
-  const initialState: any = {};
-
-  for (let page of pages) {
-    const reducerDescription = (page as any).reducerHook();
-    if (reducerDescription) {
-      initialState[reducerDescription.subState] = page.initialState();
-    }
-  }
+  const initialState = pages
+    .map(page => ({reducerDescription: page.reducerHook(), initialState: page.initialState()}))
+    .filter(({reducerDescription, initialState}) => reducerDescription)
+    .toObject(({reducerDescription, initialState}) => ({key: reducerDescription.subState, value: initialState}));
 
   return initialState;
 }

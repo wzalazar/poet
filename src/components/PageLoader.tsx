@@ -8,7 +8,7 @@ export interface ReducerDescription<T> {
   reducer: Reducer<T>
 }
 
-export abstract class PageLoader<State, Properties> {
+abstract class PageLoader<State, Properties> {
 
   abstract readonly component: ComponentClass<Properties> | StatelessComponent<Properties>;
 
@@ -23,3 +23,5 @@ export abstract class PageLoader<State, Properties> {
   }
 
 }
+
+export default PageLoader;

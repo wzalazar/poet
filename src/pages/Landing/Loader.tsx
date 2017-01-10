@@ -3,7 +3,7 @@ import { Route } from "react-router";
 import { Action } from "redux";
 import { Saga } from "redux-saga";
 
-import { PageLoader, ReducerDescription } from "../../components/PageLoader";
+import PageLoader, { ReducerDescription } from "../../components/PageLoader";
 import { LandingLayout } from "./Layout";
 
 export class LandingLoader extends PageLoader<Object, Object> {

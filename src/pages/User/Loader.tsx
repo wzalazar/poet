@@ -1,11 +1,11 @@
 import * as React from "react";
-import {Action} from "redux";
-import {put} from "redux-saga/effects";
-import {Saga, takeEvery} from "redux-saga";
+import { Action } from "redux";
+import { Saga, takeEvery } from "redux-saga";
+import { put } from "redux-saga/effects";
 
 import Actions from "../../actions";
-import {PageLoader, ReducerDescription} from "../../components/PageLoader";
-import {UserLayout} from "./Layout";
+import PageLoader, { ReducerDescription } from "../../components/PageLoader";
+import { UserLayout } from "./Layout";
 
 export interface UserState {
   loggedIn: boolean
@@ -15,7 +15,7 @@ export class UserLoader extends PageLoader<UserState, undefined> {
 
   component = UserLayout;
 
-  initialState(){
+  initialState() {
     return {
       loggedIn: false
     };

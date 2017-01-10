@@ -1,3 +1,5 @@
 import FetchReducer from './FetchReducer';
 
-export default [FetchReducer];
+export default {
+  fetch: FetchReducer
+};
