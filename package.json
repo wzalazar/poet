@@ -25,6 +25,7 @@
     "@types/ioredis": "0.0.21",
     "@types/isomorphic-fetch": "0.0.31",
     "@types/koa": "^2.0.34",
+    "@types/rx": "^4.1.1",
     "@types/socket.io-client": "^1.4.29",
     "@types/webtorrent": "0.0.29",
     "amqplib": "^0.5.1",

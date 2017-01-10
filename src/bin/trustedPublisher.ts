@@ -8,7 +8,7 @@ import { default as getCreator, ClaimBuilder } from "../model/builder"
 
 export interface TrustedPublisherOptions {
   port: number
-  dontBroadcast: boolean
+  broadcast: boolean
 }
 
 export default async function createServer(options?: TrustedPublisherOptions) {
@@ -27,7 +27,7 @@ export default async function createServer(options?: TrustedPublisherOptions) {
       const tx = await creator.createTransaction(block.id)
       console.log('Bitcoin transaction hash is', tx.hash)
 
-      if (options.dontBroadcast) {
+      if (!options.broadcast) {
         return
       }
 
@@ -49,13 +49,14 @@ export default async function createServer(options?: TrustedPublisherOptions) {
 }
 
 export async function start(options?: TrustedPublisherOptions) {
-  options = options || {
+  options = Object.assign({}, {
     port: 3000,
-    dontBroadcast: false
-  }
+    broadcast: true
+  }, options || {})
   const server = await createServer(options)
   await server.listen(options.port)
-  console.log('started', server)
+
+  console.log('Server started successfully.')
 }
 
 if (!module.parent) {
