@@ -1,5 +1,5 @@
 import * as fetch from "isomorphic-fetch"
-import { default as getCreator } from "../systems/creator"
+import { default as getCreator } from "../model/builder"
 
 const myPrivateKey = '2461d5dc1bf2c48b73d271375a11f853f92aca53d328f35af5cbaead016ebeb5'
 

@@ -28,3 +28,9 @@ export function verify(publicKey: any, signature: Uint8Array, value: Uint8Array)
     publicKey
   )
 }
+
+export function hex(buffer: Buffer | Uint8Array): string {
+  return buffer instanceof Buffer
+    ? buffer.toString('hex')
+    : (buffer as Buffer).toString('hex')
+}

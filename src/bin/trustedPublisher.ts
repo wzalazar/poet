@@ -4,7 +4,7 @@ const Body = require('koa-body')
 const Route = require('koa-route')
 
 import { Claim, PoetBlock } from "../model/claim"
-import { default as getCreator, ClaimCreator } from "../systems/creator"
+import { default as getCreator, ClaimBuilder } from "../model/builder"
 
 export interface TrustedPublisherOptions {
   port: number
@@ -31,7 +31,7 @@ export default async function createServer(options?: TrustedPublisherOptions) {
         return
       }
 
-      ctx.body = await ClaimCreator.broadcastTx(tx)
+      ctx.body = await ClaimBuilder.broadcastTx(tx)
     } catch (error) {
       ctx.body = JSON.stringify({ error })
     }

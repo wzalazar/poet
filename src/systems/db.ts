@@ -2,14 +2,14 @@ import * as IORedis from "ioredis"
 import * as Bluebird from "bluebird"
 
 import { PoetBlock, TITLE, LICENSE, CERTIFICATE, PROFILE, REVOKATION } from "../model/claim"
-import { BitcoinBlockInfo } from "../events/bitcoin/blockInfo"
-import { ClaimCreator } from "./creator"
+import { BitcoinBlockInfo } from "../events/blockInfo"
+import { ClaimBuilder } from "../model/builder"
 
 export default class Db {
   redis: IORedis.Redis
-  creator: ClaimCreator
+  creator: ClaimBuilder
 
-  constructor(creator: ClaimCreator) {
+  constructor(creator: ClaimBuilder) {
     this.redis = new IORedis()
     this.creator = creator
   }

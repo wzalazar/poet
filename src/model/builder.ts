@@ -4,9 +4,10 @@ const bitcore = require('bitcore-lib')
 const explorers = require('bitcore-explorers')
 bitcore.Networks.defaultNetwork = bitcore.Networks.testnet
 
-import { Claim, PoetBlock } from "../model/claim"
+import { Claim, PoetBlock } from "./claim"
 import * as common from "../common"
-import { default as getBuilder, Builders } from "../model/loaders"
+import { default as loadBuilders, Builders } from "./loaders"
+import { hex } from "../common"
 
 const insightInstance = new explorers.Insight()
 function promisifyInsight(name: string) {
@@ -20,18 +21,12 @@ const insight = {
 
 const poetAddress = 'mg6CMr7TkeERALqxwPdqq6ksM2czQzKh5C'
 
-function hex(buffer: Buffer | Uint8Array): string {
-  return buffer instanceof Buffer
-    ? buffer.toString('hex')
-    : (buffer as Buffer).toString('hex')
+export default async function getBuilder() {
+  const builder = await loadBuilders()
+  return new ClaimBuilder(builder)
 }
 
-export default async function getCreator() {
-  const builder = await getBuilder()
-  return new ClaimCreator(builder)
-}
-
-export class ClaimCreator {
+export class ClaimBuilder {
 
   poetBlock : protobuf.Type
   attribute : protobuf.Type
