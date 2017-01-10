@@ -1,23 +1,58 @@
-import {createStore, compose, applyMiddleware, combineReducers} from "redux";
-import createSagaMiddleware from "redux-saga";
-import {fork} from "redux-saga/effects";
+import { createStore, compose, applyMiddleware, combineReducers } from "redux";
+import createSagaMiddleware, { Saga } from "redux-saga";
+import { fork } from "redux-saga/effects";
 
-import {default as pageCreators} from "./pages";
+import pageCreators from "./pages";
+import sagaList from './sagas'
+import { PageLoader } from './components/PageLoader';
+import fetchReducer from './reducers/FetchReducer'
 
-export default function createPoetStore() {
+function bindSagas(pages: PageLoader<any, any>[]): Saga {
+  const sagas: Saga[] = pages.map(page => page.sagaHook).concat(...sagaList).map(saga => saga());
 
-  const pages = pageCreators.map(Page => new Page());
+  return function*() {
+    for (let saga of sagas) {
+      if (saga) {
+        yield fork(saga);
+      }
+    }
+  }
 
-  const initialState: any = {};
+}
+
+function bindReducers(pages: PageLoader<any, any>[]): any {
   const reducerList: any = {};
 
   for (let page of pages) {
     const reducerDescription = (page as any).reducerHook();
     if (reducerDescription) {
       reducerList[reducerDescription.subState] = reducerDescription.reducer;
-      initialState[reducerDescription.subState] = page.initialState()
     }
   }
+
+  reducerList.fetch = fetchReducer;
+
+  return reducerList;
+}
+
+function bindInitialState(pages: PageLoader<any, any>[]): any {
+  const initialState: any = {};
+
+  for (let page of pages) {
+    const reducerDescription = (page as any).reducerHook();
+    if (reducerDescription) {
+      initialState[reducerDescription.subState] = page.initialState();
+    }
+  }
+
+  return initialState;
+}
+
+export default function createPoetStore() {
+  const pages = pageCreators.map(Page => new Page());
+
+  const initialState = bindInitialState(pages);
+  const reducerList = bindReducers(pages);
 
   const enhancer: any = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   const sagaMiddleware = createSagaMiddleware();
@@ -28,15 +63,7 @@ export default function createPoetStore() {
     enhancer(applyMiddleware(sagaMiddleware))
   );
 
-  const sagaList = pages.map(page => page.sagaHook());
-  function* sagas() {
-    for (let saga of sagaList) {
-      if (saga) {
-        yield fork(saga);
-      }
-    }
-  }
-  sagaMiddleware.run(sagas);
+  sagaMiddleware.run(bindSagas(pages));
 
   return { store, pages };
 }

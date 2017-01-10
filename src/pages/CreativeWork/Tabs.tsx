@@ -3,6 +3,8 @@ import * as React from "react";
 import '../../extensions/Array'
 import './style.scss';
 
+import ContentTab from './ContentTab'
+
 interface TabState {
   selectedTab: string;
 }
@@ -28,11 +30,7 @@ export default class Tabs extends React.Component<undefined, TabState> {
   }
 
   private renderContentTab(): JSX.Element {
-    return (
-      <div className="contentTab">
-        <h1>Content</h1>
-      </div>
-    );
+    return <ContentTab id="334s" />;
   }
 
   private renderHistoryTab(): JSX.Element {

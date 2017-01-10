@@ -10,7 +10,6 @@ const compiler = webpack(config);
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,
   progress: true,
-  quiet: true,
   publicPath: "/",
   stats: {
     colors: true
