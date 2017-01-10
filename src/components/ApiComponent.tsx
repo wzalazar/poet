@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as Constants from '../constants';
+import Actions from '../actions';
 import { connect } from 'react-redux';
 
 export type ApiParamsFn = (props: any) => ApiRequestParams;
@@ -62,5 +62,5 @@ function mapStateToProps(apiParamsFn: ApiParamsFn, renderFn: RenderFn, state: an
 
 export default (apiParamsFn: ApiParamsFn, renderFn: RenderFn) =>
   connect(mapStateToProps.bind(null, apiParamsFn, renderFn), {
-    dispatchRequest: (payload) => ({ type: Constants.fetchRequest, payload })
+    dispatchRequest: (payload) => ({ type: Actions.fetchRequest, payload })
   })(ApiComponent);

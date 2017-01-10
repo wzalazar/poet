@@ -3,15 +3,15 @@ import { call, put } from 'redux-saga/effects'
 
 import '../extensions/Window'; // TODO: remove once https://github.com/Microsoft/TypeScript/pull/12493 is merged
 
-import * as Constants from '../constants';
+import Actions from '../actions';
 
 function fetchResponse(type: string, body: any) {
   return { type, body };
 }
 
-const fetchResponseSuccess = fetchResponse.bind(null, Constants.fetchResponseSuccess);
+const fetchResponseSuccess = fetchResponse.bind(null, Actions.fetchResponseSuccess);
 
-const fetchResponseFailure = fetchResponse.bind(null, Constants.fetchResponseError);
+const fetchResponseFailure = fetchResponse.bind(null, Actions.fetchResponseError);
 
 function* fetchAction(action: any) {
   try {
@@ -25,7 +25,7 @@ function* fetchAction(action: any) {
 
 function fetchSaga(): Saga {
   return function*() {
-    yield takeEvery(Constants.fetchRequest, fetchAction);
+    yield takeEvery(Actions.fetchRequest, fetchAction);
   }
 }
 

@@ -3,7 +3,7 @@ import {Action} from "redux";
 import {put} from "redux-saga/effects";
 import {Saga, takeEvery} from "redux-saga";
 
-import * as constants from "../../constants";
+import Actions from "../../actions";
 import {PageLoader, ReducerDescription} from "../../components/PageLoader";
 import {UserLayout} from "./Layout";
 
@@ -30,7 +30,7 @@ export class UserLoader extends PageLoader<UserState, undefined> {
       subState: 'currentUser',
       reducer: (state: UserState, action: Action) => {
         switch (action.type) {
-          case constants.loginSuccess:
+          case Actions.loginSuccess:
             return {
               loggedIn: true
             };
@@ -43,10 +43,10 @@ export class UserLoader extends PageLoader<UserState, undefined> {
 
   sagaHook(): Saga {
     function* processResponse() {
-      yield put({ type: constants.loginSuccess });
+      yield put({ type: Actions.loginSuccess });
     }
     return function*() {
-      yield takeEvery(constants.userLoginResponse, processResponse);
+      yield takeEvery(Actions.userLoginResponse, processResponse);
     }
   }
 
