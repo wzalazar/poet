@@ -14,8 +14,8 @@ function promisifyInsight(name: string) {
 }
 
 const insight = {
-  getUnspentUtxos : promisifyInsight('getUnspentUtxos'),
-  broadcast       : promisifyInsight('broadcast')
+  getUtxos  : promisifyInsight('getUnspentUtxos'),
+  broadcast : promisifyInsight('broadcast')
 }
 
 const poetAddress = 'mg6CMr7TkeERALqxwPdqq6ksM2czQzKh5C'
@@ -31,11 +31,11 @@ export default async function getCreator() {
   return new ClaimCreator(builder)
 }
 
-class ClaimCreator {
+export class ClaimCreator {
 
-  poetBlock
-  attribute
-  claim
+  poetBlock : protobuf.Type
+  attribute : protobuf.Type
+  claim     : protobuf.Type
 
   constructor(builders: Builders) {
     this.poetBlock = builders.poetBlock
@@ -45,7 +45,7 @@ class ClaimCreator {
 
   bitcoinPriv = new bitcore.PrivateKey('343689da46542f2af204a3ced0ce942af1c25476932aa3a48af5e683df93126b')
 
-  createSignedClaim(data, privateKey: string): Claim {
+  createSignedClaim(data: any, privateKey: string): Claim {
     const key = typeof privateKey === 'string'
               ? new bitcore.PrivateKey(privateKey)
               : privateKey
@@ -62,15 +62,15 @@ class ClaimCreator {
     }
   }
 
-  getId(data, key: Object): Uint8Array {
+  getId(data: any, key: Object): Uint8Array {
     return common.sha256(this.getEncodedForSigning(data, key))
   }
 
-  getIdForBlock(block): string {
+  getIdForBlock(block: any): string {
     return common.sha256(this.poetBlock.encode(block).finish()).toString('hex')
   }
 
-  getAttributes(attrs) {
+  getAttributes(attrs: any) {
     if (attrs instanceof Array) {
       return attrs.map(attr => {
         return this.attribute.create(attr)
@@ -85,7 +85,7 @@ class ClaimCreator {
     }
   }
 
-  getEncodedForSigning(data, privateKey: Object): Uint8Array {
+  getEncodedForSigning(data: any, privateKey: any): Uint8Array {
     return this.claim.encode(this.claim.create({
       id: new Buffer(''),
       publicKey: privateKey['publicKey'].toBuffer(),
@@ -95,7 +95,7 @@ class ClaimCreator {
     })).finish()
   }
 
-  protoToBlockObject(proto): PoetBlock {
+  protoToBlockObject(proto: any): PoetBlock {
     return {
       id: proto.id.toString('hex'),
       claims: proto.claims.map(this.protoToClaimObject.bind(this))
@@ -105,8 +105,7 @@ class ClaimCreator {
   serializedToBlock(block: string) {
     try {
       const decoded = this.poetBlock.decode(new Buffer(block, 'hex'))
-      const obj = this.protoToBlockObject(decoded)
-      return obj
+      return this.protoToBlockObject(decoded)
     } catch (e) {
       console.log(e, e.stack)
     }
@@ -126,17 +125,16 @@ class ClaimCreator {
   serializedToClaim(claim: string) {
     try {
       const decoded = this.claim.decode(new Buffer(claim, 'hex'))
-      const obj = this.protoToClaimObject(decoded)
-      return obj
+      return this.protoToClaimObject(decoded)
     } catch (e) {
       console.log(e, e.stack)
     }
   }
 
-  protoToClaimObject(proto): Claim {
-    const attributes = {}
+  protoToClaimObject(proto: any): Claim {
+    const attributes: any = {}
 
-    proto.attributes.forEach(attr => {
+    proto.attributes.forEach((attr: any) => {
       attributes[attr.key] = attr.value
     })
 
@@ -160,7 +158,7 @@ class ClaimCreator {
   }
 
   createBlock(claims: Claim[]): PoetBlock {
-    var protoClaims = claims.map((claim: Claim) => {
+    const protoClaims = claims.map((claim: Claim) => {
       return this.claimToProto(claim)
     })
     const block = this.poetBlock.create({
@@ -168,7 +166,6 @@ class ClaimCreator {
       claims: protoClaims
     })
     const id = this.getIdForBlock(block)
-    console.log(claims[0], this.serializedToClaim(this.serializeClaimForSave(claims[0])))
     return {
       id,
       claims
@@ -182,8 +179,8 @@ class ClaimCreator {
       new Buffer([0, 0, 0, 1]),
       new Buffer(blockId, 'hex')
     ])
-    return insight.getUnspentUtxos(poetAddress)
-      .then(utxos => new bitcore.Transaction()
+    return insight.getUtxos(poetAddress)
+      .then((utxos: any) => new bitcore.Transaction()
           .from(utxos)
           .change(poetAddress)
           .addData(data)
@@ -191,7 +188,7 @@ class ClaimCreator {
       )
   }
 
-  broadcastTx(tx) {
+  static broadcastTx(tx: any) {
     return insight.broadcast(tx)
   }
 }

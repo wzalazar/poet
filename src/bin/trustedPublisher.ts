@@ -1,11 +1,15 @@
 import * as Koa from 'koa'
-import * as Route from 'koa-route'
-import * as Body from 'koa-body'
+
+const Body = require('koa-body')
+const Route = require('koa-route')
 
 import { Claim, PoetBlock } from "../model/claim"
-import { default as getCreator } from "../systems/creator"
+import { default as getCreator, ClaimCreator } from "../systems/creator"
 
-export interface TrustedPublisherOptions {}
+export interface TrustedPublisherOptions {
+  port: number
+  dontBroadcast: boolean
+}
 
 export default async function createServer(options?: TrustedPublisherOptions) {
   const koa = new Koa()
@@ -13,21 +17,27 @@ export default async function createServer(options?: TrustedPublisherOptions) {
 
   koa.use(Body())
 
-  koa.use(Route.post('/claim', async ctx => {
+  koa.use(Route.post('/claim', async (ctx: any) => {
     const claimData: Claim = ctx.request.body as Claim
     console.log('Claim data is', claimData)
     const block: PoetBlock = creator.createBlock([claimData])
+    console.log('Poet block hash is', block.id)
 
     try {
       const tx = await creator.createTransaction(block.id)
-      const broadcasted = await creator.broadcastTx(tx)
-      ctx.body = broadcasted
+      console.log('Bitcoin transaction hash is', tx.hash)
+
+      if (options.dontBroadcast) {
+        return
+      }
+
+      ctx.body = await ClaimCreator.broadcastTx(tx)
     } catch (error) {
       ctx.body = JSON.stringify({ error })
     }
   }))
 
-  koa.use(async (ctx, next) => {
+  koa.use(async (ctx: any, next: Function) => {
     try {
       await next()
     } catch (error) {
@@ -39,8 +49,12 @@ export default async function createServer(options?: TrustedPublisherOptions) {
 }
 
 export async function start(options?: TrustedPublisherOptions) {
+  options = options || {
+    port: 3000,
+    dontBroadcast: false
+  }
   const server = await createServer(options)
-  await server.listen(3000)
+  await server.listen(options.port)
   console.log('started', server)
 }
 

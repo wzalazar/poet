@@ -1,6 +1,5 @@
-import * as fetch from 'isomorphic-fetch'
+import * as fetch from "isomorphic-fetch"
 import { default as getCreator } from "../systems/creator"
-import * as builders from "../model/loaders"
 
 const myPrivateKey = '2461d5dc1bf2c48b73d271375a11f853f92aca53d328f35af5cbaead016ebeb5'
 
@@ -28,7 +27,7 @@ export default async function create() {
     body: JSON.stringify(claim)
   })
 
-  console.log(response.body)
+  console.log(await response.text())
 }
 
 if (!module.parent) {

@@ -5,8 +5,8 @@
   "main": "./src/index.js",
   "scripts": {
     "test": "mocha test",
-    "start": "./node_modules/.bin/ts-node ./src/index.ts",
-    "bitcoin-scanner": "./node_modules/.bin/ts-node ./src/bin/bitcoinScanner.ts"
+    "bitcoin-scanner": "./node_modules/.bin/ts-node ./src/bin/bitcoinScanner.ts",
+    "trusted-publisher": "./node_modules/.bin/ts-node ./src/bin/trustedPublisher.ts"
   },
   "repository": {
     "type": "git",
@@ -48,6 +48,7 @@
     "mocha": "^3.2.0",
     "protobufjs": "^6.0.1",
     "socket.io-client": "^1.7.2",
-    "typescript": "^2.2.0-dev.20170105"
+    "typescript": "^2.2.0-dev.20170105",
+    "webtorrent": "^0.98.0"
   }
 }

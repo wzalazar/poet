@@ -5,10 +5,11 @@ import { BitcoinBlockInfo, PoetTxInfo } from '../events/bitcoin/blockInfo'
 
 const bitcore = require('bitcore-lib')
 
-const parseJson = res => res.json()
-const pluckMember = name => obj => obj[name]
+const notNull = (x: any) => !!x
+const parseJson = (x: any) => x.json()
+const pluckMember = (name: string) => (obj: any) => obj[name]
 const getTransaction = pluckMember('rawtx')
-const getBuffer = data => new Buffer(data, 'hex')
+const getBuffer = (data: string) => new Buffer(data, 'hex')
 const turnToBitcoreTx = bitcore.Transaction
 const turnToBitcoreBlock = bitcore.Block
 
@@ -26,48 +27,62 @@ export default class PoetInsightListener {
   txListeners: HashListener[]
   bitcoinBlockListeners: PoetInfoListener[]
 
-  constructor(insightUrl) {
+  constructor(insightUrl: string) {
     this.insightUrl = insightUrl
     this.txListeners = []
     this.bitcoinBlockListeners = []
 
-    this.socket = socketIO('wss://' + this.insightUrl)
+    this.socket = socketIO(this.insightUrl)
 
     this.initSocket()
   }
 
   initSocket() {
+    this.socket.on('error', (error: any) => {
+      console.log(error)
+    })
     this.socket.on('connect', () => {
       this.socket.emit('subscribe', 'inv')
-      this.socket.on('block', this.manageNewBlock.bind(this))
-      this.socket.on('tx', this.manageNewTx.bind(this))
     })
+    this.socket.on('block', this.manageNewBlock.bind(this))
+    this.socket.on('tx', this.manageNewTx.bind(this))
   }
 
-  async manageNewTx(tx) {
-    const poetData = await this.containsPoetForSocket(tx);
-    if (poetData) {
-      this.txListeners.forEach(txListener => {
-        txListener(poetData)
-      })
+  async manageNewTx(tx: any) {
+    try {
+      const poetData = await this.containsPoetForSocket(tx);
+      if (poetData) {
+        this.txListeners.forEach(txListener => {
+          txListener(poetData)
+        })
+      }
+    } catch (error) {
+      console.log('Managing tx failed', error, error.stack)
     }
   }
 
-  async manageNewBlock(block) {
-    const bitcoreBlock = await fetch(`https://${this.insightUrl}/api/rawblock/${block.hash}`)
-      .then(parseJson)
-      .then(pluckMember('rawblock'))
-      .then(getBuffer)
-      .then(turnToBitcoreBlock)
-    this.scanBitcoreBlock(bitcoreBlock, block.height)
+  async manageNewBlock(block: any) {
+    try {
+      const height = await fetch(`${this.insightUrl}/api/block/${block}`)
+        .then(parseJson)
+        .then(pluckMember('height'))
+      const bitcoreBlock = await fetch(`${this.insightUrl}/api/rawblock/${block}`)
+        .then(parseJson)
+        .then(pluckMember('rawblock'))
+        .then(getBuffer)
+        .then(turnToBitcoreBlock)
+      this.scanBitcoreBlock(bitcoreBlock, height)
+    } catch (error) {
+      console.log('Error handling block', error, error.stack)
+    }
   }
 
-  notifyPoetData(newState) {
+  notifyPoetData(newState: BitcoinBlockInfo) {
     this.bitcoinBlockListeners.forEach(listener => listener(newState))
   }
 
-  scanBitcoreBlock(block, height) {
-    const txs = block.transactions.map((tx, index): PoetTxInfo | null => {
+  scanBitcoreBlock(block: any, height: number) {
+    const txs = block.transactions.map((tx: any, index: number): PoetTxInfo | null => {
       const poetData = this.containsPoetForBitcore(tx)
       if (!poetData) {
         return
@@ -77,7 +92,7 @@ export default class PoetInsightListener {
         blockHash        : block.hash,
         transactionOrder : index
       })
-    }).filter(tx => !!tx)
+    }).filter(notNull)
     const blockInfo: BitcoinBlockInfo = {
       blockHeight : height,
       blockHash   : block.hash,
@@ -86,33 +101,34 @@ export default class PoetInsightListener {
     this.notifyPoetData(blockInfo)
   }
 
-  containsPoetForBitcore(tx) {
-    const check = function(script, index) {
+  static BARD = new Buffer('BARD')
+  static VERSION = new Buffer([0, 0, 0, 1])
+
+  containsPoetForBitcore(tx: any) {
+    const check = function(script: any, index: number) {
       if (script.classify() !== bitcore.Script.types.DATA_OUT)
         return
-      const data = script.getData()
-      return data[0] === 'B'
-          && data[1] === 'A'
-          && data[2] === 'R'
-          && data[3] === 'D'
-          && {
+      const data: Buffer = script.getData()
+      return data.indexOf(PoetInsightListener.BARD) === 0
+          && data.indexOf(PoetInsightListener.VERSION) === 4
+          ? {
             txHash       : tx.hash,
             outputNumber : index,
-            poetHash     : data.slice(4)
+            poetHash     : data.slice(8).toString('hex')
           }
+          : null
     }
     return tx.outputs.reduce(
-      (prev, next, index) => prev || check(next.script, index), false
+      (prev: boolean, next: any, index: number) => prev || check(next.script, index), false
     )
   }
 
-  containsPoetForSocket(tx) {
-    return this.fetchTxByHash(tx.hash)
-      .then(this.containsPoetForBitcore)
+  containsPoetForSocket(tx: any) {
+    return this.fetchTxByHash(tx.txid).then(this.containsPoetForBitcore)
   }
 
-  fetchTxByHash(txhash) {
-    const url = `https://${this.insightUrl}/api/rawtx/${txhash}`
+  fetchTxByHash(txHash: string) {
+    const url = `${this.insightUrl}/api/rawtx/${txHash}`
 
     return fetch(url)
       .then(parseJson)

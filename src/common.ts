@@ -21,7 +21,7 @@ export function sign(privateKey: string, value: Uint8Array): Uint8Array {
   ).toBuffer()
 }
 
-export function verify(publicKey, signature: Uint8Array, value: Uint8Array): Boolean {
+export function verify(publicKey: any, signature: Uint8Array, value: Uint8Array): Boolean {
   return bitcore.crypto.ECDSA.verify(
     value,
     bitcore.crypto.Signature.fromBuffer(signature),
