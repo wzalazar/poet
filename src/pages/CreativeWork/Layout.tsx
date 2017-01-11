@@ -10,7 +10,7 @@ export class CreativeWorkLayout extends React.Component<undefined, undefined> {
       <div className="creativeWork">
         <div className="leftColumn">
           <Overview />
-          <Tabs />
+          <Tabs id="334s" />
         </div>
         <div className="rightColumn">
           { /*

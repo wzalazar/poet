@@ -3,6 +3,8 @@ import * as React from 'react';
 import '../../extensions/Array'
 import './style.scss';
 
+import { HexString } from '../../common';
+
 import ContentTab from './ContentTab';
 import HistoryTab from './HistoryTab';
 import StatsTab from './StatsTab';
@@ -12,7 +14,11 @@ interface TabState {
   selectedTab: string;
 }
 
-export default class Tabs extends React.Component<undefined, TabState> {
+interface TabProps {
+  id: HexString;
+}
+
+export default class Tabs extends React.Component<TabProps, TabState> {
 
   constructor() {
     super(...arguments);
@@ -24,10 +30,10 @@ export default class Tabs extends React.Component<undefined, TabState> {
   private tabs(): Map<string, JSX.Element> {
     const tabs = new Map<string, JSX.Element>();
 
-    tabs.set('content', <ContentTab id="334s" />);
-    tabs.set('history', <HistoryTab id="334s" />);
-    tabs.set('stats', <StatsTab id="334s" />);
-    tabs.set('technical', <TechnicalTab id="334s" />);
+    tabs.set('content', <ContentTab id={this.props.id} />);
+    tabs.set('history', <HistoryTab id={this.props.id} />);
+    tabs.set('stats', <StatsTab id={this.props.id} />);
+    tabs.set('technical', <TechnicalTab id={this.props.id} />);
 
     return tabs;
   }
