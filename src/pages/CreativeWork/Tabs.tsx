@@ -21,40 +21,24 @@ export default class Tabs extends React.Component<undefined, TabState> {
     };
   }
 
-  private tabs(): Map<string, () => JSX.Element> {
-    const tabs = new Map<string, () => JSX.Element>();
+  private tabs(): Map<string, JSX.Element> {
+    const tabs = new Map<string, JSX.Element>();
 
-    tabs.set('content', this.renderContentTab);
-    tabs.set('history', this.renderHistoryTab);
-    tabs.set('stats', this.renderStatsTab);
-    tabs.set('technical', this.renderTechnicalTab);
+    tabs.set('content', <ContentTab id="334s" />);
+    tabs.set('history', <HistoryTab id="334s" />);
+    tabs.set('stats', <StatsTab id="334s" />);
+    tabs.set('technical', <TechnicalTab id="334s" />);
 
     return tabs;
-  }
-
-  private renderContentTab(): JSX.Element {
-    return <ContentTab id="334s" />;
-  }
-
-  private renderHistoryTab(): JSX.Element {
-    return <HistoryTab id="334s" />;
-  }
-
-  private renderStatsTab(): JSX.Element {
-    return <StatsTab id="334s" />;
-  }
-
-  private renderTechnicalTab(): JSX.Element {
-    return <TechnicalTab id="334s" />;
   }
 
   private renderSelectedTab(): JSX.Element {
     const render = this.tabs().get(this.state.selectedTab);
 
     if (!render)
-      throw new Error('Could not find rendered function for the selected tab.');
+      throw new Error(`Could not find JSX Element for the selected tab '${this.state.selectedTab}'.`);
 
-    return render();
+    return render;
   }
 
   private tabSelected(tabName: string) {
