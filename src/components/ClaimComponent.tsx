@@ -1,3 +1,5 @@
+import Config from '../config';
+
 import { HexString } from '../common'
 import FetchComponent, { FetchComponentProps } from './FetchComponent'
 
@@ -9,5 +11,5 @@ export interface ClaimProps extends FetchComponentProps {
 }
 
 export default FetchComponent.bind(null, (props: any) => ({
-  url: `http://localhost:4000/claims/${props.id}` // TODO: hard-coded reference to localhost:4000
+  url: `${Config.api.url}/claims/${props.id}` // TODO: hard-coded reference to localhost:4000
 }));
