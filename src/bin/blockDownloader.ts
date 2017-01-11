@@ -1,4 +1,4 @@
-import { consume } from '../grease/pubsub'
+import { consume } from '../helpers/pubsub'
 import * as queues from '../queues'
 import { BitcoinBlockInfo, PoetTxInfo } from "../events/blockInfo"
 

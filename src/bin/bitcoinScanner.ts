@@ -5,7 +5,7 @@ import * as queues from '../queues'
 import PoetInsightListener from "../systems/insight"
 import Bluebird = require("bluebird")
 import { Channel } from "amqplib"
-import { publish } from "../grease/pubsub"
+import { publish } from "../helpers/pubsub"
 
 
 async function startup() {
