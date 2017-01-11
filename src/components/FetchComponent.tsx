@@ -2,22 +2,22 @@ import * as React from "react";
 import Actions from '../actions';
 import { connect } from 'react-redux';
 
-export type ApiParamsFn = (props: any) => ApiRequestParams;
-export type RenderFn = (props: any) => JSX.Element;
+export type RequestParams = (props: any) => FetchRequestParams;
+export type Render = (props: any) => JSX.Element;
 
-export interface ApiRequestParams {
+export interface FetchRequestParams {
   url: string;
 }
 
-export interface ApiComponentProps {
+export interface FetchComponentProps {
+  dispatchRequest: (payload: any) => void
   error: any
   loading: any
-  apiParamsFn: ApiParamsFn
-  draw: RenderFn
-  dispatchRequest: (payload: any) => void
+  requestParams: RequestParams
+  render: Render
 }
 
-class ApiComponent<T extends ApiComponentProps, S> extends React.Component<T, S> {
+class FetchComponent<T extends FetchComponentProps, S> extends React.Component<T, S> {
 
   componentWillMount() {
     this.fetchIfNeeded(this.props);
@@ -29,7 +29,7 @@ class ApiComponent<T extends ApiComponentProps, S> extends React.Component<T, S>
 
   fetchIfNeeded(props: T) {
     if (!props.loading && !props.error) {
-      props.dispatchRequest(this.props.apiParamsFn(props));
+      props.dispatchRequest(this.props.requestParams(props));
     }
   }
 
@@ -48,20 +48,20 @@ class ApiComponent<T extends ApiComponentProps, S> extends React.Component<T, S>
     if (this.props.error) {
       return this.renderError();
     }
-    return this.props.draw(this.props);
+    return this.props.render(this.props);
   }
 
 }
 
-function mapStateToProps(apiParamsFn: ApiParamsFn, renderFn: RenderFn, state: any, ownProps: any) {
-  const url = apiParamsFn(ownProps).url;
+function mapStateToProps(requestParams: RequestParams, render: Render, state: any, ownProps: any) {
+  const url = requestParams(ownProps).url;
   const data = state.fetch && state.fetch[url];
   return {
-    ...data, ...ownProps, apiParamsFn, draw: renderFn
+    ...data, ...ownProps, requestParams, render
   };
 }
 
-export default (apiParamsFn: ApiParamsFn, renderFn: RenderFn) =>
-  connect(mapStateToProps.bind(null, apiParamsFn, renderFn), {
+export default (requestParams: RequestParams, render: Render) =>
+  connect(mapStateToProps.bind(null, requestParams, render), {
     dispatchRequest: (payload) => ({ type: Actions.fetchRequest, payload })
-  })(ApiComponent);
+  })(FetchComponent);
