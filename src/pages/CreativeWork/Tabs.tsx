@@ -28,6 +28,10 @@ export default class Tabs extends React.Component<TabProps, TabState> {
     };
   }
 
+  private tabKeys(): string[] {
+    return [...this.tabs.keys()];
+  }
+
   private createTabs(): Map<string, JSX.Element> {
     const tabs = new Map<string, JSX.Element>();
 
@@ -40,21 +44,25 @@ export default class Tabs extends React.Component<TabProps, TabState> {
   }
 
   private renderSelectedTab(): JSX.Element {
-    const render = this.tabs.get(this.state.selectedTab);
+    const element = this.tabs.get(this.state.selectedTab);
 
-    if (!render)
+    if (!element)
       throw new Error(`Could not find JSX Element for the selected tab '${this.state.selectedTab}'.`);
 
-    return render;
+    return element;
   }
 
   private tabSelected(tabName: string) {
-    if (![...this.tabs.keys()].includes(tabName))
-      throw new Error(`Tab ${tabName} doesn't exist. Available tabs are: ${[...this.tabs.keys()].join(', ')}`);
+    if (!this.tabKeys().includes(tabName))
+      throw new Error(`Tab ${tabName} doesn't exist. Available tabs are: ${this.tabKeys().join(', ')}`);
 
     this.setState({
       selectedTab: tabName
     });
+  }
+
+  private renderTabHeader(tabName: string) {
+    return <li key={tabName} onClick={this.tabSelected.bind(this, tabName)} className={this.state.selectedTab == tabName ? 'selected' : ''}>{tabName}</li>;
   }
 
   render() {
@@ -62,11 +70,7 @@ export default class Tabs extends React.Component<TabProps, TabState> {
       <div className="tabs">
         <div className="header">
           <ul>
-            {
-              [...this.tabs.keys()].map(tabName => (
-                <li key={tabName} onClick={this.tabSelected.bind(this, tabName)} className={this.state.selectedTab == tabName ? 'selected' : ''}>{tabName}</li>
-              ))
-            }
+            { this.tabKeys().map(this.renderTabHeader.bind(this)) }
           </ul>
         </div>
         <div className="content">
