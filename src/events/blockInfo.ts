@@ -3,7 +3,8 @@ export interface PoetTxInfo {
     blockHeight?: number
     txHash: string
     outputIndex: number
-    poetHash: string
+    torrentHash: string
+    contentHash: string
 }
 
 export interface BitcoinBlockInfo {

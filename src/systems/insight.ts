@@ -114,7 +114,7 @@ export default class PoetInsightListener {
           ? {
             txHash       : tx.hash,
             outputNumber : index,
-            poetHash     : data.slice(8).toString('hex')
+            torrentHash  : data.slice(8).toString('hex')
           }
           : null
     }

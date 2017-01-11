@@ -1,15 +1,10 @@
-import * as amqp from 'amqplib/callback_api'
-import * as bluebird from 'bluebird'
-
 import * as queues from '../queues'
 import PoetInsightListener from "../systems/insight"
 import Bluebird = require("bluebird")
-import { Channel } from "amqplib"
 import { publish } from "../helpers/pubsub"
 
-
 async function startup() {
-  let connection, channel: amqp.Channel, insight
+  let insight
 
   console.log('Requesting blockchain info from insight...')
   try {
