@@ -6,11 +6,13 @@
   "scripts": {
     "test": "mocha test",
     "bitcoin-scanner": "./node_modules/.bin/ts-node ./src/bin/bitcoinScanner.ts",
+    "hash-notifier": "./node_modules/.bin/ts-node ./src/bin/bitcoinHashNotifier.ts",
+    "torrent-system": "./node_modules/.bin/ts-node ./src/bin/torrentSystem.ts",
     "trusted-publisher": "./node_modules/.bin/ts-node ./src/bin/trustedPublisher.ts"
   },
   "repository": {
     "type": "git",
-    "url": "git@git.eordano.com:poet/poet"
+    "url": "git@github.com:poetapp/poet"
   },
   "keywords": [
     "poet",
