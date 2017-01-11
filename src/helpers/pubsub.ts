@@ -4,12 +4,11 @@ import * as Rx from 'rx'
 import { Channel } from "amqplib"
 
 const amqpConnect = bluebird.promisify(amqp.connect, amqp)
-const exchangeType = 'fanout'
-const exchangeOpts = { durable: false }
 
 export async function consume(target: string) {
-  return Rx.Observable.create(async (observer) => {
-    let connection, channel
+  return Rx.Observable.create(async (observer: any) => {
+    let connection, channel: Channel
+
     try {
       connection = await amqpConnect() as amqp.Connection
       channel = await bluebird.promisify(connection.createChannel.bind(connection))() as Channel
@@ -19,10 +18,10 @@ export async function consume(target: string) {
     }
 
     try {
-      const assert = bluebird.promisify(channel.assertQueue.bind(channel)) as any
-      const queue = await assert('', { exclusive: true }) as any
-      channel.bindQueue(queue.queue, target, '')
-      channel.consume(queue.queue, function(msg) {
+      const queue = await channel.assertQueue('', { exclusive: true })
+      await channel.assertExchange(target, 'fanout')
+      await channel.bindQueue(queue.queue, target, '')
+      await channel.consume(queue.queue, function(msg) {
         observer.onNext(msg.content)
       }, { noAck: true  })
     } catch (error) {
@@ -37,7 +36,6 @@ export async function publish(target: string, payload: Buffer) {
   let connection, channel
   connection = await amqpConnect() as amqp.Connection
   channel = await bluebird.promisify(connection.createChannel.bind(connection))() as Channel
-  await channel.assertExchange(target, exchangeType, exchangeOpts)
-  await channel.publish(target, '', payload)
+  await channel.sendToQueue(target, payload)
   return await channel.close()
 }

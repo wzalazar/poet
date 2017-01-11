@@ -50,6 +50,7 @@
     "koa-unless": "^1.0.0",
     "mocha": "^3.2.0",
     "protobufjs": "^6.0.1",
+    "rx": "^4.1.0",
     "socket.io-client": "^1.7.2",
     "typescript": "^2.2.0-dev.20170105",
     "webtorrent": "^0.98.0"
