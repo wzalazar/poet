@@ -55,6 +55,8 @@ class ApiComponent<T extends ApiComponentProps, S> extends React.Component<T, S>
 
 function mapStateToProps(apiParamsFn: ApiParamsFn, renderFn: RenderFn, state: any, ownProps: any) {
   console.log('ApiComponent.mapStateToProps', state);
+  // TODO: this only stores a single claim in fetch.claim. Should be fetch.claims[claimId].
+  // TODO: hard-coded reference to claim! pass a custom mapStateToProps function as argument?
   return {
     ...state.fetch.claim, ...ownProps, apiParamsFn, draw: renderFn
   };
