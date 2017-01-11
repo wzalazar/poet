@@ -1,19 +1,10 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
+
+import CreativeWorkComponent, { CreativeWorkProps } from '../../components/CreativeWorkComponent';
 
 import './style.scss';
 
-export interface OverviewProps {
-  title: string;
-  author: string;
-  published: Date;
-  lastModified: Date;
-  customLabel: string;
-  tags: string[];
-  type: string;
-}
-
-function overviewView(props: OverviewProps) {
+function render(props: CreativeWorkProps) {
   const tableData = new Map();
   tableData.set('Author', props.author);
   tableData.set('Published', props.published);
@@ -45,16 +36,4 @@ function overviewView(props: OverviewProps) {
   )
 }
 
-function mapStateToProps(state: any) {
-  return ({
-    title: 'Distributed: Markets Event To Convene Blockchain Payments, FinServices Innovator in Atlanta',
-    author: 'Satoshi',
-    published: new Date(),
-    lastModified: new Date(),
-    customLabel: 'Label',
-    tags: ['asdf', 'asdf'],
-    type: 'Article',
-  });
-}
-
-export default connect(mapStateToProps)(overviewView)
+export default CreativeWorkComponent(render);
