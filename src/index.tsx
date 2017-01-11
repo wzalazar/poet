@@ -3,9 +3,8 @@ import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { Router, Route, browserHistory } from "react-router";
 
-import './extensions/Window';
 import createPoetStore from './store';
-import { Layout } from './templates/RootLayout'
+import { Layout } from './templates/RootLayout';
 
 const { store, pages } = createPoetStore();
 

@@ -1,0 +1,77 @@
+.creativeWork {
+  color: #666;
+  font-family: "Source Sans Pro", SansSerif, Helvetica, Arial;
+  font-size: 14px;
+
+  .overview {
+    margin-bottom: 48px;
+
+    h1 {
+      color: #222;
+      font-size: 23px;
+      margin-bottom: 16px;
+    }
+    table {
+      .keys {
+        width: 200px;
+      }
+      .values {
+
+      }
+    }
+  }
+
+  .tabs {
+    $border-color: #bbb;
+
+    .header {
+      ul {
+        list-style: none;
+        font-size: 14px;
+        $li-background-color: #ddd;
+
+        li {
+          display: inline-block;
+          padding: 4px 16px;
+          margin-right: 2px;
+          border: 1px solid $border-color;
+          border-bottom: none;
+          border-radius: 5px 5px 0 0;
+          cursor: pointer;
+          text-transform: capitalize;
+          background-color: $li-background-color;
+        }
+
+        li.selected {
+          background-color: lighten($li-background-color, 10%);
+          color: #4A90E2;
+        }
+
+        li:hover {
+          background-color: lighten($li-background-color, 10%);
+        }
+      }
+    }
+    .content {
+      padding: 32px;
+      border: 1px solid $border-color;
+      font-family: monospace;
+      font-size: 12px;
+
+      table {
+        .leftColumn {
+          width: 150px;
+        }
+        .rightColumn {
+
+        }
+      }
+
+      .text {
+        p {
+
+        }
+      }
+    }
+  }
+}

@@ -1,15 +1,15 @@
-import { ResourceProps, ApiResource } from './ApiResource'
-import { HexString } from '../common'
+import Config from '../config';
 
-export interface ClaimProps extends ResourceProps {
-  error: any
-  loading: any
+import { HexString } from '../common'
+import FetchComponent, { FetchComponentProps } from './FetchComponent'
+
+export interface ClaimProps extends FetchComponentProps {
   id: HexString
   publicKey: HexString
   signature: HexString
   attributes: any
 }
 
-export abstract class ClaimComponent extends ApiResource<ClaimProps, undefined> {
-  apiPath = '/claim/' + this.props.id
-}
+export default FetchComponent.bind(null, (props: any) => ({
+  url: `${Config.api.url}/claims/${props.id}`
+}));
