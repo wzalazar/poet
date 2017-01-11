@@ -14,22 +14,7 @@ export class CreativeWork extends PageLoader<CreativeWorkState, Object> {
   component = CreativeWorkLayout;
 
   initialState() {
-    return {
-      title: 'Distributed: Markets Event to Convene Blockchain Payments, FinServices Innovator in Atlanta',
-      overview: {
-        author: 'Satoshi Nakamoto',
-        published: (new Date()).toISOString,
-        customLabel: 'Some Custom Label',
-        tags: 'asd asd asd',
-        type: 'License Type'
-      },
-      content: {
-        author: 'Satoshi Nakamoto',
-        award: 'Nobel',
-        character: 'Han Solo',
-      },
-      history: {}
-    };
+    return {};
   }
 
 

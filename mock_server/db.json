@@ -1,15 +1,32 @@
 {
-  "claims": [
+  "creative_works": [
     {
       "id": "334s",
-      "publicKey": "sarasa",
+
+      "publicKey": "0F238JF34R89J",
+      "signature": "sigDASD0ASD3N",
+
       "title": "Distributed: Markets Event To Convene Blockchain Payments, FinServices Innovator in Atlanta",
       "author": "Satoshi",
       "published": "2017-01-11T17:12:32.628Z",
       "lastModified": "2017-01-11T17:12:32.628Z",
       "customLabel": "Label",
       "tags": ["asdf", "asdf"],
-      "type": "Article"
+      "type": "Article",
+
+      "attributes": {
+        "award": "Pulitzer – Runner Up",
+        "character": "Scott Fitzgerald",
+        "citation": "093jd092j103j23d3",
+        "commentCount": 51,
+        "currentLocation": "http://bitcoinmagazine.com/",
+        "contributor": "Vitalik Buterin",
+        "copyrightHolder": "Satoshi Nakamoto",
+        "dateCreated": "2017-01-11T17:12:32.628Z"
+      },
+
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
     }
   ]
 }

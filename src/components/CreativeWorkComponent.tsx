@@ -16,7 +16,9 @@ export interface CreativeWorkProps extends FetchComponentProps {
   tags: string[];
   type: string;
 
-  attributes: any
+  content: string;
+
+  attributes: any;
 
 }
 

@@ -52,25 +52,24 @@
         }
       }
     }
-    .content {
+    >.content {
       padding: 32px;
       border: 1px solid $border-color;
       font-family: monospace;
       font-size: 12px;
 
       table {
-        .leftColumn {
-          width: 150px;
+        margin-bottom: 30px;
+        .keys {
+          width: 200px;
         }
-        .rightColumn {
+        .values {
 
         }
       }
 
-      .text {
-        p {
+      >.content {
 
-        }
       }
     }
   }
