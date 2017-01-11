@@ -12,8 +12,6 @@ message Claim {
 message PoetBlock {
       optional bytes id = 1;
       repeated Claim claims = 2;
-      optional bytes publicKey = 3;
-      optional bytes signature = 4;
 }
 
 message Attribute {

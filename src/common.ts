@@ -34,3 +34,5 @@ export function hex(buffer: Buffer | Uint8Array): string {
     ? buffer.toString('hex')
     : (buffer as Buffer).toString('hex')
 }
+
+export function noop() {}

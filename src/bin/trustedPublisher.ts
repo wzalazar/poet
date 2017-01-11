@@ -5,6 +5,7 @@ const Route = require('koa-route')
 
 import { Claim, PoetBlock } from "../model/claim"
 import { default as getCreator, ClaimBuilder } from "../model/builder"
+import { getHash } from '../helpers/torrentHash'
 
 export interface TrustedPublisherOptions {
   port: number
@@ -24,8 +25,10 @@ export default async function createServer(options?: TrustedPublisherOptions) {
     console.log('Poet block hash is', block.id)
 
     try {
-      const tx = await creator.createTransaction(block.id)
+      const id = await getHash(creator.serializeBlockForSave(block), block.id)
+      const tx = await creator.createTransaction(id)
       console.log('Bitcoin transaction hash is', tx.hash)
+      console.log('Torrent hash is', id)
 
       if (!options.broadcast) {
         return

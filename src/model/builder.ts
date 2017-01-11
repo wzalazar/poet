@@ -97,9 +97,9 @@ export class ClaimBuilder {
     }
   }
 
-  serializedToBlock(block: string) {
+  serializedToBlock(block: Buffer) {
     try {
-      const decoded = this.poetBlock.decode(new Buffer(block, 'hex'))
+      const decoded = this.poetBlock.decode(block)
       return this.protoToBlockObject(decoded)
     } catch (e) {
       console.log(e, e.stack)
@@ -110,16 +110,16 @@ export class ClaimBuilder {
     return new Buffer(this.poetBlock.encode(this.poetBlock.create({
       id: new Buffer(block.id, 'hex'),
       claims: block.claims.map(this.claimToProto.bind(this))
-    })).finish()).toString('hex')
+    })).finish())
   }
 
   serializeClaimForSave(claim: Claim) {
-    return new Buffer(this.claim.encode(this.claimToProto(claim)).finish()).toString('hex')
+    return new Buffer(this.claim.encode(this.claimToProto(claim)).finish())
   }
 
-  serializedToClaim(claim: string) {
+  serializedToClaim(claim: Buffer) {
     try {
-      const decoded = this.claim.decode(new Buffer(claim, 'hex'))
+      const decoded = this.claim.decode(claim)
       return this.protoToClaimObject(decoded)
     } catch (e) {
       console.log(e, e.stack)
