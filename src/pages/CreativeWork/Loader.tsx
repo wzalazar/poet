@@ -34,7 +34,7 @@ export class CreativeWork extends PageLoader<CreativeWorkState, Object> {
 
 
   routeHook(key: string) {
-    return [<Route path="/claim/:id" key={key} component={this.container()} />]
+    return [<Route path="/creative_work/:id" key={key} component={this.container()} />]
   }
 
   reducerHook<State>(): ReducerDescription<CreativeWorkState> {

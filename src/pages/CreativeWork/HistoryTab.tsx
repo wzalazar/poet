@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import ClaimComponent, { ClaimProps } from '../../components/ClaimComponent';
+import CreativeWorkComponent, { CreativeWorkProps } from '../../components/CreativeWorkComponent';
 
-function render(props: ClaimProps): JSX.Element {
+function render(props: CreativeWorkProps): JSX.Element {
   return (
     <div className="historyTab">
       <h1>History</h1>
@@ -10,4 +10,4 @@ function render(props: ClaimProps): JSX.Element {
   )
 }
 
-export default ClaimComponent(render);
+export default CreativeWorkComponent(render);

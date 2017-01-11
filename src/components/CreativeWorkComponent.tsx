@@ -3,7 +3,7 @@ import Config from '../config';
 import { HexString } from '../common'
 import FetchComponent, { FetchComponentProps } from './FetchComponent'
 
-export interface ClaimProps extends FetchComponentProps {
+export interface CreativeWorkProps extends FetchComponentProps {
   id: HexString
   publicKey: HexString
   signature: HexString
@@ -11,5 +11,5 @@ export interface ClaimProps extends FetchComponentProps {
 }
 
 export default FetchComponent.bind(null, (props: any) => ({
-  url: `${Config.api.url}/claims/${props.id}`
+  url: `${Config.api.url}/creative_works/${props.id}`
 }));
