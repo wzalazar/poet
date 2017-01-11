@@ -26,7 +26,6 @@ function renderAttributes(props: CreativeWorkProps): JSX.Element {
 function render(props: CreativeWorkProps): JSX.Element {
   return (
     <div className="contentTab">
-      <h1>Content</h1>
       <div className="attributes">
         { renderAttributes(props) }
       </div>
