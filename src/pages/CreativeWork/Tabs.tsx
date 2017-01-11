@@ -3,7 +3,10 @@ import * as React from 'react';
 import '../../extensions/Array'
 import './style.scss';
 
-import ContentTab from './ContentTab'
+import ContentTab from './ContentTab';
+import HistoryTab from './HistoryTab';
+import StatsTab from './StatsTab';
+import TechnicalTab from './TechnicalTab';
 
 interface TabState {
   selectedTab: string;
@@ -34,27 +37,15 @@ export default class Tabs extends React.Component<undefined, TabState> {
   }
 
   private renderHistoryTab(): JSX.Element {
-    return (
-      <div className="historyTab">
-        <h1>History</h1>
-      </div>
-    );
+    return <HistoryTab id="334s" />;
   }
 
   private renderStatsTab(): JSX.Element {
-    return (
-      <div className="statsTab">
-        <h1>Stats</h1>
-      </div>
-    );
+    return <StatsTab id="334s" />;
   }
 
   private renderTechnicalTab(): JSX.Element {
-    return (
-      <div className="technicalTab">
-        <h1>Technical</h1>
-      </div>
-    );
+    return <TechnicalTab id="334s" />;
   }
 
   private renderSelectedTab(): JSX.Element {
