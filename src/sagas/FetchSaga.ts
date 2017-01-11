@@ -5,8 +5,8 @@ import '../extensions/Window'; // TODO: remove once https://github.com/Microsoft
 
 import Actions from '../actions';
 
-function fetchResponse(type: string, body: any) {
-  return { type, body };
+function fetchResponse(type: string, url: string, body: any) {
+  return { type, url, body };
 }
 
 const fetchResponseSuccess = fetchResponse.bind(null, Actions.fetchResponseSuccess);
@@ -15,9 +15,9 @@ const fetchResponseFailure = fetchResponse.bind(null, Actions.fetchResponseError
 
 function* fetchAction(action: any) {
   try {
-    const apiResponse = yield call(window.fetch, action.payload.url);
-    const apiResponseJson = yield apiResponse.json();
-    yield put(fetchResponseSuccess(apiResponseJson));
+    const response = yield call(window.fetch, action.payload.url); // TODO: cache fetch response!
+    const responseJson = yield response.json();
+    yield put(fetchResponseSuccess(action.payload.url, responseJson));
   } catch (e) {
     yield put(fetchResponseFailure(e.message));
   }

@@ -10,7 +10,7 @@ export interface ClaimProps extends ApiComponentProps {
 
 function apiParamsFn(props: any): ApiRequestParams {
   return {
-    url: `http://localhost:4000/claims/${props.id}`
+    url: `http://localhost:4000/claims/${props.id}` // TODO: hard-coded reference to localhost:4000
   }
 }
 
