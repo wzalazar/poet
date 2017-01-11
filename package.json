@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node devServer.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "mock-server": "json-server --watch ./mock_server/db.json --port 4000",
+    "mock-server-throttle": "json-server --watch ./mock_server/db.json --port 4000 --middlewares ./mock_server/throttle.js"
   },
   "keywords": [],
   "author": "",
