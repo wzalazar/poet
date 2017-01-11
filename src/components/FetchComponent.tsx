@@ -21,17 +21,15 @@ export interface FetchComponentProps {
 class FetchComponent<T extends FetchComponentProps, S> extends React.Component<T, S> {
 
   componentWillMount() {
-    this.fetchIfNeeded(this.props);
+    this.dispatchRequest(this.props);
   }
 
   componentWillReceiveProps(newProps: T) {
-    this.fetchIfNeeded(newProps);
+    this.dispatchRequest(newProps);
   }
 
-  fetchIfNeeded(props: T) {
-    if (!props.loading && !props.error) {
-      props.dispatchRequest(this.props.requestParams(props));
-    }
+  private dispatchRequest(props: T) {
+    props.dispatchRequest(this.props.requestParams(props));
   }
 
   renderLoading() {
