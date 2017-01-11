@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import Actions from '../actions';
+import { FetchStatus } from '../enums/FetchStatus';
 
 type RequestParams = (props: any) => FetchRequestParams;
 type Render = (props: any) => JSX.Element;
@@ -11,11 +12,11 @@ interface FetchRequestParams {
 }
 
 export interface FetchComponentProps {
-  dispatchRequest: (payload: any) => void
-  error: any
-  loading: any
-  requestParams: RequestParams
-  render: Render
+  dispatchRequest: (payload: any) => void;
+  error: any;
+  status: FetchStatus;
+  requestParams: RequestParams;
+  render: Render;
 }
 
 class FetchComponent<T extends FetchComponentProps, S> extends React.Component<T, S> {
@@ -29,7 +30,8 @@ class FetchComponent<T extends FetchComponentProps, S> extends React.Component<T
   }
 
   private dispatchRequest(props: T) {
-    props.dispatchRequest(this.props.requestParams(props));
+    if (props.status == FetchStatus.Uninitialized)
+      props.dispatchRequest(this.props.requestParams(props));
   }
 
   renderLoading() {
@@ -41,7 +43,7 @@ class FetchComponent<T extends FetchComponentProps, S> extends React.Component<T
   }
 
   render() {
-    if (this.props.loading) {
+    if (this.props.status == FetchStatus.Uninitialized || this.props.status == FetchStatus.Loading) {
       return this.renderLoading();
     }
     if (this.props.error) {
@@ -55,8 +57,11 @@ class FetchComponent<T extends FetchComponentProps, S> extends React.Component<T
 function mapStateToProps(requestParams: RequestParams, render: Render, state: any, ownProps: any) {
   const url = requestParams(ownProps).url;
   const data = state.fetch && state.fetch[url];
+  const body = data && data.body;
+  const status = data && data.status || FetchStatus.Uninitialized;
+
   return {
-    ...data, ...ownProps, requestParams, render
+    ...body, ...ownProps, requestParams, render, status
   };
 }
 
