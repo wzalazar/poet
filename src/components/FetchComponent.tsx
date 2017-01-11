@@ -1,11 +1,12 @@
 import * as React from "react";
-import Actions from '../actions';
 import { connect } from 'react-redux';
 
-export type RequestParams = (props: any) => FetchRequestParams;
-export type Render = (props: any) => JSX.Element;
+import Actions from '../actions';
 
-export interface FetchRequestParams {
+type RequestParams = (props: any) => FetchRequestParams;
+type Render = (props: any) => JSX.Element;
+
+interface FetchRequestParams {
   url: string;
 }
 

@@ -1,8 +1,8 @@
-import * as React from "react";
+import * as React from 'react';
 
-import "./style.scss";
-import Overview from "./Overview";
-import Tabs from "./Tabs";
+import './style.scss';
+import Overview from './Overview';
+import Tabs from './Tabs';
 
 export class CreativeWorkLayout extends React.Component<undefined, undefined> {
   render() {

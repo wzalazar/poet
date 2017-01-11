@@ -15,7 +15,7 @@ const fetchResponseFailure = fetchResponse.bind(null, Actions.fetchResponseError
 
 function* fetchAction(action: any) {
   try {
-    const response = yield call(window.fetch, action.payload.url); // TODO: cache fetch response!
+    const response = yield call(fetch, action.payload.url); // TODO: cache fetch response!
     const responseJson = yield response.json();
     yield put(fetchResponseSuccess(action.payload.url, responseJson));
   } catch (e) {

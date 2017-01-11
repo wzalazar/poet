@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 import ClaimComponent, { ClaimProps } from '../../components/ClaimComponent';
 
