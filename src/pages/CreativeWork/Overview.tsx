@@ -15,7 +15,7 @@ function render(props: CreativeWorkProps) {
 
   return (
     <div className="overview">
-      <h1>{props.title}</h1>
+      <h1>{props.name}</h1>
       <table>
         <colgroup>
           <col className="keys"/>

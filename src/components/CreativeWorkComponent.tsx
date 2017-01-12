@@ -8,7 +8,7 @@ export interface CreativeWorkProps extends FetchComponentProps {
   publicKey: HexString
   signature: HexString
 
-  title: string;
+  name: string;
   author: string;
   published: Date;
   lastModified: Date;
@@ -19,6 +19,12 @@ export interface CreativeWorkProps extends FetchComponentProps {
   content: string;
 
   attributes: any;
+
+  title: {
+    owner: string,
+    typeOfOwnership: string,
+    status: string
+  }
 
 }
 
