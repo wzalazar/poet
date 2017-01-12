@@ -17,7 +17,6 @@ function renderOffering(workOfferingProps: WorkOfferingProps): JSX.Element {
     <div key={workOfferingProps.id} className="offering">
       <h3>License</h3>
       <div className="info row">
-      <div className="info row">
         <div className="description col-xs-7">
           { workOfferingProps.description }
         </div>
