@@ -5,6 +5,7 @@ import './style.scss';
 import Overview from './Overview';
 import Tabs from './Tabs';
 import WorkOfferings from './WorkOfferings';
+import Title from './Title';
 
 export class WorkLayout extends React.Component<undefined, undefined> {
   render() {
@@ -18,7 +19,7 @@ export class WorkLayout extends React.Component<undefined, undefined> {
         </div>
         <div className="rightColumn">
           <WorkOfferings workId={workId} />
-          {/*<Title />*/}
+          <Title id={workId} />
         </div>
       </div>
     )
