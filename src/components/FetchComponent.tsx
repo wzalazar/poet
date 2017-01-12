@@ -17,6 +17,7 @@ export interface FetchComponentProps {
   status: FetchStatus;
   requestParams: RequestParams;
   render: Render;
+  elements: any;
 }
 
 class FetchComponent<T extends FetchComponentProps, S> extends React.Component<T, S> {
@@ -59,6 +60,12 @@ function mapStateToProps(requestParams: RequestParams, render: Render, state: an
   const data = state.fetch && state.fetch[url];
   const body = data && data.body;
   const status = data && data.status || FetchStatus.Uninitialized;
+
+  if (Array.isArray(body)) {
+    return {
+      elements: body, ...ownProps, requestParams, render, status
+    };
+  }
 
   return {
     ...body, ...ownProps, requestParams, render, status

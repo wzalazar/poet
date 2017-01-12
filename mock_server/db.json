@@ -32,27 +32,48 @@
       }
     }
   ],
-  "licenses": [
-    {
-      "id": "1",
-      "price": {
-        "amount": 10,
-        "curreny": "USD"
-      },
-      "description": "This would detail the terms of the arrangement, without it, you would not know how to purchase it.",
-      "workId": "334s"
-    }
-  ],
   "offerings": [
     {
+      "id": "1",
       "workId": "334s",
-      "published": "Lonley Planet",
-      "url": "http://www.lonleyplanet.com"
+      "price": {
+        "amount": 10,
+        "currency": "USD"
+      },
+      "description": "This would detail the terms of the arrangement, without it, you would not know how to purchase it.",
+      "type": "One Time",
+      "licenses": [
+        {
+          "id": 1,
+          "workId": "334s",
+          "publisher": "Lonley Planet",
+          "url": "http://www.lonleyplanet.com"
+        },
+        {
+          "id": 2,
+          "workId": "334s",
+          "publisher": "Bitcoin Magazine",
+          "url": "http://www.bitcoinmagazine.com"
+        }
+      ]
     },
     {
+      "id": "2",
       "workId": "334s",
-      "published": "Bitcoin Magazine",
-      "url": "http://www.bitcoinmagazine.com"
+      "price": {
+        "amount": 2.76,
+        "currency": "BTC"
+      },
+      "description": "This would detail the terms of the arrangement, without it, you would not know how to purchase it.",
+      "type": "One Time",
+      "licenses": [
+        {
+          "id": 3,
+          "workId": "334s",
+          "publisher": "Red Moon",
+          "url": "http://www.redmoon.com"
+        }
+      ]
     }
   ]
 }
