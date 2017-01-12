@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import CreativeWorkComponent, { CreativeWorkProps } from '../../components/CreativeWorkComponent';
+import WorkComponent, { WorkProps } from '../../components/WorkComponent';
 
 import './style.scss';
 
-function render(props: CreativeWorkProps) {
+function render(props: WorkProps) {
   const tableData = new Map();
   tableData.set('Author', props.author);
   tableData.set('Published', props.published);
@@ -36,4 +36,4 @@ function render(props: CreativeWorkProps) {
   )
 }
 
-export default CreativeWorkComponent(render);
+export default WorkComponent(render);

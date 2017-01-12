@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import CreativeWorkComponent, { CreativeWorkProps } from '../../components/CreativeWorkComponent';
+import WorkComponent, { WorkProps } from '../../components/WorkComponent';
 
-function renderAttributes(props: CreativeWorkProps): JSX.Element {
+function renderAttributes(props: WorkProps): JSX.Element {
   return (
     <table>
       <colgroup>
@@ -23,7 +23,7 @@ function renderAttributes(props: CreativeWorkProps): JSX.Element {
   );
 }
 
-function render(props: CreativeWorkProps): JSX.Element {
+function render(props: WorkProps): JSX.Element {
   return (
     <div className="contentTab">
       <div className="attributes">
@@ -34,4 +34,4 @@ function render(props: CreativeWorkProps): JSX.Element {
   )
 }
 
-export default CreativeWorkComponent(render);
+export default WorkComponent(render);

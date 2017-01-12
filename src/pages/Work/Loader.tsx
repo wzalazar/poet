@@ -4,14 +4,14 @@ import { Route } from 'react-router';
 import { Saga } from 'redux-saga';
 
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
-import { CreativeWorkLayout } from './Layout';
+import { WorkLayout } from './Layout';
 
-interface CreativeWorkState {
+interface WorkState {
 }
 
-export class CreativeWork extends PageLoader<CreativeWorkState, Object> {
+export class Work extends PageLoader<WorkState, Object> {
 
-  component = CreativeWorkLayout;
+  component = WorkLayout;
 
   initialState() {
     return {};
@@ -19,13 +19,13 @@ export class CreativeWork extends PageLoader<CreativeWorkState, Object> {
 
 
   routeHook(key: string) {
-    return [<Route path="/creative_work/:id" key={key} component={this.container()} />]
+    return [<Route path="/work/:id" key={key} component={this.container()} />]
   }
 
-  reducerHook<State>(): ReducerDescription<CreativeWorkState> {
+  reducerHook<State>(): ReducerDescription<WorkState> {
     return {
       subState: 'Landing',
-      reducer: (state: CreativeWorkState, action: Action) => {
+      reducer: (state: WorkState, action: Action) => {
         return state || this.initialState();
       }
     }

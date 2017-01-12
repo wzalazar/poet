@@ -1,19 +1,19 @@
 {
-  "creative_works": [
+  "works": [
     {
       "id": "334s",
-
       "publicKey": "0F238JF34R89J",
       "signature": "sigDASD0ASD3N",
-
       "name": "Distributed: Markets Event To Convene Blockchain Payments, FinServices Innovator in Atlanta",
       "author": "Satoshi",
       "published": "2017-01-11T17:12:32.628Z",
       "lastModified": "2017-01-11T17:12:32.628Z",
       "customLabel": "Label",
-      "tags": ["asdf", "asdf"],
+      "tags": [
+        "asdf",
+        "asdf"
+      ],
       "type": "Article",
-
       "attributes": {
         "award": "Pulitzer – Runner Up",
         "character": "Scott Fitzgerald",
@@ -24,21 +24,35 @@
         "copyrightHolder": "Satoshi Nakamoto",
         "dateCreated": "2017-01-11T17:12:32.628Z"
       },
-
       "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-
       "title": {
         "owner": "Donald Trump",
         "typeOfOwnership": "Single",
         "status": "For Sale"
       }
-
     }
   ],
   "licenses": [
     {
-      "id": "123",
-      "creativeWorkId": "334s"
+      "id": "1",
+      "price": {
+        "amount": 10,
+        "curreny": "USD"
+      },
+      "description": "This would detail the terms of the arrangement, without it, you would not know how to purchase it.",
+      "workId": "334s"
+    }
+  ],
+  "offerings": [
+    {
+      "workId": "334s",
+      "published": "Lonley Planet",
+      "url": "http://www.lonleyplanet.com"
+    },
+    {
+      "workId": "334s",
+      "published": "Bitcoin Magazine",
+      "url": "http://www.bitcoinmagazine.com"
     }
   ]
 }

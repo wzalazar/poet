@@ -4,10 +4,10 @@ import './style.scss';
 import Overview from './Overview';
 import Tabs from './Tabs';
 
-export class CreativeWorkLayout extends React.Component<undefined, undefined> {
+export class WorkLayout extends React.Component<undefined, undefined> {
   render() {
     return (
-      <div className="creativeWork">
+      <div className="work">
         <div className="leftColumn">
           <Overview id="334s" />
           <Tabs id="334s" />
