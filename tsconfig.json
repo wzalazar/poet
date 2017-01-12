@@ -6,6 +6,7 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "jsx": "react"
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   }
 }

@@ -1,3 +1,5 @@
+import * as fs from 'fs'
+
 const bitcore = require('bitcore-lib')
 
 export function assert(value: boolean, message: string) {
@@ -36,3 +38,14 @@ export function hex(buffer: Buffer | Uint8Array): string {
 }
 
 export function noop() {}
+
+export function readdir(dirname: string): Promise<string[]> {
+  return new Promise((resolve, reject) => {
+    fs.readdir(dirname, (error, result: string[]) => {
+      if (error)  {
+        return reject(error)
+      }
+      return resolve(result)
+    })
+  })
+}

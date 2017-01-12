@@ -34,3 +34,26 @@ export async function getHash(data: Buffer, hash: string): Promise<string> {
   const torrent = await createTorrent(data, hash)
   return torrent.infoHash
 }
+
+export function createObservableDownload(client: any, pathFunction: (_: string) => string, hash: Buffer) {
+  return Rx.Observable.create((observer) => {
+    const id = hash.toString('hex')
+    const uri = 'magnet:?xt=urn:btih:' + id
+    client.add(
+      uri,
+      { path: pathFunction(id) },
+      (torrent: any) => {
+        torrent.on('error', (error: any) => {
+          observer.onError(error)
+        })
+        torrent.on('download', () => {
+          observer.onNext(torrent.progress)
+        })
+        torrent.on('done', () => {
+          console.log(uri, 'downloaded')
+          observer.onCompleted()
+        })
+      }
+    )
+  }).publish().refCount()
+}
