@@ -1,24 +1,24 @@
 import * as fs from 'fs'
 import * as WebTorrent from 'webtorrent'
-import EventEmitter = NodeJS.EventEmitter
+import * as Rx from 'rx'
 
-import { consume, publish } from '../helpers/pubsub'
-import * as queues from '../queues'
-import { noop, assert } from '../common'
-import { getCreateOpts, getHash } from '../helpers/torrentHash'
 import { PoetBlock } from '../model/claim'
 import { default as getBuilder } from '../model/builder'
+import * as queues from '../queues'
+import { consume, publish } from '../helpers/pubsub'
+import { getCreateOpts, getHash  } from '../helpers/torrentHash'
+import { noop } from '../common'
 
 function makePath(id: string) {
-  assert(id.length === 160 / 4, 'Id is of invalid length' + id)
   return './torrents/' + id
 }
 
 export default async function startTorrents() {
 
   const client = new WebTorrent()
-
-  const startDownloadHash = makeClientDownloadHash.bind(null, client)
+  client.on('error', (error: any) => {
+    console.log('Webtorrent client error', error)
+  })
 
   const publishQueue = await consume(queues.publishBlock)
   publishQueue.subscribeOnNext(async (buffer: Buffer) => {
@@ -28,6 +28,8 @@ export default async function startTorrents() {
       console.log('Unable to seed block', error)
     }
   })
+
+  const startDownloadHash = makeClientDownloadHash.bind(null, client)
 
   const queue = await consume(queues.downloadHash)
   queue.subscribeOnNext((hash: Buffer) => {
@@ -65,14 +67,23 @@ async function readFileSystem(client: any) {
         return reject(error)
       }
       for (let file of files) {
-        client.seed(
-          makePath(file),
-          {
-            path: makePath(file),
-            ...getCreateOpts(file)
-          },
-          noop
-        )
+        fs.readdir('./torrents/' + file, (error, subFiles) => {
+          if (error) {
+            console.log('Error reading folder', file)
+            return
+          }
+          if (subFiles.length > 1) {
+            return
+          }
+          const torrentId = file
+          const hash = subFiles[0]
+
+          client.seed(
+            fs.createReadStream(makePath(torrentId + '/' + hash)),
+            { path: makePath(torrentId), ...getCreateOpts(hash) },
+            noop
+          )
+        })
       }
       return resolve()
     })
@@ -81,7 +92,7 @@ async function readFileSystem(client: any) {
 
 function makeClientDownloadHash(client: any, hash: Buffer): Rx.Observable<any> {
   return Rx.Observable.create((observer) => {
-    const id = hash.toString()
+    const id = hash.toString('hex')
     const uri = 'magnet:?xt=urn:btih:' + id
     client.add(
       uri,

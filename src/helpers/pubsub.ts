@@ -21,7 +21,7 @@ export async function consume(target: string) {
       const queue = await channel.assertQueue('', { exclusive: true })
       await channel.assertExchange(target, 'fanout')
       await channel.bindQueue(queue.queue, target, '')
-      await channel.consume(queue.queue, function(msg) {
+      await channel.consume(queue.queue, (msg) => {
         observer.onNext(msg.content)
       }, { noAck: true  })
     } catch (error) {
@@ -34,8 +34,14 @@ export async function consume(target: string) {
 
 export async function publish(target: string, payload: Buffer) {
   let connection, channel
-  connection = await amqpConnect() as amqp.Connection
-  channel = await bluebird.promisify(connection.createChannel.bind(connection))() as Channel
-  await channel.sendToQueue(target, payload)
-  return await channel.close()
+  try {
+    connection = await amqpConnect() as amqp.Connection
+    channel = await bluebird.promisify(connection.createChannel.bind(connection))() as Channel
+    await channel.assertExchange(target, 'fanout', { durable: true })
+    await channel.publish(target, '', payload)
+    return await channel.close()
+  } catch (error) {
+    console.log('Error publishing', error, error.stack)
+    throw error
+  }
 }

@@ -1,4 +1,4 @@
-const createTorrent = require('create-torrent')
+const createTorrentLib = require('create-torrent')
 const parseTorrent = require('parse-torrent')
 
 export function getCreateOpts(hash: string) {
@@ -9,19 +9,28 @@ export function getCreateOpts(hash: string) {
   }
 }
 
-export function getHash(data: Buffer, hash: string): Promise<string> {
-  const file = new Buffer(data) as any
-  file.name = hash
+export function createTorrent(data: any, hash: string): Promise<any> {
+  let torrent: any
+  if (data instanceof Buffer) {
+    torrent = new Buffer(data) as any
+    torrent.name = hash
+  } else {
+    torrent = data
+  }
 
   const opts = getCreateOpts(hash)
 
   return new Promise<string>((resolve, reject) => {
-    createTorrent(file, opts, (error: any, file: Buffer) => {
+    createTorrentLib(torrent, opts, (error: any, file: Buffer) => {
       if (error) {
         return reject(error)
       }
-      const torrent = parseTorrent(file)
-      return resolve(torrent.infoHash)
+      return resolve(parseTorrent(file))
     })
   })
+}
+
+export async function getHash(data: Buffer, hash: string): Promise<string> {
+  const torrent = await createTorrent(data, hash)
+  return torrent.infoHash
 }
