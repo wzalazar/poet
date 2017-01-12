@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import './style.scss';
+import './Layout.scss';
 
 import Overview from './Overview';
 import Tabs from './Tabs';
@@ -12,12 +12,13 @@ export class WorkLayout extends React.Component<undefined, undefined> {
     const workId = '334s';
 
     return (
-      <div className="work">
-        <div className="leftColumn">
+      <div className="work row">
+        <div className="col-xs-7">
           <Overview id={workId} />
           <Tabs id={workId} />
         </div>
-        <div className="rightColumn">
+        <div className="col-xs-1" />
+        <div className="col-xs-4">
           <WorkOfferings workId={workId} />
           <Title id={workId} />
         </div>

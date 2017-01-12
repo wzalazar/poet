@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import WorkComponent, { WorkProps } from '../../components/WorkComponent';
 
-import './style.scss';
+import './Layout.scss';
 
 function render(props: WorkProps) {
   const tableData = new Map();

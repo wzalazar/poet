@@ -16,11 +16,12 @@ function renderOffering(workOfferingProps: WorkOfferingProps): JSX.Element {
   return (
     <div key={workOfferingProps.id} className="offering">
       <h3>License</h3>
-      <div className="info">
-        <div className="description">
+      <div className="info row">
+      <div className="info row">
+        <div className="description col-xs-7">
           { workOfferingProps.description }
         </div>
-        <div className="flex-column">
+        <div className="col-xs-5">
           <div className="price">
             ${ workOfferingProps.price.amount } { workOfferingProps.price.currency }
           </div>
