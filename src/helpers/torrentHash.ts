@@ -1,3 +1,5 @@
+import * as Rx from 'rx'
+
 const createTorrentLib = require('create-torrent')
 const parseTorrent = require('parse-torrent')
 

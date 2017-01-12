@@ -1,4 +1,6 @@
 import * as fs from 'fs'
+import { ReadStream } from 'fs'
+import * as path from 'path'
 import * as WebTorrent from 'webtorrent'
 
 import { PoetBlock } from '../model/claim'
@@ -13,21 +15,24 @@ class TorrentSystem {
   private client: any // TODO: upstream webtorrent needs a better definition file
   private path: string
 
-  private static BITS_PER_HEX_BYTE: 4
-  private static SHA256_LENGTH_BITS: 256
-  private static SHA1_LENGTH_IN_BITS: 160
+  private static BITS_PER_HEX_BYTE = 4
+  private static SHA256_LENGTH_BITS = 256
+  private static SHA1_LENGTH_IN_BITS = 160
 
   constructor(torrentPath: string) {
     this.path = torrentPath
     this.client = new WebTorrent()
-    this.client.on('error', (error: any) => {
+    this.client.on('error', (error: Error) => {
+      if (error.message.startsWith('Cannot add duplicate')) {
+        return
+      }
       this.handleError('Generic WebTorrentError', error)
     })
   }
 
   async start() {
     await this.listenToQueue()
-    await this.scanLocal()
+    await this.seedLocalFiles()
   }
 
   async listenToQueue() {
@@ -40,7 +45,7 @@ class TorrentSystem {
     try {
       queue = await consume(queues.downloadHash)
     } catch (error) {
-      this.handleError('Unable to listen to queue', queue)
+      this.handleError('Unable to listen to queue', error)
     }
     queue.subscribeOnNext((hash: Buffer) => {
       const download = createObservableDownload(
@@ -97,11 +102,11 @@ class TorrentSystem {
     }
   }
 
-  async scanLocal() {
+  async seedLocalFiles() {
     try {
       const folders = await readdir(this.path)
       for (let folder of folders) {
-        const files = await readdir(folder)
+        const files = await readdir(this.getPathInStorageFolder(folder))
         if (!TorrentSystem.validDirectoryContents(files)) {
           return
         }
@@ -110,15 +115,17 @@ class TorrentSystem {
         // And it has only one file, named with the sha256 hash of the block
         const blockHash = files[0]
 
-        this.client.seed(
-          this.getFileForSeeding(torrentId, blockHash),
-          this.makeSeedOptions(torrentId, blockHash),
-          noop
+        this.seedBlockFromFile(
+          this.getFileForSeeding(torrentId, blockHash), torrentId, blockHash
         )
       }
     } catch (error) {
       this.handleError('Could not read stored files', error)
     }
+  }
+
+  private seedBlockFromFile(file: ReadStream, torrentId: string, blockHash: string) {
+    this.client.seed(file, this.makeSeedOptions(torrentId, blockHash), noop)
   }
 
   private getFileForSeeding(torrentId: string, blockHash: string) {
@@ -128,7 +135,7 @@ class TorrentSystem {
   }
 
   private getPathInStorageFolder(file: string) {
-    return './torrents/' + file
+    return path.join(this.path, file)
   }
 
   /**
@@ -142,6 +149,10 @@ class TorrentSystem {
       // create-torrent options
       ...getCreateOpts(blockHash)
     }
+  }
+
+  private handleError(message: string, error: any) {
+    console.log(message, error, error.stack)
   }
 
   /**
@@ -158,10 +169,6 @@ class TorrentSystem {
 
   private static isValidInfoHash(hash: string) {
     return hash.length === TorrentSystem.SHA1_LENGTH_IN_BITS / TorrentSystem.BITS_PER_HEX_BYTE
-  }
-
-  private handleError(message: string, error: any) {
-    console.log(message, error, error.stack)
   }
 }
 

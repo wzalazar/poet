@@ -11,7 +11,12 @@ async function startup() {
     insight = new PoetInsightListener('https://test-insight.bitpay.com')
 
     insight.subscribeBlock(async (block) => {
-      console.log('found block', block)
+      console.log('found block info', block)
+      try {
+        await publish(queues.bitcoinBlock, new Buffer(JSON.stringify(block)))
+      } catch (error) {
+        console.log('Could not publish block', error, error.stack)
+      }
     })
 
     insight.subscribeTx(async (tx) => {

@@ -7,7 +7,7 @@ export interface PoetTxInfo {
     contentHash: string
 }
 
-export interface BitcoinBlockInfo {
+export interface PoetBlockInfo {
     blockHeight: number
     blockHash: string
     poet: PoetTxInfo[]

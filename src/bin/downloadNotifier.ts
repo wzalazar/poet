@@ -1,6 +1,6 @@
 import { consume, publish } from '../helpers/pubsub'
 import * as queues from '../queues'
-import { BitcoinBlockInfo, PoetTxInfo } from "../events/blockInfo"
+import { PoetBlockInfo, PoetTxInfo } from "../events/blockInfo"
 
 /**
  * This system is in charge of notifying other components of hashes that have
@@ -32,7 +32,7 @@ export class BitcoinHashNotifier {
   listenForBlocks() {
     const queueName = queues.bitcoinBlock
     const transform = (msg: Buffer) => {
-      const block: BitcoinBlockInfo = JSON.parse(msg.toString())
+      const block: PoetBlockInfo = JSON.parse(msg.toString())
       return block.poet.map(BitcoinHashNotifier.TXINFO_TO_BUFFER_HASH)
     }
     return this.listen(queueName, transform)

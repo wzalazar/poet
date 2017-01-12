@@ -1,7 +1,7 @@
 import * as socketIO from 'socket.io-client'
 import * as fetch from 'isomorphic-fetch'
 
-import { BitcoinBlockInfo, PoetTxInfo } from '../events/blockInfo'
+import { PoetBlockInfo, PoetTxInfo } from '../events/blockInfo'
 
 const bitcore = require('bitcore-lib')
 
@@ -17,15 +17,19 @@ export interface HashListener {
   (hash: string): any
 }
 
-export interface PoetInfoListener {
-  (block: BitcoinBlockInfo): any
+export interface BlockInfoListener {
+  (block: PoetBlockInfo): any
 }
 
 export default class PoetInsightListener {
+
+  static BARD = new Buffer('BARD')
+  static VERSION = new Buffer([0, 0, 0, 1])
+
   insightUrl: string
   socket: SocketIOClient.Socket
   txListeners: HashListener[]
-  bitcoinBlockListeners: PoetInfoListener[]
+  bitcoinBlockListeners: BlockInfoListener[]
 
   constructor(insightUrl: string) {
     this.insightUrl = insightUrl
@@ -77,7 +81,7 @@ export default class PoetInsightListener {
     }
   }
 
-  notifyPoetData(newState: BitcoinBlockInfo) {
+  notifyPoetData(newState: PoetBlockInfo) {
     this.bitcoinBlockListeners.forEach(listener => listener(newState))
   }
 
@@ -93,16 +97,13 @@ export default class PoetInsightListener {
         transactionOrder : index
       })
     }).filter(notNull)
-    const blockInfo: BitcoinBlockInfo = {
+    const blockInfo: PoetBlockInfo = {
       blockHeight : height,
       blockHash   : block.hash,
       poet        : txs
     }
     this.notifyPoetData(blockInfo)
   }
-
-  static BARD = new Buffer('BARD')
-  static VERSION = new Buffer([0, 0, 0, 1])
 
   containsPoetForBitcore(tx: any) {
     const check = function(script: any, index: number) {
@@ -140,7 +141,7 @@ export default class PoetInsightListener {
     this.txListeners.push(listener)
   }
 
-  subscribeBlock(listener: PoetInfoListener) {
+  subscribeBlock(listener: BlockInfoListener) {
     this.bitcoinBlockListeners.push(listener)
   }
 }
