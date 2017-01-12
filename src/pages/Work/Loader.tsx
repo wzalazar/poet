@@ -23,12 +23,7 @@ export class Work extends PageLoader<WorkState, Object> {
   }
 
   reducerHook<State>(): ReducerDescription<WorkState> {
-    return {
-      subState: 'Landing',
-      reducer: (state: WorkState, action: Action) => {
-        return state || this.initialState();
-      }
-    }
+    return null;
   }
 
   sagaHook(): Saga {
