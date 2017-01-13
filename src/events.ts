@@ -12,3 +12,7 @@ export interface PoetBlockInfo {
     blockHash: string
     poet: PoetTxInfo[]
 }
+
+export interface PoetHashDiscovered {
+    hash: string
+}

@@ -1,7 +1,7 @@
 import * as socketIO from 'socket.io-client'
 import * as fetch from 'isomorphic-fetch'
 
-import { PoetBlockInfo, PoetTxInfo } from '../events/blockInfo'
+import { PoetBlockInfo, PoetTxInfo } from '../blockInfo'
 
 const bitcore = require('bitcore-lib')
 

@@ -5,7 +5,7 @@ import { Channel } from "amqplib"
 
 const amqpConnect = bluebird.promisify(amqp.connect, amqp)
 
-export async function consume(target: string) {
+export function consume(target: string) {
   return Rx.Observable.create(async (observer: any) => {
     let connection, channel: Channel
 

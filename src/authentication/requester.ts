@@ -1,5 +1,7 @@
 import * as SocketIO from 'socket.io-client'
 
+const qrcode = require('qrcode-terminal')
+
 const socket = SocketIO('ws://localhost:3000')
 
 socket.on('connected', () => {
@@ -15,6 +17,7 @@ socket.on('message', (payload: any) => {
   const body = JSON.parse(payload)
   if (body.status === "created") {
     console.log('created request', JSON.parse(body.encoded).id)
+    qrcode.generate(JSON.parse(body.encoded).id)
   }
 })
 

@@ -1,6 +1,6 @@
 import { consume, publish } from '../helpers/pubsub'
 import * as queues from '../queues'
-import { PoetBlockInfo, PoetTxInfo } from "../events/blockInfo"
+import { PoetBlockInfo, PoetTxInfo } from "../blockInfo"
 
 /**
  * This system is in charge of notifying other components of hashes that have
