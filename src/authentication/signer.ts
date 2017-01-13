@@ -6,21 +6,20 @@ const key = bitcore.PrivateKey()
 const id = process.argv[2]
 
 async function accept(id: string) {
-  const body = await fetch('http://localhost:3000/request/' + id).then(res => res.text())
-  console.log('Signing', body)
+  const body = await fetch('http://localhost:3000/request/' + id).then(res => res.json()) as any
 
-  const encodedHash = sha256(body).toString('hex')
+  console.log(new Buffer(body.message, 'hex').toString())
+
   const timestamp = new Date().getTime()
   const accept = true
   const extra = ''
 
-  const signed = JSON.stringify({
-    encodedHash,
+  const signed = {
     timestamp,
     accept,
     extra
-  })
-  const signature = sign(key, sha256(signed)) as any
+  } as any
+  const signature = sign(key, sha256(new Buffer(body.message, 'hex'))) as any
 
   const response = {
     publicKey: key.publicKey.toString(),

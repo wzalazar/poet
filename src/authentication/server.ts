@@ -75,38 +75,18 @@ export default async function createServer(options: AuthServerOptons) {
   }
 
   function validSignature(id: string, payload: Signature): boolean {
-    const encoded = requests[id]
+    const encoded = new Buffer(JSON.parse(requests[id]).message, 'hex')
     const signature = payload.signature
     const publicKey = payload.publicKey
 
-    const message = JSON.parse(payload.message) as SignedMessage
-
-    if (!encoded || !signature || !publicKey || !message) {
-      return false
-    }
-
-    if (!message.encodedHash) {
-      console.log('Must provide an encoded hash value')
-      return false
-    }
-    if (!message.timestamp) {
-      console.log('Must provide a timestamp')
-      return false
-    }
-    if (message.accept === undefined) {
-      console.log('Must provide an acceptance value')
-      return false
-    }
-
-    if (message.encodedHash !== sha256(encoded).toString('hex')) {
-      console.log('Signed message mismatch')
+    if (!encoded || !signature || !publicKey) {
       return false
     }
 
     if (!verify(
         new bitcore.PublicKey(publicKey),
         new Buffer(signature, 'hex'),
-        sha256(payload.message)))
+        sha256(encoded)))
     {
       console.log('Signature is invalid')
       return false
