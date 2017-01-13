@@ -34,7 +34,6 @@ class Component extends React.Component<UserState, undefined> {
     return [
       this.renderNavLink('about', 'About'),
       this.renderNavLink('documentation', 'Documentation'),
-      this.renderNavButton('documentation', 'Documentation'),
       <li key="login"><LoginButton>Login</LoginButton></li>,
       this.renderNavButton('try-it-out', 'Try it Out')
     ];
