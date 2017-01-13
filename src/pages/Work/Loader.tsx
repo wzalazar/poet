@@ -19,7 +19,7 @@ export class Work extends PageLoader<WorkState, Object> {
 
 
   routeHook(key: string) {
-    return [<Route path="/work/:id" key={key} component={this.container()} />]
+    return [<Route path="/works/:id" key={key} component={this.container()} />]
   }
 
   reducerHook<State>(): ReducerDescription<WorkState> {
