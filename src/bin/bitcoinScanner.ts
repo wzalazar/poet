@@ -1,10 +1,12 @@
-import * as queues from '../queues'
-import PoetInsightListener from "../systems/insight"
 import Bluebird = require("bluebird")
-import { publish } from "../helpers/pubsub"
+
+import PoetInsightListener from '../systems/insight'
+import { Queue } from '../queue'
 
 async function startup() {
   let insight
+
+  const queue = new Queue()
 
   console.log('Requesting blockchain info from insight...')
   try {
@@ -13,7 +15,7 @@ async function startup() {
     insight.subscribeBlock(async (block) => {
       console.log('found block info', block)
       try {
-        await publish(queues.bitcoinBlock, new Buffer(JSON.stringify(block)))
+        await queue.announceBitcoinBlock(block)
       } catch (error) {
         console.log('Could not publish block', error, error.stack)
       }
@@ -22,7 +24,7 @@ async function startup() {
     insight.subscribeTx(async (tx) => {
       console.log('found tx', tx)
       try {
-        await publish(queues.poetHash, new Buffer(JSON.stringify(tx)))
+        await queue.announceBitcoinTransaction(tx)
       } catch (error) {
         console.log('Could not publish tx', error, error.stack)
       }

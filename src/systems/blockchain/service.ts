@@ -1,5 +1,5 @@
 import { Connection, createConnection } from 'typeorm'
-import { PoetBlockInfo } from '../../events'
+import { PoetBlock } from "../../model/claim";
 
 export async function getConnection() {
   return createConnection({
@@ -29,6 +29,6 @@ export default class BlockchainService {
     return null
   }
 
-  storeBlock(block: PoetBlockInfo) {
+  storeBlock(block: PoetBlock) {
   }
 }

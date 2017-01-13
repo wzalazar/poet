@@ -3,11 +3,10 @@ import * as Koa from 'koa'
 const Body = require('koa-body')
 const Route = require('koa-route')
 
-import * as queues from '../queues'
 import { Claim, PoetBlock } from "../model/claim"
 import { default as getCreator, ClaimBuilder } from "../model/builder"
 import { getHash } from '../helpers/torrentHash'
-import { publish } from "../helpers/pubsub";
+import { Queue } from '../queue'
 
 export interface TrustedPublisherOptions {
   port: number
@@ -16,7 +15,8 @@ export interface TrustedPublisherOptions {
 
 export default async function createServer(options?: TrustedPublisherOptions) {
   const koa = new Koa()
-  const creator = await getCreator();
+  const creator = await getCreator()
+  const queue = new Queue()
 
   koa.use(Body())
 
@@ -27,7 +27,7 @@ export default async function createServer(options?: TrustedPublisherOptions) {
     console.log('Poet block hash is', block.id)
 
     try {
-      await publish(queues.publishBlock, creator.serializeBlockForSave(block))
+      await queue.announceBlockToSend(block)
     } catch (error) {
       console.log('Could not publish block', error, error.stack)
     }

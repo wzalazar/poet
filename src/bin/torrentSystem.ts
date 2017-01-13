@@ -4,22 +4,24 @@ import * as path from 'path'
 import * as WebTorrent from 'webtorrent'
 
 import { PoetBlock } from '../model/claim'
-import { default as getBuilder } from '../model/builder'
-import * as queues from '../queues'
-import { consume, publish } from '../helpers/pubsub'
+import { default as getBuilder, ClaimBuilder } from '../model/builder'
+import { Queue } from '../queue'
 import { getCreateOpts, getHash, createObservableDownload } from '../helpers/torrentHash'
 import { noop, readdir, assert } from '../common'
+import { PoetTxInfo, PoetBlockInfo } from '../events'
 
 class TorrentSystem {
 
   private client: any // TODO: upstream webtorrent needs a better definition file
   private path: string
+  private queue: Queue
 
   private static BITS_PER_HEX_BYTE = 4
   private static SHA256_LENGTH_IN_BITS = 256
   private static SHA1_LENGTH_IN_BITS = 160
 
   constructor(torrentPath: string) {
+    this.queue = new Queue()
     this.path = torrentPath
     this.client = new WebTorrent()
     this.client.on('error', (error: Error) => {
@@ -40,44 +42,41 @@ class TorrentSystem {
     await this.listenToNewBlocksToSeed()
   }
 
-  async listenToHashesToDownload() {
-    let queue
-    try {
-      queue = await consume(queues.downloadHash)
-    } catch (error) {
-      this.handleError('Unable to listen to queue', error)
-    }
-    queue.subscribeOnNext((hash: Buffer) => {
-      const download = createObservableDownload(
-        this.client,
-        id => this.getPathInStorageFolder(id),
-        hash
-      )
+  downloadTorrent(hash: string) {
+    const download = createObservableDownload(
+      this.client,
+      hash => this.getPathInStorageFolder(hash),
+      hash
+    )
 
-      download.subscribeOnCompleted(async () => {
-        try {
-          await publish(queues.blockReady, hash)
-        } catch(error) {
-          this.handleError('Could not notify of block ready', error)
-        }
-      })
+    download.subscribeOnCompleted(async () => {
+      try {
+        const block = await this.getBlockFromFilesystem(hash)
+        await this.queue.announceBlockReady(block)
+      } catch(error) {
+        this.handleError('Could not notify of block ready', error)
+      }
+    })
+  }
+
+  async listenToHashesToDownload() {
+    this.queue.transactionHeard().subscribeOnNext((tx: PoetTxInfo) => {
+      this.downloadTorrent(tx.torrentHash)
+    })
+
+    this.queue.bitcoinBlock().subscribeOnNext((block: PoetBlockInfo) => {
+      block.poet.map(txInfo => this.downloadTorrent(txInfo.torrentHash))
     })
   }
 
   async listenToNewBlocksToSeed() {
-    let publishQueue
-    try {
-      publishQueue = await consume(queues.publishBlock)
-    } catch (error) {
-      this.handleError('Error while consuming queue', error)
-    }
-    publishQueue.subscribeOnNext(this.seedBlockFromBuffer.bind(this))
+    this.queue.blocksToSend().subscribeOnNext(this.seedBlock.bind(this))
   }
 
-  async seedBlockFromBuffer(buffer: Buffer) {
+  async seedBlock(block: PoetBlock) {
     try {
       const builder = await getBuilder()
-      const block: PoetBlock = builder.serializedToBlock(buffer)
+      const buffer = builder.serializeBlockForSave(block)
       const torrentId = await getHash(buffer, block.id)
 
       // Copy the buffer to seed and set a custon "name" field needed by WebTorrent
@@ -131,11 +130,35 @@ class TorrentSystem {
   private getFileForSeeding(torrentId: string, blockHash: string) {
     assert(TorrentSystem.isValidInfoHash(torrentId), 'invalid length for torrent id')
     assert(TorrentSystem.isValidSHA256(blockHash), 'invalid sha256 value')
-    return fs.createReadStream(this.getPathInStorageFolder(torrentId + '/' + blockHash))
+    return fs.createReadStream(this.getFilePathInStorage(torrentId, blockHash))
   }
 
   private getPathInStorageFolder(file: string) {
     return path.join(this.path, file)
+  }
+
+  private getFilePathInStorage(file: string, file2: string) {
+    return path.join(this.path, file, file2)
+  }
+
+  private async getBlockFromFilesystem(hash: string): Promise<PoetBlock> {
+    const files = await readdir(this.getPathInStorageFolder(hash))
+    if (!TorrentSystem.validDirectoryContents(files)) {
+      throw new Error('Could not read file')
+    }
+    const content = files[0]
+    const file = this.getFilePathInStorage(hash, content)
+    const data = await new Promise<Buffer>((resolve, reject) => {
+      fs.readFile(file, (err, buf) => {
+        if (err) {
+          return reject(err)
+        }
+        return resolve(buf)
+      })
+    })
+
+    const builder = await getBuilder()
+    return builder.serializedToBlock(data)
   }
 
   /**
