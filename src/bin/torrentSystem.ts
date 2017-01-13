@@ -16,7 +16,7 @@ class TorrentSystem {
   private path: string
 
   private static BITS_PER_HEX_BYTE = 4
-  private static SHA256_LENGTH_BITS = 256
+  private static SHA256_LENGTH_IN_BITS = 256
   private static SHA1_LENGTH_IN_BITS = 160
 
   constructor(torrentPath: string) {
@@ -164,7 +164,7 @@ class TorrentSystem {
   }
 
   private static isValidSHA256(hash: string) {
-    return hash.length === TorrentSystem.SHA256_LENGTH_BITS / TorrentSystem.BITS_PER_HEX_BYTE
+    return hash.length === TorrentSystem.SHA256_LENGTH_IN_BITS / TorrentSystem.BITS_PER_HEX_BYTE
   }
 
   private static isValidInfoHash(hash: string) {
