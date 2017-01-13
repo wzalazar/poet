@@ -7,14 +7,22 @@ import {UserState} from "../pages/User/Loader";
 
 class Component extends React.Component<UserState, undefined> {
   render() {
-    return <div className="navbar">
+    return <nav className="navbar">
       <h1>Poet</h1>
-      <ul>
+      <div className="search"><input type="text" placeholder="Search Creative Works"/></div>
+      <ul className="nav">
         { this.notLoggedActions() }
         { this.loggedInActions() }
-        <li>Register Work</li>
       </ul>
-    </div>
+    </nav>
+  }
+
+  renderNavLink(key: string, text: string): JSX.Element {
+    return <li key={key} className="nav-item" ><a href="#" className="nav-link" >{text}</a></li>
+  }
+
+  renderNavButton(key: string, text: string): JSX.Element {
+    return <li key={key} className="nav-item"><a href="#" className="btn btn-primary btn-sm">{text}</a></li>;
   }
 
   private notLoggedActions(): JSX.Element[] {
@@ -22,9 +30,11 @@ class Component extends React.Component<UserState, undefined> {
       return [];
     }
     return [
-      <li key="about">About</li>,
-      <li key="docs">Documentation</li>,
-      <li key="login"><LoginButton>Login</LoginButton></li>
+      this.renderNavLink('about', 'About'),
+      this.renderNavLink('documentation', 'Documentation'),
+      this.renderNavButton('documentation', 'Documentation'),
+      <li key="login"><LoginButton>Login</LoginButton></li>,
+      this.renderNavButton('try-it-out', 'Try it Out')
     ];
   }
 
@@ -33,8 +43,10 @@ class Component extends React.Component<UserState, undefined> {
       return [];
     }
     return [
-      <li key="licenses">My Licenses</li>,
-      <li key="notifs">Notifications</li>,
+      this.renderNavLink('portfolio', 'Portfolio'),
+      this.renderNavLink('licenses', 'Licenses'),
+      this.renderNavLink('user', 'User'),
+      this.renderNavButton('new-work', 'New Work')
     ];
   }
 }

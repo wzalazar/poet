@@ -1,30 +1,38 @@
 // TODO(eordano): Extract this to a global variable
 $almost-black: #222;
-$almost-white: #fafafa;
+$almost-white: #fafafa; // she don't lie she don't lie
 
 .navbar {
   margin: 0;
   padding-top: 5px;
   padding-bottom: 5px;
+  margin-bottom: 12px;
 
   display: flex;
   width: 100%;
-  border-bottom: 1px solid $almost-white;
-  justify-content: space-between;
   align-items: center;
-  font-family: "Helvetica Neue", Helvetica, Arial;
+  border-bottom: 1px solid $almost-white;
+
+  font-size: 12px;
 
   h1 {
-    margin-left: 10px;
+    margin: 0 20px 0 10px;
+    padding-right: 32px;
+    border-right: 1px solid lightgray;
+  }
+
+  .search {
+    input[type=text] {
+      width: 300px;
+    }
   }
 
   ul {
     display: flex;
-    justify-content: space-around;
+    margin: 0 0 0 auto;
     align-items: center;
+
     li {
-      min-wdith: 80px;
-      list-style: none;
       margin-left: 5px;
       margin-right: 15px;
     }
