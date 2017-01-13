@@ -10,21 +10,11 @@ async function accept(id: string) {
 
   console.log(new Buffer(body.message, 'hex').toString())
 
-  const timestamp = new Date().getTime()
-  const accept = true
-  const extra = ''
-
-  const signed = {
-    timestamp,
-    accept,
-    extra
-  } as any
   const signature = sign(key, sha256(new Buffer(body.message, 'hex'))) as any
 
   const response = {
     publicKey: key.publicKey.toString(),
     signature: signature.toString('hex'),
-    message: signed
   }
 
   console.log(JSON.stringify(response))
