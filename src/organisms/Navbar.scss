@@ -2,17 +2,11 @@
 $almost-black: #222;
 $almost-white: #fafafa; // she don't lie she don't lie
 
-.navbar {
-  margin: 0;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  margin-bottom: 12px;
-
+nav {
   display: flex;
-  width: 100%;
   align-items: center;
+  margin-bottom: 12px;
   border-bottom: 1px solid $almost-white;
-
   font-size: 12px;
 
   h1 {
@@ -31,6 +25,7 @@ $almost-white: #fafafa; // she don't lie she don't lie
     display: flex;
     margin: 0 0 0 auto;
     align-items: center;
+    list-style: none;
 
     li {
       margin-left: 5px;

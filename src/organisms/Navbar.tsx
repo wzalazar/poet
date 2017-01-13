@@ -1,27 +1,29 @@
 import * as React from 'react';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 import './Navbar.scss'
-import {LoginButton} from "../pages/User/LoginButton";
-import {UserState} from "../pages/User/Loader";
+import { LoginButton } from "../pages/User/LoginButton";
+import { UserState } from "../pages/User/Loader";
 
 class Component extends React.Component<UserState, undefined> {
   render() {
-    return <nav className="navbar">
-      <h1>Poet</h1>
-      <div className="search"><input type="text" placeholder="Search Creative Works"/></div>
-      <ul className="nav">
-        { this.notLoggedActions() }
-        { this.loggedInActions() }
-      </ul>
-    </nav>
+    return (
+      <nav className="navbar">
+        <a className="navbar-brand" href="/">Poet</a>
+        <div className="search"><input type="text" placeholder="Search Creative Works"/></div>
+        <ul className="navbar-nav">
+          { this.notLoggedActions() }
+          { this.loggedInActions() }
+        </ul>
+      </nav>
+    )
   }
 
-  renderNavLink(key: string, text: string): JSX.Element {
-    return <li key={key} className="nav-item" ><a href="#" className="nav-link" >{text}</a></li>
+  private renderNavLink(key: string, text: string): JSX.Element {
+    return <li key={key} className="nav-item"><a href="#" className="nav-link">{text}</a></li>
   }
 
-  renderNavButton(key: string, text: string): JSX.Element {
+  private renderNavButton(key: string, text: string): JSX.Element {
     return <li key={key} className="nav-item"><a href="#" className="btn btn-primary btn-sm">{text}</a></li>;
   }
 
