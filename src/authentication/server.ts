@@ -138,7 +138,16 @@ export default async function createServer(options: AuthServerOptons) {
 
   koa.use(Body())
 
-  koa.use(Route.get('/info/:id', async (ctx: any, id: string) => {
+  koa.use(Route.post('/request', async (ctx: any) => {
+    const id = uuid.v4()
+    const request = makeRequest(id, ctx.request.body)
+
+    requests[id] = request
+
+    ctx.response.body = id
+  }))
+
+  koa.use(Route.get('/request/:id', async (ctx: any, id: string) => {
     if (requests[id]) {
       ctx.response.body = requests[id]
     } else {
@@ -163,7 +172,7 @@ export default async function createServer(options: AuthServerOptons) {
     }
   }
 
-  koa.use(Route.post('/response/:id', handleResponse))
+  koa.use(Route.post('/request/:id', handleResponse))
 
   koa.use(async (ctx: any, next: Function) => {
     try {

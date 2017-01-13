@@ -6,7 +6,7 @@ const key = bitcore.PrivateKey()
 const id = process.argv[2]
 
 async function accept(id: string) {
-  const body = await fetch('http://localhost:3000/info/' + id).then(res => res.text())
+  const body = await fetch('http://localhost:3000/request/' + id).then(res => res.text())
   console.log('Signing', body)
 
   const encodedHash = sha256(body).toString('hex')
@@ -30,7 +30,7 @@ async function accept(id: string) {
 
   console.log(JSON.stringify(response))
 
-  await fetch('http://localhost:3000/response/' + id, {
+  await fetch('http://localhost:3000/request/' + id, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(response)
