@@ -1,16 +1,28 @@
 import * as React from 'react';
+import { Action } from 'redux';
 import { connect } from "react-redux";
 
 import './Navbar.scss'
-import { LoginButton } from "../pages/User/LoginButton";
-import { UserState } from "../pages/User/Loader";
 
-class Component extends React.Component<UserState, undefined> {
+import Actions from '../actions';
+import { LoginButton } from "../pages/User/LoginButton";
+
+interface NavbarActions {
+  dispatchSearchClick: () => Action;
+}
+
+export interface NavbarProps {
+  loggedIn: boolean;
+}
+
+class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undefined> {
   render() {
     return (
       <nav className="navbar">
         <a className="navbar-brand" href="/">Poet</a>
-        <div className="search"><input type="text" placeholder="Search Creative Works"/></div>
+        <div className="search" >
+          <input type="text" placeholder="Search Creative Works" onClick={this.props.dispatchSearchClick} />
+        </div>
         <ul className="navbar-nav">
           { this.notLoggedActions() }
           { this.loggedInActions() }
@@ -52,4 +64,14 @@ class Component extends React.Component<UserState, undefined> {
   }
 }
 
-export const Navbar = connect((state: any) => state.currentUser)(Component);
+function mapStateToProps(state: any): NavbarProps {
+  return {
+    loggedIn: state.currentUser && state.currentUser.loggedIn
+  }
+}
+
+const mapDispatch = {
+  dispatchSearchClick: () => ({ type: Actions.navbarSearchClick })
+};
+
+export const Navbar = connect(mapStateToProps, mapDispatch)(NavbarComponent);

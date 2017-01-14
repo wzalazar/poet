@@ -28,6 +28,6 @@ export interface WorkProps extends FetchComponentProps {
 
 }
 
-export default FetchComponent.bind(null, (props: any) => ({
+export default FetchComponent.bind(null, (props: WorkProps) => ({
   url: `${Config.api.url}/works/${props.id}`
 }));
