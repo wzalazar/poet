@@ -12,15 +12,15 @@ function render(props: WorkProps): JSX.Element {
           <col className="values"/>
         </colgroup>
         <tbody>
-          <tr key="owner">
+          <tr>
             <td>Owner</td>
             <td>{props.title.owner}</td>
           </tr>
-          <tr key="typeOfOwnership">
+          <tr>
             <td>Type of Ownership</td>
             <td>{props.title.typeOfOwnership}</td>
           </tr>
-          <tr key="status">
+          <tr>
             <td>Status</td>
             <td>{props.title.status}</td>
           </tr>

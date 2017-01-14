@@ -5,7 +5,7 @@ import WorkOfferingsComponent, { WorkOfferingsProps, WorkOfferingProps } from '.
 
 function renderLicense(license: any): JSX.Element {
   return (
-    <div className="license">
+    <div className="license" key={license.id}>
       <div className="publisher">{ license.publisher }</div>
       <div className="url"><a href={ license.url } target="_blank">{ license.url }</a></div>
     </div>
