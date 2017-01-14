@@ -7,9 +7,9 @@ import Tabs from './Tabs';
 import WorkOfferings from './WorkOfferings';
 import Title from './Title';
 
-export class WorkLayout extends React.Component<undefined, undefined> {
+export class WorkLayout extends React.Component<any, undefined> {
   render() {
-    const workId = '334s';
+    const workId = this.props.id;
 
     return (
       <div className="work row">

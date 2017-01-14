@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Action } from 'redux';
 import { Route } from 'react-router';
 import { Saga } from 'redux-saga';
 
@@ -31,6 +30,6 @@ export class Work extends PageLoader<WorkState, Object> {
   }
 
   select(state: any, ownProps: any): Object {
-    return {};
+    return { id: ownProps.params.id };
   }
 }
