@@ -5,7 +5,7 @@
       "publicKey": "0F238JF34R89J",
       "signature": "sigDASD0ASD3N",
       "name": "Distributed: Markets Event To Convene Blockchain Payments, FinServices Innovator in Atlanta",
-      "author": "Satoshi",
+      "author": 1,
       "published": "2017-01-11T17:12:32.628Z",
       "lastModified": "2017-01-11T17:12:32.628Z",
       "customLabel": "Label",
@@ -74,6 +74,12 @@
           "url": "http://www.redmoon.com"
         }
       ]
+    }
+  ],
+  "profiles": [
+    {
+      "id": 1,
+      "name": "Satoshi"
     }
   ]
 }

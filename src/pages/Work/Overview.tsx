@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Link } from 'react-router';
 
 import WorkComponent, { WorkProps } from '../../components/WorkComponent';
+import ProfileLink from '../../components/ProfileLink';
 
 import './Layout.scss';
 
@@ -24,7 +24,7 @@ function render(props: WorkProps) {
         <tbody>
         <tr key="author">
           <td>Author</td>
-          <td><Link to="/profiles/1">{props.author}</Link></td>
+          <td><ProfileLink id={props.author} /></td>
         </tr>
         {
           [...tableData.keys()].map(key => (
