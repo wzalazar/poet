@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router';
 
 import WorkComponent, { WorkProps } from '../../components/WorkComponent';
 
@@ -6,7 +7,6 @@ import './Layout.scss';
 
 function render(props: WorkProps) {
   const tableData = new Map();
-  tableData.set('Author', props.author);
   tableData.set('Published', props.published);
   tableData.set('Last Modified', props.lastModified);
   tableData.set('Custom Label', props.customLabel);
@@ -22,6 +22,10 @@ function render(props: WorkProps) {
           <col className="values"/>
         </colgroup>
         <tbody>
+        <tr key="author">
+          <td>Author</td>
+          <td><Link to="/profiles/1">{props.author}</Link></td>
+        </tr>
         {
           [...tableData.keys()].map(key => (
             <tr key={key}>
