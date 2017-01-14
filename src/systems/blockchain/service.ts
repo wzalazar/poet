@@ -1,5 +1,5 @@
 import { Connection, createConnection } from 'typeorm'
-import { PoetBlock } from "../../model/claim";
+import { Block } from "../../model/claim";
 
 export async function getConnection() {
   return createConnection({
@@ -12,7 +12,7 @@ export async function getConnection() {
       database: "poet"
     },
     entities: [
-      __dirname + "/models/*.ts"
+      __dirname + "/orm/*.ts"
     ],
     autoSchemaSync: true
   })
@@ -29,6 +29,6 @@ export default class BlockchainService {
     return null
   }
 
-  storeBlock(block: PoetBlock) {
+  storeBlock(block: Block) {
   }
 }

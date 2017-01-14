@@ -12,7 +12,7 @@ export default async function(): Promise<Builders> {
   return {
     claimBuilder : builder.lookup('Poet.Claim') as protobuf.Type,
     attribute    : builder.lookup('Poet.Attribute') as protobuf.Type,
-    poetBlock    : builder.lookup('Poet.PoetBlock') as protobuf.Type,
+    poetBlock    : builder.lookup('Poet.Block') as protobuf.Type,
   }
 }
 

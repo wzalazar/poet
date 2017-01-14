@@ -3,7 +3,7 @@ import * as Koa from 'koa'
 const Body = require('koa-body')
 const Route = require('koa-route')
 
-import { Claim, PoetBlock } from "../model/claim"
+import { Claim, Block } from "../model/claim"
 import { default as getCreator, ClaimBuilder } from "../model/builder"
 import { getHash } from '../helpers/torrentHash'
 import { Queue } from '../queue'
@@ -23,7 +23,7 @@ export default async function createServer(options?: TrustedPublisherOptions) {
   koa.use(Route.post('/claim', async (ctx: any) => {
     const claimData: Claim = ctx.request.body as Claim
     console.log('Claim data is', claimData)
-    const block: PoetBlock = creator.createBlock([claimData])
+    const block: Block = creator.createBlock([claimData])
     console.log('Poet block hash is', block.id)
 
     try {

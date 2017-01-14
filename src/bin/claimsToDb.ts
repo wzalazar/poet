@@ -1,6 +1,6 @@
 import { default as BlockchainService } from '../systems/blockchain/service'
 import { Queue } from '../queue'
-import { PoetBlock } from '../model/claim'
+import { Block } from '../model/claim'
 
 async function startListening() {
   const blockchain = new BlockchainService()
@@ -9,7 +9,7 @@ async function startListening() {
   await blockchain.start()
 
   try {
-    queue.blockDownloaded().subscribeOnNext((block: PoetBlock) => {
+    queue.blockDownloaded().subscribeOnNext((block: Block) => {
       blockchain.storeBlock(block)
     })
   } catch (error) {

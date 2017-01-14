@@ -3,8 +3,8 @@ import * as amqp from 'amqplib/callback_api'
 import * as Rx from 'rx'
 import { Channel } from "amqplib"
 
-import { PoetBlockInfo, PoetHashDiscovered, PoetTxInfo } from './events'
-import { PoetBlock } from './model/claim'
+import { PoetBlockInfo, PoetTxInfo } from './events'
+import { Block } from './model/claim'
 
 const BITCOIN_BLOCK = 'bitcoinBlock'
 const BITCOIN_TRANSACTION = 'bitcoinTransaction'
@@ -23,23 +23,23 @@ export class Queue {
     return this.consume(BITCOIN_TRANSACTION) as Rx.Observable<PoetTxInfo>
   }
 
-  blocksToSend(): Rx.Observable<PoetBlock> {
-    return this.consume(DOWNLOAD_HASH) as Rx.Observable<PoetBlock>
+  blocksToSend(): Rx.Observable<Block> {
+    return this.consume(DOWNLOAD_HASH) as Rx.Observable<Block>
   }
 
-  blockDownloaded(): Rx.Observable<PoetBlock> {
-    return this.consume(BLOCK_READY) as Rx.Observable<PoetBlock>
+  blockDownloaded(): Rx.Observable<Block> {
+    return this.consume(BLOCK_READY) as Rx.Observable<Block>
   }
 
   announceBitcoinBlock(bitcoinBlock: PoetBlockInfo) {
     return this.publish(BITCOIN_BLOCK, bitcoinBlock)
   }
 
-  announceBlockReady(block: PoetBlock) {
+  announceBlockReady(block: Block) {
     return this.publish(BLOCK_READY, block)
   }
 
-  announceBlockToSend(block: PoetBlock) {
+  announceBlockToSend(block: Block) {
     return this.publish(SEND_BLOCK, block)
   }
 
@@ -75,7 +75,7 @@ export class Queue {
   }
 
   private async publish(target: string, payload: any) {
-    let connection, channel
+      let connection, channel
     try {
       connection = await amqpConnect() as amqp.Connection
       channel = await bluebird.promisify(connection.createChannel.bind(connection))() as Channel

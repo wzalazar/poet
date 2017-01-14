@@ -4,7 +4,7 @@ const bitcore = require('bitcore-lib')
 const explorers = require('bitcore-explorers')
 bitcore.Networks.defaultNetwork = bitcore.Networks.testnet
 
-import { Claim, PoetBlock } from "./claim"
+import { Claim, Block } from "./claim"
 import * as common from "../common"
 import { default as loadBuilders, Builders } from "./loaders"
 import { hex } from "../common"
@@ -90,7 +90,7 @@ export class ClaimBuilder {
     })).finish()
   }
 
-  protoToBlockObject(proto: any): PoetBlock {
+  protoToBlockObject(proto: any): Block {
     return {
       id: proto.id.toString('hex'),
       claims: proto.claims.map(this.protoToClaimObject.bind(this))
@@ -106,7 +106,7 @@ export class ClaimBuilder {
     }
   }
 
-  serializeBlockForSave(block: PoetBlock) {
+  serializeBlockForSave(block: Block) {
     return new Buffer(this.poetBlock.encode(this.poetBlock.create({
       id: new Buffer(block.id, 'hex'),
       claims: block.claims.map(this.claimToProto.bind(this))
@@ -152,7 +152,7 @@ export class ClaimBuilder {
     })
   }
 
-  createBlock(claims: Claim[]): PoetBlock {
+  createBlock(claims: Claim[]): Block {
     const protoClaims = claims.map((claim: Claim) => {
       return this.claimToProto(claim)
     })
