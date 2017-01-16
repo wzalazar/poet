@@ -11,7 +11,7 @@ import './Layout.scss';
 
 function renderWork(props: WorkProps) {
   return (
-    <li key={props.id}>
+    <li key={props.id} className="mb-3">
       <h3><Link to={'/works/' + props.id}>{props.name}</Link></h3>
       <div>by <ProfileLink id={props.author} /></div>
       <small><span>Created: {props.published}</span> <span className="ml-3">Timestampted: {props.published}</span></small>
@@ -23,7 +23,7 @@ function renderWork(props: WorkProps) {
 function render(props: FetchComponentProps) {
   return (
     <div className="works-results">
-      <ul>
+      <ul className="list-unstyled">
         { props.elements.map(renderWork) }
       </ul>
     </div>
