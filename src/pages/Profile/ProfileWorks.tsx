@@ -20,7 +20,6 @@ function renderTableRow(props: WorkProps) {
 function render(props: FetchComponentProps) {
   return (
     <div className="profile-works">
-      <h4>Latest Works</h4>
       <table className="table table-hover">
         <tbody>
           { props.elements.map(renderTableRow) }
