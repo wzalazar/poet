@@ -33,7 +33,7 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
   }
 
   private renderNavLink(key: string, text: string): JSX.Element {
-    return <li key={key} className="nav-item"><Link to={key} className="nav-link">{text}</Link></li>
+    return <li key={key} className="nav-item"><Link to={'/' + key} className="nav-link">{text}</Link></li>
   }
 
   private renderNavButton(key: string, text: string): JSX.Element {
