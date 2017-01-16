@@ -6,8 +6,13 @@ import Overview from './Overview';
 import Tabs from './Tabs';
 import WorkOfferings from './WorkOfferings';
 import Title from './Title';
+import { HexString } from '../../common';
 
-export class WorkLayout extends React.Component<any, undefined> {
+export interface WorkProps {
+  id: HexString
+}
+
+export class WorkLayout extends React.Component<WorkProps, undefined> {
   render() {
     const workId = this.props.id;
 

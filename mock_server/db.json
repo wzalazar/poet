@@ -110,7 +110,15 @@
   "profiles": [
     {
       "id": 1,
-      "name": "Satoshi"
+      "name": "Satoshi Nakamoto",
+      "picture": "http://pre15.deviantart.net/0036/th/pre/i/2012/104/c/1/dj_anon_by_scottr81-d4w3krk.jpg",
+      "publicKey": "fd9005120ad8e0ab293b49f79053cd4babc9ce5bc62c2466415d8b5333acfbdc",
+      "bio": "A short description of the publisher name and background",
+      "contacts": {
+        "email": "satoshi.nakamoto@po.et",
+        "twitter": "@satoshii"
+      },
+      "organizations": ["https://www.shareicon.net/data/128x128/2016/09/13/828456_badge-logo-p-p-icon-pin-pinterest-social_512x512.png"]
     }
   ]
 }
