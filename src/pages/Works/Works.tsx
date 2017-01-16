@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { FetchComponentProps } from '../../components/FetchComponent';
 import ProfileLink from '../../components/ProfileLink';
 
+import Pagination from '../../components/Pagination';
 import WorksComponent from '../../components/Works';
 import { WorkProps } from '../../components/WorkComponent';
 
@@ -27,6 +28,7 @@ function render(props: FetchComponentProps) {
       <ul className="list-unstyled">
         { props.elements.map(renderWork) }
       </ul>
+      <Pagination />
     </div>
   )
 }
