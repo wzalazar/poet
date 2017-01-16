@@ -120,5 +120,26 @@
       },
       "organizations": ["https://www.shareicon.net/data/128x128/2016/09/13/828456_badge-logo-p-p-icon-pin-pinterest-social_512x512.png"]
     }
-  ]
+  ],
+  "blocks": [
+    {
+      "id": "653bf4ed03464d89f93d94346b387dd85bc2111f82377600480abd6096a012e4",
+      "bitcoinBlock": "aadaca3bf0cdfc9d83321b4de5f7368dbc2dd0282930a3d21f3ee6c3996b9f6e",
+      "bitcoinHeight": 430000,
+      "poetHeight": 18000,
+      "timestamp": "",
+      "torrentHash": "sarasa",
+      "transactionHash": "0695a140e7f550cda8ca761c8d9a0eeb4622e7093fd858768e2932231c70f00a",
+      "transactionOrder": 801,
+      "outputIndex": 7,
+      "claims": [
+        "c5f7255d1417ec3ee49d4ee9a10ad71492a4acbce570565e304248303c0c59fe",
+        "1aebf3373a5804c455dea2349ac3673408017b15313b9e1eea698c9b52fe01d1"
+      ]
+    }
+  ],
+  "node": {
+    "peers": 4,
+    "status": "synced"
+  }
 }
