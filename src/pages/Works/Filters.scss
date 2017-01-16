@@ -1,0 +1,10 @@
+header {
+  display: flex; // bootstrap's d-flex isn't working for some reason
+  font-size: .7em;
+  >div {
+    select, input[type="text"] {
+      border: 1px solid lightgray;
+    }
+  }
+
+}
