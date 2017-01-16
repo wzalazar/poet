@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 
 import './style.scss';
 
+import LatestBlocks from '../../components/LatestBlocks';
+
 export interface LandingProps {
 }
 
@@ -12,6 +14,14 @@ export class LandingLayout extends React.Component<LandingProps, undefined> {
       <div className="landing">
         <h1>Poet</h1>
         <h2>Copyright management meets the blockchain</h2>
+        <div className="row">
+          <div className="col-sm-4">
+            <section>
+              <h6>Poet Blockchain</h6>
+              <LatestBlocks />
+            </section>
+          </div>
+        </div>
       </div>
     )
   }
