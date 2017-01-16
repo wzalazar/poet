@@ -29,6 +29,6 @@ export class Profile extends PageLoader<ProfileState, Object> {
   }
 
   select(state: any, ownProps: any): Object {
-    return {};
+    return { id: ownProps.params.id };
   }
 }
