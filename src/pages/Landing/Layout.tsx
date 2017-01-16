@@ -12,10 +12,6 @@ export class LandingLayout extends React.Component<LandingProps, undefined> {
       <div className="landing">
         <h1>Poet</h1>
         <h2>Copyright management meets the blockchain</h2>
-
-        <div className="search">
-          <Link to="/works/334s">Sample Creative Work</Link>
-        </div>
       </div>
     )
   }

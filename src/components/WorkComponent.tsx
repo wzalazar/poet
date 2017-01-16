@@ -4,6 +4,8 @@ import { HexString } from '../common'
 import FetchComponent, { FetchComponentProps } from './FetchComponent'
 
 export interface WorkProps extends FetchComponentProps {
+  [key: string]: any;
+
   id: HexString
   publicKey: HexString
   signature: HexString
