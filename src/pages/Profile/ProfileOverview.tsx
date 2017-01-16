@@ -12,10 +12,6 @@ function render(props: ProfileProps) {
       <ul className="list-unstyled">
         { Object.keys(props.contacts).map(key => <li>{props.contacts[key]}</li>)}
       </ul>
-      <h5>Organizations</h5>
-      <ul className="list-unstyled">
-        { props.organizations.map(organization => <li><img className="img-thumbnail" style={({width: '50px'})} src={organization} /></li>)}
-      </ul>
     </div>
   )
 }
