@@ -6,7 +6,8 @@ import { connect } from "react-redux";
 import './Navbar.scss'
 
 import Actions from '../actions';
-import { LoginButton } from "../pages/User/LoginButton";
+import { LoginButton } from "../components/LoginButton";
+import { LogoutButton } from "../components/LogoutButton";
 
 interface NavbarActions {
   dispatchSearchClick: () => Action;
@@ -60,6 +61,7 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
       this.renderNavLink('portfolio', 'Portfolio'),
       this.renderNavLink('licenses', 'Licenses'),
       this.renderNavLink('user', 'User'),
+      <li key="logout"><LogoutButton>Logout</LogoutButton></li>,
       this.renderNavButton('new-work', 'New Work')
     ];
   }
@@ -67,7 +69,7 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
 
 function mapStateToProps(state: any): NavbarProps {
   return {
-    loggedIn: state.currentUser && state.currentUser.loggedIn
+    loggedIn: state.session && !!state.session.user
   }
 }
 
