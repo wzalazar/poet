@@ -1,5 +1,7 @@
 import FetchReducer from './FetchReducer';
+import ModalsReducer from './ModalsReducer';
 
 export default {
-  fetch: FetchReducer
+  fetch: FetchReducer,
+  modals: ModalsReducer
 };
