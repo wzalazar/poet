@@ -43,10 +43,11 @@ export class UserLoader extends PageLoader<UserState, undefined> {
 
   sagaHook(): Saga {
     function* processResponse() {
+      //
       yield put({ type: Actions.loginSuccess });
     }
     return function*() {
-      yield takeEvery(Actions.userLoginResponse, processResponse);
+      yield takeEvery(Actions.loginResponse, processResponse);
     }
   }
 

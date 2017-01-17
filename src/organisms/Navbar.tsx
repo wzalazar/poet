@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import './Navbar.scss'
 
 import Actions from '../actions';
-import { LoginButton } from "../pages/User/LoginButton";
+import { LoginButton } from "../components/LoginButton";
 
 interface NavbarActions {
   dispatchSearchClick: () => Action;

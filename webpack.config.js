@@ -8,6 +8,7 @@ const vendor = [
   'react',
   'react-dom',
   'react-redux',
+  'react-bootstrap-modal',
   'redux',
   'redux-saga',
   'react-tabs',
@@ -21,7 +22,7 @@ module.exports = {
     'app': [
       'webpack-hot-middleware/client',
       './src/bootstrap.ts',
-      './src/index.tsx',
+      './src/index.tsx'
     ],
     'vendor': vendor
   },

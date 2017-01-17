@@ -1,6 +1,10 @@
 export default class Actions {
   public static readonly loginSuccess = 'login success';
-  public static readonly userLoginResponse = 'user login response';
+  public static readonly loginResponse = 'login response';
+  public static readonly loginButtonClicked = 'login button clicked';
+  public static readonly loginModalOpened = 'login modal opened';
+  public static readonly loginModalClosed = 'login modal closed';
+  public static readonly loginModalDisposeRequested = 'login dispose requested';
 
   public static readonly navbarSearchClick = 'navbar search click';
 

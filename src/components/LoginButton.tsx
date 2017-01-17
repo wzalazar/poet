@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Action } from "redux";
 
-import Actions from '../../actions';
+import Actions from '../actions';
 
 interface LoginProps {
   login: () => Action
@@ -15,5 +15,5 @@ class Component extends React.Component<LoginProps, undefined> {
 }
 
 export const LoginButton = connect(() => ({}), {
-  login: () => ({ type: Actions.userLoginResponse })
+  login: () => ({ type: Actions.loginResponse })
 })(Component);
