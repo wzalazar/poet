@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as moment from 'moment';
 import { Link } from 'react-router';
+import * as moment from 'moment';
 
 import '../extensions/String';
 import './LatestBlocks.scss';

@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import './style.scss';
 
 import LatestBlocks from '../../components/LatestBlocks';
+import LatestWorks from '../../components/LatestWorks';
 
 export interface LandingProps {
 }
@@ -18,7 +19,7 @@ export class LandingLayout extends React.Component<LandingProps, undefined> {
         <div className="cta-header">
           <button className="btn btn-outline-primary">Learn more</button>
         </div>
-        <div className="row landing-boxes">
+        <div className="row landing-boxes mb-3">
           <div className="col-sm-4">
             <section>
               <LatestBlocks />
@@ -38,6 +39,9 @@ export class LandingLayout extends React.Component<LandingProps, undefined> {
               <div className="explain">works registered</div>
             </section>
           </div>
+        </div>
+        <div>
+          <LatestWorks/>
         </div>
       </div>
     )
