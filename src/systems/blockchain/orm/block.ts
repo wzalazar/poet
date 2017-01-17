@@ -4,11 +4,7 @@ import Claim from './claim'
 
 @Table()
 export default class Block {
-  @PrimaryColumn('int', { generated: true })
-  _id: number
-
-  @Column()
-  @Index()
+  @PrimaryColumn('id')
   id: string
 
   @ManyToMany(type => Claim)

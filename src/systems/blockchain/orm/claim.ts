@@ -6,11 +6,7 @@ import { ClaimType } from '../../../model/claim'
 @TableInheritance("class-table")
 @DiscriminatorColumn({ name: "_type", type: "string"})
 export default class Claim {
-  @PrimaryColumn('int', { generated: true })
-  _id: number
-
-  @Column()
-  @Index()
+  @PrimaryColumn('string')
   id: string
 
   @Column()
@@ -21,6 +17,7 @@ export default class Claim {
   signature: string
 
   @Column()
+  @Index()
   type: ClaimType
 
   @OneToMany((type => Attribute), attribute => attribute.claim)

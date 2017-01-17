@@ -2,10 +2,7 @@ import { Table, PrimaryColumn, Column } from 'typeorm'
 
 @Table()
 export default class BlockInfo {
-  @PrimaryColumn('int', { generated: true })
-  _id: number
-
-  @Column()
+  @PrimaryColumn('string')
   id: string
 
   @Column()

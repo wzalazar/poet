@@ -8,6 +8,16 @@ export default class WorkRoute extends Route<CreativeWork> {
   }
 
   async getItem(id: string) {
-    return this.repository.createQueryBuilder()
+    return this.repository.findOne({
+      alias: "work",
+      where: "work.id = :id",
+      whereConditions: { id },
+      leftJoin: {
+        "attributes": "work.attributes",
+        "title": "work.title",
+        "licenses": "work.licenses",
+        "offerings": "work.offerings"
+      }
+    })
   }
 }

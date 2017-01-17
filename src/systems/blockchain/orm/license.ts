@@ -1,14 +1,16 @@
-import { ClassTableChild, Column } from 'typeorm'
+import { ClassTableChild, Column, ManyToOne, ManyToMany } from 'typeorm'
 import Claim from './claim'
+import CreativeWork from './creativeWork'
+import Profile from './profile'
 
 @ClassTableChild()
 export default class License extends Claim {
 
-  @Column()
-  for: string
+  @ManyToOne(type => CreativeWork, work => work.licenses)
+  for: CreativeWork
 
-  @Column()
-  owner: string
+  @ManyToOne(type => Profile, profile => profile.licenses)
+  owner: Profile
 
   @Column()
   proofType: string

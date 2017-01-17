@@ -1,5 +1,6 @@
-import { ClassTableChild, Column } from 'typeorm'
+import { ClassTableChild, Column, ManyToOne } from 'typeorm'
 import Claim from './claim'
+import CreativeWork from './creativeWork'
 
 @ClassTableChild()
 export default class Offering extends Claim {
@@ -10,6 +11,6 @@ export default class Offering extends Claim {
   @Column()
   offeringInfo: string
 
-  @Column()
-  for: string
+  @ManyToOne(type => CreativeWork, work => work.offerings)
+  for: CreativeWork
 }
