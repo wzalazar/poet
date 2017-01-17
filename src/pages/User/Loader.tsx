@@ -26,29 +26,11 @@ export class UserLoader extends PageLoader<UserState, undefined> {
   }
 
   reducerHook<State>(): ReducerDescription<UserState> {
-    return {
-      subState: 'currentUser',
-      reducer: (state: UserState, action: Action) => {
-        switch (action.type) {
-          case Actions.loginSuccess:
-            return {
-              loggedIn: true
-            };
-          default:
-            return state || this.initialState();
-        }
-      }
-    }
+    return null;
   }
 
   sagaHook(): Saga {
-    function* processResponse() {
-      //
-      yield put({ type: Actions.loginSuccess });
-    }
-    return function*() {
-      yield takeEvery(Actions.loginResponse, processResponse);
-    }
+    return null;
   }
 
   select(state: any, ownProps: any): undefined {
