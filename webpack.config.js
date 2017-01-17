@@ -4,7 +4,15 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-const vendor = ['react', 'react-dom', 'react-redux', 'redux', 'redux-saga', 'react-router'];
+const vendor = [
+  'react',
+  'react-dom',
+  'react-redux',
+  'redux',
+  'redux-saga',
+  'react-tabs',
+  'moment'
+];
 
 const production = !!process.env['PRODUCTION'];
 
