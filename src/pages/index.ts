@@ -4,6 +4,7 @@ import { Works } from "./Works/Loader";
 import { Profile } from "./Profile/Loader";
 import { About } from "./About/Loader";
 import { Documentation } from "./Documentation/Loader";
+import { Portfolio } from "./Portfolio/Loader";
 
 export default [
   LandingLoader,
@@ -11,5 +12,6 @@ export default [
   Works,
   Profile,
   About,
-  Documentation
+  Documentation,
+  Portfolio
 ]

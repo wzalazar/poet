@@ -6,6 +6,7 @@ import Actions from '../actions';
 
 const LOCALSTORAGE_SESSION = 'session';
 const MOCK_USER = {
+  id: 1,
   name: 'mock_user'
 };
 const MOCK_SESSION = {
