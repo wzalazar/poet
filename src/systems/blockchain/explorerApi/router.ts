@@ -1,7 +1,9 @@
-import BlockchainService from './service'
 import * as Router from 'koa-router'
-import Route from '../../helpers/route'
 import { Repository } from 'typeorm'
+
+import BlockchainService from '../service'
+import Route from '../../../helpers/route'
+import WorkRoute from './routes/work'
 
 export default class BlockchainRouter {
   service: BlockchainService
@@ -24,11 +26,10 @@ export default class BlockchainRouter {
     })
 
     try {
-      route(this.service.workRepository   , 'works'   )
+      new WorkRoute(this.service).addRoutes(router)
       route(this.service.blockRepository  , 'blocks'  )
       route(this.service.profileRepository, 'profiles')
       route(this.service.claimRepository  , 'claims'  )
-      route(this.service.licenseRepository, 'licenses')
     } catch (error) {
       console.log('Unable to setup route', error, error.stack)
     }

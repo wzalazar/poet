@@ -9,9 +9,9 @@ export class JSONStringifiable {
 }
 
 export default class Route<T> {
-  private idKey: string
-  private repository: TypeORM.Repository<T>
-  private resourcePath: string
+  protected idKey: string
+  protected repository: TypeORM.Repository<T>
+  protected resourcePath: string
 
   constructor(repository: TypeORM.Repository<T>, resourcePath: string, idKey?: string) {
     this.resourcePath = resourcePath
@@ -19,25 +19,33 @@ export default class Route<T> {
     this.idKey = idKey || 'id'
   }
 
-  renderCollection(items: T[]) {
-    return JSON.stringify(items.map(this.renderItem.bind(this)))
+  async getItem(id: string) {
+    return await this.repository.findOne({ [this.idKey]: id })
   }
 
-  renderItem(item: T) {
-    return JSON.stringify(this.prepareItem(item).content)
+  async renderCollection(items: T[]) {
+    return JSON.stringify(items.map(async (item) => (await this.prepareItem(item)).content))
   }
 
-  prepareItem(item: T): JSONStringifiable {
+  async renderItem(item: T) {
+    return JSON.stringify((await this.prepareItem(item)).content)
+  }
+
+  async prepareItem(item: T) {
     // TODO: Assert JSON.parse(JSON.stringify(item))) deep equals item
     return new JSONStringifiable(item)
   }
 
+  async getCollection() {
+    return await this.repository.find()
+  }
+
   addRoutes(router: Router) {
     router.get('/' + this.resourcePath, async (ctx) => {
-      ctx.body = this.renderCollection(await this.repository.find())
+      ctx.body = this.renderCollection(await this.getCollection())
     })
     router.get('/' + this.resourcePath + '/:id', async (ctx) => {
-      ctx.body = this.renderItem(await this.repository.findOne({ [this.idKey]: ctx.params.id }))
+      ctx.body = this.renderItem(await this.getItem(ctx.params.id))
     })
   }
 }
