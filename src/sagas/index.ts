@@ -1,5 +1,5 @@
 import FetchSaga from './FetchSaga';
 import NavbarSaga from './NavbarSaga';
-import LoginSaga from './LoginSaga';
+import SessionSaga from './SessionSaga';
 
-export default [ FetchSaga, NavbarSaga, LoginSaga ]
+export default [ FetchSaga, NavbarSaga, SessionSaga ]
