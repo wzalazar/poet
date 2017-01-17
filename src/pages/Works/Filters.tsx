@@ -9,7 +9,7 @@ export default class FiltersComponent extends React.Component<any, undefined> {
       <div className="pr-1">
         <span className="mr-1">{text}</span>
         <select>
-          { options.map(option => <option>{option}</option>)}
+          { options.map((option, index) => <option key={index}>{option}</option>)}
         </select>
       </div>
     );
