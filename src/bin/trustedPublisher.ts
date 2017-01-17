@@ -8,6 +8,7 @@ import { default as getCreator, ClaimBuilder } from "../model/builder"
 import { getHash } from '../helpers/torrentHash'
 import { Queue } from '../queue'
 
+
 export interface TrustedPublisherOptions {
   port: number
   broadcast: boolean

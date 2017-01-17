@@ -1,12 +1,22 @@
-import { Table, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm'
-import Block from './block'
+import { Table, PrimaryColumn, Column } from 'typeorm'
 
 @Table()
 export default class BlockInfo {
   @PrimaryColumn('int', { generated: true })
   _id: number
 
-  @OneToOne(type => Block)
-  @JoinColumn()
-  block: Block;
+  @Column()
+  id: string
+
+  @Column()
+  timestamp: number
+
+  @Column()
+  poetHeight: number
+
+  @Column()
+  bitcoinHeight: number
+
+  @Column()
+  bitcoinHash: string
 }

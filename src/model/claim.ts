@@ -29,7 +29,7 @@ export interface Claim {
     signature: string
 
     type: ClaimType
-    attributes: Object
+    attributes: { [key: string]: string }
 }
 
 export interface Block {

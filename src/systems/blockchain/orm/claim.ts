@@ -1,7 +1,10 @@
-import { Table, Column, PrimaryColumn, OneToMany, Index } from 'typeorm'
+import { Table, Column, PrimaryColumn, OneToMany, Index, DiscriminatorColumn, TableInheritance } from 'typeorm'
 import Attribute from './attribute'
+import { ClaimType } from '../../../model/claim'
 
 @Table()
+@TableInheritance("class-table")
+@DiscriminatorColumn({ name: "_type", type: "string"})
 export default class Claim {
   @PrimaryColumn('int', { generated: true })
   _id: number
@@ -18,7 +21,7 @@ export default class Claim {
   signature: string
 
   @Column()
-  type: string
+  type: ClaimType
 
   @OneToMany((type => Attribute), attribute => attribute.claim)
   attributes: Attribute[]

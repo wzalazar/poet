@@ -49,3 +49,13 @@ export function readdir(dirname: string): Promise<string[]> {
     })
   })
 }
+
+export function zip<A, B, R>(a: A[], b: B[], iterator: (a: A, b: B) => R): R[] {
+  const length = a.length
+  assert(a.length === b.length, 'Arrays should be of the same size')
+  const results = []
+  for (let i = 0; i < length; i++) {
+    results.push(iterator(a[i], b[i]))
+  }
+  return results
+}
