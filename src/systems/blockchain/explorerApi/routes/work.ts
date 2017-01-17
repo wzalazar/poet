@@ -8,10 +8,8 @@ export default class WorkRoute extends Route<CreativeWork> {
   }
 
   async getItem(id: string) {
-    return this.repository.findOne({
+    return this.repository.findOneById(id, {
       alias: "work",
-      where: "work.id = :id",
-      whereConditions: { id },
       leftJoin: {
         "attributes": "work.attributes",
         "title": "work.title",

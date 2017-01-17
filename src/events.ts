@@ -1,17 +1,24 @@
 export interface PoetTxInfo {
-  poetBlockHash?: string
-  transactionOrder: number
   transactionHash: string
   outputIndex: number
   torrentHash: string
-  poetHash: string
+
+  // Only available if confirmed
+  transactionOrder?: number
+  blockHeight?: number
+  blockHash?: string
+  timestamp?: number
+
+  // Only available if downloaded
+  poetHash?: string
+
+  // Only available if indexed
+  poetHeight?: number
 }
 
 export interface PoetBlockInfo {
   blockHeight: number
   blockHash: string
-  poetHash: string
   timestamp: number
-  poetHeight?: number
   poet: PoetTxInfo[]
 }

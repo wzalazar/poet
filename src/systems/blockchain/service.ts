@@ -103,7 +103,7 @@ export default class BlockchainService {
     return result
   }
 
-  async confirmBlock(blockInfo: PoetBlockInfo) {
+  async confirmBlock(blockInfo: PoetTxInfo) {
     const entity = this.blockInfoRepository.create({
       id: blockInfo.poetHash,
       ...blockInfo
@@ -113,21 +113,22 @@ export default class BlockchainService {
     return await this.confirmBlocksWithData(blockInfo)
   }
 
-  async confirmBlocksWithData(blockInfo: PoetBlockInfo) {
+  async confirmBlocksWithData(blockInfo: PoetTxInfo) {
     const block = await this.getBlock(blockInfo.poetHash)
     if (!block) {
       return
     }
     return await Promise.all(
-      zip(block.claims, blockInfo.poet, (claim, txInfo) => {
-        return this.confirmClaim(txInfo, claim)
+      block.claims.map((claim, index) => {
+        return this.confirmClaim(claim, blockInfo, index)
       })
     )
   }
 
-  async confirmClaim(txInfo: PoetTxInfo, claim: PureClaim) {
+  async confirmClaim(claim: PureClaim, txInfo: PoetTxInfo, index: number) {
     await this.claimInfoRepository.persist(this.claimInfoRepository.create({
-      id: txInfo.poetHash,
+      id: claim.id,
+      poetOrder: index,
       ...txInfo
     }))
     return await bluebird.all(
