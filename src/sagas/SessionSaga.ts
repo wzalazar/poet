@@ -20,12 +20,13 @@ function* loginButtonClickedAction(action: any) {
 function* logoutButtonClickedAction(action: any) {
   yield put({ type: Actions.logoutRequested });
   localStorage.removeItem(LOCALSTORAGE_SESSION);
+  browserHistory.push('/');
 }
 
 function* loginResponseAction(action: any) {
   yield put({ type: Actions.loginModalClose });
   yield put({ type: Actions.loginSuccess, session: MOCK_SESSION });
-  browserHistory.push('/works'); // TODO: redirect to login_success
+  browserHistory.push('/portfolio'); // TODO: redirect to login_success
   localStorage.setItem(LOCALSTORAGE_SESSION, JSON.stringify(MOCK_SESSION));
 }
 
