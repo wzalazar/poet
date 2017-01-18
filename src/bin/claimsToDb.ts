@@ -11,6 +11,7 @@ async function startListening() {
 
   try {
     queue.blockDownloaded().subscribeOnNext(async (block: Block) => {
+      console.log('Storing block', JSON.stringify(block, null, 2))
       try {
         await blockchain.storeBlock(block)
       } catch (error) {
@@ -18,6 +19,7 @@ async function startListening() {
       }
     })
     queue.blocksToSend().subscribeOnNext(async (block: Block) => {
+      console.log('Storing block', JSON.stringify(block, null, 2))
       try {
         await blockchain.storeBlock(block)
       } catch (error) {
@@ -25,8 +27,14 @@ async function startListening() {
       }
     })
     queue.bitcoinBlock().subscribeOnNext(async (block: PoetBlockInfo) => {
+      console.log('Confirming block', JSON.stringify(block, null, 2))
       try {
-        await blockchain.confirmBlock(block)
+        for (let poetTx of block.poet) {
+          poetTx.blockHash = block.blockHash
+          poetTx.blockHeight = block.blockHeight
+          poetTx.timestamp = block.timestamp
+          await blockchain.confirmBlock(poetTx)
+        }
       } catch (error) {
         console.log(error, error.stack)
       }

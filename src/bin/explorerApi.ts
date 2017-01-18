@@ -17,7 +17,7 @@ export default async function createServer(options?: ExplorerOptions) {
   const routeStrategy = new BlockchainRouter(service)
 
   const router = new Router()
-  routeStrategy.addRoutes(router)
+  await routeStrategy.addRoutes(router)
 
   koa.use(Body())
   koa.use(router.allowedMethods())

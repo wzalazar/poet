@@ -1,6 +1,8 @@
-import Route from '../../../../helpers/route'
-import CreativeWork from '../../orm/creativeWork'
+import 'reflect-metadata'
+
 import BlockchainService from '../../service'
+import CreativeWork from '../../orm/creativeWork'
+import Route from '../../../../helpers/route'
 
 export default class WorkRoute extends Route<CreativeWork> {
   constructor(service: BlockchainService) {

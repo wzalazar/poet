@@ -1,27 +1,21 @@
 version: "2"
 
 services:
-  bitcoind:
+  bitcoin_scanner:
     build:
       context: ..
-      dockerfile: ./Docker/bitcoin-testing.dockerfile
-    networks:
-      - bitcoin
-      - outside
+      dockerfile: ./Docker/bitcoin_scanner.dockerfile
     volumes:
-      - ./bitcoin-testing:/.bitcoin
-  db:
-    image: postgres
-    volumes:
-      - ./postgres:/var/lib/postgresql/data
+      - ../src:/poet/src
     networks:
+      - queue
+  claims-to-db:
+    build:
+      context: ..
+      dockerfile: ./Docker/claims_to_db.dockerfile
+    networks:
+      - queue
       - db
-  redis:
-    image: redis
-    volumes:
-      - ./redis:/data
-    networks:
-      - redis
   explorer:
     build:
       context: ..
@@ -30,16 +24,31 @@ services:
       - ../src:/poet/src
     networks:
       - db
-      - redis
-      - bitcoin
       - outside
+    expose:
+      - "3050:3050"
+  torrent_system:
+    build:
+      context: ..
+      dockerfile: ./Docker/torrent_system.dockerfile
+    volumes:
+      - ../src:/poet/src
+    networks:
+      - db
+      - outside
+    expose:
+      - "3050:3050"
+  db:
+    image: postgres
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    networks:
+      - db
 
 networks:
   db:
     internal: true
-  redis:
-    internal: true
-  bitcoin:
+  queue:
     internal: true
   outside:
-    external: true
+    driver: bridge

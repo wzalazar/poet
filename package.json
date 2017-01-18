@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha test",
     "bitcoin-scanner": "./node_modules/.bin/ts-node ./src/bin/bitcoinScanner.ts",
-    "download-notifier": "./node_modules/.bin/ts-node ./src/bin/downloadNotifier.ts",
+    "claims-to-db": "./node_modules/.bin/ts-node ./src/bin/claimsToDb.ts",
     "torrent-system": "./node_modules/.bin/ts-node ./src/bin/torrentSystem.ts",
     "trusted-publisher": "./node_modules/.bin/ts-node ./src/bin/trustedPublisher.ts"
   },
@@ -58,6 +58,7 @@
     "reflect-metadata": "^0.1.9",
     "rx": "^4.1.0",
     "socket.io-client": "^1.7.2",
+    "ts-node": "^2.0.0",
     "typeorm": "0.0.6",
     "typescript": "^2.2.0-dev.20170105",
     "webtorrent": "^0.98.0"

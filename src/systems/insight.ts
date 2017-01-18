@@ -100,6 +100,7 @@ export default class PoetInsightListener {
     const blockInfo: PoetBlockInfo = {
       blockHeight : height,
       blockHash   : block.hash,
+      timestamp   : block.timestamp,
       poet        : txs
     }
     this.notifyPoetData(blockInfo)

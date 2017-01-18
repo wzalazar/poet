@@ -1,10 +1,21 @@
-import { Table, PrimaryColumn, OneToOne, JoinColumn, Column } from 'typeorm'
-import Claim from './claim'
+import { Table, PrimaryColumn, Column } from 'typeorm'
 
 @Table()
 export default class ClaimInfo {
   @PrimaryColumn('string')
   id: string
+
+  @Column()
+  timestamp: number
+
+  @Column()
+  bitcoinHeight: number
+
+  @Column()
+  bitcoinHash: string
+
+  @Column()
+  poetBlockHeight: number
 
   @Column()
   poetBlockHash: string
@@ -20,4 +31,7 @@ export default class ClaimInfo {
 
   @Column()
   torrentHash: string
+
+  @Column()
+  claimOrder: number
 }

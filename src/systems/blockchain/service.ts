@@ -1,9 +1,10 @@
+import 'reflect-metadata'
+
 import * as bluebird from 'bluebird'
 import { Connection, createConnection, Repository } from 'typeorm'
 
-import { Block as PureBlock, ClaimType, Attribute } from '../../model/claim'
-import { Claim as PureClaim } from '../../model/claim'
-import * as Types from '../../model/claim'
+import { Block as PureBlock, ClaimType, Claim as PureClaim } from '../../model/claim'
+import { getHash } from '../../helpers/torrentHash'
 
 import CreativeWork from './orm/creativeWork'
 import Claim from './orm/claim'
@@ -11,10 +12,11 @@ import License from './orm/license'
 import Block from './orm/block'
 import Profile from './orm/profile'
 import BlockInfo from './orm/blockInfo'
-import Title from './orm/title'
-import { PoetTxInfo, PoetBlockInfo } from '../../events'
-import { assert, zip } from '../../common'
+import { PoetTxInfo } from '../../events'
 import ClaimInfo from './orm/claimInfo'
+import rules from './rules'
+import { Hook } from './rules'
+import { ClaimBuilder, default as getBuilder } from '../../model/builder'
 
 export async function getConnection() {
   return createConnection({
@@ -33,13 +35,10 @@ export async function getConnection() {
   })
 }
 
-interface Hook {
-  (claim: PureClaim, info: PoetTxInfo): any
-}
-
 export default class BlockchainService {
   db: Connection
   started: boolean
+  creator: ClaimBuilder
 
   confirmHooks: { [key in ClaimType]: Hook[] } = {
     'CreativeWork': [] as Hook[],
@@ -52,15 +51,16 @@ export default class BlockchainService {
   }
 
   constructor() {
+    this.setupHooks()
     this.started = false
 
-    this.setupHooks()
   }
 
   setupHooks() {
-    this.addHook(Types.CREATIVE_WORK, (claim: PureClaim, info: PoetTxInfo) => {
-
-    })
+    // TODO: Scan "rules" folder
+    for (let rule of rules) {
+      this.addHook(rule.type, rule.hook)
+    }
   }
 
   addHook(type: ClaimType, hook: Hook) {
@@ -73,6 +73,7 @@ export default class BlockchainService {
     }
     this.db = await getConnection()
     this.started = true
+    this.creator = await getBuilder()
     return
   }
 
@@ -81,10 +82,22 @@ export default class BlockchainService {
     for (let claim of block.claims) {
       claimSet.push(await this.storeClaim(claim))
     }
-    return await this.blockRepository.persist(this.blockRepository.create({
+    await this.blockRepository.persist(this.blockRepository.create({
       id: block.id,
       claims: claimSet
     }))
+    const id = await getHash(this.creator.serializeBlockForSave(block), block.id)
+    const blockInfo = await this.getBlockByTorrentId(id)
+    if (blockInfo) {
+      return await this.confirmBlocksWithData(blockInfo, block)
+    }
+  }
+
+  async getBlockByTorrentId(hash: string) {
+    return await this.blockInfoRepository.createQueryBuilder("blockInfo")
+      .where("blockInfo.torrentHash=:hash")
+      .setParameters({ hash })
+      .getOne()
   }
 
   async storeClaim(claim: PureClaim) {
@@ -113,8 +126,10 @@ export default class BlockchainService {
     return await this.confirmBlocksWithData(blockInfo)
   }
 
-  async confirmBlocksWithData(blockInfo: PoetTxInfo) {
-    const block = await this.getBlock(blockInfo.poetHash)
+  async confirmBlocksWithData(blockInfo: PoetTxInfo, block?: PureBlock) {
+    if (!block) {
+      block = await this.getBlock(blockInfo.poetHash)
+    }
     if (!block) {
       return
     }
