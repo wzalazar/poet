@@ -3,35 +3,34 @@ import * as amqp from 'amqplib/callback_api'
 import * as Rx from 'rx'
 import { Channel } from "amqplib"
 
-import { PoetBlockInfo, PoetTxInfo } from './events'
+import { BitcoinBlockMetadata, BlockMetadata } from './events'
 import { Block } from './model/claim'
 
 const BITCOIN_BLOCK = 'bitcoinBlock'
 const BITCOIN_TRANSACTION = 'bitcoinTransaction'
-const DOWNLOAD_HASH = 'downloadHash'
 const BLOCK_READY = 'blockReady'
 const SEND_BLOCK = 'sendBlock'
 
 const amqpConnect = bluebird.promisify(amqp.connect, amqp)
 
 export class Queue {
-  bitcoinBlock(): Rx.Observable<PoetBlockInfo> {
-    return this.consume(BITCOIN_BLOCK) as Rx.Observable<PoetBlockInfo>
+  bitcoinBlock(): Rx.Observable<BitcoinBlockMetadata> {
+    return this.consume(BITCOIN_BLOCK) as Rx.Observable<BitcoinBlockMetadata>
   }
 
-  transactionHeard(): Rx.Observable<PoetTxInfo> {
-    return this.consume(BITCOIN_TRANSACTION) as Rx.Observable<PoetTxInfo>
+  transactionHeard(): Rx.Observable<BlockMetadata> {
+    return this.consume(BITCOIN_TRANSACTION) as Rx.Observable<BlockMetadata>
   }
 
   blocksToSend(): Rx.Observable<Block> {
-    return this.consume(DOWNLOAD_HASH) as Rx.Observable<Block>
+    return this.consume(SEND_BLOCK) as Rx.Observable<Block>
   }
 
   blockDownloaded(): Rx.Observable<Block> {
     return this.consume(BLOCK_READY) as Rx.Observable<Block>
   }
 
-  announceBitcoinBlock(bitcoinBlock: PoetBlockInfo) {
+  announceBitcoinBlock(bitcoinBlock: BitcoinBlockMetadata) {
     return this.publish(BITCOIN_BLOCK, bitcoinBlock)
   }
 
@@ -43,7 +42,7 @@ export class Queue {
     return this.publish(SEND_BLOCK, block)
   }
 
-  announceBitcoinTransaction(poetTx: PoetTxInfo) {
+  announceBitcoinTransaction(poetTx: BlockMetadata) {
     return this.publish(BITCOIN_TRANSACTION, poetTx)
   }
 

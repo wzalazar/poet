@@ -1,8 +1,8 @@
-import { PoetTxInfo } from '../../../events'
+import { BlockMetadata } from '../../../events'
 import { Claim, ClaimType } from '../../../model/claim'
 
 export interface Hook {
-  (claim: Claim, info: PoetTxInfo): any
+  (claim: Claim, info: BlockMetadata): any
 }
 
 export interface HookDescription {

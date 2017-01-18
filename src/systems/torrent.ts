@@ -8,7 +8,7 @@ import { default as getBuilder } from '../model/builder'
 import { Queue } from '../queue'
 import { getCreateOpts, getHash, createObservableDownload } from '../helpers/torrentHash'
 import { noop, readdir, assert } from '../common'
-import { PoetTxInfo, PoetBlockInfo } from '../events'
+import { BlockMetadata, BitcoinBlockMetadata } from '../events'
 
 export default class TorrentSystem {
 
@@ -60,11 +60,11 @@ export default class TorrentSystem {
   }
 
   async listenToHashesToDownload() {
-    this.queue.transactionHeard().subscribeOnNext((tx: PoetTxInfo) => {
+    this.queue.transactionHeard().subscribeOnNext((tx: BlockMetadata) => {
       this.downloadTorrent(tx.torrentHash)
     })
 
-    this.queue.bitcoinBlock().subscribeOnNext((block: PoetBlockInfo) => {
+    this.queue.bitcoinBlock().subscribeOnNext((block: BitcoinBlockMetadata) => {
       block.poet.map(txInfo => this.downloadTorrent(txInfo.torrentHash))
     })
   }
@@ -79,9 +79,11 @@ export default class TorrentSystem {
       const buffer = builder.serializeBlockForSave(block)
       const torrentId = await getHash(buffer, block.id)
 
-      // Copy the buffer to seed and set a custon "name" field needed by WebTorrent
+      // Copy the buffer to seed and set a custom "name" field needed by WebTorrent
       let seedBuffer = new Buffer(buffer) as any
       seedBuffer.name = torrentId
+
+      console.log('Seeding torrent with hash', torrentId)
 
       return new Promise((resolve, reject) => {
         this.client.seed(

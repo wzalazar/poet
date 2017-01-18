@@ -1,36 +1,36 @@
-import { Table, PrimaryColumn, Column, Index } from 'typeorm'
+import { Table, Column, Index, PrimaryGeneratedColumn } from 'typeorm'
 
 @Table()
 export default class BlockInfo {
-  @PrimaryColumn('number', { generated: true })
+  @PrimaryGeneratedColumn()
   _id: number
 
   @Index()
   @Column()
-  id: string
+  hash: string
 
+  @Index()
   @Column()
-  height: number
+  torrentHash: string
 
-  @Column()
-  timestamp: number
+  @Column({ nullable: true })
+  height?: number
 
-  @Column()
-  bitcoinHeight: number
+  @Column({ nullable: true })
+  timestamp?: number
 
-  @Column()
-  bitcoinHash: string
+  @Column({ nullable: true })
+  bitcoinHeight?: number
 
-  @Column()
-  transactionOrder: number
+  @Column({ nullable: true })
+  bitcoinHash?: string
 
-  @Column()
+  @Column({ nullable: true })
+  transactionOrder?: number
+
+  @Column({ nullable: true })
   transactionHash: string
 
-  @Column()
+  @Column({ nullable: true })
   outputIndex: number
-
-  @Column()
-  @Index()
-  torrentHash: string
 }

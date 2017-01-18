@@ -1,7 +1,8 @@
-export interface PoetTxInfo {
-  transactionHash: string
-  outputIndex: number
+export interface BlockMetadata {
   torrentHash: string
+
+  transactionHash?: string
+  outputIndex?: number
 
   // Only available if confirmed
   transactionOrder?: number
@@ -10,15 +11,15 @@ export interface PoetTxInfo {
   timestamp?: number
 
   // Only available if downloaded
-  poetHash?: string
+  hash?: string
 
   // Only available if indexed
-  poetHeight?: number
+  height?: number
 }
 
-export interface PoetBlockInfo {
+export interface BitcoinBlockMetadata {
   blockHeight: number
   blockHash: string
   timestamp: number
-  poet: PoetTxInfo[]
+  poet: BlockMetadata[]
 }

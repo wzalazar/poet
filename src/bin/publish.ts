@@ -12,8 +12,9 @@ export default async function create() {
   const claim = creator.createSignedClaim({
     type: 'CreativeWork',
     attributes: {
-      name: 'Gioconda 2',
-      createdOn: '2016-12-31 00:00:00.000Z'
+      name: 'La Gioconda VV',
+      createdOn: '2016-11-31 00:00:00.000Z',
+      param: process.argv[2]
     }
   }, myPrivateKey)
 

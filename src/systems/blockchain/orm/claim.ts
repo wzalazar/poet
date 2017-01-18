@@ -6,7 +6,7 @@ import { ClaimType } from '../../../model/claim'
 @TableInheritance("class-table")
 @DiscriminatorColumn({ name: "_type", type: "string"})
 export default class Claim {
-  @PrimaryColumn('string')
+  @PrimaryColumn()
   id: string
 
   @Column()

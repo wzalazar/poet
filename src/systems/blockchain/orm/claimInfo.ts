@@ -1,27 +1,30 @@
-import { Table, PrimaryColumn, Column } from 'typeorm'
+import { Table, Column, PrimaryGeneratedColumn } from 'typeorm'
 
 @Table()
 export default class ClaimInfo {
-  @PrimaryColumn('string')
+  @PrimaryGeneratedColumn()
+  _id: number
+
+  @Column()
   id: string
 
-  @Column()
-  timestamp: number
+  @Column({ nullable: true })
+  timestamp?: number
 
-  @Column()
-  bitcoinHeight: number
+  @Column({ nullable: true })
+  bitcoinHeight?: number
 
-  @Column()
-  bitcoinHash: string
+  @Column({ nullable: true })
+  bitcoinHash?: string
 
-  @Column()
-  poetBlockHeight: number
+  @Column({ nullable: true })
+  poetBlockHeight?: number
 
-  @Column()
-  poetBlockHash: string
+  @Column({ nullable: true })
+  poetBlockHash?: string
 
-  @Column()
-  transactionOrder: string
+  @Column({ nullable: true })
+  transactionOrder?: string
 
   @Column()
   transactionHash: string
@@ -32,6 +35,6 @@ export default class ClaimInfo {
   @Column()
   torrentHash: string
 
-  @Column()
-  claimOrder: number
+  @Column({ nullable: true })
+  poetOrder?: number
 }

@@ -1,14 +1,14 @@
-import { Table, PrimaryColumn, Column, Index, ManyToOne } from 'typeorm'
+import { Table, Column, Index, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 
 import Claim from './claim'
 
 @Table()
 export default class Attribute {
-  @PrimaryColumn('int', { generated: true })
+  @PrimaryGeneratedColumn()
   _id: number
 
   @ManyToOne(type => Claim, claim => claim.attributes)
-  claim: string
+  claim: Claim
 
   @Column()
   @Index()

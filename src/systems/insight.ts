@@ -1,7 +1,7 @@
 import * as socketIO from 'socket.io-client'
 import * as fetch from 'isomorphic-fetch'
 
-import { PoetBlockInfo, PoetTxInfo } from '../events'
+import { BitcoinBlockMetadata, BlockMetadata } from '../events'
 
 const bitcore = require('bitcore-lib')
 
@@ -14,11 +14,11 @@ const turnToBitcoreTx = bitcore.Transaction
 const turnToBitcoreBlock = bitcore.Block
 
 export interface TxInfoListener {
-  (txInfo: PoetTxInfo): any
+  (txInfo: BlockMetadata): any
 }
 
 export interface BlockInfoListener {
-  (block: PoetBlockInfo): any
+  (block: BitcoinBlockMetadata): any
 }
 
 export default class PoetInsightListener {
@@ -81,12 +81,12 @@ export default class PoetInsightListener {
     }
   }
 
-  notifyPoetData(newState: PoetBlockInfo) {
+  notifyPoetData(newState: BitcoinBlockMetadata) {
     this.bitcoinBlockListeners.forEach(listener => listener(newState))
   }
 
   scanBitcoreBlock(block: any, height: number) {
-    const txs = block.transactions.map((tx: any, index: number): PoetTxInfo | null => {
+    const txs = block.transactions.map((tx: any, index: number): BlockMetadata | null => {
       const poetData = this.containsPoetForBitcore(tx)
       if (!poetData) {
         return
@@ -97,16 +97,16 @@ export default class PoetInsightListener {
         transactionOrder : index
       })
     }).filter(notNull)
-    const blockInfo: PoetBlockInfo = {
+    const blockInfo: BitcoinBlockMetadata = {
       blockHeight : height,
       blockHash   : block.hash,
-      timestamp   : block.timestamp,
+      timestamp   : block.header.time,
       poet        : txs
     }
     this.notifyPoetData(blockInfo)
   }
 
-  containsPoetForBitcore(tx: any): PoetTxInfo {
+  containsPoetForBitcore(tx: any): BlockMetadata {
     const check = function(script: any, index: number) {
       if (script.classify() !== bitcore.Script.types.DATA_OUT)
         return
@@ -114,9 +114,9 @@ export default class PoetInsightListener {
       return data.indexOf(PoetInsightListener.BARD) === 0
           && data.indexOf(PoetInsightListener.VERSION) === 4
           ? {
-            txHash       : tx.hash,
-            outputNumber : index,
-            torrentHash  : data.slice(8).toString('hex')
+            transactionHash : tx.hash,
+            outputIndex     : index,
+            torrentHash     : data.slice(8).toString('hex')
           }
           : null
     }

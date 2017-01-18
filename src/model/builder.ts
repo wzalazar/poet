@@ -21,21 +21,20 @@ const insight = {
 
 const poetAddress = 'mg6CMr7TkeERALqxwPdqq6ksM2czQzKh5C'
 
-export default async function getBuilder() {
-  const builder = await loadBuilders()
-  return new ClaimBuilder(builder)
+export default function getBuilder(): Promise<ClaimBuilder> {
+  return loadBuilders().then(loader => new ClaimBuilder(loader))
 }
 
 export class ClaimBuilder {
 
-  poetBlock : protobuf.Type
+  block: protobuf.Type
   attribute : protobuf.Type
   claim     : protobuf.Type
 
   constructor(builders: Builders) {
-    this.poetBlock = builders.poetBlock
+    this.block     = builders.block
     this.attribute = builders.attribute
-    this.claim = builders.claimBuilder
+    this.claim     = builders.claim
   }
 
   bitcoinPriv = new bitcore.PrivateKey('343689da46542f2af204a3ced0ce942af1c25476932aa3a48af5e683df93126b')
@@ -62,7 +61,7 @@ export class ClaimBuilder {
   }
 
   getIdForBlock(block: any): string {
-    return common.sha256(this.poetBlock.encode(block).finish()).toString('hex')
+    return common.sha256(this.block.encode(block).finish()).toString('hex')
   }
 
   getAttributes(attrs: any) {
@@ -99,7 +98,7 @@ export class ClaimBuilder {
 
   serializedToBlock(block: Buffer) {
     try {
-      const decoded = this.poetBlock.decode(block)
+      const decoded = this.block.decode(block)
       return this.protoToBlockObject(decoded)
     } catch (e) {
       console.log(e, e.stack)
@@ -107,7 +106,7 @@ export class ClaimBuilder {
   }
 
   serializeBlockForSave(block: Block) {
-    return new Buffer(this.poetBlock.encode(this.poetBlock.create({
+    return new Buffer(this.block.encode(this.block.create({
       id: new Buffer(block.id, 'hex'),
       claims: block.claims.map(this.claimToProto.bind(this))
     })).finish())
@@ -156,7 +155,7 @@ export class ClaimBuilder {
     const protoClaims = claims.map((claim: Claim) => {
       return this.claimToProto(claim)
     })
-    const block = this.poetBlock.create({
+    const block = this.block.create({
       id: new Buffer(''),
       claims: protoClaims
     })

@@ -1,12 +1,13 @@
-import { Table, Column, PrimaryColumn, ManyToMany, Index } from 'typeorm'
+import { Table, Column, PrimaryColumn, ManyToMany, Index, JoinTable } from 'typeorm'
 
 import Claim from './claim'
 
 @Table()
 export default class Block {
-  @PrimaryColumn('id')
+  @PrimaryColumn({ length: 64, type: 'string' })
   id: string
 
   @ManyToMany(type => Claim)
+  @JoinTable()
   claims: Claim[]
 }

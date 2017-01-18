@@ -1,15 +1,18 @@
 import { default as BlockchainService } from '../systems/blockchain/service'
 import { Queue } from '../queue'
 import { Block } from '../model/claim'
-import { PoetBlockInfo } from '../events'
+import { BitcoinBlockMetadata } from '../events'
+
+import getBuilder from '../model/builder'
+import getConnection from '../systems/blockchain/connection'
 
 async function startListening() {
   const blockchain = new BlockchainService()
   const queue = new Queue()
 
-  await blockchain.start()
-
   try {
+    await blockchain.start(getConnection, getBuilder)
+
     queue.blockDownloaded().subscribeOnNext(async (block: Block) => {
       console.log('Storing block', JSON.stringify(block, null, 2))
       try {
@@ -18,6 +21,7 @@ async function startListening() {
         console.log(error, error.stack)
       }
     })
+
     queue.blocksToSend().subscribeOnNext(async (block: Block) => {
       console.log('Storing block', JSON.stringify(block, null, 2))
       try {
@@ -26,7 +30,8 @@ async function startListening() {
         console.log(error, error.stack)
       }
     })
-    queue.bitcoinBlock().subscribeOnNext(async (block: PoetBlockInfo) => {
+
+    queue.bitcoinBlock().subscribeOnNext(async (block: BitcoinBlockMetadata) => {
       console.log('Confirming block', JSON.stringify(block, null, 2))
       try {
         for (let poetTx of block.poet) {

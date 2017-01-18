@@ -9,7 +9,7 @@ message Claim {
       repeated Attribute attributes = 5;
 }
 
-message PoetBlock {
+message Block {
       optional bytes id = 1;
       repeated Claim claims = 2;
 }
