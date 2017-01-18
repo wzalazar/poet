@@ -1,24 +1,19 @@
 import 'reflect-metadata'
-
 import * as bluebird from 'bluebird'
 import { Connection, Repository } from 'typeorm'
 
 import { Block as PureBlock, ClaimType, Claim as PureClaim } from '../../model/claim'
 import { getHash } from '../../helpers/torrentHash'
+import { BlockMetadata } from '../../events'
+import rules, { Hook } from './rules'
+import { ClaimBuilder } from '../../model/builder'
 
 import CreativeWork from './orm/creativeWork'
 import Claim from './orm/claim'
-import License from './orm/license'
 import Block from './orm/block'
 import Profile from './orm/profile'
 import BlockInfo from './orm/blockInfo'
-import Attribute from './orm/attribute'
 import ClaimInfo from './orm/claimInfo'
-
-import { BlockMetadata } from '../../events'
-import rules from './rules'
-import { Hook } from './rules'
-import { ClaimBuilder } from '../../model/builder'
 
 export default class BlockchainService {
   db: Connection
@@ -114,10 +109,6 @@ export default class BlockchainService {
     )
   }
 
-  get attributeRepository(): Repository<Attribute> {
-    return this.db.getRepository(Attribute)
-  }
-
   get blockInfoRepository(): Repository<BlockInfo> {
     return this.db.getRepository(BlockInfo)
   }
@@ -136,10 +127,6 @@ export default class BlockchainService {
 
   get blockRepository(): Repository<Block> {
     return this.db.getRepository(Block)
-  }
-
-  async getBlockInfoByTorrentId(hash: string) {
-    return await this.blockInfoRepository.findOne({ torrentHash: hash })
   }
 
   private async saveBlockIfNotExists(block: PureBlock) {
@@ -222,10 +209,6 @@ export default class BlockchainService {
       const entity = this.blockInfoRepository.create(blockMetadata)
       return await this.blockInfoRepository.persist(entity)
     }
-  }
-
-  get offerings(): Repository<License> {
-    return this.db.getRepository('license') as Repository<License>
   }
 
   get profileRepository(): Repository<Profile> {

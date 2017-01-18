@@ -1,20 +1,22 @@
-import { ClassTableChild, Column, ManyToOne, ManyToMany } from 'typeorm'
-import Claim from './claim'
+import { Column, ManyToOne, Table, PrimaryColumn } from 'typeorm'
 import CreativeWork from './creativeWork'
 import Profile from './profile'
 
-@ClassTableChild()
-export default class License extends Claim {
+@Table()
+export default class License {
 
-  @ManyToOne(type => CreativeWork, work => work.licenses)
-  for: any
+  @PrimaryColumn()
+  id: string
 
-  @ManyToOne(type => Profile, profile => profile.licenses)
+  @ManyToOne(type => CreativeWork, work => work.licenses, { nullable: true })
+  for: CreativeWork
+
+  @ManyToOne(type => Profile, profile => profile.licenses, { nullable: true })
   owner: Profile
 
-  @Column()
+  @Column({ nullable: true })
   proofType: string
 
-  @Column()
+  @Column({ nullable: true })
   proofValue: string
 }

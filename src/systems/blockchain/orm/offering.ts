@@ -1,14 +1,17 @@
-import { ClassTableChild, Column, ManyToOne } from 'typeorm'
+import { ClassTableChild, Column, ManyToOne, Table, PrimaryGeneratedColumn, JoinTable, PrimaryColumn } from 'typeorm'
 import Claim from './claim'
 import CreativeWork from './creativeWork'
 
-@ClassTableChild()
-export default class Offering extends Claim {
+@Table()
+export default class Offering {
 
-  @Column()
+  @PrimaryColumn()
+  id: string
+
+  @Column({ nullable: true })
   offeringType: string
 
-  @Column()
+  @Column({ nullable: true })
   offeringInfo: string
 
   @ManyToOne(type => CreativeWork, work => work.offerings)

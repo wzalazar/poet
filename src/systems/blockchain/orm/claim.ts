@@ -1,13 +1,8 @@
-import {
-  Table, Column, PrimaryColumn, OneToMany, Index, DiscriminatorColumn, TableInheritance,
-  JoinTable
-} from 'typeorm'
+import { Table, Column, PrimaryColumn, OneToMany, DiscriminatorColumn, TableInheritance, JoinTable } from 'typeorm'
 import Attribute from './attribute'
 import { ClaimType } from '../../../model/claim'
 
 @Table()
-@TableInheritance("class-table")
-@DiscriminatorColumn({ name: "_class", type: "string"})
 export default class Claim {
   @PrimaryColumn()
   id: string
