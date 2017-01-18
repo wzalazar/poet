@@ -32,6 +32,6 @@ export class LandingLoader extends PageLoader<Object, Object> {
   }
 
   select(state: any, ownProps: any): Object {
-    return {};
+    return { loggedIn: state.session && !!state.session.user};
   }
 }

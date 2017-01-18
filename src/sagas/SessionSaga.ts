@@ -26,7 +26,7 @@ function* logoutButtonClickedAction(action: any) {
 function* loginResponseAction(action: any) {
   yield put({ type: Actions.loginModalClose });
   yield put({ type: Actions.loginSuccess, session: MOCK_SESSION });
-  browserHistory.push('/portfolio'); // TODO: redirect to login_success
+  browserHistory.push('/'); // TODO: redirect to login_success
   localStorage.setItem(LOCALSTORAGE_SESSION, JSON.stringify(MOCK_SESSION));
 }
 
