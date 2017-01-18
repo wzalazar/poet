@@ -5,5 +5,5 @@ import CreativeWork from './creativeWork'
 @ClassTableChild()
 export default class Title extends Claim {
   @OneToOne(type => CreativeWork, work => work.title)
-  for: CreativeWork
+  for: any
 }

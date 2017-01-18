@@ -7,14 +7,14 @@ import CreativeWork from './creativeWork'
 export default class Profile extends Claim {
 
   @OneToMany(type => License, license => license.owner)
-  licenses: License[]
+  licenses: any[]
 
   @OneToMany(type => CreativeWork, work => work.author)
-  authoredWorks: CreativeWork[]
+  authoredWorks: any[]
 
   @ManyToMany(type => CreativeWork, work => work.publishers)
-  hasLicensesFor: CreativeWork[]
+  hasLicensesFor: any[]
 
   @OneToMany(type => CreativeWork, work => work.owner)
-  ownedWorks: CreativeWork[]
+  ownedWorks: any[]
 }

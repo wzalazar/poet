@@ -12,5 +12,5 @@ export default class Offering extends Claim {
   offeringInfo: string
 
   @ManyToOne(type => CreativeWork, work => work.offerings)
-  for: CreativeWork
+  for: any
 }

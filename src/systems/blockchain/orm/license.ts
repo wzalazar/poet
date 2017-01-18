@@ -7,7 +7,7 @@ import Profile from './profile'
 export default class License extends Claim {
 
   @ManyToOne(type => CreativeWork, work => work.licenses)
-  for: CreativeWork
+  for: any
 
   @ManyToOne(type => Profile, profile => profile.licenses)
   owner: Profile
