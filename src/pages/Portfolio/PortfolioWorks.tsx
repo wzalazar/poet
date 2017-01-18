@@ -15,7 +15,8 @@ function renderTableRow(props: WorkProps) {
           <Link to={'/works/' + props.id}>{props.name}</Link>
         </div>
         <div>
-          <small className="mr-2">{ props.type }</small><small>365 words at 8kb</small>
+          <small className="mr-2">{ props.type }</small>
+          <small>365 words at 8kb</small>
         </div>
       </td>
       <td>{props.publicKey}</td>
@@ -32,19 +33,21 @@ function renderTableRow(props: WorkProps) {
   )
 }
 
-function render(props: FetchComponentProps) {
+function render(props: WorkProps) {
   return (
     <div className="portfolio-works">
       <table className="table table-hover">
         <thead>
-          <th>Name</th>
-          <th>Hash</th>
-          <th>Timestamped</th>
-          <th>Notary</th>
-          <th>Actions</th>
+          <tr>
+            <td>Name</td>
+            <td>Hash</td>
+            <td>Timestamped</td>
+            <td>Notary</td>
+            <td>Actions</td>
+          </tr>
         </thead>
         <tbody>
-        { props.elements.map(renderTableRow) }
+          { props.elements.map(renderTableRow) }
         </tbody>
       </table>
     </div>
