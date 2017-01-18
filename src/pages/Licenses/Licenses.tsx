@@ -9,14 +9,16 @@ import './Layout.scss';
 
 function renderLicense(license: any) {
   return (
-    <li key={license.key} className="card col-sm-6 col-sm-4 col-lg-3 m-1">
+    <li key={license.key} className="card col-sm-5 col-sm-3 col-lg-3 m-1">
       <div className="card-block">
-        <h5 className="card-title " style={({display: "flex"})} >
-          { license.title }
-          <DropdownMenu options={['Edit', 'Transfer', 'Revoke']} optionSelected={optionSelected.bind(null, license)}>
-            Actions
-          </DropdownMenu>
-        </h5>
+        <div className="card-title " >
+          <h5>{ license.title }</h5>
+          <div className="menu">
+            <DropdownMenu options={['Edit', 'Transfer', 'Revoke']} optionSelected={optionSelected.bind(null, license)}>
+              Actions
+            </DropdownMenu>
+          </div>
+        </div>
         <div>
           <div className="box-placeholder" />
           <div>
@@ -37,7 +39,7 @@ function optionSelected(license: any, option: string) {
 
 function render(props: FetchComponentProps) {
   return (
-    <section className="portfolio-works">
+    <section className="licenses">
       <ul className="row list-unstyled">
         { props.elements.map(renderLicense) }
       </ul>
