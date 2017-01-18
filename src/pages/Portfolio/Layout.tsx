@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import { HexString } from '../../common';
 
-import PortfolioWorks from './PortfolioWorks'
-import { PortfolioWorksFilters } from './PortfolioWorksFilters';
+import PortfolioWorks from './Works'
+import { PortfolioWorksFilters } from './WorksFilters';
 
 import './Layout.scss';
 
