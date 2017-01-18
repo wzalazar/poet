@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { FetchComponentProps } from '../../components/FetchComponent';
 import WorksComponent from '../../components/Works';
 import { WorkProps } from '../../components/WorkComponent';
+import { DropdownMenu } from '../../components/DropdownMenu';
 
 //import './Layout.scss';
 
@@ -49,7 +50,12 @@ function renderLicense(license: any) {
   return (
     <li key={license.key} className="card col-sm-6 col-sm-4 col-lg-3 m-1">
       <div className="card-block">
-        <h5 className="card-title">{ license.title }</h5>
+        <h5 className="card-title " style={({display: "flex"})} >
+          { license.title }
+          <DropdownMenu options={['Edit', 'Transfer', 'Revoke']} optionSelected={optionSelected.bind(null, license)}>
+            Actions
+          </DropdownMenu>
+        </h5>
         <div>
           <div className="box-placeholder" />
           <div>
@@ -62,6 +68,10 @@ function renderLicense(license: any) {
       </div>
     </li>
   )
+}
+
+function optionSelected(license: any, option: string) {
+  console.log('optionSelected', license, option);
 }
 
 function render(props: WorkProps) {
