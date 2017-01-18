@@ -3,10 +3,10 @@ import { Table, Column, Index, PrimaryGeneratedColumn } from 'typeorm'
 @Table()
 export default class BlockInfo {
   @PrimaryGeneratedColumn()
-  _id: number
+  id: number
 
   @Index()
-  @Column()
+  @Column({ nullable: true })
   hash: string
 
   @Index()

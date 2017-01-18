@@ -35,8 +35,8 @@ async function startListening() {
       console.log('Confirming block', JSON.stringify(block, null, 2))
       try {
         for (let poetTx of block.poet) {
-          poetTx.blockHash = block.blockHash
-          poetTx.blockHeight = block.blockHeight
+          poetTx.bitcoinHash = block.blockHash
+          poetTx.bitcoinHeight = block.blockHeight
           poetTx.timestamp = block.timestamp
           await blockchain.confirmBlock(poetTx)
         }

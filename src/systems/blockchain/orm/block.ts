@@ -7,7 +7,11 @@ export default class Block {
   @PrimaryColumn({ length: 64, type: 'string' })
   id: string
 
-  @ManyToMany(type => Claim)
+  @ManyToMany(type => Claim, {
+    cascadeInsert: true,
+    cascadeUpdate: true,
+    cascadeRemove: true
+  })
   @JoinTable()
   claims: Claim[]
 }

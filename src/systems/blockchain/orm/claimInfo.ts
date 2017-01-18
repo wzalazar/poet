@@ -3,10 +3,13 @@ import { Table, Column, PrimaryGeneratedColumn } from 'typeorm'
 @Table()
 export default class ClaimInfo {
   @PrimaryGeneratedColumn()
-  _id: number
+  id: number
 
   @Column()
-  id: string
+  hash: string
+
+  @Column()
+  torrentHash: string
 
   @Column({ nullable: true })
   timestamp?: number
@@ -18,23 +21,20 @@ export default class ClaimInfo {
   bitcoinHash?: string
 
   @Column({ nullable: true })
-  poetBlockHeight?: number
+  blockHeight?: number
 
   @Column({ nullable: true })
-  poetBlockHash?: string
+  blockHash?: string
 
   @Column({ nullable: true })
   transactionOrder?: string
 
-  @Column()
+  @Column({ nullable: true })
   transactionHash: string
 
-  @Column()
+  @Column({ nullable: true })
   outputIndex: number
 
-  @Column()
-  torrentHash: string
-
   @Column({ nullable: true })
-  poetOrder?: number
+  claimOrder?: number
 }

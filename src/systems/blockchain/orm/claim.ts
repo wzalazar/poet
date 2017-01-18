@@ -1,25 +1,31 @@
-import { Table, Column, PrimaryColumn, OneToMany, Index, DiscriminatorColumn, TableInheritance } from 'typeorm'
+import {
+  Table, Column, PrimaryColumn, OneToMany, Index, DiscriminatorColumn, TableInheritance,
+  JoinTable
+} from 'typeorm'
 import Attribute from './attribute'
 import { ClaimType } from '../../../model/claim'
 
 @Table()
 @TableInheritance("class-table")
-@DiscriminatorColumn({ name: "_type", type: "string"})
+@DiscriminatorColumn({ name: "_class", type: "string"})
 export default class Claim {
   @PrimaryColumn()
   id: string
 
   @Column()
-  @Index()
   publicKey: string
 
   @Column()
   signature: string
 
   @Column()
-  @Index()
   type: ClaimType
 
-  @OneToMany((type => Attribute), attribute => attribute.claim)
+  @OneToMany((type => Attribute), attribute => attribute.claim, {
+    cascadeInsert: true,
+    cascadeUpdate: true,
+    cascadeRemove: true
+  })
+  @JoinTable()
   attributes: Attribute[]
 }

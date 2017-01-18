@@ -65,30 +65,23 @@ export default class BlockchainService {
   async storeBlock(block: PureBlock) {
     await this.saveBlockIfNotExists(block)
     const id = await getHash(this.creator.serializeBlockForSave(block), block.id)
-    this.createOrUpdateBlockInfo({ hash: block.id, torrentHash: id })
+    await this.createOrUpdateBlockInfo({ hash: block.id, torrentHash: id })
   }
 
   async storeClaim(claim: PureClaim) {
     const attributeSet = []
     for (let key in claim.attributes) {
       const value: string = claim.attributes[key]
-      attributeSet.push(this.storeAttribute(key, value))
+      attributeSet.push({ key, value, claim: claim.id })
     }
-    return await this.claimRepository.persist(this.claimRepository.create(claim))
-  }
-
-  async storeAttribute(key: string, value: string) {
-    const repository = this.attributeRepository
-    const result = repository.create({ key, value })
-    await repository.persist(result)
-    return result
+    return await this.claimRepository.persist(this.claimRepository.create({
+      ...claim,
+      attributes: attributeSet
+    }))
   }
 
   async confirmBlock(blockInfo: BlockMetadata) {
     blockInfo = await this.createOrUpdateBlockInfo(blockInfo)
-
-    console.log('Created or updated', blockInfo)
-
     const block = await this.getBlock(blockInfo.hash)
 
     if (block) {
@@ -107,8 +100,10 @@ export default class BlockchainService {
 
   async confirmClaim(claim: PureClaim, txInfo: BlockMetadata, index: number) {
     await this.claimInfoRepository.persist(this.claimInfoRepository.create({
-      id: claim.id,
-      poetOrder: index,
+      hash: claim.id,
+      blockHash: txInfo.hash,
+      blockHeight: txInfo.height,
+      claimOrder: index,
       ...txInfo
     }))
     return await bluebird.all(
@@ -169,17 +164,29 @@ export default class BlockchainService {
     return block
   }
 
-  private fetchBlock(id: string) {
-    return this.blockRepository
-      .createQueryBuilder('block')
-      .leftJoinAndSelect('block.claims', 'claims')
-      .leftJoinAndSelect('block.claims.attributes', 'attributes')
-      .where('block.id=:blockId')
-      .setParameters({blockId: id})
+  private async fetchBlock(id: string) {
+    const blockEntry = await this.blockRepository.createQueryBuilder('block')
+      .where('block.id=:id')
+      .leftJoinAndMapMany('block.claims', 'block.claims', 'claim')
+      .setParameters({ id})
       .getOne()
+    if (!blockEntry) {
+      return
+    }
+    const claimEntries = await this.claimRepository.createQueryBuilder('claim')
+      .leftJoinAndMapMany('claim.attributes', 'claim.attributes', 'attribute')
+      .where('claim.id IN (:claims)')
+      .setParameters({ claims: blockEntry.claims.map(claim => claim.id) })
+      .getMany()
+    blockEntry.claims = claimEntries
+    return blockEntry
   }
 
   private transformEntityToPureClaim(claimEntry: Claim) {
+    if (!claimEntry) {
+      console.log('Asked to confirm for null entry', claimEntry)
+      return
+    }
     const attributes: { [key: string]: string } = {}
     for (let attribute of claimEntry.attributes) {
       attributes[attribute.key] = attribute.value
@@ -193,13 +200,20 @@ export default class BlockchainService {
     } as PureClaim
   }
 
-  private async createOrUpdateBlockInfo(blockInfo: BlockMetadata) {
-    const existent = await this.blockInfoRepository.findOne({ torrentHash: blockInfo.torrentHash })
+  private async createOrUpdateBlockInfo(blockMetadata: BlockMetadata) {
+    const existent = await this.blockInfoRepository.findOne({ torrentHash: blockMetadata.torrentHash })
     if (existent) {
-      Object.assign(existent, blockInfo)
+      for (let key of Object.keys(blockMetadata)) {
+        const blockKey: keyof BlockMetadata = key as keyof BlockMetadata
+        const blockInfoKey: keyof BlockInfo = blockKey
+        if (blockMetadata[blockKey] !== null && blockMetadata[blockKey] !== undefined) {
+          existent[blockInfoKey] = blockMetadata[blockKey]
+        }
+      }
       return await this.blockInfoRepository.persist(existent)
+    } else {
+      const entity = this.blockInfoRepository.create(blockMetadata)
+      return await this.blockInfoRepository.persist(entity)
     }
-    const entity = this.blockInfoRepository.create(blockInfo)
-    return await this.blockInfoRepository.persist(entity)
   }
 }

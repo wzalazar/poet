@@ -5,9 +5,9 @@ export interface BlockMetadata {
   outputIndex?: number
 
   // Only available if confirmed
+  bitcoinHash?: string
+  bitcoinHeight?: number
   transactionOrder?: number
-  blockHeight?: number
-  blockHash?: string
   timestamp?: number
 
   // Only available if downloaded
