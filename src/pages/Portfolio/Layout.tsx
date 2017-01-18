@@ -3,6 +3,7 @@ import * as React from 'react';
 import { HexString } from '../../common';
 
 import PortfolioWorks from './PortfolioWorks'
+import { PortfolioWorksFilters } from './PortfolioWorksFilters';
 
 import './Layout.scss';
 
@@ -15,6 +16,7 @@ export class PortfolioLayout extends React.Component<PortfolioProps, undefined> 
     return (
       <section className="portfolio">
         <h1>PORTFOLIO</h1>
+        <PortfolioWorksFilters/>
         <PortfolioWorks author={this.props.userId} />
       </section>
     )
