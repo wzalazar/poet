@@ -6,11 +6,8 @@ import { Connection, createConnection, Repository } from 'typeorm'
 import { Block as PureBlock, ClaimType, Claim as PureClaim } from '../../model/claim'
 import { getHash } from '../../helpers/torrentHash'
 
-import CreativeWork from './orm/creativeWork'
 import Claim from './orm/claim'
-import License from './orm/license'
 import Block from './orm/block'
-import Profile from './orm/profile'
 import BlockInfo from './orm/blockInfo'
 import { PoetTxInfo } from '../../events'
 import ClaimInfo from './orm/claimInfo'
@@ -185,10 +182,6 @@ export default class BlockchainService {
     return this.db.getRepository('blockInfo') as Repository<BlockInfo>
   }
 
-  get workRepository(): Repository<CreativeWork> {
-    return this.db.getRepository('creativeWork') as Repository<CreativeWork>
-  }
-
   get claimRepository(): Repository<Claim> {
     return this.db.getRepository('claim') as Repository<Claim>
   }
@@ -199,13 +192,5 @@ export default class BlockchainService {
 
   get blockRepository(): Repository<Block> {
     return this.db.getRepository('block') as Repository<Block>
-  }
-
-  get offerings(): Repository<License> {
-    return this.db.getRepository('license') as Repository<License>
-  }
-
-  get profileRepository(): Repository<Profile> {
-    return this.db.getRepository('profile') as Repository<Profile>
   }
 }
