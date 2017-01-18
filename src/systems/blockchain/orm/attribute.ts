@@ -8,7 +8,7 @@ export default class Attribute {
   _id: number
 
   @ManyToOne(type => Claim, claim => claim.attributes)
-  claim: Claim
+  claim: any
 
   @Column()
   @Index()
