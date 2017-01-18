@@ -3,6 +3,7 @@ import { Repository } from 'typeorm'
 
 import BlockchainService from '../service'
 import Route from '../../../helpers/route'
+import WorkRoute from './routes/work'
 
 export default class BlockchainRouter {
   service: BlockchainService
@@ -25,7 +26,9 @@ export default class BlockchainRouter {
     })
 
     try {
+      new WorkRoute(this.service).addRoutes(router)
       route(this.service.blockRepository  , 'blocks'  )
+      route(this.service.profileRepository, 'profiles')
       route(this.service.claimRepository  , 'claims'  )
     } catch (error) {
       console.log('Unable to setup route', error, error.stack)
