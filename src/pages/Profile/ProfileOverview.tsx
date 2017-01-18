@@ -10,7 +10,7 @@ function render(props: ProfileProps) {
       <div className="lead text-truncate mb-2">{props.publicKey}</div>
       <div className="blockquote mb-2">{props.bio}</div>
       <ul className="list-unstyled">
-        { Object.keys(props.contacts).map(key => <li>{props.contacts[key]}</li>)}
+        { Object.keys(props.contacts).map(key => <li key={key}>{props.contacts[key]}</li>)}
       </ul>
     </div>
   )
