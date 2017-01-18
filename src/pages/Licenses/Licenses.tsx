@@ -2,49 +2,10 @@ import * as React from 'react';
 import { Link } from 'react-router';
 
 import { FetchComponentProps } from '../../components/FetchComponent';
-import WorksComponent from '../../components/Works';
-import { WorkProps } from '../../components/WorkComponent';
+import Licenses from '../../components/Licenses';
 import { DropdownMenu } from '../../components/DropdownMenu';
 
-//import './Layout.scss';
-
-const mockLicenses = [
-  {
-    title: "Title of Work",
-    owner: "bitcoin-magazine",
-    licenseType: "Attribution License",
-    issueDate: 3847209345,
-    key: "204jrwodnfoaidn023rnoenl1"
-  },
-  {
-    title: "Title of Work",
-    owner: "bitcoin-magazine",
-    licenseType: "Attribution License",
-    issueDate: 3847209345,
-    key: "204jrwodnfoaidn023rnoenl2"
-  },
-  {
-    title: "Title of Work",
-    owner: "bitcoin-magazine",
-    licenseType: "Attribution License",
-    issueDate: 3847209345,
-    key: "204jrwodnfoaidn023rnoenl3"
-  },
-  {
-    title: "Title of Work",
-    owner: "bitcoin-magazine",
-    licenseType: "Attribution License",
-    issueDate: 3847209345,
-    key: "204jrwodnfoaidn023rnoenl4"
-  },
-  {
-    title: "Title of Work",
-    owner: "bitcoin-magazine",
-    licenseType: "Attribution License",
-    issueDate: 3847209345,
-    key: "204jrwodnfoaidn023rnoenl5"
-  }
-];
+import './Layout.scss';
 
 function renderLicense(license: any) {
   return (
@@ -74,14 +35,14 @@ function optionSelected(license: any, option: string) {
   console.log('optionSelected', license, option);
 }
 
-function render(props: WorkProps) {
+function render(props: FetchComponentProps) {
   return (
     <section className="portfolio-works">
       <ul className="row list-unstyled">
-        { mockLicenses.map(renderLicense) }
+        { props.elements.map(renderLicense) }
       </ul>
     </section>
   )
 }
 
-export default WorksComponent(render);
+export default Licenses(render);

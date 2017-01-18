@@ -141,5 +141,42 @@
   "node": {
     "peers": 4,
     "status": "synced"
-  }
+  },
+  "licenses": [
+    {
+      "title": "Title of Work",
+      "owner": "bitcoin-magazine",
+      "licenseType": "Attribution License",
+      "issueDate": 3847209345,
+      "key": "204jrwodnfoaidn023rnoenl1"
+    },
+    {
+      "title": "Title of Work",
+      "owner": "bitcoin-magazine",
+      "licenseType": "Attribution License",
+      "issueDate": 3847209345,
+      "key": "204jrwodnfoaidn023rnoenl2"
+    },
+    {
+      "title": "Title of Work",
+      "owner": "bitcoin-magazine",
+      "licenseType": "Attribution License",
+      "issueDate": 3847209345,
+      "key": "204jrwodnfoaidn023rnoenl3"
+    },
+    {
+      "title": "Title of Work",
+      "owner": "bitcoin-magazine",
+      "licenseType": "Attribution License",
+      "issueDate": 3847209345,
+      "key": "204jrwodnfoaidn023rnoenl4"
+    },
+    {
+      "title": "Title of Work",
+      "owner": "bitcoin-magazine",
+      "licenseType": "Attribution License",
+      "issueDate": 3847209345,
+      "key": "204jrwodnfoaidn023rnoenl5"
+    }
+  ]
 }
