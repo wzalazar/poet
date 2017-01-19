@@ -2,7 +2,7 @@ import 'reflect-metadata'
 
 import BlockchainService from '../../service'
 import CreativeWork from '../../orm/creativeWork'
-import Route from '../../../../helpers/route'
+import Route from '../route'
 
 export default class WorkRoute extends Route<CreativeWork> {
   constructor(service: BlockchainService) {
@@ -13,7 +13,6 @@ export default class WorkRoute extends Route<CreativeWork> {
     return this.repository.findOneById(id, {
       alias: "work",
       leftJoin: {
-        "attributes": "work.attributes",
         "title": "work.title",
         "licenses": "work.licenses",
         "offerings": "work.offerings"

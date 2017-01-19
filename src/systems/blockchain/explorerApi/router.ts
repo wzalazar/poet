@@ -2,8 +2,10 @@ import * as Router from 'koa-router'
 import { Repository } from 'typeorm'
 
 import BlockchainService from '../service'
-import Route from '../../../helpers/route'
+import Route from './route'
 import WorkRoute from './routes/work'
+import getConnection from '../connection'
+import getBuilder from '../../../model/builder'
 
 export default class BlockchainRouter {
   service: BlockchainService
@@ -13,7 +15,7 @@ export default class BlockchainRouter {
   }
 
   async addRoutes(router: Router) {
-    await this.service.start()
+    await this.service.start(getConnection, getBuilder)
 
     function route<T>(repository: Repository<T>, resourcePath: string) {
       const route = new Route<T>(repository, resourcePath)

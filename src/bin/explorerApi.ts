@@ -1,7 +1,5 @@
 import * as Koa from 'koa'
 import * as Router from 'koa-router'
-import * as Typeorm from 'typeorm'
-
 import BlockchainService from '../systems/blockchain/service'
 import BlockchainRouter from '../systems/blockchain/explorerApi/router'
 
@@ -35,7 +33,7 @@ export default async function createServer(options?: ExplorerOptions) {
 
 export async function start(options?: ExplorerOptions) {
   options = Object.assign({}, {
-    port: 3000,
+    port: 4000,
   }, options || {})
   const server = await createServer(options)
   await server.listen(options.port)

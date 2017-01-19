@@ -1,13 +1,6 @@
 import * as TypeORM from 'typeorm'
 import * as Router from 'koa-router'
 
-export class JSONStringifiable {
-  content: any
-  constructor(content: any) {
-    this.content = content
-  }
-}
-
 export default class Route<T> {
   protected idKey: string
   protected repository: TypeORM.Repository<T>
@@ -24,16 +17,16 @@ export default class Route<T> {
   }
 
   async renderCollection(items: T[]) {
-    return JSON.stringify(items.map(async (item) => (await this.prepareItem(item)).content))
+    return JSON.stringify(await Promise.all(items.map((item) => this.prepareItem(item))))
   }
 
   async renderItem(item: T) {
-    return JSON.stringify((await this.prepareItem(item)).content)
+    return JSON.stringify(await this.prepareItem(item))
   }
 
   async prepareItem(item: T) {
     // TODO: Assert JSON.parse(JSON.stringify(item))) deep equals item
-    return new JSONStringifiable(item)
+    return Promise.resolve(item)
   }
 
   async getCollection() {
@@ -42,10 +35,14 @@ export default class Route<T> {
 
   addRoutes(router: Router) {
     router.get('/' + this.resourcePath, async (ctx) => {
-      ctx.body = this.renderCollection(await this.getCollection())
+      const col = await this.getCollection()
+      console.log('Collection for', this.resourcePath, await this.renderCollection(col))
+      ctx.body = await this.renderCollection(col)
     })
     router.get('/' + this.resourcePath + '/:id', async (ctx) => {
-      ctx.body = this.renderItem(await this.getItem(ctx.params.id))
+      const item = await this.getItem(ctx.params.id)
+      console.log('Item for', this.resourcePath + '/' + ctx.params.id, item)
+      ctx.body = await this.renderItem(item)
     })
   }
 }

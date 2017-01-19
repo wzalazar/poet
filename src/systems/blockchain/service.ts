@@ -105,7 +105,7 @@ export default class BlockchainService {
       ...txInfo
     }))
     return await bluebird.all(
-      this.confirmHooks[claim.type].map(hook => hook(claim, txInfo))
+      this.confirmHooks[claim.type].map(hook => hook(this, claim, txInfo))
     )
   }
 
@@ -114,7 +114,7 @@ export default class BlockchainService {
   }
 
   get workRepository(): Repository<CreativeWork> {
-    return this.db.getRepository('creativeWork') as Repository<CreativeWork>
+    return this.db.getRepository(CreativeWork) as Repository<CreativeWork>
   }
 
   get claimRepository(): Repository<Claim> {
@@ -212,6 +212,6 @@ export default class BlockchainService {
   }
 
   get profileRepository(): Repository<Profile> {
-    return this.db.getRepository('profile') as Repository<Profile>
+    return this.db.getRepository(Profile) as Repository<Profile>
   }
 }

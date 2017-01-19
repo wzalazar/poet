@@ -1,5 +1,5 @@
-import { Queue } from '../queue'
-import { BitcoinBlockMetadata } from '../events'
+import { Queue } from '../src/queue'
+import { BitcoinBlockMetadata } from '../src/events'
 
 export default async function create() {
   const queue = new Queue()

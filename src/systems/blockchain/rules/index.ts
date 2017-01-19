@@ -1,8 +1,8 @@
 import { BlockMetadata } from '../../../events'
-import { Claim, ClaimType } from '../../../model/claim'
+import { Claim, ClaimType, CreativeWork } from '../../../model/claim'
 
 export interface Hook {
-  (claim: Claim, info: BlockMetadata): any
+  (service: BlockchainService, claim: Claim, info: BlockMetadata): any
 }
 
 export interface HookDescription {
@@ -12,6 +12,10 @@ export interface HookDescription {
 
 const rules: HookDescription[] = []
 
+import workCreation from './work'
+import BlockchainService from '../service'
+
 // Add here rules
+rules.push(workCreation)
 
 export default rules

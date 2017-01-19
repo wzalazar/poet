@@ -17,9 +17,8 @@ export default class CreativeWork {
   @JoinColumn()
   title: Title
 
-  @ManyToOne(type => Profile, profile => profile.authoredWorks, { nullable: true })
-  @JoinColumn()
-  author: Profile
+  @Column({ nullable: true })
+  author: string
 
   @ManyToOne(type => Profile, profile => profile.ownedWorks, { nullable: true })
   @JoinColumn()
