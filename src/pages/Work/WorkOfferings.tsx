@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import WorkOfferingsComponent, { WorkOfferingsProps, WorkOfferingProps } from '../../components/WorkOfferingsComponent';
+import WorkOfferingsComponent, { WorkOfferingsProps, WorkOfferingProps } from '../../hocs/WorkOfferingsComponent';
 
 
 function renderLicense(license: any): JSX.Element {

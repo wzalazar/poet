@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import WorkComponent, { WorkProps } from '../../components/WorkComponent';
+import WorkComponent, { WorkProps } from '../../hocs/WorkComponent';
 import ProfileLink from '../../components/ProfileLink';
 
 import './Layout.scss';

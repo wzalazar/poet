@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 
-import { FetchComponentProps } from '../../components/FetchComponent';
+import { FetchComponentProps } from '../../hocs/FetchComponent';
 import ProfileLink from '../../components/ProfileLink';
 
 import Pagination from '../../components/Pagination';
-import WorksComponent from '../../components/Works';
-import { WorkProps } from '../../components/WorkComponent';
+import WorksComponent from '../../hocs/Works';
+import { WorkProps } from '../../hocs/WorkComponent';
 
 import './Layout.scss';
 

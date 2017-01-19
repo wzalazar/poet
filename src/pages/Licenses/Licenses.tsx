@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 
-import { FetchComponentProps } from '../../components/FetchComponent';
-import Licenses from '../../components/Licenses';
+import { FetchComponentProps } from '../../hocs/FetchComponent';
+import Licenses from '../../hocs/Licenses';
 import { DropdownMenu } from '../../components/DropdownMenu';
 
 import './Layout.scss';

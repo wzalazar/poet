@@ -7,7 +7,7 @@ import './LatestBlocks.scss';
 
 import Config from '../config';
 
-import FetchComponent, { FetchComponentProps } from './FetchComponent'
+import FetchComponent, { FetchComponentProps } from '../hocs/FetchComponent'
 
 function renderBlock(props: any) {
   return (

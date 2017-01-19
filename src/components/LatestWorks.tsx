@@ -8,7 +8,7 @@ import ProfileLink from './ProfileLink';
 
 import Config from '../config';
 
-import FetchComponent, { FetchComponentProps } from './FetchComponent'
+import FetchComponent, { FetchComponentProps } from '../hocs/FetchComponent'
 
 function renderWork(props: any) {
   return (
