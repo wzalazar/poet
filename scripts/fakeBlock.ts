@@ -1,7 +1,7 @@
 import { Queue } from '../src/queue'
 import { BitcoinBlockMetadata } from '../src/events'
 
-export default async function create() {
+export async function publish(id: string) {
   const queue = new Queue()
 
   const bitcoinBlock: BitcoinBlockMetadata = {
@@ -9,7 +9,7 @@ export default async function create() {
     blockHash: 'bitcoin block hash',
     timestamp: 3543,
     poet: [{
-      torrentHash: process.argv[2],
+      torrentHash: id,
       transactionHash: 'transaction hash',
       outputIndex: 0,
       transactionOrder: 2
@@ -17,6 +17,11 @@ export default async function create() {
   }
 
   await queue.announceBitcoinBlock(bitcoinBlock)
+
+}
+
+export default async function create() {
+  return await publish(process.argv[2])
 }
 
 if (!module.parent) {

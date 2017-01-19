@@ -1,4 +1,4 @@
-import { OneToMany, ManyToOne, ManyToMany, Table, JoinTable, OneToOne, JoinColumn, PrimaryColumn } from 'typeorm'
+import { OneToMany, ManyToOne, ManyToMany, Table, JoinTable, OneToOne, PrimaryColumn } from 'typeorm'
 import License from './license'
 import Offering from './offering'
 import Profile from './profile'
@@ -11,7 +11,6 @@ export default class Work {
   id: string
 
   @OneToOne(type => Title, title => title.reference, { nullable: true })
-  @JoinColumn()
   title: Title
 
   @ManyToOne(type => Profile, profile => profile.authoredWorks, { nullable: true })

@@ -1,13 +1,27 @@
 import * as fetch from "isomorphic-fetch"
-import { default as getCreator } from "../src/serialization/builder"
+import { default as getCreator, ClaimBuilder } from "../src/serialization/builder"
 import Fields from '../src/blockchain/fields'
 import { Claim } from '../src/claim'
 
 const myPrivateKey = '2461d5dc1bf2c48b73d271375a11f853f92aca53d328f35af5cbaead016ebeb5'
+const myPrivateKey2 = '2111d5dc1bf2c48b73d271375a11f853f92aca53d328f35af5cbaead016ebeb5'
 
 const bitcore = require('bitcore-lib')
 const privateKey = new bitcore.PrivateKey(myPrivateKey)
 const publicKey = privateKey.publicKey
+
+const privateKey2 = new bitcore.PrivateKey(myPrivateKey2)
+const publicKey2 = privateKey2.publicKey
+
+import { publish as confirm } from './fakeBlock'
+import { getHash } from '../src/helpers/torrentHash'
+
+const fakeBlock = async (claim: Claim, creator: ClaimBuilder) => {
+  const block = creator.createBlock([claim])
+  const buffer = creator.serializeBlockForSave(block)
+  const torrentHash = await getHash(buffer, block.id)
+  return await confirm(torrentHash)
+}
 
 export default async function create() {
   const host = 'localhost'
@@ -16,6 +30,7 @@ export default async function create() {
   const creator = await getCreator()
 
   const create = (data: any) => creator.createSignedClaim(data, myPrivateKey)
+  const create2 = (data: any) => creator.createSignedClaim(data, myPrivateKey2)
   const publish = async(claim: Claim) => {
     const response = await fetch(`http://${host}:${port}/claim`, {
       method: 'POST',
@@ -45,6 +60,50 @@ export default async function create() {
     }
   })
   await publish(title)
+
+  const profile = create({
+    type: 'Profile',
+    attributes: {
+      'name': 'John Doe'
+    }
+  })
+  await publish(profile)
+
+  const profile2 = create2({
+    type: 'Profile',
+    attributes: {
+      'name': 'Satoshi Nakamoto'
+    }
+  })
+  await publish(profile2)
+
+  const offering = create({
+    type: 'Offering',
+    attributes: {
+      [Fields.REFERENCE]: work.id,
+      [Fields.OFFERING_TYPE]: 'Publication',
+      [Fields.OFFERING_INFO]: '400 USD'
+    }
+  })
+  const offering2 = create2({
+    type: 'Offering',
+    attributes: {
+      [Fields.REFERENCE]: work.id,
+      [Fields.OFFERING_TYPE]: 'Publication',
+      [Fields.OFFERING_INFO]: '400 USD'
+    }
+  })
+  await publish(offering)
+  await publish(offering2)
+
+  const fakeIt = (untilYouMakeIt: Claim) => fakeBlock(untilYouMakeIt, creator)
+
+  await fakeIt(work)
+  await fakeIt(title)
+  await fakeIt(profile)
+  await fakeIt(profile2)
+  await fakeIt(offering)
+  await fakeIt(offering2)
 }
 
 if (!module.parent) {
@@ -52,3 +111,4 @@ if (!module.parent) {
     console.log(error, error.stack)
   })
 }
+

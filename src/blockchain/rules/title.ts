@@ -19,13 +19,11 @@ export default {
       console.log('Odd title: no owner', claim)
       return
     }
-    const reference = await service.workRepository.findOneById(referenceId)
-    const owner = await service.profileRepository.findOneById(ownerId)
     return await service.titleRepository.persist(
       service.titleRepository.create({
-        id: claim.publicKey,
-        reference: reference,
-        owner: owner
+        id: claim.id,
+        reference: referenceId,
+        owner: ownerId
       })
     )
   }

@@ -1,4 +1,4 @@
-import { Column, Table, PrimaryColumn, ManyToOne, OneToOne } from 'typeorm'
+import { Table, PrimaryColumn, ManyToOne, OneToOne, JoinColumn } from 'typeorm'
 import Profile from './profile'
 import Work from './work'
 
@@ -9,6 +9,7 @@ export default class Title {
   id: string
 
   @OneToOne(type => Work, work => work.title)
+  @JoinColumn()
   reference: Work
 
   @ManyToOne(type => Profile, profile => profile.ownedWorks)
