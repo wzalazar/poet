@@ -12,7 +12,8 @@ export default async function getConnection() {
       database: 'poet'
     },
     entities: [
-      path.join(__dirname, 'orm', '*.ts')
+      path.join(__dirname, 'orm', '*.ts'),
+      path.join(__dirname, 'orm', 'derived', '*.ts')
     ],
     autoSchemaSync: true
   })
