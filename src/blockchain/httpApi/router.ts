@@ -5,7 +5,7 @@ import BlockchainService from '../service'
 import Route from './route'
 import WorkRoute from './routes/work'
 import getConnection from '../connection'
-import getBuilder from '../../../model/builder'
+import getBuilder from '../../serialization/builder'
 
 export default class BlockchainRouter {
   service: BlockchainService

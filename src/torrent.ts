@@ -3,12 +3,12 @@ import { ReadStream } from 'fs'
 import * as path from 'path'
 import * as WebTorrent from 'webtorrent'
 
-import { Block } from '../model/claim'
-import { default as getBuilder } from '../model/builder'
-import { Queue } from '../queue'
-import { getCreateOpts, getHash, createObservableDownload } from '../helpers/torrentHash'
-import { noop, readdir, assert } from '../common'
-import { BlockMetadata, BitcoinBlockMetadata } from '../events'
+import { Block } from './claim'
+import { default as getBuilder } from './serialization/builder'
+import { Queue } from './queue'
+import { getCreateOpts, getHash, createObservableDownload } from './helpers/torrentHash'
+import { noop, readdir, assert } from './common'
+import { BlockMetadata, BitcoinBlockMetadata } from './events'
 
 export default class TorrentSystem {
 

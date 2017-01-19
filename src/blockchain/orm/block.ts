@@ -1,5 +1,4 @@
-import { Table, Column, PrimaryColumn, ManyToMany, Index, JoinTable } from 'typeorm'
-
+import { Table, PrimaryColumn, ManyToMany, JoinTable } from 'typeorm'
 import Claim from './claim'
 
 @Table()

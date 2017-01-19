@@ -5,7 +5,6 @@
   "main": "./src/index.js",
   "scripts": {
     "build": "tsc",
-
     "bitcoin-scanner": "./node_modules/.bin/ts-node ./src/bin/bitcoinScanner.ts",
     "explorer-api": "./node_modules/.bin/ts-node ./src/bin/explorerApi.ts",
     "claims-to-db": "./node_modules/.bin/ts-node ./src/bin/claimsToDb.ts",
@@ -30,6 +29,7 @@
     "@types/isomorphic-fetch": "0.0.31",
     "@types/koa": "^2.0.34",
     "@types/koa-router": "^7.0.21",
+    "@types/lodash": "^4.14.50",
     "@types/rx": "^4.1.1",
     "@types/socket.io-client": "^1.4.29",
     "@types/uuid": "^2.0.29",
@@ -53,6 +53,7 @@
     "koa-socket": "^4.4.0",
     "koa-unless": "^1.0.0",
     "koa-websocket": "^2.1.0",
+    "lodash": "4.17.4",
     "mocha": "^3.2.0",
     "pg": "^6.1.2",
     "protobufjs": "^6.0.1",

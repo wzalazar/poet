@@ -1,10 +1,10 @@
-import { default as BlockchainService } from '../systems/blockchain/service'
+import { default as BlockchainService } from '../blockchain/service'
 import { Queue } from '../queue'
-import { Block } from '../model/claim'
+import { Block } from '../claim'
 import { BitcoinBlockMetadata } from '../events'
 
-import getBuilder from '../model/builder'
-import getConnection from '../systems/blockchain/connection'
+import getBuilder from '../serialization/builder'
+import getConnection from '../blockchain/connection'
 
 async function startListening() {
   const blockchain = new BlockchainService()

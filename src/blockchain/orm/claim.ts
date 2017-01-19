@@ -1,6 +1,6 @@
-import { Table, Column, PrimaryColumn, OneToMany, DiscriminatorColumn, TableInheritance, JoinTable } from 'typeorm'
+import { Table, Column, PrimaryColumn, OneToMany, JoinTable } from 'typeorm'
 import Attribute from './attribute'
-import { ClaimType } from '../../../model/claim'
+import { ClaimType } from '../../claim'
 
 @Table()
 export default class Claim {

@@ -1,6 +1,6 @@
 import Bluebird = require("bluebird")
 
-import PoetInsightListener from '../systems/insight'
+import PoetInsightListener from '../insight'
 import { Queue } from '../queue'
 
 async function startup() {

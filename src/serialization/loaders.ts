@@ -8,7 +8,7 @@ export interface Builders {
 }
 
 export default async function(): Promise<Builders> {
-  const builder = await (protobuf.load(path.join(__dirname, '../model/claim.proto')) as Promise<protobuf.Root>)
+  const builder = await (protobuf.load(path.join(__dirname, '../serialization/claim.proto')) as Promise<protobuf.Root>)
   return {
     claim     : builder.lookup('Poet.Claim') as protobuf.Type,
     attribute : builder.lookup('Poet.Attribute') as protobuf.Type,

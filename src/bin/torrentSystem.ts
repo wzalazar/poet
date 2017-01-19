@@ -1,4 +1,4 @@
-import { default as TorrentSystem } from '../systems/torrent'
+import { default as TorrentSystem } from '../torrent'
 
 export default async function startTorrents() {
   return new TorrentSystem('./torrents').start()

@@ -1,34 +1,30 @@
-import {
-  Column, OneToMany, ManyToOne, ManyToMany, Table, PrimaryGeneratedColumn, JoinTable, OneToOne,
-  JoinColumn, PrimaryColumn
-} from 'typeorm'
+import { OneToMany, ManyToOne, ManyToMany, Table, JoinTable, OneToOne, JoinColumn, PrimaryColumn } from 'typeorm'
 import License from './license'
 import Offering from './offering'
 import Profile from './profile'
 import Title from './title'
 
 @Table()
-export default class CreativeWork {
+export default class Work {
 
   @PrimaryColumn()
   id: string
 
-  @OneToOne(type => Title, title => title.for, { nullable: true })
+  @OneToOne(type => Title, title => title.reference, { nullable: true })
   @JoinColumn()
   title: Title
 
-  @Column({ nullable: true })
-  author: string
+  @ManyToOne(type => Profile, profile => profile.authoredWorks, { nullable: true })
+  author: Profile
 
   @ManyToOne(type => Profile, profile => profile.ownedWorks, { nullable: true })
-  @JoinColumn()
   owner: Profile
 
-  @OneToMany(type => License, license => license.for)
+  @OneToMany(type => License, license => license.reference)
   @JoinTable()
   licenses: License[]
 
-  @OneToMany(type => Offering, offering => offering.for)
+  @OneToMany(type => Offering, offering => offering.reference)
   @JoinTable()
   offerings: Offering[]
 

@@ -1,13 +1,13 @@
-import * as Bluebird from "bluebird"
+import * as Bluebird from 'bluebird'
+
+import { Claim, Block } from '../claim'
+import * as common from '../common'
+import { hex } from '../common'
+import { default as loadBuilders, Builders } from './loaders'
 
 const bitcore = require('bitcore-lib')
 const explorers = require('bitcore-explorers')
 bitcore.Networks.defaultNetwork = bitcore.Networks.testnet
-
-import { Claim, Block } from "./claim"
-import * as common from "../common"
-import { default as loadBuilders, Builders } from "./loaders"
-import { hex } from "../common"
 
 const insightInstance = new explorers.Insight()
 function promisifyInsight(name: string) {

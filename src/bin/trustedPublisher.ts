@@ -3,8 +3,8 @@ import * as Koa from 'koa'
 const Body = require('koa-body')
 const Route = require('koa-route')
 
-import { Claim, Block } from "../model/claim"
-import { default as getCreator, ClaimBuilder } from "../model/builder"
+import { Claim, Block } from "../claim"
+import { default as getCreator, ClaimBuilder } from "../serialization/builder"
 import { getHash } from '../helpers/torrentHash'
 import { Queue } from '../queue'
 

@@ -1,5 +1,4 @@
-import { Table, Column, Index, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
-
+import { Table, Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 import Claim from './claim'
 
 @Table()

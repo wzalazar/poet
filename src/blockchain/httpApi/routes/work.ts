@@ -1,10 +1,10 @@
 import 'reflect-metadata'
 
 import BlockchainService from '../../service'
-import CreativeWork from '../../orm/creativeWork'
 import Route from '../route'
+import Work from '../../orm/derived/work'
 
-export default class WorkRoute extends Route<CreativeWork> {
+export default class WorkRoute extends Route<Work> {
   constructor(service: BlockchainService) {
     super(service.workRepository, 'works')
   }

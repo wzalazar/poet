@@ -4,7 +4,7 @@ import * as Rx from 'rx'
 import { Channel } from "amqplib"
 
 import { BitcoinBlockMetadata, BlockMetadata } from './events'
-import { Block } from './model/claim'
+import { Block } from './claim'
 
 const BITCOIN_BLOCK = 'bitcoinBlock'
 const BITCOIN_TRANSACTION = 'bitcoinTransaction'

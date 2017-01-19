@@ -1,19 +1,22 @@
 import 'reflect-metadata'
 import * as bluebird from 'bluebird'
 import { Connection, Repository } from 'typeorm'
-
-import { Block as PureBlock, ClaimType, Claim as PureClaim } from '../../model/claim'
-import { getHash } from '../../helpers/torrentHash'
-import { BlockMetadata } from '../../events'
+import { Block as PureBlock, ClaimType, Claim as PureClaim } from '../claim'
+import { getHash } from '../helpers/torrentHash'
+import { BlockMetadata } from '../events'
 import rules, { Hook } from './rules'
-import { ClaimBuilder } from '../../model/builder'
-
-import CreativeWork from './orm/creativeWork'
+import { ClaimBuilder } from '../serialization/builder'
+import Fields from './fields'
 import Claim from './orm/claim'
 import Block from './orm/block'
-import Profile from './orm/profile'
+import Profile from './orm/derived/profile'
 import BlockInfo from './orm/blockInfo'
 import ClaimInfo from './orm/claimInfo'
+import License from './orm/derived/license'
+import Offering from './orm/derived/offering'
+import Title from './orm/derived/title'
+import Work from './orm/derived/work'
+
 
 export default class BlockchainService {
   db: Connection
@@ -21,7 +24,7 @@ export default class BlockchainService {
   creator: ClaimBuilder
 
   confirmHooks: { [key in ClaimType]: Hook[] } = {
-    'CreativeWork': [] as Hook[],
+    'Work'        : [] as Hook[],
     'Title'       : [] as Hook[],
     'License'     : [] as Hook[],
     'Offering'    : [] as Hook[],
@@ -113,8 +116,8 @@ export default class BlockchainService {
     return this.db.getRepository(BlockInfo)
   }
 
-  get workRepository(): Repository<CreativeWork> {
-    return this.db.getRepository(CreativeWork) as Repository<CreativeWork>
+  get workRepository(): Repository<Work> {
+    return this.db.getRepository(Work) as Repository<Work>
   }
 
   get claimRepository(): Repository<Claim> {
@@ -152,7 +155,7 @@ export default class BlockchainService {
     }
     const block = { id, claims: [] as PureClaim[] } as PureBlock
     for (let claimEntry of blockEntry.claims) {
-      const claim = this.transformEntityToPureClaim(claimEntry)
+      const claim = BlockchainService.transformEntityToPureClaim(claimEntry)
       block.claims.push(claim)
     }
     return block
@@ -167,16 +170,15 @@ export default class BlockchainService {
     if (!blockEntry) {
       return
     }
-    const claimEntries = await this.claimRepository.createQueryBuilder('claim')
+    blockEntry.claims = await this.claimRepository.createQueryBuilder('claim')
       .leftJoinAndMapMany('claim.attributes', 'claim.attributes', 'attribute')
       .where('claim.id IN (:claims)')
-      .setParameters({ claims: blockEntry.claims.map(claim => claim.id) })
+      .setParameters({claims: blockEntry.claims.map(claim => claim.id)})
       .getMany()
-    blockEntry.claims = claimEntries
     return blockEntry
   }
 
-  private transformEntityToPureClaim(claimEntry: Claim) {
+  private static transformEntityToPureClaim(claimEntry: Claim) {
     if (!claimEntry) {
       console.log('Asked to confirm for null entry', claimEntry)
       return
@@ -199,9 +201,8 @@ export default class BlockchainService {
     if (existent) {
       for (let key of Object.keys(blockMetadata)) {
         const blockKey: keyof BlockMetadata = key as keyof BlockMetadata
-        const blockInfoKey: keyof BlockInfo = blockKey
         if (blockMetadata[blockKey] !== null && blockMetadata[blockKey] !== undefined) {
-          existent[blockInfoKey] = blockMetadata[blockKey]
+          existent[blockKey] = blockMetadata[blockKey]
         }
       }
       return await this.blockInfoRepository.persist(existent)
@@ -213,5 +214,55 @@ export default class BlockchainService {
 
   get profileRepository(): Repository<Profile> {
     return this.db.getRepository(Profile) as Repository<Profile>
+  }
+
+  get licenseRepository(): Repository<License> {
+    return this.db.getRepository(License) as Repository<License>
+  }
+
+  get offeringRepository(): Repository<Offering> {
+    return this.db.getRepository(Offering) as Repository<Offering>
+  }
+
+  get titleRepository(): Repository<Title> {
+    return this.db.getRepository(Title) as Repository<Title>
+  }
+
+  async getOwnerPublicKey(referenceId: string) {
+    const title = await this.titleRepository.findOne({ reference: referenceId })
+    if (!title) {
+      return null
+    }
+    const claim = await this.getClaim(title.id)
+    if (claim) {
+      return claim.attributes[Fields.OWNER_KEY]
+    } else {
+      throw new Error('Claim not found! ID:' + title.id)
+    }
+  }
+
+  async getClaim(id: string) {
+    return BlockchainService.transformEntityToPureClaim(
+      await this.claimRepository.findOneById(id, {
+        alias: 'claim',
+        leftJoin: {
+          'attribute': 'claim.attributes'
+        }
+      })
+    )
+  }
+
+  async getWork(id: string) {
+    return await this.workRepository.findOneById(id, {
+      alias: 'work',
+      leftJoin: {
+        'title': 'work.title',
+        'author': 'work.author',
+        'owner': 'work.owner',
+        'licenses': 'work.licenses',
+        'offerings': 'work.offerings',
+        'publishers': 'work.publishers'
+      }
+    })
   }
 }

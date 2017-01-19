@@ -1,7 +1,7 @@
 import * as socketIO from 'socket.io-client'
 import * as fetch from 'isomorphic-fetch'
 
-import { BitcoinBlockMetadata, BlockMetadata } from '../events'
+import { BitcoinBlockMetadata, BlockMetadata } from './events'
 
 const bitcore = require('bitcore-lib')
 

@@ -1,6 +1,6 @@
-import { ManyToMany, OneToMany, JoinTable, Column, PrimaryGeneratedColumn, Table, PrimaryColumn } from 'typeorm'
+import { ManyToMany, OneToMany, JoinTable, Column, Table, PrimaryColumn } from 'typeorm'
 import License from './license'
-import CreativeWork from './creativeWork'
+import CreativeWork from './work'
 
 @Table()
 export default class Profile {
@@ -8,7 +8,10 @@ export default class Profile {
   @PrimaryColumn()
   id: string
 
-  @OneToMany(type => License, license => license.owner)
+  @Column()
+  claim: string
+
+  @OneToMany(type => License, license => license.licenseHolder)
   @JoinTable()
   licenses: CreativeWork[]
 
@@ -16,8 +19,10 @@ export default class Profile {
   hasLicensesFor: CreativeWork[]
 
   @OneToMany(type => CreativeWork, work => work.author)
+  @JoinTable()
   authoredWorks: CreativeWork[]
 
-  @OneToMany(type => CreativeWork, work => work.author)
+  @OneToMany(type => CreativeWork, work => work.owner)
+  @JoinTable()
   ownedWorks: CreativeWork[]
 }
