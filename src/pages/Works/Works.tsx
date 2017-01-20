@@ -24,7 +24,7 @@ function renderWork(props: WorkProps) {
 function render(props: FetchComponentProps) {
   return (
     <div className="works-results">
-      <h4 className="mb-3">Showing {props.elements.length} results</h4>
+      <h4 className="mb-3 showing-results">Showing {props.elements.length} results</h4>
       <ul className="list-unstyled">
         { props.elements.map(renderWork) }
       </ul>
