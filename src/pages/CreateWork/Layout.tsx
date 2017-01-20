@@ -12,6 +12,8 @@ import { Pricing } from './Pricing';
 import { LicensePreview } from './LicensePreview';
 
 import './Layout.scss';
+import { TermsOfUse } from './TermsOfUse';
+import { Preview } from './Preview';
 
 interface CreateWorkProps {
   userId: HexString;
@@ -60,12 +62,18 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, undefined
           <TabPanel>
             <section className="step-3-publish">
               <h2>Review &amp; Publish</h2>
-              <hr/>
+              <div className="row">
+                <div className="col-sm-7">
+                  <TermsOfUse className="mb-2"/>
+                  <button className="btn btn-primary">Timestamp to the blockchain at {new Date().toISOString()}</button>
+                </div>
+                <Preview className="col-sm-5 mb-2 border-1 p-1" />
+              </div>
             </section>
           </TabPanel>
         </Tabs>
         <nav className="mt-3">
-          { this.selectedStep > 0 && <button className="btn btn-primary" onClick={this.onPrevious.bind(this)}>Previous</button> }
+          { this.selectedStep > 0 && <button className="btn btn-secondary" onClick={this.onPrevious.bind(this)}>Previous</button> }
           { this.selectedStep < 2 && <button className="btn btn-primary" onClick={this.onNext.bind(this)}>Next</button> }
         </nav>
       </section>
