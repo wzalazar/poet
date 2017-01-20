@@ -4,11 +4,12 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { HexString } from '../../common';
 
 import { RadioButton, RadioButtonGroup } from '../../components/RadioButtonGroup';
-import { Checkbox } from '../../components/Checkbox';
 
 import { MediaType } from './MediaType';
 import { Fields } from './Fields';
 import { Content } from './Content';
+import { Pricing } from './Pricing';
+import { LicensePreview } from './LicensePreview';
 
 import './Layout.scss';
 
@@ -50,32 +51,9 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, undefined
                 <div className="col-sm-6">
                   <h3>License</h3>
                   <RadioButtonGroup radioButtons={licenseTypes} onSelectionChange={console.log} className="mb-3" />
-                  <h3>Pricing</h3>
-                  <div className="row">
-                    <div className="col-sm-4">Frequency</div>
-                    <div className="col-sm-8">
-                      <Checkbox text="One Time" />
-                      <Checkbox text="Per Page View" />
-                    </div>
-                  </div>
-                  <div className="row mb-2">
-                    <div className="col-sm-4">Price</div>
-                    <div className="col-sm-8">
-                      <div className="input-group">
-                        <span className="input-group-addon">$</span>
-                        <input type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
-                        <span className="input-group-addon">.00</span>
-                      </div>
-                    </div>
-                  </div>
+                  <Pricing />
                 </div>
-                <div className="col-sm-6">
-                  <div><h4>Preview</h4></div>
-                  <div>
-                    <div>Attribution License</div>
-                    <div>Lorem ipsum blah blah blah</div>
-                  </div>
-                </div>
+                <LicensePreview className="col-sm-6"/>
               </div>
             </section>
           </TabPanel>
