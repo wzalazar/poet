@@ -3,22 +3,18 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { HexString } from '../../common';
 
-import './Layout.scss';
+import { RadioButton, RadioButtonGroup } from '../../components/RadioButtonGroup';
+import { Checkbox } from '../../components/Checkbox';
+
 import { MediaType } from './MediaType';
 import { Fields } from './Fields';
 import { Content } from './Content';
-import { RadioButton, RadioButtonGroup } from '../../components/RadioButtonGroup';
+
+import './Layout.scss';
 
 interface CreateWorkProps {
   userId: HexString;
 }
-
-const radioButtons = [
-  new RadioButton('news-article', 'News Article'),
-  new RadioButton('report', 'Report'),
-  new RadioButton('scholarly', 'Scholarly'),
-  new RadioButton('technical', 'Technical')
-];
 
 const licenseTypes = [
   new RadioButton('attribution-only', 'Attribution Only'),
@@ -42,47 +38,33 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, undefined
           <TabPanel>
             <section className="step-1-register">
               <h2>Register a New Work</h2>
-              <hr/>
               <MediaType className="media-type mb-3" onChange={this.onMediaTypeSelectionChange.bind(this)}/>
               <Fields className="fields"/>
-              <Content className="mb-3"/>
+              <Content/>
             </section>
           </TabPanel>
           <TabPanel>
             <section className="step-2-license">
               <h2>Add a License</h2>
-              <hr/>
               <div className="row">
                 <div className="col-sm-6">
                   <h3>License</h3>
-                  <hr/>
                   <RadioButtonGroup radioButtons={licenseTypes} onSelectionChange={console.log} className="mb-3" />
                   <h3>Pricing</h3>
-                  <hr/>
                   <div className="row">
                     <div className="col-sm-4">Frequency</div>
                     <div className="col-sm-8">
-                      <label className="custom-control custom-checkbox">
-                        <input type="checkbox" className="custom-control-input" />
-                          <span className="custom-control-indicator" />
-                          <span className="custom-control-description">One Time</span>
-                      </label>
-                      <label className="custom-control custom-checkbox">
-                        <input type="checkbox" className="custom-control-input" />
-                          <span className="custom-control-indicator" />
-                          <span className="custom-control-description">Per Page View</span>
-                      </label>
+                      <Checkbox text="One Time" />
+                      <Checkbox text="Per Page View" />
                     </div>
                   </div>
                   <div className="row mb-2">
-                    <div className="col-sm-4">
-                      <span>Price</span>
-                    </div>
+                    <div className="col-sm-4">Price</div>
                     <div className="col-sm-8">
                       <div className="input-group">
                         <span className="input-group-addon">$</span>
                         <input type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
-                          <span className="input-group-addon">.00</span>
+                        <span className="input-group-addon">.00</span>
                       </div>
                     </div>
                   </div>
@@ -104,7 +86,7 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, undefined
             </section>
           </TabPanel>
         </Tabs>
-        <nav>
+        <nav className="mt-3">
           { this.selectedStep > 0 && <button className="btn btn-primary" onClick={this.onPrevious.bind(this)}>Previous</button> }
           { this.selectedStep < 2 && <button className="btn btn-primary" onClick={this.onNext.bind(this)}>Next</button> }
         </nav>
