@@ -44,7 +44,7 @@ export interface LatestBlocksProps extends FetchComponentProps {
 
 function propsToUrl(props: LatestBlocksProps) {
   return {
-    url: `${Config.api.url}/works`
+    url: `${Config.api.explorer}/works`
   }
 }
 

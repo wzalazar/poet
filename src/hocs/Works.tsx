@@ -17,6 +17,6 @@ function propsToQueryString(props: WorkProps): any {
 export default FetchComponent.bind(null, function (props: WorkProps) {
   const queryString = propsToQueryString(props);
   return {
-    url: `${Config.api.url}/works?${queryString}`
+    url: `${Config.api.explorer}/works?${queryString}`
   };
 });

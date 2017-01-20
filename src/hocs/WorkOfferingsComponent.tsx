@@ -30,5 +30,5 @@ export interface WorkOfferingsProps extends FetchComponentProps {
 }
 
 export default FetchComponent.bind(null, (props: WorkOfferingsProps) => ({
-  url: `${Config.api.url}/works/${props.workId}/offerings`
+  url: `${Config.api.explorer}/works/${props.workId}/offerings`
 }));
