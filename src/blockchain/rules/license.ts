@@ -13,14 +13,15 @@ const ProofType = Fields.PROOF_TYPE
 export default {
   type: LICENSE,
   hook: async (service: BlockchainService, claim: Claim, txInfo: BlockMetadata) => {
-    const referenceId = claim.attributes[Reference]
-    if (!referenceId) {
+    const workId = claim.attributes[Reference]
+    if (!workId) {
       console.log('Received weird license with no "reference" field', claim)
       return
     }
-    const referenceClaim = await service.workRepository.findOne({ claim: referenceId })
-    if (!referenceClaim) {
-      console.log('Could not find referred claim', claim)
+    const work = await service.workRepository.findOne({ id: workId })
+    if (!work) {
+      console.log('Could not find referred work', claim)
+      return
     }
     const referenceOfferingId = claim.attributes[ReferenceOffering]
     const referenceOffering = referenceOfferingId
@@ -28,21 +29,16 @@ export default {
       : null
     const holderId = claim.attributes[Holder]
     const holder = holderId
-      ? await service.offeringRepository.findOneById(holderId)
+      ? await service.profileRepository.findOneById(holderId)
       : null
     const license = await service.licenseRepository.persist(service.licenseRepository.create({
       id: claim.id,
-      reference: referenceClaim,
+      reference: work,
       licenseHolder: holder,
       referenceOffering: referenceOffering,
       proofType: claim.attributes[ProofType],
       proofValue: claim.attributes[ProofValue]
     }))
-    const containsLicense = (entry: License) => entry.id === license.id
-    if (referenceClaim && !referenceClaim.licenses.some(containsLicense)) {
-      referenceClaim.licenses.push(license)
-      await service.workRepository.persist(referenceClaim)
-    }
     return license
   }
 }

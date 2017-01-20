@@ -220,7 +220,16 @@ export default class BlockchainService {
   }
 
   async getWork(id: string) {
-    return await this.workRepository.findOneById(id)
+    return await this.workRepository.createQueryBuilder('work')
+      .leftJoinAndMapOne('work.title', 'work.title', 'title')
+      .leftJoinAndMapOne('work.owner', 'work.owner', 'owner')
+      .leftJoinAndMapOne('work.author', 'work.author', 'author')
+      .leftJoinAndMapMany('work.licenses', 'work.licenses', 'licenses')
+      .leftJoinAndMapMany('work.offerings', 'work.offerings', 'offerings')
+      .leftJoinAndMapMany('work.publishers', 'work.publishers', 'publishers')
+      .where('work.id=:id')
+      .setParameters({ id })
+      .getOne()
   }
 
   get blockInfoRepository(): Repository<BlockInfo> {

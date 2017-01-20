@@ -52,8 +52,8 @@ export default async function create() {
       createdOn: '2016-11-31 00:00:00.000Z',
     }
   })
-  await publish(work)
-  await fakeIt(work)
+  // await publish(work)
+  // await fakeIt(work)
 
   const title = create({
     type: 'Title',
@@ -62,7 +62,7 @@ export default async function create() {
       [Fields.OWNER_KEY]: publicKey.toString()
     }
   })
-  await publish(title)
+  // await publish(title)
 
   const profile = create({
     type: 'Profile',
@@ -70,7 +70,7 @@ export default async function create() {
       'name': 'John Doe'
     }
   })
-  await publish(profile)
+  // await publish(profile)
 
   const profile2 = create2({
     type: 'Profile',
@@ -78,7 +78,7 @@ export default async function create() {
       'name': 'Satoshi Nakamoto'
     }
   })
-  await publish(profile2)
+  // await publish(profile2)
 
   const offering = create({
     type: 'Offering',
@@ -96,14 +96,26 @@ export default async function create() {
       [Fields.OFFERING_INFO]: '400 USD'
     }
   })
-  await publish(offering)
-  await publish(offering2)
+  // await publish(offering)
+  // await publish(offering2)
 
-  await fakeIt(title)
-  await fakeIt(profile)
-  await fakeIt(profile2)
-  await fakeIt(offering)
-  await fakeIt(offering2)
+  // await fakeIt(title)
+  // await fakeIt(profile)
+  // await fakeIt(profile2)
+  // await fakeIt(offering)
+  // await fakeIt(offering2)
+
+  const license = create({
+    type: 'License',
+    attributes: {
+      [Fields.REFERENCE]: work.id,
+      [Fields.LICENSE_HOLDER]: publicKey2.toString(),
+      [Fields.PROOF_TYPE]: 'Bitcoin',
+      [Fields.PROOF_VALUE]: 'transaction hash',
+    }
+  })
+  publish(license)
+  fakeIt(license)
 }
 
 if (!module.parent) {
