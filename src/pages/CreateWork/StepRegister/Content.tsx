@@ -1,15 +1,24 @@
 import * as React from 'react';
 
-import { HexString } from '../../common';
-
-import './Layout.scss';
-import { MediaType } from './MediaType';
+import '../Layout.scss';
 
 interface ContentProps {
   className?: string;
 }
 
-export class Content extends React.Component<ContentProps, undefined> {
+interface ContentState {
+  content: string;
+}
+
+export class Content extends React.Component<ContentProps, ContentState> {
+
+  constructor() {
+    super(...arguments);
+    this.state = {
+      content: ''
+    }
+  }
+
   render() {
     return (
       <section className={this.props.className}>
@@ -18,7 +27,7 @@ export class Content extends React.Component<ContentProps, undefined> {
           <div className="form-group row">
             <label htmlFor={`inputContent`} className="col-sm-2 col-form-label">Content</label>
             <div className="col-sm-10">
-              <input type="text" className="form-control" id={`inputContent`} placeholder="Content" />
+              <input type="text" className="form-control" id={`inputContent`} placeholder="Content" onChange={this.onChange.bind(this)} />
             </div>
           </div>
           <input type="file" accept="*/*" name="file" />
@@ -27,4 +36,9 @@ export class Content extends React.Component<ContentProps, undefined> {
     )
   }
 
+  private onChange(event: any) {
+    this.setState({
+      content: event.target.value
+    })
+  }
 }
