@@ -16,6 +16,7 @@ import License from './orm/derived/license'
 import Offering from './orm/derived/offering'
 import Title from './orm/derived/title'
 import Work from './orm/derived/work'
+import Attribute from './orm/attribute'
 
 
 export default class BlockchainService {
@@ -225,8 +226,8 @@ export default class BlockchainService {
     return BlockchainService.transformEntityToPureClaim(claim)
   }
 
-  async getWork(id: string) {
-    return await this.workRepository.createQueryBuilder('work')
+  async getWorkFull(id: string) {
+    const work = await this.workRepository.createQueryBuilder('work')
       .leftJoinAndMapOne('work.title', 'work.title', 'title')
       .leftJoinAndMapOne('work.owner', 'work.owner', 'owner')
       .leftJoinAndMapOne('work.author', 'work.author', 'author')
@@ -236,6 +237,36 @@ export default class BlockchainService {
       .where('work.id=:id')
       .setParameters({ id })
       .getOne()
+    return await this.augmentWork(work)
+  }
+
+  async augmentWork(work: Work) {
+    const ids = [work.id]
+    if (work.title) ids.push(work.title.id)
+    if (work.owner) ids.push(work.owner.id)
+    if (work.author) ids.push(work.author.id)
+    if (work.licenses) for (let license of work.licenses) ids.push(license.id)
+    if (work.offerings) for (let offering of work.offerings) ids.push(offering.id)
+    if (work.publishers) for (let publisher of work.publishers) ids.push(publisher.id)
+    const attributeResults = await this.attributeRepository.createQueryBuilder('attribute')
+      .where('attribute.claim IN (:ids)')
+      .leftJoinAndMapOne('attribute.claim', 'attribute.claim', 'claim')
+      .setParameters({ ids })
+      .getMany()
+    const mapAttributes: { [key: string]: { [key2: string]: string } } = {}
+    for (let attribute of attributeResults) {
+      const id = attribute.claim.id
+      mapAttributes[id] = mapAttributes[id] || {}
+      mapAttributes[id][attribute.key] = attribute.value
+    }
+    work.attributes = mapAttributes[work.id]
+    if (work.title) work.title.attributes = mapAttributes[work.title.id]
+    if (work.owner) work.owner.attributes = mapAttributes[work.owner.id]
+    if (work.author) work.author.attributes = mapAttributes[work.author.id]
+    if (work.licenses) for (let license of work.licenses) license.attributes = mapAttributes[license.id]
+    if (work.offerings) for (let offering of work.offerings) offering.attributes = mapAttributes[offering.id]
+    if (work.publishers) for (let publisher of work.publishers) publisher.attributes = mapAttributes[publisher.id]
+    return work
   }
 
   get blockInfoRepository(): Repository<BlockInfo> {
@@ -243,7 +274,7 @@ export default class BlockchainService {
   }
 
   get workRepository(): Repository<Work> {
-    return this.db.getRepository(Work) as Repository<Work>
+    return this.db.getRepository(Work)
   }
 
   get claimRepository(): Repository<Claim> {
@@ -259,18 +290,22 @@ export default class BlockchainService {
   }
 
   get profileRepository(): Repository<Profile> {
-    return this.db.getRepository(Profile) as Repository<Profile>
+    return this.db.getRepository(Profile)
   }
 
   get licenseRepository(): Repository<License> {
-    return this.db.getRepository(License) as Repository<License>
+    return this.db.getRepository(License)
   }
 
   get offeringRepository(): Repository<Offering> {
-    return this.db.getRepository(Offering) as Repository<Offering>
+    return this.db.getRepository(Offering)
   }
 
   get titleRepository(): Repository<Title> {
-    return this.db.getRepository(Title) as Repository<Title>
+    return this.db.getRepository(Title)
+  }
+
+  get attributeRepository(): Repository<Attribute> {
+    return this.db.getRepository(Attribute)
   }
 }

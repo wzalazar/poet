@@ -22,4 +22,6 @@ export default class Offering {
 
   @Column({ nullable: true })
   offeringInfo: string
+
+  attributes: { [key: string]: string }
 }

@@ -25,4 +25,6 @@ export default class Profile {
   @OneToMany(type => Work, work => work.owner)
   @JoinTable()
   ownedWorks: Work[]
+
+  attributes: { [key: string]: string }
 }

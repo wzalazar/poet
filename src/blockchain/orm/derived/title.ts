@@ -14,4 +14,6 @@ export default class Title {
 
   @ManyToOne(type => Profile, profile => profile.ownedWorks)
   owner: Profile
+
+  attributes: { [key: string]: string }
 }

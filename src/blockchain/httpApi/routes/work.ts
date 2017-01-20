@@ -13,7 +13,7 @@ export default class WorkRoute extends Route<Work> {
   }
 
   async getItem(id: string) {
-    const work = await this.service.getWork(id)
+    const work = await this.service.getWorkFull(id)
     const claim = await this.service.getClaim(id)
     return { ...claim, ...work }
   }

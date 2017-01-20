@@ -23,4 +23,6 @@ export default class License {
 
   @Column({ nullable: true })
   proofValue: string
+
+  attributes: { [key: string]: string }
 }

@@ -30,4 +30,6 @@ export default class Work {
   @ManyToMany(type => Profile, profile => profile.hasLicensesFor)
   @JoinTable()
   publishers: Profile[]
+
+  attributes: { [key: string]: string }
 }
