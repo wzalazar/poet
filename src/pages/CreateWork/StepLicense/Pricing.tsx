@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Checkbox } from '../../components/Checkbox';
+import { Checkbox } from '../../../components/Checkbox';
 
 export class Pricing extends React.Component<any, undefined> {
   render() {

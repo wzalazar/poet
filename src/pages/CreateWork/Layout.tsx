@@ -3,26 +3,16 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { HexString } from '../../common';
 
-import { RadioButton, RadioButtonGroup } from '../../components/RadioButtonGroup';
-
-import { Pricing } from './Pricing';
-import { LicensePreview } from './LicensePreview';
+import { StepRegister, StepRegisterData } from './StepRegister/StepRegister';
+import { StepLicense } from './StepLicense/StepLicense';
+import { StepPublishAndReview } from './StepPublishAndReview/StepPublishAndReview';
 
 import './Layout.scss';
-import { TermsOfUse } from './TermsOfUse';
-import { Preview } from './Preview';
-import { StepRegister, StepRegisterData } from './StepRegister/StepRegister';
 
 interface CreateWorkProps {
   userId: HexString;
 }
 
-const licenseTypes = [
-  new RadioButton('attribution-only', 'Attribution Only'),
-  new RadioButton('pay', 'Pay'),
-  new RadioButton('one-off', 'One Off'),
-  new RadioButton('pay-to-publish', 'Pay to Publish')
-];
 
 interface CreateWorkLayoutState {
   selectedStep: number;
@@ -50,29 +40,10 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
             <StepRegister onSubmit={this.onStepRegisterSubmit.bind(this)} />
           </TabPanel>
           <TabPanel>
-            <section className="step-2-license">
-              <h2>Add a License</h2>
-              <div className="row">
-                <div className="col-sm-6">
-                  <h3>License</h3>
-                  <RadioButtonGroup radioButtons={licenseTypes} className="mb-3" onSelectionChange={console.log} />
-                  <Pricing />
-                </div>
-                <LicensePreview className="col-sm-6"/>
-              </div>
-            </section>
+            <StepLicense />
           </TabPanel>
           <TabPanel>
-            <section className="step-3-publish">
-              <h2>Review &amp; Publish</h2>
-              <div className="row">
-                <div className="col-sm-7">
-                  <TermsOfUse className="mb-2"/>
-                  <button className="btn btn-primary">Timestamp to the blockchain at {new Date().toISOString()}</button>
-                </div>
-                <Preview className="col-sm-5 mb-2 border-1 p-1" />
-              </div>
-            </section>
+            <StepPublishAndReview/>
           </TabPanel>
         </Tabs>
         <nav className="mt-3">
