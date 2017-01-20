@@ -31,6 +31,9 @@ export default async function create() {
 
   const create = (data: any) => creator.createSignedClaim(data, myPrivateKey)
   const create2 = (data: any) => creator.createSignedClaim(data, myPrivateKey2)
+
+  const fakeIt = (untilYouMakeIt: Claim) => fakeBlock(untilYouMakeIt, creator)
+
   const publish = async(claim: Claim) => {
     const response = await fetch(`http://${host}:${port}/claim`, {
       method: 'POST',
@@ -47,10 +50,10 @@ export default async function create() {
     attributes: {
       name: 'La Gioconda VV',
       createdOn: '2016-11-31 00:00:00.000Z',
-      param: process.argv[2]
     }
   })
   await publish(work)
+  await fakeIt(work)
 
   const title = create({
     type: 'Title',
@@ -96,9 +99,6 @@ export default async function create() {
   await publish(offering)
   await publish(offering2)
 
-  const fakeIt = (untilYouMakeIt: Claim) => fakeBlock(untilYouMakeIt, creator)
-
-  await fakeIt(work)
   await fakeIt(title)
   await fakeIt(profile)
   await fakeIt(profile2)

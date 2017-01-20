@@ -12,4 +12,5 @@ export default class Fields {
 
   // Title, Work
   static OWNER_KEY = 'owner'
+  static AUTHOR = 'author'
 }

@@ -1,6 +1,6 @@
 import { ManyToMany, OneToMany, JoinTable, Column, Table, PrimaryColumn } from 'typeorm'
 import License from './license'
-import CreativeWork from './work'
+import Work from './work'
 
 @Table()
 export default class Profile {
@@ -13,16 +13,16 @@ export default class Profile {
 
   @OneToMany(type => License, license => license.licenseHolder)
   @JoinTable()
-  licenses: CreativeWork[]
+  licenses: Work[]
 
-  @ManyToMany(type => CreativeWork, work => work.publishers)
-  hasLicensesFor: CreativeWork[]
+  @ManyToMany(type => Work, work => work.publishers)
+  hasLicensesFor: Work[]
 
-  @OneToMany(type => CreativeWork, work => work.author)
+  @OneToMany(type => Work, work => work.author)
   @JoinTable()
-  authoredWorks: CreativeWork[]
+  authoredWorks: Work[]
 
-  @OneToMany(type => CreativeWork, work => work.owner)
+  @OneToMany(type => Work, work => work.owner)
   @JoinTable()
-  ownedWorks: CreativeWork[]
+  ownedWorks: Work[]
 }

@@ -18,13 +18,14 @@ export default {
     const reference = await service.getWork(referenceId)
     const owner = await service.getOwnerPublicKey(referenceId)
     if (claim.publicKey !== owner) {
-      console.log('User does not control creative work, can not extend license', claim)
+      console.log('User does not control work, can not extend license', claim)
       return
     }
     return await service.offeringRepository.persist(
       service.offeringRepository.create({
         id: claim.id,
         reference: reference,
+        owner: owner,
         offeringType: claim.attributes[OfferingType],
         offeringInfo: claim.attributes[OfferingInfo]
       }

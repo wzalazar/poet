@@ -94,6 +94,7 @@ export default class BlockchainService {
   async confirmBlockWithData(blockInfo: BlockMetadata, block: PureBlock) {
     return await Promise.all(
       block.claims.map((claim, index) => {
+        console.log('Confirming claim', claim)
         return this.confirmClaim(claim, blockInfo, index)
       })
     )
@@ -107,29 +108,10 @@ export default class BlockchainService {
       claimOrder: index,
       ...txInfo
     }))
-    return await bluebird.all(
+    const result = await bluebird.all(
       this.confirmHooks[claim.type].map(hook => hook(this, claim, txInfo))
     )
-  }
-
-  get blockInfoRepository(): Repository<BlockInfo> {
-    return this.db.getRepository(BlockInfo)
-  }
-
-  get workRepository(): Repository<Work> {
-    return this.db.getRepository(Work) as Repository<Work>
-  }
-
-  get claimRepository(): Repository<Claim> {
-    return this.db.getRepository(Claim)
-  }
-
-  get claimInfoRepository(): Repository<ClaimInfo> {
-    return this.db.getRepository(ClaimInfo)
-  }
-
-  get blockRepository(): Repository<Block> {
-    return this.db.getRepository(Block)
+    return result
   }
 
   private async saveBlockIfNotExists(block: PureBlock) {
@@ -212,22 +194,6 @@ export default class BlockchainService {
     }
   }
 
-  get profileRepository(): Repository<Profile> {
-    return this.db.getRepository(Profile) as Repository<Profile>
-  }
-
-  get licenseRepository(): Repository<License> {
-    return this.db.getRepository(License) as Repository<License>
-  }
-
-  get offeringRepository(): Repository<Offering> {
-    return this.db.getRepository(Offering) as Repository<Offering>
-  }
-
-  get titleRepository(): Repository<Title> {
-    return this.db.getRepository(Title) as Repository<Title>
-  }
-
   async getOwnerPublicKey(referenceId: string) {
     const title = await this.titleRepository.findOne({ reference: referenceId })
     if (!title) {
@@ -242,27 +208,54 @@ export default class BlockchainService {
   }
 
   async getClaim(id: string) {
-    return BlockchainService.transformEntityToPureClaim(
-      await this.claimRepository.findOneById(id, {
-        alias: 'claim',
-        leftJoin: {
-          'attribute': 'claim.attributes'
-        }
-      })
-    )
+    const claim = await this.claimRepository.createQueryBuilder('claim')
+      .leftJoinAndMapMany('claim.attributes', 'claim.attributes', 'attribute')
+      .where('claim.id=:id')
+      .setParameters({ id })
+      .getOne()
+    if (!claim) {
+      return
+    }
+    return BlockchainService.transformEntityToPureClaim(claim)
   }
 
   async getWork(id: string) {
-    return await this.workRepository.findOneById(id, {
-      alias: 'work',
-      leftJoin: {
-        'title': 'work.title',
-        'author': 'work.author',
-        'owner': 'work.owner',
-        'licenses': 'work.licenses',
-        'offerings': 'work.offerings',
-        'publishers': 'work.publishers'
-      }
-    })
+    return await this.workRepository.findOneById(id)
+  }
+
+  get blockInfoRepository(): Repository<BlockInfo> {
+    return this.db.getRepository(BlockInfo)
+  }
+
+  get workRepository(): Repository<Work> {
+    return this.db.getRepository(Work) as Repository<Work>
+  }
+
+  get claimRepository(): Repository<Claim> {
+    return this.db.getRepository(Claim)
+  }
+
+  get claimInfoRepository(): Repository<ClaimInfo> {
+    return this.db.getRepository(ClaimInfo)
+  }
+
+  get blockRepository(): Repository<Block> {
+    return this.db.getRepository(Block)
+  }
+
+  get profileRepository(): Repository<Profile> {
+    return this.db.getRepository(Profile) as Repository<Profile>
+  }
+
+  get licenseRepository(): Repository<License> {
+    return this.db.getRepository(License) as Repository<License>
+  }
+
+  get offeringRepository(): Repository<Offering> {
+    return this.db.getRepository(Offering) as Repository<Offering>
+  }
+
+  get titleRepository(): Repository<Title> {
+    return this.db.getRepository(Title) as Repository<Title>
   }
 }

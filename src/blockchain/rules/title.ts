@@ -19,12 +19,22 @@ export default {
       console.log('Odd title: no owner', claim)
       return
     }
-    return await service.titleRepository.persist(
+    const work = await service.workRepository.findOneById(referenceId)
+    const owner = await service.profileRepository.findOneById(ownerId)
+    const title = await service.titleRepository.persist(
       service.titleRepository.create({
         id: claim.id,
-        reference: referenceId,
-        owner: ownerId
+        reference: work,
+        owner: owner
       })
     )
+    if (work) {
+      work.title = title
+      if (owner) {
+        work.owner = owner
+      }
+      await service.workRepository.persist(work)
+    }
+    return title
   }
 }

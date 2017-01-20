@@ -5,18 +5,16 @@ import Route from '../route'
 import Work from '../../orm/derived/work'
 
 export default class WorkRoute extends Route<Work> {
+  service: BlockchainService
+
   constructor(service: BlockchainService) {
     super(service.workRepository, 'works')
+    this.service = service
   }
 
   async getItem(id: string) {
-    return this.repository.findOneById(id, {
-      alias: "work",
-      leftJoin: {
-        "title": "work.title",
-        "licenses": "work.licenses",
-        "offerings": "work.offerings"
-      }
-    })
+    const work = await this.service.getWork(id)
+    const claim = await this.service.getClaim(id)
+    return { ...claim, ...work }
   }
 }

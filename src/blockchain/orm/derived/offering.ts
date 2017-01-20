@@ -1,5 +1,5 @@
 import { Column, ManyToOne, Table, PrimaryColumn, OneToMany } from 'typeorm'
-import CreativeWork from './work'
+import Work from './work'
 import License from './license'
 
 @Table()
@@ -8,8 +8,11 @@ export default class Offering {
   @PrimaryColumn()
   id: string
 
-  @ManyToOne(type => CreativeWork, work => work.offerings)
-  reference: CreativeWork
+  @ManyToOne(type => Work, work => work.offerings)
+  reference: Work
+
+  @Column({ nullable: true })
+  owner: string
 
   @OneToMany(type => License, license => license.referenceOffering)
   licenses: License[]
