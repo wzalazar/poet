@@ -180,6 +180,12 @@ export default class BlockchainService {
 
   private async createOrUpdateBlockInfo(blockMetadata: BlockMetadata) {
     const existent = await this.blockInfoRepository.findOne({ torrentHash: blockMetadata.torrentHash })
+    if (blockMetadata.bitcoinHeight && (!existent || !existent.height)) {
+      // Calculate poet height
+      blockMetadata.height = await this.blockInfoRepository.createQueryBuilder('info')
+          .where('info.height<>0')
+          .getCount() + 1
+    }
     if (existent) {
       for (let key of Object.keys(blockMetadata)) {
         const blockKey: keyof BlockMetadata = key as keyof BlockMetadata

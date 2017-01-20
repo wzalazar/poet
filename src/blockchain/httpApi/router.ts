@@ -6,6 +6,7 @@ import Route from './route'
 import WorkRoute from './routes/work'
 import getConnection from '../connection'
 import getBuilder from '../../serialization/builder'
+import BlockRoute from './routes/blocks'
 
 export default class BlockchainRouter {
   service: BlockchainService
@@ -29,7 +30,7 @@ export default class BlockchainRouter {
 
     try {
       new WorkRoute(this.service).addRoutes(router)
-      route(this.service.blockRepository  , 'blocks'  )
+      new BlockRoute(this.service).addRoutes(router)
       route(this.service.profileRepository, 'profiles')
       route(this.service.claimRepository  , 'claims'  )
     } catch (error) {
