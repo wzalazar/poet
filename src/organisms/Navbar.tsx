@@ -26,8 +26,7 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
           <input type="text" placeholder="Search Creative Works" onClick={this.props.dispatchSearchClick} />
         </div>
         <ul className="navbar-nav">
-          { this.notLoggedActions() }
-          { this.loggedInActions() }
+          { this.props.loggedIn ? this.loggedInActions() : this.notLoggedActions() }
         </ul>
       </nav>
     )
@@ -38,13 +37,10 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
   }
 
   private renderNavButton(key: string, text: string): JSX.Element {
-    return <li key={key} className="nav-item"><a href="#" className="btn btn-primary btn-sm">{text}</a></li>;
+    return <li key={key} className="nav-item"><Link to={'/' + key} className="btn btn-primary btn-sm">{text}</Link></li>;
   }
 
   private notLoggedActions(): JSX.Element[] {
-    if (this.props.loggedIn) {
-      return [];
-    }
     return [
       this.renderNavLink('about', 'About'),
       this.renderNavLink('documentation', 'Documentation'),
@@ -54,15 +50,12 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
   }
 
   private loggedInActions(): JSX.Element[] {
-    if (!this.props.loggedIn) {
-      return [];
-    }
     return [
       this.renderNavLink('portfolio', 'Portfolio'),
       this.renderNavLink('licenses', 'Licenses'),
       this.renderNavLink('user', 'User'),
       <li key="logout"><LogoutButton>Logout</LogoutButton></li>,
-      this.renderNavButton('new-work', 'New Work')
+      this.renderNavButton('create-work', 'New Work')
     ];
   }
 }
