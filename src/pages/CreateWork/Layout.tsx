@@ -4,7 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { HexString } from '../../common';
 
 import { StepRegister, StepRegisterData } from './StepRegister/StepRegister';
-import { StepLicense } from './StepLicense/StepLicense';
+import { StepLicense, StepLicenseData } from './StepLicense/StepLicense';
 import { StepPublishAndReview } from './StepPublishAndReview/StepPublishAndReview';
 
 import './Layout.scss';
@@ -40,37 +40,28 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
             <StepRegister onSubmit={this.onStepRegisterSubmit.bind(this)} />
           </TabPanel>
           <TabPanel>
-            <StepLicense />
+            <StepLicense onSubmit={this.onStepLicenseSubmit.bind(this)} />
           </TabPanel>
           <TabPanel>
             <StepPublishAndReview/>
           </TabPanel>
         </Tabs>
-        <nav className="mt-3">
-          { this.state.selectedStep > 0 && <button className="btn btn-secondary" onClick={this.onPrevious.bind(this)}>Previous</button> }
-          { this.state.selectedStep < 2 && <button className="btn btn-primary" onClick={this.onNext.bind(this)}>Next</button> }
-        </nav>
       </section>
 
     )
-  }
-
-  private onNext() {
-    this.setState({
-      selectedStep: this.state.selectedStep + 1
-    })
-  }
-
-  private onPrevious() {
-    this.setState({
-      selectedStep: this.state.selectedStep - 1
-    })
   }
 
   private onStepRegisterSubmit(state: StepRegisterData) {
     console.log('onStepRegisterSubmit', state);
     this.setState({
       selectedStep: 1
+    })
+  }
+
+  private onStepLicenseSubmit(state: StepLicenseData) {
+    console.log('onStepLicenseSubmit', state);
+    this.setState({
+      selectedStep: 2
     })
   }
 }

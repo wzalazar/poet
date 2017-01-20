@@ -2,7 +2,23 @@ import * as React from 'react';
 
 import { Checkbox } from '../../../components/Checkbox';
 
-export class Pricing extends React.Component<any, undefined> {
+interface PricingState {
+  amount?: number;
+  currency?: string;
+  frequency?: 'oneTime' | 'perPageView';
+}
+
+export class Pricing extends React.Component<undefined, PricingState> {
+
+  constructor() {
+    super(...arguments);
+    this.state = {
+      amount: 0,
+      currency: 'USD',
+      frequency: 'oneTime'
+    }
+  }
+
   render() {
     return (
       <section>
@@ -19,12 +35,18 @@ export class Pricing extends React.Component<any, undefined> {
           <div className="col-sm-8">
             <div className="input-group">
               <span className="input-group-addon">$</span>
-              <input type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
+              <input onChange={this.onAmountChange.bind(this)} type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
               <span className="input-group-addon">.00</span>
             </div>
           </div>
         </div>
       </section>
     );
+  }
+
+  private onAmountChange(event: any) {
+    this.setState({
+      amount: event.target.value
+    })
   }
 }

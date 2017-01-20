@@ -3,11 +3,11 @@ import * as React from 'react';
 export interface RadioButtonGroupProps {
   className?: string;
   radioButtons: RadioButton[];
-  onSelectionChange: (id: string) => void;
+  onSelectionChange?: (id: string) => void;
 }
 
 interface RadioButtonGroupState {
-  selectedItem: number;
+  selectedIndex: number;
 }
 
 export class RadioButton {
@@ -25,14 +25,14 @@ export class RadioButtonGroup extends React.Component<RadioButtonGroupProps, Rad
   constructor() {
     super(...arguments);
     this.state = {
-      selectedItem: 0
+      selectedIndex: 0
     };
   }
 
   private renderRadioButton(radioButton: RadioButton, index: number) {
     return (
-      <label key={radioButton.id} className={'btn btn-primary ' + this.props.className + ' ' + (index === this.state.selectedItem ? 'active' : '' )}>
-        <input type="radio" name="options" id={radioButton.id} onChange={this.onItemToggle.bind(this, index)} checked={index === this.state.selectedItem} /> {radioButton.text}
+      <label key={radioButton.id} className={'btn btn-primary ' + this.props.className + ' ' + (index === this.state.selectedIndex ? 'active' : '' )}>
+        <input type="radio" name="options" id={radioButton.id} onChange={this.onItemToggle.bind(this, index)} checked={index === this.state.selectedIndex} /> {radioButton.text}
       </label>
     );
   }
@@ -47,8 +47,12 @@ export class RadioButtonGroup extends React.Component<RadioButtonGroupProps, Rad
 
   private onItemToggle(index: number) {
     this.setState({
-      selectedItem: index
+      selectedIndex: index
     });
-    this.props.onSelectionChange(this.props.radioButtons[index].id)
+    this.props.onSelectionChange && this.props.onSelectionChange(this.props.radioButtons[index].id)
+  }
+
+  public getSelectedItem() {
+    return this.props.radioButtons[this.state.selectedIndex];
   }
 }
