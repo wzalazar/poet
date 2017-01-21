@@ -14,12 +14,27 @@ export interface TrustedPublisherOptions {
   broadcast: boolean
 }
 
+const createClaim = (creator: ClaimBuilder, claimInfo: any, privateKey: string): Claim => {
+  return creator.createSignedClaim(claimInfo, privateKey)
+}
+
 export default async function createServer(options?: TrustedPublisherOptions) {
   const koa = new Koa()
   const creator = await getCreator()
   const queue = new Queue()
 
   koa.use(Body())
+
+  koa.use(Route.post('/claimHelper', async (ctx: any) => {
+    const claimData: any[] = ctx.request.body.claims
+    const claims: Claim[] = []
+    for (let claimInfo of claimData){
+      claims.push(createClaim(creator, claimInfo, ctx.request.body.privateKey))
+    }
+    console.log('Claim data is', claimData)
+    const block: Block = creator.createBlock(claims)
+    console.log('Poet block hash is', block.id)
+  }))
 
   koa.use(Route.post('/claim', async (ctx: any) => {
     const claimData: Claim = ctx.request.body as Claim
