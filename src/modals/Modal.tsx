@@ -1,7 +1,6 @@
 declare var require: (moduleId: string) => any;
 
 import * as React from 'react'
-import './Modal.scss'
 
 const Overlays = require('react-overlays');
 
@@ -17,10 +16,13 @@ export interface ModalProps extends ModalVisible, ModalAction {}
 
 abstract class Modal<T extends ModalProps> extends React.Component<T, undefined> {
   render() {
+    if (!this.props.visible) {
+      return <div/>
+    }
     return (
       <Overlays.Modal
         aria-labelledby='modal-label'
-        className="modal"
+        ClassName="modal"
         backdropClassName="backdrop"
         show={this.props.visible}
         onHide={this.props.cancelAction}

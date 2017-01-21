@@ -5,7 +5,7 @@ import { HexString } from '../../common';
 
 import { StepRegister, StepRegisterData } from './StepRegister/StepRegister';
 import { StepLicense, StepLicenseData } from './StepLicense/StepLicense';
-import { StepPublishAndReview } from './StepPublishAndReview/StepPublishAndReview';
+import StepPublishAndReview from './StepPublishAndReview/StepPublishAndReview';
 
 import './Layout.scss';
 

@@ -1,4 +1,5 @@
 /// <amd-dependency path="react-bootstrap-modal" />
+import { ModalVisible } from './Modal'
 declare var require: (moduleId: string) => any;
 
 import * as React from 'react';
@@ -11,17 +12,15 @@ import { ModalProps } from './Modal'
 
 import Actions from '../actions';
 
+import './Modal.scss';
 import './Login.scss';
 
 interface LoginActions extends ModalProps {
   dispatchLoginResponse: () => Action;
 }
 
-interface LoginProps {
-  visible: boolean;
-}
-
 class LoginModal extends Modal<LoginActions> {
+  modalName = 'login'
   draw() {
     return (
       <div className="modal modal-login">
@@ -50,7 +49,7 @@ class LoginModal extends Modal<LoginActions> {
   }
 }
 
-function mapStateToProps(state: any): LoginProps {
+function mapStateToProps(state: any): ModalVisible {
   return {
     visible: state.modals.login
   }
