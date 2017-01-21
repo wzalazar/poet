@@ -27,8 +27,9 @@ export default async function createServer(options?: TrustedPublisherOptions) {
   koa.use(Body())
 
   koa.use(Route.post('/claimHelper', async (ctx: any) => {
-    const claimData: any[] = ctx.request.body.claims
-    const userPrivateKey = new bitcore.PrivateKey(ctx.request.body.privateKey)
+    const body = JSON.parse(ctx.request.body)
+    const claimData: any[] = body.claims
+    const userPrivateKey = new bitcore.PrivateKey(body.privateKey)
     const claims: Claim[] = []
     let referenceId
     for (let claimInfo of claimData){
@@ -51,6 +52,26 @@ export default async function createServer(options?: TrustedPublisherOptions) {
     console.log('Claim data is', claims)
     const block: Block = creator.createBlock(claims)
     console.log('Poet block hash is', block.id)
+    try {
+      await queue.announceBlockToSend(block)
+    } catch (error) {
+      console.log('Could not publish block', error, error.stack)
+    }
+
+    try {
+      const id = await getHash(creator.serializeBlockForSave(block), block.id)
+      const tx = await creator.createTransaction(id)
+      console.log('Bitcoin transaction hash is', tx.hash)
+      console.log('Torrent hash is', id)
+
+      if (!options.broadcast) {
+        return
+      }
+
+      ctx.body = await ClaimBuilder.broadcastTx(tx)
+    } catch (error) {
+      ctx.body = JSON.stringify({ error })
+    }
   }))
 
   koa.use(Route.post('/claim', async (ctx: any) => {
