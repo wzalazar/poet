@@ -1,4 +1,4 @@
-/// <amd-dependency path="react-bootstrap-modal" />
+import { ModalVisible } from './Modal'
 declare var require: (moduleId: string) => any;
 
 import * as React from 'react';
@@ -11,24 +11,13 @@ import { ModalProps } from './Modal'
 
 import Actions from '../actions';
 
-import './Login.scss';
-
-interface LoginActions extends ModalProps {
-  dispatchLoginResponse: () => Action;
-}
-
-interface LoginProps {
-  visible: boolean;
-}
-
-class LoginModal extends Modal<LoginActions> {
+class SignWorkModal extends Modal<ModalProps> {
   draw() {
     return (
-      <div className="modal modal-login">
-        <h1>Login to Poet</h1>
+      <div className="modal">
+        <h1>Signing requested</h1>
         <div>
-          <img onClick={this.props.dispatchLoginResponse}
-               src="http://www.qr-code-generator.com/phpqrcode/getCode.php?cht=qr&chl=http%3A%2F%2Fwww.po.et&chs=180x180&choe=UTF-8&chld=L|0"/>
+          <img src="http://www.qr-code-generator.com/phpqrcode/getCode.php?cht=qr&chl=http%3A%2F%2Fwww.po.et&chs=180x180&choe=UTF-8&chld=L|0"/>
         </div>
         <div className="mb-2">Scan the QR code to login</div>
         <div className="onboard mb-2">
@@ -50,15 +39,14 @@ class LoginModal extends Modal<LoginActions> {
   }
 }
 
-function mapStateToProps(state: any): LoginProps {
+function mapStateToProps(state: any): ModalVisible {
   return {
     visible: state.modals.login
   }
 }
 
 const mapDispatch = {
-  cancelAction: () => ({ type: Actions.loginModalDisposeRequested }),
-  dispatchLoginResponse: () => ({ type: Actions.loginResponse })
+  cancelAction: () => ({ type: Actions.workModalDismissRequested }),
 };
 
-export default connect(mapStateToProps, mapDispatch)(LoginModal);
+export default connect(mapStateToProps, mapDispatch)(SignWorkModal);

@@ -1,23 +1,34 @@
-import { browserHistory } from "react-router";
-import { Saga, takeEvery } from 'redux-saga'
-import { call, put } from 'redux-saga/effects'
+import { browserHistory } from 'react-router'
+import { Saga, takeEvery, delay } from 'redux-saga'
+import { call, put, take } from 'redux-saga/effects'
+import Actions from '../actions'
+import config from '../config'
 
-import Actions from '../actions';
+function* createWork(workData: any) {
+  yield put({ type: Actions.workModalShow, payload: workData });
 
-function* loginModalDisposeRequestedAction(action: any) {
-  //const firstStepData = yield take(FIRST_STEP_FILLED)
-  //const secondStepData= yield take(SECOND_STEP_FILLED)
-  //const thirdStepResult = yield take(CONFIRMED_SUBMISSION)
-  //const signatureData= yield take(SIGNED_SUBMISSION)
-  //yield put(SENDING_WORK)
-  //const result = yield call(firstStepData, secondStepData, signatureData) // post work
-  //if (/* result errored */) {/* do something to fix it */ }
-  yield put(Actions.navbarSearchClick);
+  /* Mock */
+  yield delay(1000);
+  const signatureData =
+  // const signatureData = yield take(Actions.createWorkSigned);
+  /* End mock */
+
+  yield put(Actions.submittingWork);
+  const result = yield call(fetch, config.api.user + '/work', {
+    method: 'POST',
+    body: JSON.stringify(signatureData)
+  });
+
+  yield put({ type: Actions.createWorkSuccess });
+  yield take(Actions.workModalDismissRequested);
+  yield put({ type: Actions.workModalHide });
+
+  browserHistory.push('/')
 }
 
 function createWorkSaga(): Saga {
   return function*() {
-    yield takeEvery(Actions.loginResponse, loginModalDisposeRequestedAction);
+    yield takeEvery(Actions.createWorkRequested, createWork);
   }
 }
 

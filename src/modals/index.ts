@@ -1,3 +1,4 @@
 import Login from './Login';
+import SignWork from './SignWork';
 
-export default [Login];
+export default [Login, SignWork];
