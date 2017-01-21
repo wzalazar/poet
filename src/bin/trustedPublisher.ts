@@ -1,9 +1,10 @@
 import * as Koa from 'koa'
 
+const bitcore = require('bitcore-lib')
 const Body = require('koa-body')
 const Route = require('koa-route')
 
-import { Claim, Block } from "../claim"
+import { Claim, Block, WORK } from "../claim"
 import { default as getCreator, ClaimBuilder } from "../serialization/builder"
 import { getHash } from '../helpers/torrentHash'
 import { Queue } from '../queue'
@@ -27,11 +28,27 @@ export default async function createServer(options?: TrustedPublisherOptions) {
 
   koa.use(Route.post('/claimHelper', async (ctx: any) => {
     const claimData: any[] = ctx.request.body.claims
+    const userPrivateKey = new bitcore.PrivateKey(ctx.request.body.privateKey)
     const claims: Claim[] = []
+    let referenceId
     for (let claimInfo of claimData){
-      claims.push(createClaim(creator, claimInfo, ctx.request.body.privateKey))
+      if (referenceId) {
+        claimInfo.attributes.reference = referenceId
+      }
+      const claim = createClaim(creator, claimInfo, userPrivateKey)
+      claims.push(claim)
+      if (claim.type === WORK) {
+        referenceId = claim.id
+        claims.push(createClaim(creator, {
+          type: 'Title',
+          attributes: {
+            reference: claim.id,
+            owner: userPrivateKey.publicKey.toString()
+          }
+        }, userPrivateKey))
+      }
     }
-    console.log('Claim data is', claimData)
+    console.log('Claim data is', claims)
     const block: Block = creator.createBlock(claims)
     console.log('Poet block hash is', block.id)
   }))
