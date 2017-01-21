@@ -9,14 +9,17 @@ function* createWork(workData: any) {
 
   /* Mock */
   yield delay(1000);
-  const signatureData =
+  const signatureData = workData
   // const signatureData = yield take(Actions.createWorkSigned);
   /* End mock */
 
   yield put(Actions.submittingWork);
-  const result = yield call(fetch, config.api.user + '/work', {
+  const result = yield call(fetch, config.api.user + '/claimHelper', {
     method: 'POST',
-    body: JSON.stringify(signatureData)
+    body: JSON.stringify({
+      claims: signatureData.payload,
+      privateKey: '2111d5dc1bf2c48b73d271375a11f853f92aca53d328f35af5cbaead016ebeb5'
+    })
   });
 
   yield put({ type: Actions.createWorkSuccess });

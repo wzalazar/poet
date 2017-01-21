@@ -32,10 +32,13 @@ export class StepRegister extends React.Component<StepRegisterProps, undefined> 
   }
 
   private submit(): void {
-    this.props.onSubmit({
+    const attributes: {[key: string]: string} = {
       articleType: (this.refs[this.MEDIA_TYPE] as any).state.subType,
-      attributes: (this.refs[this.ATTRIBUTES] as any).state.attributes,
       content: (this.refs[this.CONTENT] as any).state.content
-    });
+    }
+    for (let attribute of (this.refs[this.ATTRIBUTES] as any).state.attributes) {
+      attributes[attribute.key] = attribute.value
+    }
+    this.props.onSubmit(attributes);
   }
 }

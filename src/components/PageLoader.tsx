@@ -17,9 +17,12 @@ abstract class PageLoader<State, Properties> {
   abstract reducerHook<State>(): ReducerDescription<State>
   abstract sagaHook(): Saga
   abstract select(state: any, ownProps: any): Properties
+  mapDispatchToProps(): any {
+    return {}
+  }
 
   protected container() {
-    return connect(this.select.bind(this))(this.component)
+    return connect(this.select.bind(this), this.mapDispatchToProps())(this.component)
   }
 
 }
