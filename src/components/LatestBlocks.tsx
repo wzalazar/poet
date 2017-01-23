@@ -13,7 +13,7 @@ function renderBlock(props: any) {
   return (
     <tr key={props.id}>
       <td><span className="text-truncate">{props.bitcoinHeight}</span></td>
-      <td><span className="text-truncate">{props.bitcoinBlock.firstAndLastCharacters(4)}</span></td>
+      <td><span className="text-truncate">{props.bitcoinHash.firstAndLastCharacters(4)}</span></td>
       <td>{moment(props.timestamp).fromNow()}</td>
     </tr>
   )

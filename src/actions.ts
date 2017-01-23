@@ -24,4 +24,8 @@ export default class Actions {
 
   public static readonly workModalShow = 'show create work modal';
   public static readonly workModalHide = 'hide work modal';
+
+  public static readonly updatingProfile = 'updating profile';
+  public static readonly profileUpdated = 'profile updated successfully';
+  public static readonly updateProfileRequested = 'profile update requested';
 }

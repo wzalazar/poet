@@ -29,7 +29,7 @@ function render(props: FetchComponentProps) {
   return (
     <section className="latest-works p-2">
       <header>
-        <h5>Latest Timestampts</h5>
+        <h5>Latest Timestamps</h5>
         <div className="more-link"><Link to="/block">view all »</Link></div>
       </header>
       <ul className="list-unstyled">
