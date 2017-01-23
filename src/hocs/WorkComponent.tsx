@@ -31,5 +31,5 @@ export interface WorkProps extends FetchComponentProps {
 }
 
 export default FetchComponent.bind(null, (props: WorkProps) => ({
-  url: `${Config.api.url}/works/${props.id}`
+  url: `${Config.api.explorer}/works/${props.id}`
 }));

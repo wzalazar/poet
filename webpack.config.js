@@ -12,7 +12,11 @@ const vendor = [
   'redux',
   'redux-saga',
   'react-tabs',
-  'moment'
+  'moment',
+  'bitcore-lib',
+  'bitcore-explorers',
+  'bluebird',
+  'protobufjs'
 ];
 
 const production = !!process.env['PRODUCTION'];
@@ -33,11 +37,11 @@ module.exports = {
   },
 
   // Enable sourcemaps for debugging webpack's output.
-  devtool: 'cheap-eval-source-map',
+  devtool: 'source-map',
 
   resolve: {
       // Add '.ts' and '.tsx' as resolvable extensions.
-      extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']
+      extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.json']
   },
 
   module: {
@@ -47,7 +51,8 @@ module.exports = {
       { test: /\.scss$/, loader: production
         ? ExtractTextPlugin.extract('css!sass')
         : 'style!css?sourceMap!sass?sourceMap'
-      }
+      },
+      { test: /\.json$/, loader: 'json-loader' }
     ],
 
     preLoaders: [

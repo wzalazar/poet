@@ -3,7 +3,8 @@ import { Route } from 'react-router';
 import { Saga } from 'redux-saga';
 
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
-import { CreateWorkLayout } from './Layout';
+import CreateWorkLayout from './Layout';
+import Actions from '../../actions'
 
 interface CreateWorkState {
 }
@@ -29,9 +30,14 @@ export class CreateWork extends PageLoader<CreateWorkState, Object> {
   }
 
   select(state: any, ownProps: any): Object {
-    if (!state.session || !state.session.user || !state.session.user.id)
-      return {};
+    return {};
+  }
 
-    return { userId: state.session.user.id };
+  mapDispatchToProps(): Object {
+    return {
+      createWorkRequested: (payload: any[]) => ({
+        type: Actions.claimsSubmitRequested, payload
+      })
+    };
   }
 }

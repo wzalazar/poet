@@ -1,9 +1,12 @@
-import * as React from 'react';
+import * as React from 'react'
+import { TermsOfUse } from './TermsOfUse'
+import { Preview } from './Preview'
 
-import { TermsOfUse } from './TermsOfUse';
-import { Preview } from './Preview';
+export interface StepPublishAndReviewProps {
+  onSubmit: () => void
+}
 
-export class StepPublishAndReview extends React.Component<any, any> {
+export default class StepPublishAndReview extends React.Component<StepPublishAndReviewProps, any> {
   render() {
     return (
       <section className="step-3-publish">
@@ -11,7 +14,7 @@ export class StepPublishAndReview extends React.Component<any, any> {
         <div className="row">
           <div className="col-sm-7">
             <TermsOfUse className="mb-2"/>
-            <button className="btn btn-primary">Timestamp to the blockchain at {new Date().toISOString()}</button>
+            <button onClick={this.props.onSubmit} className="btn btn-primary">Timestamp to the blockchain</button>
           </div>
           <Preview className="col-sm-5 mb-2 border-1 p-1" />
         </div>
@@ -19,3 +22,4 @@ export class StepPublishAndReview extends React.Component<any, any> {
     )
   }
 }
+

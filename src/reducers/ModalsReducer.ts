@@ -6,6 +6,10 @@ export default function modalsReducer(state: any, action: any) {
       return { ...state, login: false };
     case Actions.loginModalOpen:
       return { ...state, login: true };
+    case Actions.signClaimsModalShow:
+      return { ...state, signWork: true };
+    case Actions.signClaimsModalHide:
+      return { ...state, signWork: false };
   }
   return state || {};
 }

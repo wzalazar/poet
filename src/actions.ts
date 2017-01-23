@@ -6,6 +6,8 @@ export default class Actions {
   public static readonly navbarSearchClick = 'navbar search click';
   public static readonly fetchRequest = 'fetch requested';
   public static readonly loginResponse = 'login response'; // TODO: this one should be dispatched by a saga
+  public static readonly claimsSubmitRequested = 'create work requested';
+  public static readonly claimsModalDismissRequested = 'dismiss work modal';
 
   // SagaActions: dispatched by a saga, listened by a reducer — these are Actions command changes imperatively
   public static readonly loginSuccess = 'login success';
@@ -15,4 +17,15 @@ export default class Actions {
 
   public static readonly fetchResponseSuccess = 'fetch response success';
   public static readonly fetchResponseError = 'fetch response error';
+
+  public static readonly claimsSigned = 'claim signed';
+  public static readonly claimsSubmitedSuccess = 'create claim success';
+  public static readonly claimsSubmitting = 'submitting claims';
+
+  public static readonly signClaimsModalShow = 'show sign claims modal';
+  public static readonly signClaimsModalHide = 'hide sign claims modal';
+
+  public static readonly updatingProfile = 'updating profile';
+  public static readonly profileUpdated = 'profile updated successfully';
+  public static readonly updateProfileRequested = 'profile update requested';
 }

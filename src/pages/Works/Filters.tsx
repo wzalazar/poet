@@ -31,7 +31,7 @@ export default class FiltersComponent extends React.Component<any, undefined> {
 
   render() {
     return (
-      <header className="mb-3 d-flex p-1">
+      <header className="mb-3 d-flex p-1 no-margin-bottom">
         { this.renderDropdown('Sort by', ['Most Trusted', 'Date Published', 'Licenses Sold'])}
         { this.renderDropdown('License', ['Free to Use', 'MIT', 'Private'])}
         { this.renderDateSelector('Created')}

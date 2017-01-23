@@ -14,7 +14,7 @@ export class LandingLoggedIn extends React.Component<LandingProps, undefined> {
     return (
       <div className="landing-logged-in">
         <h1>Poet</h1>
-        <h4 className="text-uppercase mb-2">Proof of existence transaction</h4>
+        <h4 className="mb-2">Proof of existence for transactions</h4>
         <section className="search mb-3">
           <div className="mb-1"><input type="text" placeholder="search for works" /></div>
           <div><button className="btn btn-primary">Poet Search</button></div>

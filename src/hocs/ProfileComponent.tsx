@@ -14,5 +14,5 @@ export interface ProfileProps extends FetchComponentProps {
 }
 
 export default FetchComponent.bind(null, (props: ProfileProps) => ({
-  url: `${Config.api.url}/profiles/${props.id}`
+  url: `${Config.api.explorer}/profiles/${props.id}`
 }));
