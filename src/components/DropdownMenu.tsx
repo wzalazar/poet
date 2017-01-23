@@ -5,35 +5,46 @@ export interface DropdownMenuProps {
   optionSelected: (option: string) => void;
 }
 
-export class DropdownMenu extends React.Component<DropdownMenuProps, undefined> {
+export interface DropdownState {
+  open: boolean
+};
+
+export class DropdownMenu extends React.Component<DropdownMenuProps, DropdownState> {
   private open: boolean;
 
   constructor() {
     super(...arguments);
-    this.hide = this.hide.bind(this);
-    this.show = this.show.bind(this);
+    this.state = {
+      open: false
+    };
   }
 
-  hide() {
-    this.open = false;
-    this.forceUpdate();
-    document.removeEventListener('click', this.hide);
-  }
-
-  show() {
-    this.open = true;
-    this.forceUpdate();
-    document.addEventListener('click', this.hide);
+  toggle() {
+    this.setState({ open: !this.state.open })
   }
 
   render() {
     return (
-      <div className={ 'dropdown ' + (this.open ? 'show' : '') }>
-        <button onClick={this.show.bind(this)} className="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      <div className={ 'dropdown ' + (this.state.open ? 'show' : '') }>
+        <button onClick={this.toggle.bind(this)}
+          className="btn btn-sm btn-secondary dropdown-toggle"
+          type="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="true"
+        >
           { this.props.children }
         </button>
-        <div className="dropdown-menu " aria-labelledby="dropdownMenuButton">
-          { this.props.options.map(option => <a key={option} onClick={this.props.optionSelected.bind(null, option)} className="dropdown-item" href="#">{option}</a>)}
+        <div className="dropdown-menu">
+          { this.props.options.map(option =>
+              <a key={option}
+                onClick={this.props.optionSelected.bind(null, option)}
+                className="dropdown-item"
+                href="#">
+                {option}
+              </a>
+            )
+          }
         </div>
       </div>
     );

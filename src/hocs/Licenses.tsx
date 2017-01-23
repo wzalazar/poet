@@ -4,6 +4,6 @@ import FetchComponent, { FetchComponentProps } from './FetchComponent'
 
 export default FetchComponent.bind(null, function (props: FetchComponentProps) {
   return {
-    url: `${Config.api.explorer}/licenses`
+    url: `${Config.api.explorer}/licenses/${'publicKey'}`
   };
 });
