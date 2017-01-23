@@ -1,11 +1,22 @@
 import * as React from 'react';
 import { Route } from 'react-router';
+import { Action } from 'redux';
 import { Saga, delay, takeEvery } from 'redux-saga';
 import { put } from 'redux-saga/effects';
 
-import PageLoader, { ReducerDescription } from '../../components/PageLoader';
-import { ProfileLayout } from './Layout';
+import { Claim } from '../../Claim';
 import Actions from '../../actions'
+import PageLoader, { ReducerDescription } from '../../components/PageLoader';
+
+import { ProfileLayout } from './Layout';
+
+export interface UserProfileProps {
+  readonly displayName?: string;
+  readonly email?: string;
+  readonly avatarImageData?: string;
+  readonly currency?: string;
+  readonly submitProfileRequested?: (payload: Claim) => Action;
+}
 
 export class UserProfile extends PageLoader<any, Object> {
 
@@ -40,7 +51,7 @@ export class UserProfile extends PageLoader<any, Object> {
 
   mapDispatchToProps(): Object {
     return {
-      submitProfileRequested: (payload: any[]) => ({
+      submitProfileRequested: (payload: Claim) => ({
         type: Actions.claimsSubmitRequested, payload
       })
     };

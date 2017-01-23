@@ -4,7 +4,14 @@ import './Layout.scss';
 
 import { ImageUpload } from '../../components/ImageUpload';
 
-export class ProfileLayout extends React.Component<any, undefined> {
+import { UserProfileProps } from './Loader';
+import { PROFILE } from '../../Claim';
+
+export class ProfileLayout extends React.Component<UserProfileProps, undefined> {
+  private readonly controls: {
+    imageUpload?: ImageUpload
+  } = {};
+
   render() {
     return (
       <section className="user-edit">
@@ -28,7 +35,7 @@ export class ProfileLayout extends React.Component<any, undefined> {
             <div className="row py-3">
               <label className="col-sm-3 col-form-label">Image</label>
               <div className="col-sm-9">
-                <ImageUpload className="image-upload" buttonClassName="btn btn-primary"/>
+                <ImageUpload ref={imageUpload => this.controls.imageUpload = imageUpload} className="image-upload" buttonClassName="btn btn-primary"/>
               </div>
             </div>
           </div>
@@ -36,12 +43,22 @@ export class ProfileLayout extends React.Component<any, undefined> {
             <div className="row">
               <label className="col-sm-3 col-form-label">Preferred currency</label>
               <div className="col-sm-9">
-                <input className="form-control" defaultValue={this.props.email}/>
+                <input className="form-control" defaultValue={this.props.currency}/>
               </div>
             </div>
           </div>
         </form>
+        <button onClick={this.onSubmit.bind(this)} className="btn btn-primary outlined">Save</button>
       </section>
     );
+  }
+
+  private onSubmit() {
+    this.props.submitProfileRequested({
+      type: PROFILE,
+      attributes: {
+        imageData: this.controls.imageUpload.state.imageData
+      }
+    });
   }
 }
