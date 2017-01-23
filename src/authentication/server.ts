@@ -47,14 +47,20 @@ export default async function createServer(options: AuthServerOptons) {
     return encoded
   }
 
-  function makeCreateResponse(payload: string) {
+  function makeCreateResponse(payload: string, ref: string) {
     return JSON.stringify({
       status: "created",
-      encoded: payload
+      encoded: payload,
+      ref
     })
   }
 
   function handleMessage(websocket: any, message: any) {
+    if (message.type === 'associate') {
+      const id = message.id
+      mappingToWebsocket[id] = websocket
+      return
+    }
     if (message.type !== 'create') {
       websocket.emit('message', `{"error": "Unknown type of message ${message.type}"}`)
       return
@@ -67,11 +73,12 @@ export default async function createServer(options: AuthServerOptons) {
 
     const id = uuid.v4()
     const request = makeRequest(id, message.payload)
+    const ref: string = message.ref || ''
 
     requests[id] = request
     mappingToWebsocket[id] = websocket
 
-    websocket.emit('message', makeCreateResponse(request))
+    websocket.emit('message', makeCreateResponse(request, ref))
   }
 
   function validSignature(id: string, payload: Signature): boolean {
@@ -144,7 +151,11 @@ export default async function createServer(options: AuthServerOptons) {
       console.log('Accepted')
       ctx.response.body = '{"success": true}'
       if (mappingToWebsocket[id]) {
-        mappingToWebsocket[id].send(JSON.stringify(signature))
+        mappingToWebsocket[id].send(JSON.stringify({
+          id,
+          request: requests[id],
+          signature
+        }))
       }
     } else {
       console.log('Rejected')

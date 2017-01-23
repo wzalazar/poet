@@ -21,3 +21,7 @@ socket.on('message', (payload: any) => {
   }
 })
 
+socket.on('disconnect', () => {
+  console.log('disconnected')
+})
+
