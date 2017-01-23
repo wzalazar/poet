@@ -9,7 +9,11 @@ import { PROFILE } from '../../Claim';
 
 export class ProfileLayout extends React.Component<UserProfileProps, undefined> {
   private readonly controls: {
-    imageUpload?: ImageUpload
+    displayNameInput?: HTMLInputElement;
+    emailInput?: HTMLInputElement;
+    imageUpload?: ImageUpload;
+    currencyInput?: HTMLInputElement;
+
   } = {};
 
   render() {
@@ -23,13 +27,13 @@ export class ProfileLayout extends React.Component<UserProfileProps, undefined> 
             <div className="row">
               <label className="col-sm-3 col-form-label">Display name</label>
               <div className="col-sm-9">
-                <input className="form-control" defaultValue={this.props.displayName}/>
+                <input ref={displayNameInput => this.controls.displayNameInput = displayNameInput} className="form-control" defaultValue={this.props.displayName}/>
               </div>
             </div>
             <div className="row">
               <label className="col-sm-3 col-form-label">Email</label>
               <div className="col-sm-9">
-                <input className="form-control" defaultValue={this.props.email} />
+                <input ref={emailInput => this.controls.emailInput = emailInput} className="form-control" defaultValue={this.props.email} />
               </div>
             </div>
             <div className="row py-3">
@@ -43,7 +47,7 @@ export class ProfileLayout extends React.Component<UserProfileProps, undefined> 
             <div className="row">
               <label className="col-sm-3 col-form-label">Preferred currency</label>
               <div className="col-sm-9">
-                <input className="form-control" defaultValue={this.props.currency}/>
+                <input ref={currencyInput => this.controls.currencyInput = currencyInput} className="form-control" defaultValue={this.props.currency}/>
               </div>
             </div>
           </div>
@@ -57,7 +61,10 @@ export class ProfileLayout extends React.Component<UserProfileProps, undefined> 
     this.props.submitProfileRequested({
       type: PROFILE,
       attributes: {
-        imageData: this.controls.imageUpload.state.imageData
+        displayName: this.controls.displayNameInput.value,
+        email: this.controls.emailInput.value,
+        imageData: this.controls.imageUpload.state.imageData,
+        currency: this.controls.currencyInput.value
       }
     });
   }

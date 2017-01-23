@@ -18,7 +18,7 @@ export interface UserProfileProps {
   readonly submitProfileRequested?: (payload: Claim) => Action;
 }
 
-export class UserProfile extends PageLoader<any, Object> {
+export class UserProfile extends PageLoader<UserProfileProps, Object> {
 
   component = ProfileLayout;
 
