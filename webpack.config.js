@@ -12,11 +12,7 @@ const vendor = [
   'redux',
   'redux-saga',
   'react-tabs',
-  'moment',
-  'bitcore-lib',
-  'bitcore-explorers',
-  'bluebird',
-  'protobufjs'
+  'moment'
 ];
 
 const production = !!process.env['PRODUCTION'];
