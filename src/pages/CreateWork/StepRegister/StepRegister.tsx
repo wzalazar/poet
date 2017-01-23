@@ -15,17 +15,19 @@ export interface StepRegisterProps {
 }
 
 export class StepRegister extends React.Component<StepRegisterProps, undefined> {
-  private readonly MEDIA_TYPE = 'mediaType';
-  private readonly ATTRIBUTES = 'attributes';
-  private readonly CONTENT = 'content';
+  private controls: {
+    mediaType?: MediaType,
+    attributes?: Attributes,
+    content?: Content
+  } = {};
 
   render() {
     return (
       <section className="step-1-register">
         <h2>Register a New Work</h2>
-        <MediaType ref={this.MEDIA_TYPE} className="media-type mb-3" />
-        <Attributes ref={this.ATTRIBUTES} className="fields"/>
-        <Content ref={this.CONTENT} className="mb-3"/>
+        <MediaType ref={mediaType => this.controls.mediaType = mediaType} className="media-type mb-3" />
+        <Attributes ref={attributes => this.controls.attributes = attributes} className="fields"/>
+        <Content ref={content => this.controls.content = content} className="mb-3"/>
         <button className="btn btn-primary" onClick={this.submit.bind(this)}>Next</button>
       </section>
     );
@@ -33,9 +35,9 @@ export class StepRegister extends React.Component<StepRegisterProps, undefined> 
 
   private submit(): void {
     this.props.onSubmit({
-      articleType: (this.refs[this.MEDIA_TYPE] as any).state.subType,
-      attributes: (this.refs[this.ATTRIBUTES] as any).state.attributes,
-      content: (this.refs[this.CONTENT] as any).state.content
+      articleType: this.controls.mediaType.state.subType,
+      attributes: this.controls.attributes.state.attributes,
+      content: this.controls.content.state.content
     });
   }
 }

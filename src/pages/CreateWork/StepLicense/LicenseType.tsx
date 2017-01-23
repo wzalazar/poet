@@ -10,15 +10,17 @@ const licenseTypes = [
 ];
 
 export class LicenseType extends React.Component<undefined, undefined> {
-  private readonly REF_RADIO_BUTTON_GROUP = 'REF_RADIO_BUTTON_GROUP';
+  private controls: {
+    radioButtonGroup?: RadioButtonGroup
+  } = {};
 
   render() {
     return (
-      <RadioButtonGroup ref={this.REF_RADIO_BUTTON_GROUP} radioButtons={licenseTypes} className="mb-3" />
+      <RadioButtonGroup ref={radioButtonGroup => this.controls.radioButtonGroup = radioButtonGroup} radioButtons={licenseTypes} className="mb-3" />
     )
   }
 
   public getSelectedLicenseType() {
-    return (this.refs[this.REF_RADIO_BUTTON_GROUP] as any).getSelectedItem().id;
+    return this.controls.radioButtonGroup.getSelectedItem().id;
   }
 }

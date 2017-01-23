@@ -14,8 +14,10 @@ export interface StepLicenseProps {
 }
 
 export class StepLicense extends React.Component<StepLicenseProps, StepLicenseData> {
-  private readonly REF_LICENSE_TYPE = 'licenseType';
-  private readonly REF_PRICING = 'pricing';
+  private readonly controls: {
+    licenseType?: LicenseType,
+    pricing?: Pricing
+  } = {};
 
   render() {
     return (
@@ -24,8 +26,8 @@ export class StepLicense extends React.Component<StepLicenseProps, StepLicenseDa
         <div className="row">
           <div className="col-sm-6">
             <h3>License</h3>
-            <LicenseType ref={this.REF_LICENSE_TYPE} />
-            <Pricing ref={this.REF_PRICING} />
+            <LicenseType ref={licenseType => this.controls.licenseType = licenseType} />
+            <Pricing ref={pricing => this.controls.pricing = pricing } />
           </div>
           <LicensePreview className="col-sm-6"/>
         </div>
@@ -36,8 +38,8 @@ export class StepLicense extends React.Component<StepLicenseProps, StepLicenseDa
 
   private submit(): void {
     this.props.onSubmit({
-      licenseType: (this.refs[this.REF_LICENSE_TYPE] as any).getSelectedLicenseType(),
-      pricing: (this.refs[this.REF_PRICING] as any).state,
+      licenseType: this.controls.licenseType.getSelectedLicenseType(),
+      pricing: this.controls.pricing.state
     });
   }
 }
