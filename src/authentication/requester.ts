@@ -2,7 +2,7 @@ import * as SocketIO from 'socket.io-client'
 
 const qrcode = require('qrcode-terminal')
 
-const socket = SocketIO('ws://localhost:3000')
+const socket = SocketIO('ws://localhost:5000')
 
 socket.on('connected', () => {
   console.log('connected')

@@ -8,38 +8,45 @@ const Body = require('koa-body')
 const Route = require('koa-route')
 const IO = require('koa-socket')
 
-const key = bitcore.PrivateKey(sha256(process.argv[2]))
+const key = bitcore.PrivateKey(sha256(process.argv[2]).toString('hex'))
 
 interface AuthServerOptons {
   port: number
 }
+
+const server = '192.168.0.168:5000'
 
 export default async function createServer(options: AuthServerOptons) {
 
   const koa = new Koa() as any
   koa.use(Body())
 
-  koa.use(Route.post('/:id', async (ctx: any) => {
-    const id = ctx.params.id
-    const request = await fetch('http://192.168.0.168:5000/request/' + id)
-    const body = request.json() as any
+  koa.use(Route.post('/:id', async (ctx: any, id: string) => {
 
-    console.log('Signing', new Buffer(body.message, 'hex').toString())
+    try {
+      const request = await fetch(`http://${server}/request/${id}`)
+      const body = await request.json() as any
+      console.log(body)
 
-    const signature = sign(key, sha256(new Buffer(body.message, 'hex'))) as any
+      console.log('Signing', new Buffer(body.message, 'hex').toString())
 
-    const response = {
-      publicKey: key.publicKey.toString(),
-      signature: signature.toString('hex'),
+      const signature = sign(key, sha256(new Buffer(body.message, 'hex'))) as any
+
+      const response = {
+        publicKey: key.publicKey.toString(),
+        signature: signature.toString('hex'),
+      }
+
+      await fetch(`http://${server}/request/${id}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(response)
+      }).then(async(res) => {
+        console.log(await res.text())
+      })
+    } catch (error) {
+      console.log(error, error.stack)
     }
-
-    await fetch('http://192.168.0.168:5000/request/' + id, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(response)
-    }).then(async (res) => {
-      console.log(await res.text())
-    })
 
   }))
 
