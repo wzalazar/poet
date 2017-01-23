@@ -2,6 +2,7 @@ import 'reflect-metadata'
 
 import BlockchainService from '../../service'
 import Route from '../route'
+import { QueryOptions } from '../route'
 import Work from '../../orm/derived/work'
 
 export default class WorkRoute extends Route<Work> {
@@ -16,5 +17,12 @@ export default class WorkRoute extends Route<Work> {
     const work = await this.service.getWorkFull(id)
     const claim = await this.service.getClaim(id)
     return { ...claim, ...work }
+  }
+
+  async getCollection(opts: QueryOptions) {
+    const items = await super.getCollection(opts)
+    return await Promise.all(items.map(
+      item => this.service.getWorkFull(item.id)
+    ))
   }
 }
