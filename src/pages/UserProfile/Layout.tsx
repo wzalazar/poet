@@ -12,29 +12,29 @@ export class ProfileLayout extends React.Component<any, undefined> {
         <form className="container">
           <div className="form-group">
             <div className="row">
-              <label htmlFor="displayName" className="col-sm-3 col-form-label">Display name</label>
+              <label className="col-sm-3 col-form-label">Display name</label>
               <div className="col-sm-9">
-                <input className="form-control" defaultValue={this.props.displayName} name="displayName"/>
+                <input className="form-control" defaultValue={this.props.displayName}/>
               </div>
             </div>
             <div className="row">
-              <label htmlFor="displayName" className="col-sm-3 col-form-label">Email</label>
+              <label className="col-sm-3 col-form-label">Email</label>
               <div className="col-sm-9">
-                <input className="form-control" defaultValue={this.props.email} name="email"/>
+                <input className="form-control" defaultValue={this.props.email} />
               </div>
             </div>
             <div className="row">
-              <label htmlFor="displayName" className="col-sm-3 col-form-label">Image</label>
+              <label className="col-sm-3 col-form-label">Image</label>
               <div className="col-sm-9">
-                <input className="form-control" defaultValue={this.props.image} name="image"/>
+                <input className="form-control" defaultValue={this.props.image}/>
               </div>
             </div>
           </div>
           <div className="form-group">
             <div className="row">
-              <label htmlFor="preferredCurrency" className="col-sm-3 col-form-label">Preferred currency</label>
+              <label className="col-sm-3 col-form-label">Preferred currency</label>
               <div className="col-sm-9">
-                <input className="form-control" defaultValue={this.props.email} name="preferredCurrency"/>
+                <input className="form-control" defaultValue={this.props.email}/>
               </div>
             </div>
           </div>
