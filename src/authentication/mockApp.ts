@@ -28,9 +28,9 @@ export default async function createServer(options: AuthServerOptons) {
       const body = await request.json() as any
       console.log(body)
 
-      console.log('Signing', new Buffer(body.message, 'hex').toString())
+      console.log('Signing', new Buffer(body.message).toString())
 
-      const signature = sign(key, sha256(new Buffer(body.message, 'hex'))) as any
+      const signature = sign(key, sha256(new Buffer(body.message))) as any
 
       const response = {
         publicKey: key.publicKey.toString(),
