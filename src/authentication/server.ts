@@ -39,7 +39,7 @@ export default async function createServer(options: AuthServerOptons) {
   function makeRequest(id: string, payload: any) {
     const signRequest = {
       id,
-      url: `http://localhost:3000/info/${id}`,
+      url: `http://localhost:5000/info/${id}`,
       message: payload,
       timestamp: new Date().getTime()
     }
@@ -167,7 +167,7 @@ export default async function createServer(options: AuthServerOptons) {
 
 export async function start(options: AuthServerOptons) {
   options = Object.assign({}, {
-    port: 3000
+    port: 5000
   }, options || {})
   const server = await createServer(options)
   await server.listen(options.port)
@@ -176,7 +176,7 @@ export async function start(options: AuthServerOptons) {
 }
 
 if (!module.parent) {
-  start({ port: 3000 }).catch(error => {
+  start({ port: 5000 }).catch(error => {
     console.log('Unable to start Trusted Publisher server:', error, error.stack)
   })
 }
