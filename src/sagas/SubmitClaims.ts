@@ -5,15 +5,15 @@ import Actions from '../actions'
 import config from '../config'
 
 function* createWork(workData: any) {
-  yield put({ type: Actions.workModalShow, payload: workData });
+  yield put({ type: Actions.signClaimsModalShow, payload: workData });
 
   /* Mock */
   yield delay(1000);
   const signatureData = workData
-  // const signatureData = yield take(Actions.createWorkSigned);
+  // const signatureData = yield take(Actions.claimsSigned);
   /* End mock */
 
-  yield put(Actions.submittingWork);
+  yield put(Actions.claimsSubmitting);
   const result = yield call(fetch, config.api.user + '/claimHelper', {
     method: 'POST',
     body: JSON.stringify({
@@ -22,16 +22,16 @@ function* createWork(workData: any) {
     })
   });
 
-  yield put({ type: Actions.createWorkSuccess });
-  yield take(Actions.workModalDismissRequested);
-  yield put({ type: Actions.workModalHide });
+  yield put({ type: Actions.claimsSubmitedSuccess });
+  yield take(Actions.claimsModalDismissRequested);
+  yield put({ type: Actions.signClaimsModalHide });
 
   browserHistory.push('/')
 }
 
 function createWorkSaga(): Saga {
   return function*() {
-    yield takeEvery(Actions.createWorkRequested, createWork);
+    yield takeEvery(Actions.claimsSubmitRequested, createWork);
   }
 }
 

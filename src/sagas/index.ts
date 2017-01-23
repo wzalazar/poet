@@ -1,6 +1,6 @@
 import FetchSaga from './FetchSaga';
 import NavbarSaga from './NavbarSaga';
 import SessionSaga from './SessionSaga';
-import CreateWorkSaga from './CreateWorkSaga';
+import SubmitClaims from './SubmitClaims';
 
-export default [ FetchSaga, NavbarSaga, SessionSaga, CreateWorkSaga ]
+export default [ FetchSaga, NavbarSaga, SessionSaga, SubmitClaims ]

@@ -36,7 +36,7 @@ export class CreateWork extends PageLoader<CreateWorkState, Object> {
   mapDispatchToProps(): Object {
     return {
       createWorkRequested: (payload: any[]) => ({
-        type: Actions.createWorkRequested, payload
+        type: Actions.claimsSubmitRequested, payload
       })
     };
   }

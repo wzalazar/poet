@@ -41,7 +41,7 @@ function mapStateToProps(state: any): ModalVisible {
 }
 
 const mapDispatch = {
-  cancelAction: () => ({ type: Actions.workModalDismissRequested }),
+  cancelAction: () => ({ type: Actions.claimsModalDismissRequested }),
 };
 
 export default connect(mapStateToProps, mapDispatch)(SignWorkModal);

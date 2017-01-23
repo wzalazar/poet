@@ -37,4 +37,12 @@ export class UserProfile extends PageLoader<any, Object> {
   select(state: any, ownProps: any): Object {
     return { id: ownProps.params.id };
   }
+
+  mapDispatchToProps(): Object {
+    return {
+      submitProfileRequested: (payload: any[]) => ({
+        type: Actions.claimsSubmitRequested, payload
+      })
+    };
+  }
 }

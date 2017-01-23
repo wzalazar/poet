@@ -8,7 +8,7 @@ import StepPublishAndReview from './StepPublishAndReview/StepPublishAndReview'
 import './Layout.scss'
 
 interface CreateWorkProps {
-  createWorkRequested: (claims: any[]) => any // Actions.createWorkRequested
+  createWorkRequested: (claims: any[]) => any // Actions.claimsSubmitRequested
 }
 
 interface CreateWorkLayoutState {
