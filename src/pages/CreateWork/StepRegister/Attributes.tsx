@@ -6,52 +6,72 @@ interface AttributesProps {
   className?: string;
 }
 
+export interface Attribute {
+  key: string;
+  value: string;
+}
+
 interface AttributesState {
-  attributes: {[key: string]: string}
+  attributes: Attribute[];
 }
 
 export class Attributes extends React.Component<AttributesProps, AttributesState> {
-  private readonly defaultAttributes = {
-    'email': 'Email',
-    'content-url': 'Content URL'
-  };
+  private readonly defaultAttributes: Attribute[] = [
+    {
+      key: 'email',
+      value: 'Email'
+    },
+    {
+      key: 'content-url',
+      value: 'Content URL'
+    }
+  ];
 
   constructor() {
     super(...arguments);
     this.state = {
-      attributes: { ...this.defaultAttributes }
+      attributes: [ ...this.defaultAttributes ]
     }
   }
 
   render() {
     return (
-    <section className={'mb-3 ' + this.props.className}>
-      <h2>Fields</h2>
-      <form>
-        { Object.keys(this.state.attributes).map(this.renderField.bind(this)) }
-      </form>
-      <button className="btn btn-secondary">Add Field</button>
-    </section>
+      <section className={'mb-3 ' + this.props.className}>
+        <h2>Attributes</h2>
+        <form>
+          { this.state.attributes.map(this.renderField.bind(this)) }
+        </form>
+        <button className="btn btn-secondary">Add Field</button>
+      </section>
     )
   }
 
-  private renderField(key: string): JSX.Element {
+  private renderField({key, value}: Attribute, index: number): JSX.Element {
     return (
-      <div key={key} className="form-group row">
-        <label htmlFor={`input${key}`} className="col-sm-2 col-form-label">{key}</label>
-        <div className="col-sm-10">
-          <input onChange={this.onChange.bind(this, key)} type="text" className="form-control" id={`input${key}`} placeholder={key} />
+      <div key={index} className="form-group row">
+        <div className="col-sm-4">
+          <input onChange={this.onKeyChange.bind(this, index)} type="text" className="form-control" defaultValue={key} />
+        </div>
+        <div className="col-sm-8">
+          <input onChange={this.onChange.bind(this, index)} type="text" className="form-control" defaultValue={value} />
         </div>
       </div>
     );
   }
 
-  private onChange(key: string, event: any) {
+  private onChange(index: number, event: any) {
+    const attributes = [ ...this.state.attributes ];
+    attributes[index].value = event.target.value;
     this.setState({
-      attributes: {
-        ...this.state.attributes,
-        [key]: event.target.value
-      }
-    })
+      attributes
+    });
+  }
+
+  private onKeyChange(index: number, event: any) {
+    const attributes = [ ...this.state.attributes ];
+    attributes[index].key = event.target.value;
+    this.setState({
+      attributes
+    });
   }
 }

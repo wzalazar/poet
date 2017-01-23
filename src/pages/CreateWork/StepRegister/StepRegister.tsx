@@ -1,12 +1,12 @@
 import * as React from 'react';
 
 import { MediaType } from './MediaType';
-import { Attributes } from './Attributes';
+import { Attributes, Attribute } from './Attributes';
 import { Content } from './Content';
 
 export interface StepRegisterData {
   articleType?: string;
-  attributes?: {[key: string]: string};
+  attributes?: Attribute[];
   content?: string;
 }
 
