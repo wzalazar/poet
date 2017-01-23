@@ -41,7 +41,7 @@ export class Attributes extends React.Component<AttributesProps, AttributesState
         <form>
           { this.state.attributes.map(this.renderField.bind(this)) }
         </form>
-        <button className="btn btn-secondary">Add Field</button>
+        <button onClick={this.onAddAttribute.bind(this)} className="btn btn-secondary">Add Field</button>
       </section>
     )
   }
@@ -73,5 +73,14 @@ export class Attributes extends React.Component<AttributesProps, AttributesState
     this.setState({
       attributes
     });
+  }
+
+  onAddAttribute() {
+    this.setState({
+      attributes: [ ...this.state.attributes, {
+        key: 'attribute name',
+        value: 'attribute value'
+      } ]
+    })
   }
 }
