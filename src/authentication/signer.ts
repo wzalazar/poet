@@ -5,24 +5,27 @@ const bitcore = require('bitcore-lib')
 const key = bitcore.PrivateKey()
 const id = process.argv[2]
 
-async function accept(id: string) {
-  const body = await fetch('http://localhost:3000/request/' + id).then(res => res.json()) as any
+function signMessage(message: string) {
+  const signature = sign(key, sha256(new Buffer(message, 'hex'))) as any
 
-  console.log(new Buffer(body.message, 'hex').toString())
-
-  const signature = sign(key, sha256(new Buffer(body.message, 'hex'))) as any
-
-  const response = {
+  return {
+    message: message,
     publicKey: key.publicKey.toString(),
     signature: signature.toString('hex'),
   }
+}
 
-  console.log(JSON.stringify(response))
+async function accept(id: string) {
+  const body = await fetch('http://localhost:3000/request/' + id).then(res => res.json()) as any
+
+  const result = body.multiple
+    ? body.message.map(signMessage)
+    : signMessage(body.message)
 
   await fetch('http://localhost:3000/request/' + id, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(response)
+    body: JSON.stringify(result)
   }).then(async (res) => {
     console.log(await res.text())
   })

@@ -36,9 +36,10 @@ export default async function createServer(options: AuthServerOptons) {
    */
   const requests = {} as any
 
-  function makeRequest(id: string, payload: any) {
+  function makeRequest(id: string, payload: any, multiple: boolean) {
     const signRequest = {
       id,
+      multiple,
       url: `http://localhost:5000/info/${id}`,
       message: payload,
       timestamp: new Date().getTime()
@@ -55,12 +56,25 @@ export default async function createServer(options: AuthServerOptons) {
     })
   }
 
+  function handleMultiple(websocket: any, messages: any) {
+
+    const id = uuid.v4()
+    const request = makeRequest(id, messages.payload, true)
+    const ref: string = messages.ref || ''
+
+    requests[id] = request
+    mappingToWebsocket[id] = websocket
+
+    websocket.emit('message', makeCreateResponse(request, ref))
+  }
+
+  function handleAssociate(websocket: any, message: any) {
+    const id = message.id
+    mappingToWebsocket[id] = websocket
+    return
+  }
+
   function handleMessage(websocket: any, message: any) {
-    if (message.type === 'associate') {
-      const id = message.id
-      mappingToWebsocket[id] = websocket
-      return
-    }
     if (message.type !== 'create') {
       websocket.emit('message', `{"error": "Unknown type of message ${message.type}"}`)
       return
@@ -72,13 +86,36 @@ export default async function createServer(options: AuthServerOptons) {
     }
 
     const id = uuid.v4()
-    const request = makeRequest(id, message.payload)
+    const request = makeRequest(id, message.payload, false)
     const ref: string = message.ref || ''
 
     requests[id] = request
     mappingToWebsocket[id] = websocket
 
     websocket.emit('message', makeCreateResponse(request, ref))
+  }
+
+  function validSignatures(id: string, payload: Signature[]): boolean {
+    for (var index in payload) {
+      const encoded = new Buffer(JSON.parse(requests[id]).message[index], 'hex')
+      const signature = payload[index].signature
+      const publicKey = payload[index].publicKey
+
+      if (!encoded || !signature || !publicKey) {
+        return false
+      }
+
+      if (!verify(
+          new bitcore.PublicKey(publicKey),
+          new Buffer(signature, 'hex'),
+          sha256(encoded)))
+      {
+        console.log('Signature is invalid')
+        return false
+      }
+    }
+
+    return true
   }
 
   function validSignature(id: string, payload: Signature): boolean {
@@ -114,8 +151,16 @@ export default async function createServer(options: AuthServerOptons) {
         if (!payload.type) {
           socket.send('{"error": "Missing type on message"}')
         }
+        if (payload.type === 'associate') {
+          return handleAssociate(socket, payload)
+        }
+        if (payload.type === 'create') {
+          return handleMessage(socket, payload)
+        }
+        if (payload.type === 'multiple') {
+          return handleMultiple(socket, payload)
+        }
 
-        handleMessage(socket, payload)
       } catch (error) {
         console.log('Error creating request', error, error.stack)
       }
@@ -127,7 +172,7 @@ export default async function createServer(options: AuthServerOptons) {
 
   koa.use(Route.post('/request', async (ctx: any) => {
     const id = uuid.v4()
-    const request = makeRequest(id, ctx.request.body)
+    const request = makeRequest(id, ctx.request.body, false)
 
     requests[id] = request
 
@@ -163,7 +208,30 @@ export default async function createServer(options: AuthServerOptons) {
     }
   }
 
+  async function handleMultipleResponse(ctx: any, id: string) {
+    const signatures: Signature[] = await ctx.request.body
+
+    console.log(signatures)
+
+    if (validSignatures(id, signatures)) {
+      console.log('Accepted')
+      ctx.response.body = '{"success": true}'
+      if (mappingToWebsocket[id]) {
+        mappingToWebsocket[id].send(JSON.stringify({
+          id,
+          request: requests[id],
+          signatures
+        }))
+      }
+    } else {
+      console.log('Rejected')
+      ctx.response.body = '{"success": false}'
+    }
+  }
+
   koa.use(Route.post('/request/:id', handleResponse))
+
+  koa.use(Route.post('/multiple/:id', handleMultipleResponse))
 
   koa.use(async (ctx: any, next: Function) => {
     try {

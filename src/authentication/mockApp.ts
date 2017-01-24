@@ -16,6 +16,16 @@ interface AuthServerOptons {
 
 const server = '192.168.0.168:5000'
 
+function signMessage(message: string) {
+  const signature = sign(key, sha256(new Buffer(message, 'hex'))) as any
+
+  return {
+    message: message,
+    publicKey: key.publicKey.toString(),
+    signature: signature.toString('hex'),
+  }
+}
+
 export default async function createServer(options: AuthServerOptons) {
 
   const koa = new Koa() as any
@@ -28,19 +38,14 @@ export default async function createServer(options: AuthServerOptons) {
       const body = await request.json() as any
       console.log(body)
 
-      console.log('Signing', new Buffer(body.message, 'hex').toString())
-
-      const signature = sign(key, sha256(new Buffer(body.message, 'hex'))) as any
-
-      const response = {
-        publicKey: key.publicKey.toString(),
-        signature: signature.toString('hex'),
-      }
+      const result = body.multiple
+        ? body.message.map(signMessage)
+        : signMessage(body.message)
 
       await fetch(`http://${server}/request/${id}`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(response)
+        body: JSON.stringify(result)
       }).then(async(res) => {
         console.log(await res.text())
       })
