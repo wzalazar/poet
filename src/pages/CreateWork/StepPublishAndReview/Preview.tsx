@@ -4,6 +4,7 @@ export interface PreviewProps {
   readonly className?: string;
   readonly authorName?: string;
   readonly mediaType?: string;
+  readonly workTitle?: string;
 }
 
 export class Preview extends React.Component<PreviewProps, undefined> {
@@ -34,7 +35,7 @@ export class Preview extends React.Component<PreviewProps, undefined> {
         </section>
         <hr/>
         <section>
-          <h5>Title of Creative Work</h5>
+          <h5>{ this.props.workTitle } </h5>
           <table>
             <tbody>
               <tr>

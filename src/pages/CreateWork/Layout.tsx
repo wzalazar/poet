@@ -16,6 +16,7 @@ interface CreateWorkLayoutState {
   readonly selectedStep: number;
   readonly licenseData?: StepLicenseData;
   readonly workData?: StepRegisterData;
+  readonly workTitle?: string;
 }
 
 export default class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWorkLayoutState> {
@@ -45,6 +46,7 @@ export default class CreateWorkLayout extends React.Component<CreateWorkProps, C
           <TabPanel>
             <StepPublishAndReview
               authorName={this.props.userName}
+              workTitle={this.state.workTitle}
               onSubmit={this.submitWork.bind(this)} />
           </TabPanel>
         </Tabs>
@@ -55,9 +57,13 @@ export default class CreateWorkLayout extends React.Component<CreateWorkProps, C
 
   private onStepRegisterSubmit(workData: StepRegisterData) {
     console.log('onStepRegisterSubmit', workData);
+
+    const workTitleAttribute = workData.attributes.find(attribute => attribute.key == 'title');
+
     this.setState({
       selectedStep: 1,
-      workData: workData
+      workData,
+      workTitle: workTitleAttribute && workTitleAttribute.value
     })
   }
 
@@ -73,7 +79,11 @@ export default class CreateWorkLayout extends React.Component<CreateWorkProps, C
     this.props.createWorkRequested([
       {
         type: 'Work',
-        attributes: this.state.workData
+        attributes: [
+          ...this.state.workData.attributes,
+          { key: 'articleType', value: this.state.workData.articleType },
+          { key: 'content', value: this.state.workData.content }
+        ]
       },
       {
         type: 'Offering',

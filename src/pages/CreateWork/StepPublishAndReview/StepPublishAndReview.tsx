@@ -5,6 +5,7 @@ import { Preview } from './Preview'
 export interface StepPublishAndReviewProps {
   readonly onSubmit: () => void;
   readonly authorName?: string;
+  readonly workTitle?: string;
 }
 
 export default class StepPublishAndReview extends React.Component<StepPublishAndReviewProps, any> {
@@ -20,6 +21,7 @@ export default class StepPublishAndReview extends React.Component<StepPublishAnd
           <Preview
             className="col-sm-5 mb-2 border-1 p-1"
             authorName={this.props.authorName}
+            workTitle={this.props.workTitle}
             mediaType="Article"
           />
         </div>
