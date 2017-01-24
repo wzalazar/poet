@@ -12,6 +12,6 @@ export default class Attribute {
   @Column()
   key: string
 
-  @Column()
+  @Column('text')
   value: string
 }
