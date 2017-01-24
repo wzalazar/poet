@@ -16,13 +16,14 @@ function signMessage(message: string) {
 }
 
 async function accept(id: string) {
-  const body = await fetch('http://localhost:3000/request/' + id).then(res => res.json()) as any
+  const body = await fetch('http://localhost:5000/request/' + id).then(res => res.json()) as any
 
   const result = body.multiple
     ? body.message.map(signMessage)
     : signMessage(body.message)
+  const endpoint = body.multiple ? 'multiple': 'request'
 
-  await fetch('http://localhost:3000/request/' + id, {
+  await fetch(`http://localhost:5000/${endpoint}/${id}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(result)

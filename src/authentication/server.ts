@@ -100,6 +100,8 @@ export default async function createServer(options: AuthServerOptons) {
       const encoded = new Buffer(JSON.parse(requests[id]).message[index], 'hex')
       const signature = payload[index].signature
       const publicKey = payload[index].publicKey
+      console.log(encoded, signature, publicKey
+                 )
 
       if (!encoded || !signature || !publicKey) {
         return false
