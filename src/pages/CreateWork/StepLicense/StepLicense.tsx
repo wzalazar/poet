@@ -1,12 +1,12 @@
 import * as React from 'react';
 
-import { Pricing } from './Pricing';
+import { Pricing, PricingState } from './Pricing';
 import { LicensePreview } from './LicensePreview';
 import { LicenseType } from './LicenseType';
 
 export interface StepLicenseData {
   readonly licenseType: string;
-  readonly pricing: any;
+  readonly pricing: PricingState;
 }
 
 export interface StepLicenseProps {

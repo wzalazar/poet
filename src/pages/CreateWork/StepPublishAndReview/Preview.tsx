@@ -1,10 +1,13 @@
 import * as React from 'react';
 
+import { Price } from '../../../common';
+
 export interface PreviewProps {
   readonly className?: string;
-  readonly authorName?: string;
-  readonly mediaType?: string;
-  readonly workTitle?: string;
+  readonly authorName: string;
+  readonly mediaType: string;
+  readonly workTitle: string;
+  readonly price: Price;
 }
 
 export class Preview extends React.Component<PreviewProps, undefined> {
@@ -61,7 +64,7 @@ export class Preview extends React.Component<PreviewProps, undefined> {
         <section>
           <div className="row mb-2">
             <div className="col-sm-6"><h5>MIT License</h5></div>
-            <div className="col-sm-6 text-right"><h5>$0.00 USD</h5></div>
+            <div className="col-sm-6 text-right"><h5>$ {this.props.price.amount} {this.props.price.currency}</h5></div>
           </div>
           <p>
             Permission is hereby granted, free of charge, to any person obtaining a copy

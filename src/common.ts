@@ -1,6 +1,6 @@
 export type HexString = string;
 
 export interface Price {
-  amount: number;
-  currency: string;
+  readonly amount: number;
+  readonly currency: string;
 }

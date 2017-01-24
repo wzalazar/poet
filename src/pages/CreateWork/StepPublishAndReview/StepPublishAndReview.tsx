@@ -1,11 +1,15 @@
 import * as React from 'react'
+
+import { Price } from '../../../common';
+
 import { TermsOfUse } from './TermsOfUse'
 import { Preview } from './Preview'
 
 export interface StepPublishAndReviewProps {
   readonly onSubmit: () => void;
-  readonly authorName?: string;
-  readonly workTitle?: string;
+  readonly authorName: string;
+  readonly workTitle: string;
+  readonly price: Price;
 }
 
 export default class StepPublishAndReview extends React.Component<StepPublishAndReviewProps, any> {
@@ -23,6 +27,7 @@ export default class StepPublishAndReview extends React.Component<StepPublishAnd
             authorName={this.props.authorName}
             workTitle={this.props.workTitle}
             mediaType="Article"
+            price={this.props.price}
           />
         </div>
       </section>

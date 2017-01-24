@@ -1,10 +1,10 @@
 import * as React from 'react';
 
 import { Checkbox } from '../../../components/Checkbox';
+import { Price } from '../../../common';
 
-interface PricingState {
-  readonly amount?: number;
-  readonly currency?: string;
+export interface PricingState {
+  readonly price?: Price;
   readonly frequency?: 'oneTime' | 'perPageView';
 }
 
@@ -13,8 +13,10 @@ export class Pricing extends React.Component<undefined, PricingState> {
   constructor() {
     super(...arguments);
     this.state = {
-      amount: 0,
-      currency: 'USD',
+      price: {
+        amount: 0,
+        currency: 'USD',
+      },
       frequency: 'oneTime'
     }
   }
@@ -46,7 +48,10 @@ export class Pricing extends React.Component<undefined, PricingState> {
 
   private onAmountChange(event: any) {
     this.setState({
-      amount: event.target.value
+      price: {
+        ...this.state.price,
+        amount: event.target.value
+      }
     })
   }
 }

@@ -47,6 +47,7 @@ export default class CreateWorkLayout extends React.Component<CreateWorkProps, C
             <StepPublishAndReview
               authorName={this.props.userName}
               workTitle={this.state.workTitle}
+              price={this.state.licenseData && this.state.licenseData.pricing.price}
               onSubmit={this.submitWork.bind(this)} />
           </TabPanel>
         </Tabs>
