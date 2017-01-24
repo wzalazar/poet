@@ -30,7 +30,9 @@ export default async function createServer(options?: TrustedPublisherOptions) {
     var sigs = JSON.parse(ctx.request.body).signatures
     const claims: Claim[] = []
     for (let sig of sigs) {
-      const claim = creator.serializedToClaim(new Buffer(sig.message, 'hex'))
+      const claim = creator.serializedToClaim(
+	new Buffer(new Buffer(sig.message, 'hex').toString(), 'hex')
+      )
       claim.signature = sig.signature
       claim.id = new Buffer(creator.getId(claim)).toString('hex')
       console.log(claim)

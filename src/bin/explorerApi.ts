@@ -36,7 +36,7 @@ export async function start(options?: ExplorerOptions) {
     port: 4000,
   }, options || {})
   const server = await createServer(options)
-  await server.listen(options.port)
+  await server.listen(options.port, '0.0.0.0')
 
   console.log('Server started successfully.')
 }
