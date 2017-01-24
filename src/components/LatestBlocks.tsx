@@ -11,10 +11,13 @@ import FetchComponent, { FetchComponentProps } from '../hocs/FetchComponent'
 
 function renderBlock(props: any) {
   return (
-    <tr key={props.bitcoinHash}>
-      <td><span className="text-truncate">{props.bitcoinHeight}</span></td>
-      <td><span className="text-truncate">{props.bitcoinHash.firstAndLastCharacters(4)}</span></td>
-      <td>{moment(props.timestamp).fromNow()}</td>
+    <tr key={props.torrentHash}>
+      <td><span className="text-truncate">{props.height}</span></td>
+      <td><span className="text-truncate">{props.id
+        ? <Link to={`/blocks/${props.id}`}>{props.id.firstAndLastCharacters(4)}</Link>
+        : 'not ready'
+      }</span></td>
+      <td>{moment(props.timestamp * 1000).fromNow()}</td>
     </tr>
   )
 }
@@ -25,7 +28,7 @@ function render(props: FetchComponentProps) {
       <thead>
         <tr>
           <th colSpan={2}>Poet Blockchain</th>
-          <th className="more-link"><Link to="/block">view all »</Link></th>
+          <th className="more-link"><Link to="/blocks">view all »</Link></th>
         </tr>
       </thead>
       <tbody>

@@ -36,4 +36,6 @@ export default class Actions {
   public static readonly claimsResponse = 'claim response for signature';
   public static readonly claimIdReceived = 'request id for authorizing claim received';
   public static readonly fakeClaimSign = 'fake sign claim requested';
+
+  public static readonly blockInfoReceived = 'block info received';
 }
