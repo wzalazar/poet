@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/protobufjs": "^5.0.31",
     "@types/react": "^0.14.55",
     "@types/react-dom": "^0.14.20",
     "@types/react-redux": "^4.4.35",
@@ -22,6 +23,7 @@
     "@types/socket.io-client": "^1.4.29",
     "@types/uuid": "^2.0.29",
     "moment": "^2.17.1",
+    "protobufjs": "^6.5.3",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-overlays": "^0.6.10",

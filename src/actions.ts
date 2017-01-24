@@ -32,4 +32,7 @@ export default class Actions {
   public static readonly loginIdReceived = 'login ID received';
   public static readonly unrecognizedSocketMessage = 'unrecognized socket message';
   public static readonly mockLoginRequest = 'mock login server requested';
+
+  public static readonly claimsResponse = 'claim response for signature';
+  public static readonly claimIdReceived = 'request id for authorizing claim received';
 }

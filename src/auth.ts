@@ -79,8 +79,17 @@ export class AuthSocket {
     })));
   }
 
-  getRequestIdForSigning(payload: string): Promise<string> {
-    return this.getRequestIdFor(new Buffer(payload))
+  getRequestIdForMultipleSigning(payload: string[]): Promise<string> {
+    const ref = v4();
+    const data = JSON.stringify({
+      type: 'multiple',
+      payload: payload.map(payload => new Buffer(payload).toString('hex')),
+      ref
+    });
+    const defer = AuthSocket.defer();
+    this.promises[ref] = defer;
+    this.socket.emit('request', data);
+    return defer.promise
   }
 
   onResponse(id: string): Promise<string> {
