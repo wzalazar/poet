@@ -9,6 +9,7 @@ import './Layout.scss'
 
 interface CreateWorkProps {
   readonly createWorkRequested: (claims: any[]) => any // Actions.claimsSubmitRequested
+  readonly userName?: string;
 }
 
 interface CreateWorkLayoutState {
@@ -22,7 +23,7 @@ export default class CreateWorkLayout extends React.Component<CreateWorkProps, C
   constructor() {
     super(...arguments);
     this.state = {
-      selectedStep: 0
+      selectedStep: 0,
     }
   }
 
@@ -42,7 +43,9 @@ export default class CreateWorkLayout extends React.Component<CreateWorkProps, C
             <StepLicense onSubmit={this.onStepLicenseSubmit.bind(this)} />
           </TabPanel>
           <TabPanel>
-            <StepPublishAndReview onSubmit={this.submitWork.bind(this)} />
+            <StepPublishAndReview
+              authorName={this.props.userName}
+              onSubmit={this.submitWork.bind(this)} />
           </TabPanel>
         </Tabs>
       </section>

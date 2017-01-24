@@ -3,7 +3,8 @@ import { TermsOfUse } from './TermsOfUse'
 import { Preview } from './Preview'
 
 export interface StepPublishAndReviewProps {
-  readonly onSubmit: () => void
+  readonly onSubmit: () => void;
+  readonly authorName?: string;
 }
 
 export default class StepPublishAndReview extends React.Component<StepPublishAndReviewProps, any> {
@@ -16,7 +17,11 @@ export default class StepPublishAndReview extends React.Component<StepPublishAnd
             <TermsOfUse className="mb-2"/>
             <button onClick={this.props.onSubmit} className="btn btn-primary">Timestamp to the blockchain</button>
           </div>
-          <Preview className="col-sm-5 mb-2 border-1 p-1" />
+          <Preview
+            className="col-sm-5 mb-2 border-1 p-1"
+            authorName={this.props.authorName}
+            mediaType="Article"
+          />
         </div>
       </section>
     )

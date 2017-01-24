@@ -30,7 +30,9 @@ export class CreateWork extends PageLoader<CreateWorkState, Object> {
   }
 
   select(state: any, ownProps: any): Object {
-    return {};
+    return {
+      userName: state.session.token.user.name
+    };
   }
 
   mapDispatchToProps(): Object {

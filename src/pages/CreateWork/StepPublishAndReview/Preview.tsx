@@ -2,6 +2,8 @@ import * as React from 'react';
 
 export interface PreviewProps {
   readonly className?: string;
+  readonly authorName?: string;
+  readonly mediaType?: string;
 }
 
 export class Preview extends React.Component<PreviewProps, undefined> {
@@ -11,17 +13,17 @@ export class Preview extends React.Component<PreviewProps, undefined> {
         <section>
           <div className="text-center mb-2">
             <h5>Title of Ownership</h5>
-            <div>by Satoshi Nakamoto</div>
+            <div>by { this.props.authorName }</div>
           </div>
           <table>
             <tbody>
               <tr>
                 <td>Media Type</td>
-                <td>News Article</td>
+                <td>{ this.props.mediaType }</td>
               </tr>
               <tr>
                 <td>Owner Name</td>
-                <td>Satoshi Nakamoto</td>
+                <td>{ this.props.authorName }</td>
               </tr>
               <tr>
                 <td>Notarized at</td>
