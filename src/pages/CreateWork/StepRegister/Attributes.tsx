@@ -18,12 +18,8 @@ interface AttributesState {
 export class Attributes extends React.Component<AttributesProps, AttributesState> {
   private readonly defaultAttributes: Attribute[] = [
     {
-      key: 'email',
-      value: 'Email'
-    },
-    {
-      key: 'content-url',
-      value: 'Content URL'
+      key: 'Title',
+      value: ''
     }
   ];
 
@@ -50,10 +46,10 @@ export class Attributes extends React.Component<AttributesProps, AttributesState
     return (
       <div key={index} className="form-group row">
         <div className="col-sm-4">
-          <input onChange={this.onKeyChange.bind(this, index)} type="text" className="form-control" defaultValue={key} />
+          <input onChange={this.onKeyChange.bind(this, index)} type="text" className="form-control" placeholder="Attribute Name" defaultValue={key} />
         </div>
         <div className="col-sm-8">
-          <input onChange={this.onChange.bind(this, index)} type="text" className="form-control" defaultValue={value} />
+          <input onChange={this.onChange.bind(this, index)} type="text" className="form-control" placeholder="Attribute Value" />
         </div>
       </div>
     );
@@ -78,8 +74,8 @@ export class Attributes extends React.Component<AttributesProps, AttributesState
   onAddAttribute() {
     this.setState({
       attributes: [ ...this.state.attributes, {
-        key: 'attribute name',
-        value: 'attribute value'
+        key: '',
+        value: ''
       } ]
     })
   }
