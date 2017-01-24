@@ -24,7 +24,7 @@ export class LandingLoggedIn extends React.Component<LandingProps, undefined> {
             <LatestBlocks/>
           </div>
           <div className="col-sm-6">
-            <LatestWorks/>
+            <LatestWorks showLink={true} />
           </div>
         </section>
       </div>
