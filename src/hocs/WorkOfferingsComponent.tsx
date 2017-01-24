@@ -1,12 +1,7 @@
 import Config from '../config';
 
-import { HexString } from '../common'
+import { HexString, Price } from '../common'
 import FetchComponent, { FetchComponentProps } from './FetchComponent'
-
-export interface Price {
-  amount: number;
-  currency: string;
-}
 
 export interface WorkOfferingProps {
   id: HexString;
