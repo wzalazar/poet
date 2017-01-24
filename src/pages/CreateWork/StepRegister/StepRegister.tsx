@@ -5,9 +5,9 @@ import { Attributes, Attribute } from './Attributes';
 import { Content } from './Content';
 
 export interface StepRegisterData {
-  readonly articleType?: string;
-  readonly attributes?: ReadonlyArray<Attribute>;
-  readonly content?: string;
+  readonly articleType: string;
+  readonly attributes: ReadonlyArray<Attribute>;
+  readonly content: string;
 }
 
 export interface StepRegisterProps {
