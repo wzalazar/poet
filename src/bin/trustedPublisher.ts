@@ -27,13 +27,12 @@ export default async function createServer(options?: TrustedPublisherOptions) {
   koa.use(Body())
 
   koa.use(Route.post('/claims', async (ctx: any) => {
-    console.log(ctx.request.body)
-    var sigs = JSON.parse(ctx.request.body)
+    var sigs = JSON.parse(ctx.request.body).signatures
     const claims: Claim[] = []
     for (let sig of sigs) {
-      const claim = JSON.parse(new Buffer(sig.message, 'hex').toString())
+      const claim = creator.serializedToClaim(new Buffer(sig.message, 'hex'))
       claim.signature = sig.signature
-      claim.id = creator.getId(claim)
+      claim.id = new Buffer(creator.getId(claim)).toString('hex')
       console.log(claim)
       claims.push(claim)
     }
