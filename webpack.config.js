@@ -8,7 +8,7 @@ const vendor = [
   'react',
   'react-dom',
   'react-redux',
-  'react-bootstrap-modal',
+  'react-overlays',
   'redux',
   'redux-saga',
   'react-tabs',

@@ -1,6 +1,8 @@
 import { Saga, takeEvery } from 'redux-saga'
-import { call, put, take, select } from 'redux-saga/effects'
+import { call, put, select, take } from 'redux-saga/effects'
+import { browserHistory } from 'react-router'
 import * as protobuf from 'protobufjs'
+
 import Actions from '../actions'
 import auth from '../auth'
 import config from '../config'
@@ -13,11 +15,7 @@ async function requestIdFromAuth(dataToSign: string[]) {
 }
 
 async function bindAuthResponse(request: any) {
-  const data = await auth.onResponse(request.id) as any;
-  return {
-    publicKey: data.signature.publicKey,
-    token: { ...data.signature, message: data.message }
-  }
+  return await auth.onResponse(request.id) as any;
 }
 
 class ClaimBuilder {
@@ -25,9 +23,9 @@ class ClaimBuilder {
   claim: any
 
   constructor() {
-    const builder = protobuf.loadJson(JSON.stringify(jsonClaims));
-    this.attribute = builder.lookup('Poet.Attribute');
-    this.claim = builder.lookup('Poet.Claim');
+    const root = protobuf.Root.fromJSON(jsonClaims);
+    this.attribute = root.lookup('Poet.Attribute');
+    this.claim = root.lookup('Poet.Claim');
   }
 
   getAttributes(attrs: any) {
@@ -46,14 +44,21 @@ class ClaimBuilder {
   }
 
   getEncodedForSigning(data: any, publicKey: string): string {
-    return this.claim.encode(this.claim.create({
+    return new Buffer(this.claim.encode(this.claim.create({
       id: new Buffer(''),
       publicKey: new Buffer(publicKey, 'hex'),
       signature: new Buffer(''),
       type: data.type,
       attributes: this.getAttributes(data.attributes)
-    })).finish().toString('hex')
+    })).finish()).toString('hex')
   }
+}
+
+async function submitClaims(data: any) {
+  return await fetch(config.api.user + '/claims', {
+    method: 'POST',
+    body: JSON.stringify(data)
+  }).then((res: any) => res.text())
 }
 
 const builder = new ClaimBuilder();
@@ -68,25 +73,27 @@ function* signClaims(claimTemplates: any) {
   });
 
   const requestId = yield call(requestIdFromAuth, serializedToSign);
-  yield put({ type: Actions.claimIdReceived, payload: requestId });
+  yield put({ type: Actions.claimIdReceived, payload: requestId.id });
   const response = yield call(bindAuthResponse, requestId);
   yield put({ type: Actions.claimsResponse, payload: response });
 
-  const result = yield call(fetch, config.api.user + '/claims', {
-    method: 'POST',
-    body: JSON.stringify({
-      claims: response.payload,
-    })
-  });
+  const result = yield call(submitClaims, response)
 
   yield put({ type: Actions.claimsSubmitedSuccess });
   yield take(Actions.claimsModalDismissRequested);
   yield put({ type: Actions.signClaimsModalHide });
+
+  browserHistory.push(`/blocks/${result}`)
+}
+
+function* mockLoginHit(action: any) {
+  yield call(fetch, config.api.mockApp + '/' + action.payload, { method: 'POST' })
 }
 
 function claimSubmitSaga(): Saga {
   return function*() {
     yield takeEvery(Actions.claimsSubmitRequested, signClaims);
+    yield takeEvery(Actions.fakeClaimSign, mockLoginHit);
   }
 }
 

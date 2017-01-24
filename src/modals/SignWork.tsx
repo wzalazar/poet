@@ -1,47 +1,71 @@
-import { ModalVisible } from './Modal'
+import * as React from 'react'
+import { connect } from 'react-redux'
 
-import * as React from 'react';
-import { connect } from 'react-redux';
+import Modal, { ModalVisible, ModalProps } from './Modal'
+import Actions from '../actions'
+import Loading from '../components/Loading';
 
-import Modal from './Modal'
-import { ModalProps } from './Modal'
+import './Modal.scss'
+import './Login.scss'
 
-import Actions from '../actions';
+declare var require: (moduleId: string) => any;
+const QR = require('react-qr');
 
-import './Modal.scss';
-import './Login.scss';
+interface SignProps {
+  requestId: string;
+  visible: boolean;
+  success: boolean;
+}
+interface SignActions {
+  mockSign: (id: string) => any
+}
 
-class SignWorkModal extends Modal<ModalProps> {
+class SignWorkModal extends Modal<SignProps & SignActions & ModalProps> {
   draw() {
-    return (
-      <div className="modal">
-        <h1>Signing requested</h1>
-        <div>
-          <img src="http://www.qr-code-generator.com/phpqrcode/getCode.php?cht=qr&chl=http%3A%2F%2Fwww.po.et&chs=180x180&choe=UTF-8&chld=L|0"/>
-        </div>
-        <div className="mb-2">Scan the QR code to approve</div>
-        <div className="onboard mb-2">
-          <div className="scan">
-            <div className="placeholder-box" />
-            <div className="ml-2">
-              <div>Work: El Quijote</div>
-              <div className="text-muted">Login to the app &gt; scan QR code</div>
+    if (!this.props.success) {
+      return (
+        <div className="modal">
+          <h1>Signing requested</h1>
+          <div>
+            { this.props.requestId
+              ? <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
+                <QR text={this.props.requestId || ''} />
+              </a>
+              : <Loading />
+            }
+          </div>
+          <div className="mb-2">Scan the QR code to approve</div>
+          <div className="onboard mb-2">
+            <div className="scan">
+              <div className="placeholder-box" />
+              <div className="ml-2">
+                <div>Work: El Quijote</div>
+                <div className="text-muted">Login to the app &gt; scan QR code</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )
+    }
+    return (<div className="modal">
+      <h1>Claim successfully submited!</h1>
+      <div className="mb-2">You will be redirected to an unconfirmed block containing your claim</div>
+    </div>
     )
   }
 }
 
-function mapStateToProps(state: any): ModalVisible {
+function mapStateToProps(state: any): SignProps {
   return {
-    visible: state.modals.signWork
+    visible: state.modals.signWork,
+    requestId: state.claimSign.id,
+    success: state.claimSign.success
   }
 }
 
 const mapDispatch = {
   cancelAction: () => ({ type: Actions.claimsModalDismissRequested }),
+  mockSign: (id: string) => ({ type: Actions.fakeClaimSign, payload: id })
 };
 
 export default connect(mapStateToProps, mapDispatch)(SignWorkModal);

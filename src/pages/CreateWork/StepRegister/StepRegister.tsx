@@ -11,7 +11,7 @@ export interface StepRegisterData {
 }
 
 export interface StepRegisterProps {
-  onSubmit: (stepRegisterData: StepRegisterData) => void;
+  onSubmit: (stepRegisterData: Attribute[]) => void;
 }
 
 export class StepRegister extends React.Component<StepRegisterProps, undefined> {
@@ -34,10 +34,10 @@ export class StepRegister extends React.Component<StepRegisterProps, undefined> 
   }
 
   private submit(): void {
-    this.props.onSubmit({
-      articleType: this.controls.mediaType.state.subType,
-      attributes: this.controls.attributes.state.attributes,
-      content: this.controls.content.state.content
-    });
+    this.props.onSubmit([
+      ...this.controls.attributes.state.attributes,
+      { key: 'articleType', value: this.controls.mediaType.state.subType },
+      { key: 'content', value: this.controls.content.state.content }
+    ]);
   }
 }

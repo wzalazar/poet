@@ -13,7 +13,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/protobufjs": "^5.0.31",
     "@types/react": "^0.14.55",
     "@types/react-dom": "^0.14.20",
     "@types/react-redux": "^4.4.35",

@@ -7,7 +7,7 @@ export default function sessionReducer(state: any, action: any) {
       case Actions.loginSuccess:
         return {
           state: Constants.LOGGED_IN,
-          token: action.payload
+          token: action.token
         };
       case Actions.logoutRequested:
         return {
