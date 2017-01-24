@@ -16,6 +16,11 @@ interface AttributesState {
 }
 
 export class Attributes extends React.Component<AttributesProps, AttributesState> {
+  private readonly controls: {
+    attributeKeyInputs?: HTMLInputElement[];
+  } = {
+    attributeKeyInputs: []
+  };
   private readonly defaultAttributes: Attribute[] = [
     {
       key: 'Title',
@@ -46,13 +51,17 @@ export class Attributes extends React.Component<AttributesProps, AttributesState
     return (
       <div key={index} className="form-group row">
         <div className="col-sm-4">
-          <input onChange={this.onKeyChange.bind(this, index)} type="text" className="form-control" placeholder="Attribute Name" defaultValue={key} />
+          <input ref={this.setAttributeInputRef.bind(this, index)} onChange={this.onKeyChange.bind(this, index)} type="text" className="form-control" placeholder="Attribute Name" defaultValue={key} />
         </div>
         <div className="col-sm-8">
           <input onChange={this.onChange.bind(this, index)} type="text" className="form-control" placeholder="Attribute Value" />
         </div>
       </div>
     );
+  }
+
+  private setAttributeInputRef(index: number, attributeKeyInput: HTMLInputElement) {
+    this.controls.attributeKeyInputs[index] = attributeKeyInput;
   }
 
   private onChange(index: number, event: any) {
@@ -71,9 +80,9 @@ export class Attributes extends React.Component<AttributesProps, AttributesState
     });
   }
 
-  onAddAttribute() {
+  private onAddAttribute() {
     if (!this.state.attributes[this.state.attributes.length - 1].key) {
-      // TODO: focus/highlight the last attribute, display a message 'Please fill in the Attribute Name for all fields before adding more'
+      this.controls.attributeKeyInputs[this.controls.attributeKeyInputs.length - 1].focus();
       return;
     }
 
