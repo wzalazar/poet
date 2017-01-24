@@ -5,12 +5,12 @@ import { LicensePreview } from './LicensePreview';
 import { LicenseType } from './LicenseType';
 
 export interface StepLicenseData {
-  licenseType: string;
-  pricing: any;
+  readonly licenseType: string;
+  readonly pricing: any;
 }
 
 export interface StepLicenseProps {
-  onSubmit: (stepRegisterData: StepLicenseData) => void;
+  readonly onSubmit: (stepRegisterData: StepLicenseData) => void;
 }
 
 export class StepLicense extends React.Component<StepLicenseProps, StepLicenseData> {

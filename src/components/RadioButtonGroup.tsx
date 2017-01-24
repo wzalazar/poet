@@ -1,9 +1,9 @@
 import * as React from 'react';
 
 export interface RadioButtonGroupProps {
-  className?: string;
-  radioButtons: RadioButton[];
-  onSelectionChange?: (id: string, text: string) => void;
+  readonly className?: string;
+  readonly radioButtons: ReadonlyArray<RadioButton>;
+  readonly onSelectionChange?: (id: string, text: string) => void;
 }
 
 interface RadioButtonGroupState {

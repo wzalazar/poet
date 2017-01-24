@@ -4,7 +4,7 @@ import { Checkbox } from '../../../components/Checkbox';
 import './TermsOfUse.scss';
 
 export interface TermsOfUseProps {
-  className?: string;
+  readonly className?: string;
 }
 
 export class TermsOfUse extends React.Component<TermsOfUseProps, undefined> {

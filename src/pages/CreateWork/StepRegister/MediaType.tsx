@@ -4,24 +4,18 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { RadioButtonGroup, RadioButton } from '../../../components/RadioButtonGroup';
 
 export interface MediaTypeProps {
-  className?: string;
-  onChange?: (selectedId: string) => void;
+  readonly className?: string;
+  readonly onChange?: (selectedId: string) => void;
 }
 
-const radioButtons = [
-  new RadioButton('news-article', 'News Article'),
-  new RadioButton('report', 'Report'),
-  new RadioButton('scholarly', 'Scholarly'),
-  new RadioButton('technical', 'Technical')
-];
-
-const radioButtonsAudio = [
-  new RadioButton('song', 'Song'),
-  new RadioButton('read-poem', 'Read Poem'),
-  new RadioButton('audiobook', 'Audiobook')
-];
-
 export class MediaType extends React.Component<MediaTypeProps, any> {
+  private readonly radioButtons: ReadonlyArray<RadioButton> = [
+    new RadioButton('news-article', 'News Article'),
+    new RadioButton('report', 'Report'),
+    new RadioButton('scholarly', 'Scholarly'),
+    new RadioButton('technical', 'Technical')
+  ];
+
   constructor() {
     super(...arguments);
     this.state = {
@@ -41,7 +35,7 @@ export class MediaType extends React.Component<MediaTypeProps, any> {
             {/*<Tab>Image</Tab>*/}
           </TabList>
           <TabPanel>
-            <RadioButtonGroup radioButtons={radioButtons} onSelectionChange={this.onChange.bind(this)} />
+            <RadioButtonGroup radioButtons={this.radioButtons} onSelectionChange={this.onChange.bind(this)} />
           </TabPanel>
           {/*<TabPanel>*/}
             {/*<RadioButtonGroup radioButtons={radioButtonsAudio} onSelectionChange={this.props.onChange} />*/}

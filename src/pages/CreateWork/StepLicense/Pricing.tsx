@@ -3,9 +3,9 @@ import * as React from 'react';
 import { Checkbox } from '../../../components/Checkbox';
 
 interface PricingState {
-  amount?: number;
-  currency?: string;
-  frequency?: 'oneTime' | 'perPageView';
+  readonly amount?: number;
+  readonly currency?: string;
+  readonly frequency?: 'oneTime' | 'perPageView';
 }
 
 export class Pricing extends React.Component<undefined, PricingState> {

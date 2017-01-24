@@ -3,7 +3,7 @@ import * as React from 'react';
 import '../Layout.scss';
 
 interface AttributesProps {
-  className?: string;
+  readonly className?: string;
 }
 
 export interface Attribute {
@@ -12,7 +12,7 @@ export interface Attribute {
 }
 
 interface AttributesState {
-  attributes: Attribute[];
+  readonly attributes: ReadonlyArray<Attribute>;
 }
 
 export class Attributes extends React.Component<AttributesProps, AttributesState> {
@@ -21,7 +21,7 @@ export class Attributes extends React.Component<AttributesProps, AttributesState
   } = {
     attributeKeyInputs: []
   };
-  private readonly defaultAttributes: Attribute[] = [
+  private readonly defaultAttributes: ReadonlyArray<Attribute> = [
     {
       key: 'Title',
       value: ''

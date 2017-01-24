@@ -8,13 +8,13 @@ import StepPublishAndReview from './StepPublishAndReview/StepPublishAndReview'
 import './Layout.scss'
 
 interface CreateWorkProps {
-  createWorkRequested: (claims: any[]) => any // Actions.claimsSubmitRequested
+  readonly createWorkRequested: (claims: any[]) => any // Actions.claimsSubmitRequested
 }
 
 interface CreateWorkLayoutState {
-  selectedStep: number;
-  licenseData?: StepLicenseData;
-  workData?: StepRegisterData;
+  readonly selectedStep: number;
+  readonly licenseData?: StepLicenseData;
+  readonly workData?: StepRegisterData;
 }
 
 export default class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWorkLayoutState> {

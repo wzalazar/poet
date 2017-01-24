@@ -5,13 +5,13 @@ import { Attributes, Attribute } from './Attributes';
 import { Content } from './Content';
 
 export interface StepRegisterData {
-  articleType?: string;
-  attributes?: Attribute[];
-  content?: string;
+  readonly articleType?: string;
+  readonly attributes?: ReadonlyArray<Attribute>;
+  readonly content?: string;
 }
 
 export interface StepRegisterProps {
-  onSubmit: (stepRegisterData: Attribute[]) => void;
+  readonly onSubmit: (stepRegisterData: Attribute[]) => void;
 }
 
 export class StepRegister extends React.Component<StepRegisterProps, undefined> {

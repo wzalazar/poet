@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export interface PreviewProps {
-  className?: string;
+  readonly className?: string;
 }
 
 export class Preview extends React.Component<PreviewProps, undefined> {

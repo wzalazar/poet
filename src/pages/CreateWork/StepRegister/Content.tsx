@@ -3,11 +3,11 @@ import * as React from 'react';
 import '../Layout.scss';
 
 interface ContentProps {
-  className?: string;
+  readonly className?: string;
 }
 
 interface ContentState {
-  content: string;
+  readonly content: string;
 }
 
 export class Content extends React.Component<ContentProps, ContentState> {

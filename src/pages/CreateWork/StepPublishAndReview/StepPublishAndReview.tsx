@@ -3,7 +3,7 @@ import { TermsOfUse } from './TermsOfUse'
 import { Preview } from './Preview'
 
 export interface StepPublishAndReviewProps {
-  onSubmit: () => void
+  readonly onSubmit: () => void
 }
 
 export default class StepPublishAndReview extends React.Component<StepPublishAndReviewProps, any> {

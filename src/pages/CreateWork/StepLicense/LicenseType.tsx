@@ -7,10 +7,10 @@ export interface LicenseTypeProps {
 }
 
 export class LicenseType extends React.Component<LicenseTypeProps, undefined> {
-  private controls: {
+  private readonly controls: {
     radioButtonGroup?: RadioButtonGroup
   } = {};
-  public readonly licenseTypes: RadioButton[] = [
+  public readonly licenseTypes: ReadonlyArray<RadioButton> = [
     new RadioButton('attribution-only', 'Attribution Only'),
     new RadioButton('pay', 'Pay'),
     new RadioButton('one-off', 'One Off'),

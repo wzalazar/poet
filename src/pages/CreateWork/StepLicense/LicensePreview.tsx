@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export interface LicensePreviewProps {
-  className?: string;
+  readonly className?: string;
 }
 
 export interface LicensePreviewState {
