@@ -54,7 +54,7 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
     return [
       this.renderNavLink('portfolio', 'Portfolio'),
       this.renderNavLink('licenses', 'Licenses'),
-      this.renderNavLink('user', 'User'),
+      this.renderNavLink('user/profile', 'User'),
       <li key="logout"><LogoutButton>Logout</LogoutButton></li>,
       this.renderNavButton('create-work', 'New Work')
     ];

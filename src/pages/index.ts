@@ -8,6 +8,7 @@ import { Portfolio } from "./Portfolio/Loader";
 import { Licenses } from "./Licenses/Loader";
 import { CreateWork } from "./CreateWork/Loader";
 import { UserProfile } from "./UserProfile/Loader";
+import { UserWallet } from "./UserWallet/Loader";
 
 export default [
   LandingLoader,
@@ -19,5 +20,6 @@ export default [
   Portfolio,
   Licenses,
   CreateWork,
-  UserProfile
+  UserProfile,
+  UserWallet
 ]

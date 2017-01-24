@@ -178,5 +178,42 @@
       "issueDate": 3847209345,
       "key": "204jrwodnfoaidn023rnoenl5"
     }
+  ],
+  "transactions": [
+    {
+      "userId": 1,
+      "date": 123,
+      "type": "Transfer / Sale",
+      "amount": 240,
+      "currency": "USD"
+    },
+    {
+      "userId": 1,
+      "date": 123,
+      "type": "Unique Payout",
+      "amount": 0.35,
+      "currency": "BTC"
+    },
+    {
+      "userId": 1,
+      "date": 123,
+      "type": "Withdrawal",
+      "amount": -10,
+      "currency": "USD"
+    },
+    {
+      "userId": 1,
+      "date": 123,
+      "type": "Deposit",
+      "amount": 3.5,
+      "currency": "ARS"
+    },
+    {
+      "userId": 2,
+      "date": 123,
+      "type": "Deposit",
+      "amount": 3.5,
+      "currency": "ARS"
+    }
   ]
 }
