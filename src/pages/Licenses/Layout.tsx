@@ -15,7 +15,7 @@ export class LicensesLayout extends React.Component<LicensesProps, undefined> {
   render() {
     return (
       <section className="licenses">
-        <h1>LICENSES</h1>
+        <h2>Licenses</h2>
         <LicensesFilters/>
         <Licenses author={this.props.userId} />
       </section>
