@@ -52,7 +52,7 @@ export class UserProfile extends PageLoader<UserProfileProps, Object> {
   mapDispatchToProps(): Object {
     return {
       submitProfileRequested: (payload: Claim) => ({
-        type: Actions.claimsSubmitRequested, payload
+        type: Actions.claimsSubmitRequested, payload: [payload]
       })
     };
   }
