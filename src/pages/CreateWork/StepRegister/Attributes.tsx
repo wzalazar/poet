@@ -72,6 +72,11 @@ export class Attributes extends React.Component<AttributesProps, AttributesState
   }
 
   onAddAttribute() {
+    if (!this.state.attributes[this.state.attributes.length - 1].key) {
+      // TODO: focus/highlight the last attribute, display a message 'Please fill in the Attribute Name for all fields before adding more'
+      return;
+    }
+
     this.setState({
       attributes: [ ...this.state.attributes, {
         key: '',
