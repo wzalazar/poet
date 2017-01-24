@@ -41,8 +41,9 @@ export default async function createServer(options: AuthServerOptons) {
       const result = body.multiple
         ? body.message.map(signMessage)
         : signMessage(body.message)
+      const endpoint = body.multiple ? 'multiple': 'request'
 
-      await fetch(`http://${server}/request/${id}`, {
+      await fetch(`http://${server}/${endpoint}/${id}`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(result)
