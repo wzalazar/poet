@@ -11,7 +11,7 @@ import FetchComponent, { FetchComponentProps } from '../hocs/FetchComponent'
 
 function renderBlock(props: any) {
   return (
-    <tr key={props.id}>
+    <tr key={props.bitcoinHash}>
       <td><span className="text-truncate">{props.bitcoinHeight}</span></td>
       <td><span className="text-truncate">{props.bitcoinHash.firstAndLastCharacters(4)}</span></td>
       <td>{moment(props.timestamp).fromNow()}</td>
@@ -21,7 +21,7 @@ function renderBlock(props: any) {
 
 function render(props: FetchComponentProps) {
   return (
-    <table className="table table-hover">
+    <table className="table table-hover latest-blocks">
       <thead>
         <tr>
           <th colSpan={2}>Poet Blockchain</th>

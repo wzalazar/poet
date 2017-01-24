@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import './Navbar.scss'
 
 import Actions from '../actions';
+import Constants from '../constants';
 import { LoginButton } from "../components/LoginButton";
 import { LogoutButton } from "../components/LogoutButton";
 
@@ -62,7 +63,7 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
 
 function mapStateToProps(state: any): NavbarProps {
   return {
-    loggedIn: state.session && !!state.session.user
+    loggedIn: state.session && (state.session.state === Constants.LOGGED_IN)
   }
 }
 

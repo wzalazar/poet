@@ -28,4 +28,8 @@ export default class Actions {
   public static readonly updatingProfile = 'updating profile';
   public static readonly profileUpdated = 'profile updated successfully';
   public static readonly updateProfileRequested = 'profile update requested';
+
+  public static readonly loginIdReceived = 'login ID received';
+  public static readonly unrecognizedSocketMessage = 'unrecognized socket message';
+  public static readonly mockLoginRequest = 'mock login server requested';
 }

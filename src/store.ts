@@ -6,9 +6,11 @@ import './extensions/Array';
 
 import PageLoader from './components/PageLoader';
 
+import authSocket from './auth';
 import pageCreators from "./pages";
 import sagaList from './sagas'
 import reducers from './reducers';
+import Actions from './actions'
 
 function bindSagas(pages: PageLoader<any, any>[]): Saga {
   const sagas: Saga[] = pages
@@ -59,6 +61,12 @@ export default function createPoetStore() {
   );
 
   sagaMiddleware.run(bindSagas(pages));
+  authSocket.setHandler((payload) => {
+    store.dispatch({
+      type: Actions.unrecognizedSocketMessage,
+      payload
+    })
+  })
 
   return { store, pages };
 }

@@ -2,11 +2,14 @@
 import { ModalVisible } from './Modal'
 declare var require: (moduleId: string) => any;
 
+const QR = require('react-qr');
+
 import * as React from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { Action } from 'redux';
 
+import Loading from '../components/Loading';
 import Modal from './Modal'
 import { ModalProps } from './Modal'
 
@@ -16,18 +19,26 @@ import './Modal.scss';
 import './Login.scss';
 
 interface LoginActions extends ModalProps {
-  dispatchLoginResponse: () => Action;
+  mockLoginRequest: (id: string) => Action;
 }
 
-class LoginModal extends Modal<LoginActions> {
+interface LoginProps {
+  requestId: string;
+}
+
+class LoginModal extends Modal<LoginActions & LoginProps> {
   modalName = 'login'
   draw() {
     return (
       <div className="modal modal-login">
         <h1>Login to Poet</h1>
         <div>
-          <img onClick={this.props.dispatchLoginResponse}
-               src="http://www.qr-code-generator.com/phpqrcode/getCode.php?cht=qr&chl=http%3A%2F%2Fwww.po.et&chs=180x180&choe=UTF-8&chld=L|0"/>
+          { this.props.requestId
+            ? <a href="#" onClick={() => this.props.mockLoginRequest(this.props.requestId)}>
+               <QR text={this.props.requestId || ''} />
+              </a>
+            : <Loading />
+          }
         </div>
         <div className="mb-2">Scan the QR code to login</div>
         <div className="onboard mb-2">
@@ -49,15 +60,16 @@ class LoginModal extends Modal<LoginActions> {
   }
 }
 
-function mapStateToProps(state: any): ModalVisible {
+function mapStateToProps(state: any): ModalVisible & LoginProps {
   return {
-    visible: state.modals.login
+    visible: state.modals.login,
+    requestId: state.session.requestId
   }
 }
 
 const mapDispatch = {
   cancelAction: () => ({ type: Actions.loginModalDisposeRequested }),
-  dispatchLoginResponse: () => ({ type: Actions.loginResponse })
+  mockLoginRequest: (requestId: string) => ({ type: Actions.mockLoginRequest, payload: requestId })
 };
 
 export default connect(mapStateToProps, mapDispatch)(LoginModal);

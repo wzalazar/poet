@@ -3,7 +3,9 @@
 const config = {
   api: {
     explorer: '/api/explorer',
-    user: '/api/user'
+    user: '/api/user',
+    auth: 'ws://192.168.0.168:5000',
+    mockApp: '/api/mockApp'
   }
 };
 
