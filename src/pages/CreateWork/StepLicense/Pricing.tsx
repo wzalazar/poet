@@ -36,7 +36,7 @@ export class Pricing extends React.Component<undefined, PricingState> {
             <div className="input-group">
               <span className="input-group-addon">$</span>
               <input onChange={this.onAmountChange.bind(this)} type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
-              <span className="input-group-addon">.00</span>
+              <span className="input-group-addon">BTC</span>
             </div>
           </div>
         </div>
