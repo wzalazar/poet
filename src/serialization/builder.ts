@@ -56,7 +56,15 @@ export class ClaimBuilder {
     }
   }
 
-  getId(data: any, key: Object): Uint8Array {
+  addSignature(data: any, signature: string): Claim {
+    const id = this.getId(data)
+    return {
+      ... data,
+      signature: new Buffer(signature, 'hex')
+    }
+  }
+
+  getId(data: any, key?: Object): Uint8Array {
     return common.sha256(this.getEncodedForSigning(data, key))
   }
 
@@ -79,10 +87,10 @@ export class ClaimBuilder {
     }
   }
 
-  getEncodedForSigning(data: any, privateKey: any): Uint8Array {
+  getEncodedForSigning(data: any, privateKey?: any): Uint8Array {
     return this.claim.encode(this.claim.create({
       id: new Buffer(''),
-      publicKey: privateKey['publicKey'].toBuffer(),
+      publicKey: data.publicKey || privateKey['publicKey'].toBuffer(),
       signature: new Buffer(''),
       type: data.type,
       attributes: this.getAttributes(data.attributes)

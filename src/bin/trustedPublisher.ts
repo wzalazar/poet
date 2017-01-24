@@ -28,6 +28,36 @@ export default async function createServer(options?: TrustedPublisherOptions) {
 
   koa.use(Route.post('/claims', async (ctx: any) => {
     console.log(ctx.request.body)
+    var sigs = JSON.parse(ctx.request.body)
+    const claims: Claim[] = []
+    for (let sig of sigs) {
+      const claim = JSON.parse(new Buffer(sig.message, 'hex').toString())
+      claim.signature = sig.signature
+      claim.id = creator.getId(claim)
+      console.log(claim)
+      claims.push(claim)
+    }
+    const block: Block = creator.createBlock(claims)
+    try {
+      await queue.announceBlockToSend(block)
+    } catch (error) {
+      console.log('Could not publish block', error, error.stack)
+    }
+
+    try {
+      const id = await getHash(creator.serializeBlockForSave(block), block.id)
+      const tx = await creator.createTransaction(id)
+      console.log('Bitcoin transaction hash is', tx.hash)
+      console.log('Torrent hash is', id)
+
+      if (!options.broadcast) {
+        return
+      }
+
+      ctx.body = await ClaimBuilder.broadcastTx(tx)
+    } catch (error) {
+      ctx.body = JSON.stringify({ error })
+    }
   }))
 
   koa.use(Route.post('/claim', async (ctx: any) => {
