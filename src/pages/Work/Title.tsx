@@ -14,15 +14,15 @@ function render(props: WorkProps): JSX.Element {
         <tbody>
           <tr>
             <td>Owner</td>
-            <td>{props.title.owner}</td>
+            <td>{props.title.attributes.owner}</td>
           </tr>
           <tr>
             <td>Type of Ownership</td>
-            <td>{props.title.typeOfOwnership}</td>
+            <td>{props.title.attributes.typeOfOwnership}</td>
           </tr>
           <tr>
             <td>Status</td>
-            <td>{props.title.status}</td>
+            <td>{props.title.attributes.status}</td>
           </tr>
         </tbody>
       </table>

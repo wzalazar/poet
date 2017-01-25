@@ -1,0 +1,42 @@
+.landing-logged-out {
+  text-align: center;
+  height: 100%;
+  margin-top: 60px;
+  h1 {
+    margin-bottom: 60px;
+    font-size: 1.8em;
+  }
+  h2 {
+    margin-bottom: 60px;
+    font-size: 1.2em;
+  }
+  .cta-header {
+    margin-bottom: 60px;
+  }
+
+  .landing-boxes {
+    border: 1px solid #cacaca;
+    border-radius: 5px;
+    padding-bottom: 30px;
+  }
+
+  .boxed {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .invisible {
+      visibility: hidden;
+    }
+    .number {
+      font-size: 1.6em;
+      font-weight: 400;
+      margin-top: auto;
+    }
+    .explain  {
+      margin-top: auto;
+    }
+  }
+}

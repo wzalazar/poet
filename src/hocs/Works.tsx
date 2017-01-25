@@ -9,7 +9,9 @@ import { WorkProps } from './WorkComponent';
 function propsToQueryString(props: WorkProps): any {
   const searchable: string[] = ['author']; // TODO: Object.keys(props).filter(...).map(...), but we can'd do this on WorkProps since it extends from FetchComponentProps
 
-  const queryParams = searchable.filter(key => props[key]).map(key => `${key}=${props[key]}`);
+  const queryParams = searchable
+    .filter(key => props.attributes && props.attributes[key])
+    .map(key => `${key}=${props.attributes && props.attributes[key]}`);
 
   return queryParams.join('&');
 }

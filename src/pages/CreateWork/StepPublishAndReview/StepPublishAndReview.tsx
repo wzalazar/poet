@@ -9,7 +9,7 @@ import './StepPublishAndReview.scss';
 
 export interface StepPublishAndReviewProps {
   readonly onSubmit: () => void;
-  readonly authorName: string;
+  readonly authorName?: string;
   readonly workTitle: string;
   readonly price: Price;
 }
