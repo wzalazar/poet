@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as moment from 'moment';
 
 import { Price } from '../../../common';
 
@@ -31,7 +32,7 @@ export class Preview extends React.Component<PreviewProps, undefined> {
               </tr>
               <tr>
                 <td>Notarized at</td>
-                <td>{new Date().toISOString()}</td>
+                <td>{moment().format('dddd, MMMM Do YYYY, h:mm:ss a')}</td>
               </tr>
             </tbody>
           </table>
@@ -54,8 +55,12 @@ export class Preview extends React.Component<PreviewProps, undefined> {
                 </td>
               </tr>
               <tr>
-                <td>Notarized at</td>
-                <td>{new Date().toISOString()}</td>
+                <td>Category</td>
+                <td>Bitcoin</td>
+              </tr>
+              <tr>
+                <td>Content Hash</td>
+                <td>e1e4af97dab996066ec77e0027511549631f9157dfb6b90852b2ca2ba23136d4</td>
               </tr>
             </tbody>
           </table>

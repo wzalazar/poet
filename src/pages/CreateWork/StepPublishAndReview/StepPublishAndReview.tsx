@@ -5,6 +5,8 @@ import { Price } from '../../../common';
 import { TermsOfUse } from './TermsOfUse'
 import { Preview } from './Preview'
 
+import './StepPublishAndReview.scss';
+
 export interface StepPublishAndReviewProps {
   readonly onSubmit: () => void;
   readonly authorName: string;
@@ -23,7 +25,7 @@ export default class StepPublishAndReview extends React.Component<StepPublishAnd
             <button onClick={this.props.onSubmit} className="btn btn-primary">Timestamp to the blockchain</button>
           </div>
           <Preview
-            className="col-sm-5 mb-2 border-1 p-1"
+            className="preview col-sm-5 mb-2 border-1 p-1"
             authorName={this.props.authorName}
             workTitle={this.props.workTitle}
             mediaType="Article"
