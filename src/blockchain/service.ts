@@ -251,6 +251,8 @@ export default class BlockchainService {
       .where('work.id=:id')
       .setParameters({ id })
       .getOne()
+    const info = await this.claimInfoRepository.findOneById(id)
+    work.claimInfo = info
     return await this.augmentWork(work)
   }
 

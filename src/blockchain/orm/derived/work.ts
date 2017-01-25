@@ -3,12 +3,15 @@ import License from './license'
 import Offering from './offering'
 import Profile from './profile'
 import Title from './title'
+import ClaimInfo from '../claimInfo'
 
 @Table()
 export default class Work {
 
   @PrimaryColumn()
   id: string
+
+  claimInfo?: ClaimInfo
 
   @OneToOne(type => Title, title => title.reference, { nullable: true })
   title: Title
