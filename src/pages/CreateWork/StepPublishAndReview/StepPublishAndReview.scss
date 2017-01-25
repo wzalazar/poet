@@ -6,11 +6,6 @@
           >td:first-child {
             min-width: 130px;
           }
-          >td:last-child {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            min-width: 0;
-          }
         }
       }
     }
