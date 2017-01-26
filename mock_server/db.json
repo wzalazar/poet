@@ -181,35 +181,35 @@
   ],
   "transactions": [
     {
-      "userId": 1,
+      "publicKey": "035adb5220c14221ae0c27f4eeb570041b496df2f3fecc1aadd860e906e1796ce1",
       "date": 123,
       "type": "Transfer / Sale",
       "amount": 240,
       "currency": "USD"
     },
     {
-      "userId": 1,
+      "publicKey": "035adb5220c14221ae0c27f4eeb570041b496df2f3fecc1aadd860e906e1796ce1",
       "date": 123,
       "type": "Unique Payout",
       "amount": 0.35,
       "currency": "BTC"
     },
     {
-      "userId": 1,
+      "publicKey": "035adb5220c14221ae0c27f4eeb570041b496df2f3fecc1aadd860e906e1796ce1",
       "date": 123,
       "type": "Withdrawal",
       "amount": -10,
       "currency": "USD"
     },
     {
-      "userId": 1,
+      "publicKey": "035adb5220c14221ae0c27f4eeb570041b496df2f3fecc1aadd860e906e1796ce1",
       "date": 123,
       "type": "Deposit",
       "amount": 3.5,
       "currency": "ARS"
     },
     {
-      "userId": 2,
+      "publicKey": 2,
       "date": 123,
       "type": "Deposit",
       "amount": 3.5,

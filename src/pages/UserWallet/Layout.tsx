@@ -5,7 +5,7 @@ import './Layout.scss';
 import Transactions from './Transactions';
 
 interface WalletLayoutProps {
-  userId?: string;
+  publicKey?: string;
 }
 
 export class WalletLayout extends React.Component<WalletLayoutProps, undefined> {
@@ -19,7 +19,7 @@ export class WalletLayout extends React.Component<WalletLayoutProps, undefined> 
         <div className="header">
           <h2>Wallet</h2>
         </div>
-        <Transactions userId={this.props.userId} />
+        <Transactions publicKey={this.props.publicKey} />
       </section>
     );
   }

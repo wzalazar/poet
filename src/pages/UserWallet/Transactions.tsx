@@ -5,12 +5,12 @@ import Config from '../../config';
 import FetchComponent, { FetchComponentProps } from '../../hocs/FetchComponent';
 
 interface TransactionsProps extends FetchComponentProps {
-  userId?: string;
+  publicKey?: string;
 }
 
 function propsToUrl(props: TransactionsProps) {
   return {
-    url: `http://localhost:4000${Config.api.user}/${props.userId}/transactions`
+    url: `http://localhost:4000${Config.api.user}/${props.publicKey}/transactions`
   };
 }
 

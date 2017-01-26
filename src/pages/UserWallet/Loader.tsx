@@ -31,7 +31,7 @@ export class UserWallet extends PageLoader<UserWalletProps, Object> {
   }
 
   select(state: any, ownProps: any): Object {
-    return { userId: state.session && state.session.token && state.session.token.user.id };
+    return { publicKey: state.session && state.session.token && state.session.token.publicKey };
   }
 
   mapDispatchToProps(): Object {
