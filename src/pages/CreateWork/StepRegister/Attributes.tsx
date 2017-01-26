@@ -51,10 +51,13 @@ export class Attributes extends React.Component<AttributesProps, AttributesState
     return (
       <div key={index} className="form-group row">
         <div className="col-sm-4">
-          <input ref={this.setAttributeInputRef.bind(this, index)} onChange={this.onKeyChange.bind(this, index)} type="text" className="form-control" placeholder="Attribute Name" defaultValue={key} />
+          <input ref={this.setAttributeInputRef.bind(this, index)} onChange={this.onKeyChange.bind(this, index)} type="text" className="form-control" placeholder="Attribute Name" value={key} />
         </div>
-        <div className="col-sm-8">
-          <input onChange={this.onChange.bind(this, index)} type="text" className="form-control" placeholder="Attribute Value" />
+        <div className="col-sm-7">
+          <input onChange={this.onChange.bind(this, index)} type="text" className="form-control" placeholder="Attribute Value" value={value} />
+        </div>
+        <div className="col-sm-1">
+          <button onClick={this.onRemoveAttribute.bind(this, index)} className="btn btn-secondary">X</button>
         </div>
       </div>
     );
@@ -92,5 +95,12 @@ export class Attributes extends React.Component<AttributesProps, AttributesState
         value: ''
       } ]
     })
+  }
+
+  private onRemoveAttribute(index: number, event: any) {
+    event.preventDefault();
+    this.setState({
+      attributes: [ ...this.state.attributes.filter((el, idx) => idx !== index) ]
+    });
   }
 }
