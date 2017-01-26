@@ -10,9 +10,9 @@ import { WorkProps } from '../../hocs/WorkComponent';
 function renderTableRow(props: WorkProps) {
   return (
     <tr key={props.id}>
-      <td><Link to={'/works/' + props.id}>{props.name}</Link></td>
+      <td><Link to={'/works/' + props.id}>{props.attributes.name}</Link></td>
       <td>{props.publicKey}</td>
-      <td>{props.published}</td>
+      <td>{props.attributes.publishedAt}</td>
     </tr>
   )
 }

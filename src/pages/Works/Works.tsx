@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router';
+import * as moment from 'moment';
 
 import { FetchComponentProps } from '../../hocs/FetchComponent';
 import ProfileLink from '../../components/ProfileLink';
@@ -13,10 +14,13 @@ import './Layout.scss';
 function renderWork(props: WorkProps) {
   return (
     <li key={props.id} className="mb-3">
-      <h3><Link to={'/works/' + props.id}>{props.name}</Link></h3>
-      <div>by <ProfileLink id={props.author} /></div>
-      <small><span>Created: {props.published}</span> <span className="ml-3">Timestampted: {props.published}</span></small>
-      <div>{props.content}</div>
+      <h3><Link to={'/works/' + props.id}>{props.attributes.name}</Link></h3>
+      <div>by { props.author ? <ProfileLink id={props.author} /> : (props.attributes.author || 'Unknown author') }</div>
+      <small>
+        <span>Created: { moment(props.attributes.publishedAt || props.attributes.createdAt ).fromNow() }</span>
+        <span className="ml-3">Timestamped: { moment(props.claimInfo && props.claimInfo.timestamp).fromNow() }</span>
+      </small>
+      <div>{props.attributes.content}</div>
     </li>
   )
 }

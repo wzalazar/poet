@@ -3,6 +3,8 @@ import { Work } from "./Work/Loader";
 import { Works } from "./Works/Loader";
 import { Profile } from "./Profile/Loader";
 import { Blocks } from "./Blocks/Loader";
+import { Claim } from "./Blocks/Claim/Loader";
+import { SingleBlock } from "./Blocks/SingleBlock/Loader";
 import { About } from "./About/Loader";
 import { Documentation } from "./Documentation/Loader";
 import { Portfolio } from "./Portfolio/Loader";
@@ -16,6 +18,8 @@ export default [
   Work,
   Works,
   Blocks,
+  Claim,
+  SingleBlock,
   Profile,
   About,
   Documentation,

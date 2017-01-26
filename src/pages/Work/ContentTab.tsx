@@ -29,7 +29,7 @@ function render(props: WorkProps): JSX.Element {
       <div className="attributes">
         { renderAttributes(props) }
       </div>
-      <div className="content">{ props.content }</div>
+      <div className="content">{ props.attributes.content }</div>
     </div>
   )
 }

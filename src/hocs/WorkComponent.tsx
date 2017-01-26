@@ -3,31 +3,33 @@ import Config from '../config';
 import { HexString } from '../common'
 import FetchComponent, { FetchComponentProps } from './FetchComponent'
 
-export interface WorkProps extends FetchComponentProps {
-  [key: string]: any;
-
+export interface Claim {
   id: HexString
   publicKey: HexString
   signature: HexString
 
-  name: string;
-  author: string;
-  published: Date;
-  lastModified: Date;
-  customLabel: string;
-  tags: string[];
-  type: string;
+  attributes: any
+}
 
-  content: string;
+export interface ClaimInfo {
+  hash: string
+  torrentHash: string
+  timestamp?: number
+  bitcoinHeight?: number
+  bitcoinHash?: string
+  blockHeight?: number
+  blockHash?: string
+  transactionOrder?: string
+  transactionHash: string
+  outputIndex: number
+  claimOrder?: number
+}
 
-  attributes: any;
-
-  title: {
-    owner: string,
-    typeOfOwnership: string,
-    status: string
-  }
-
+export interface WorkProps extends FetchComponentProps, Claim {
+  claimInfo?: ClaimInfo
+  owner?: Claim
+  title?: Claim
+  author?: Claim
 }
 
 export default FetchComponent.bind(null, (props: WorkProps) => ({

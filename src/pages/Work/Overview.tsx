@@ -6,16 +6,18 @@ import ProfileLink from '../../components/ProfileLink';
 import './Layout.scss';
 
 function render(props: WorkProps) {
+  if (!props) {
+    return '';
+  }
   const tableData = new Map();
-  tableData.set('Published', props.published);
-  tableData.set('Last Modified', props.lastModified);
-  tableData.set('Custom Label', props.customLabel);
-  tableData.set('Tags', props.tags);
-  tableData.set('Type', props.type);
+  tableData.set('Published', props.attributes.publishedAt);
+  tableData.set('Last Modified', props.attributes.lastModified);
+  tableData.set('Tags', props.attributes.tags || []);
+  tableData.set('Type', props.attributes.mediaType || 'Unknown');
 
   return (
     <div className="overview">
-      <h1>{props.name}</h1>
+      <h1>{props.attributes.name}</h1>
       <table>
         <colgroup>
           <col className="keys"/>
@@ -27,7 +29,7 @@ function render(props: WorkProps) {
           <td><ProfileLink id={props.author} /></td>
         </tr>
         {
-          [...tableData.keys()].map(key => (
+          [...tableData.keys()].filter(key => tableData.get(key)).map(key => (
             <tr key={key}>
               <td>{key}</td>
               <td>{tableData.get(key).toString()}</td>

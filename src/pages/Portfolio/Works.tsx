@@ -12,15 +12,15 @@ function renderTableRow(props: WorkProps) {
     <tr key={props.id}>
       <td>
         <div>
-          <Link to={'/works/' + props.id}>{props.name}</Link>
+          <Link to={'/works/' + props.id}>{props.attributes.name}</Link>
         </div>
         <div>
-          <small className="mr-2">{ props.type }</small>
-          <small>365 words at 8kb</small>
+          <small className="mr-2">{ props.attributes.type }</small>
+          <small>{props.attributes.name}</small>
         </div>
       </td>
       <td>{props.publicKey}</td>
-      <td>{props.published}</td>
+      <td>{props.attributes.publishedAt}</td>
       <td></td>
       <td>
         <select>

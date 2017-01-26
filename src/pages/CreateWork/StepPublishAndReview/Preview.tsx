@@ -5,7 +5,7 @@ import { Price } from '../../../common';
 
 export interface PreviewProps {
   readonly className?: string;
-  readonly authorName: string;
+  readonly authorName?: string;
   readonly mediaType: string;
   readonly workTitle: string;
   readonly price: Price;
@@ -28,7 +28,7 @@ export class Preview extends React.Component<PreviewProps, undefined> {
               </tr>
               <tr>
                 <td>Owner Name</td>
-                <td>{ this.props.authorName }</td>
+                <td>{ this.props.authorName || 'Unspecified'}</td>
               </tr>
               <tr>
                 <td>Notarized at</td>
