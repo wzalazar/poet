@@ -10,6 +10,19 @@ import { getCreateOpts, getHash, createObservableDownload } from './helpers/torr
 import { noop, readdir, assert } from './common'
 import { BlockMetadata, BitcoinBlockMetadata } from './events'
 
+async function readBlock(blockFile: string) {
+  const builder = await getBuilder()
+  const buffer = await new Promise<Buffer>((resolve, reject) => {
+    return fs.readFile(blockFile, (error, data) => {
+      if (error) {
+        return reject(error)
+      }
+      return resolve(data)
+    })
+  })
+  return builder.serializedToBlock(buffer)
+}
+
 export default class TorrentSystem {
 
   private client: any // TODO: upstream webtorrent needs a better definition file
@@ -118,6 +131,10 @@ export default class TorrentSystem {
 
         this.seedBlockFromFile(
           this.getFileForSeeding(torrentId, blockHash), torrentId, blockHash
+        )
+
+        await this.queue.announceBlockReady(
+          await readBlock(this.getFilePathInStorage(torrentId, blockHash))
         )
       }
     } catch (error) {
