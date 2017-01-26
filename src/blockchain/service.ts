@@ -265,11 +265,6 @@ export default class BlockchainService {
       .where('profile.id=:id')
       .setParameters({ id })
       .getOne()
-    const claim = await this.claimRepository.findOneById(profile.claim)
-    profile.attributes = {}
-    for (let attribute of claim.attributes) {
-      profile.attributes[attribute.key] = attribute.value
-    }
     return await this.augmentProfile(profile)
   }
 
