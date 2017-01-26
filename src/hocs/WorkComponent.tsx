@@ -25,11 +25,22 @@ export interface ClaimInfo {
   claimOrder?: number
 }
 
+export interface WorkOffering {
+  id: string
+  owner: string
+  offeringType: string
+  offeringInfo: any
+  attributes: {
+    [key: string]: string
+  }
+}
+
 export interface WorkProps extends FetchComponentProps, Claim {
   claimInfo?: ClaimInfo
   owner?: Claim
   title?: Claim
   author?: Claim
+  offerings?: ReadonlyArray<WorkOffering>
 }
 
 export default FetchComponent.bind(null, (props: WorkProps) => ({

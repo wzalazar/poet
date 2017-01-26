@@ -24,7 +24,7 @@ export class WorkLayout extends React.Component<WorkProps, undefined> {
         </div>
         <div className="col-xs-1" />
         <div className="col-xs-4">
-          <WorkOfferings workId={workId} />
+          <WorkOfferings id={workId} />
           <Title id={workId} />
         </div>
       </div>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import WorkOfferingsComponent, { WorkOfferingsProps, WorkOfferingProps } from '../../hocs/WorkOfferingsComponent';
+import WorkComponent, { WorkProps, WorkOffering } from '../../hocs/WorkComponent';
 
 import './WorkOfferings.scss';
 
@@ -13,38 +13,38 @@ function renderLicense(license: any): JSX.Element {
   )
 }
 
-function renderOffering(workOfferingProps: WorkOfferingProps): JSX.Element {
+function renderOffering(workOfferingProps: WorkOffering): JSX.Element {
   return (
     <div key={workOfferingProps.id} className="offering">
       <h3>License</h3>
       <div className="info row">
         <div className="description col-xs-7">
-          { workOfferingProps.description }
+          { workOfferingProps.offeringInfo }
         </div>
         <div className="col-xs-5">
-          <div className="price">
-            ${ workOfferingProps.price.amount } { workOfferingProps.price.currency }
-          </div>
+          { workOfferingProps.offeringInfo && workOfferingProps.offeringInfo.price && <div className="price">
+            ${ workOfferingProps.offeringInfo.price.amount } { workOfferingProps.offeringInfo.price.currency }
+          </div> }
           <div className="type">
-            { workOfferingProps.type }
+            { workOfferingProps.offeringType }
           </div>
         </div>
       </div>
 
       <div className="licenses">
         <h3>Publishers with this license </h3>
-        { workOfferingProps.licenses.map(renderLicense) }
+        {/*{ workOfferingProps.licenses.map(renderLicense) }*/}
       </div>
     </div>
   );
 }
 
-function render(props: WorkOfferingsProps): JSX.Element {
+function render(props: WorkProps): JSX.Element {
   return (
     <div className="offerings">
-      { props.elements.map(renderOffering) }
+      { props.offerings.map(renderOffering) }
     </div>
   )
 }
 
-export default WorkOfferingsComponent(render);
+export default WorkComponent(render);
