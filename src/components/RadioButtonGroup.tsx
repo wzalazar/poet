@@ -7,12 +7,12 @@ export interface RadioButtonGroupProps {
 }
 
 interface RadioButtonGroupState {
-  selectedIndex: number;
+  readonly selectedIndex: number;
 }
 
 export class RadioButton {
-  id: string;
-  text: string;
+  readonly id: string;
+  readonly text: string;
 
   constructor(id: string, text: string) {
     this.id = id;
