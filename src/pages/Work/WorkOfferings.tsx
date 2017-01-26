@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import WorkOfferingsComponent, { WorkOfferingsProps, WorkOfferingProps } from '../../hocs/WorkOfferingsComponent';
 
+import './WorkOfferings.scss';
 
 function renderLicense(license: any): JSX.Element {
   return (

@@ -6,11 +6,12 @@
     font-size: 23px;
     margin-bottom: 16px;
   }
-  table {
-    .keys {
+
+  table > tbody > tr {
+    td:first-child {
       width: 200px;
     }
-    .values {
+    td:last-child {
 
     }
   }

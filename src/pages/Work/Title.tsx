@@ -2,6 +2,8 @@ import * as React from 'react';
 
 import WorkComponent, { WorkProps } from '../../hocs/WorkComponent';
 
+import './Title.scss';
+
 function render(props: WorkProps): JSX.Element {
   return (
     <div className="title">

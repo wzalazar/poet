@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import '../../extensions/Array'
-import './Layout.scss';
+import './Tabs.scss';
 
 import { HexString } from '../../common';
 

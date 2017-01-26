@@ -5,7 +5,7 @@ import '../../extensions/Map';
 import WorkComponent, { WorkProps } from '../../hocs/WorkComponent';
 import ProfileLink from '../../components/ProfileLink';
 
-import './Layout.scss';
+import './Overview.scss';
 
 function renderRow({key, value}: {key: string, value: string}) {
   return (
@@ -30,16 +30,12 @@ function render(props: WorkProps) {
     <div className="overview">
       <h1>{props.attributes.name}</h1>
       <table>
-        <colgroup>
-          <col className="keys"/>
-          <col className="values"/>
-        </colgroup>
         <tbody>
-        <tr key="author">
-          <td>Author</td>
-          <td><ProfileLink id={props.author} /></td>
-        </tr>
-          { tableData.toKeyValueArray().map(renderRow) }
+          <tr key="author">
+            <td>Author</td>
+            <td><ProfileLink id={props.author} /></td>
+          </tr>
+            { tableData.toKeyValueArray().map(renderRow) }
         </tbody>
       </table>
     </div>
