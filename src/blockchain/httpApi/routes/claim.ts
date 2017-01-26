@@ -12,7 +12,7 @@ export default class ClaimRoute extends Route<Claim> {
   service: BlockchainService
 
   constructor(service: BlockchainService) {
-    super(service.claimRepository, 'claim')
+    super(service.claimRepository, 'claims')
     this.service = service
   }
 

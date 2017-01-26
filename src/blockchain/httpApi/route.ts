@@ -43,8 +43,8 @@ export default class Route<T> {
   async getCollection(opts: QueryOptions) {
     let queryBuilder = this.repository
       .createQueryBuilder('item') // first argument is an alias. Alias is what you are selecting - photos. You must specify it.
-      .setFirstResult(opts.offset)
-      .setMaxResults(opts.limit)
+      .setOffset(opts.offset || 0)
+      .setLimit(opts.limit || 10)
 
     queryBuilder = this.ownFilter(queryBuilder, opts)
 
