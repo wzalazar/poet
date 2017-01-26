@@ -1,14 +1,20 @@
 import * as React from 'react';
 
-import { Checkbox } from '../../../components/Checkbox';
 import { Price } from '../../../common';
+import { RadioButton, RadioButtonGroup } from '../../../components/RadioButtonGroup';
+
+export type PricingFrequency = 'oneTime' | 'perPageView';
 
 export interface PricingState {
   readonly price?: Price;
-  readonly frequency?: 'oneTime' | 'perPageView';
+  readonly frequency?: PricingFrequency;
 }
 
 export class Pricing extends React.Component<undefined, PricingState> {
+  public readonly pricingFrequencyOptions: ReadonlyArray<RadioButton> = [
+    new RadioButton('oneTime', 'One Time'),
+    new RadioButton('per-page-view', 'Per Page View')
+  ];
 
   constructor() {
     super(...arguments);
@@ -28,8 +34,7 @@ export class Pricing extends React.Component<undefined, PricingState> {
         <div className="row">
           <div className="col-sm-4">Frequency</div>
           <div className="col-sm-8">
-            <Checkbox text="One Time" />
-            <Checkbox text="Per Page View" />
+            <RadioButtonGroup radioButtons={this.pricingFrequencyOptions} onSelectionChange={this.onFrequencyChange.bind(this)} />
           </div>
         </div>
         <div className="row mb-2">
@@ -53,5 +58,11 @@ export class Pricing extends React.Component<undefined, PricingState> {
         amount: event.target.value
       }
     })
+  }
+
+  private onFrequencyChange(id: string, text: string) {
+    this.setState({
+      frequency: id as PricingFrequency
+    });
   }
 }

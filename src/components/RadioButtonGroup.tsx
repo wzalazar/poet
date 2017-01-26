@@ -39,9 +39,9 @@ export class RadioButtonGroup extends React.Component<RadioButtonGroupProps, Rad
 
   render() {
     return (
-      <div className="btn-group" data-toggle="buttons">
+      <section className="btn-group btn-group-sm" data-toggle="buttons">
         { this.props.radioButtons.map(this.renderRadioButton.bind(this)) }
-      </div>
+      </section>
     )
   }
 
