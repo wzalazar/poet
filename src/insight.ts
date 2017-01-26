@@ -75,7 +75,7 @@ export default class PoetInsightListener {
         .then(pluckMember('rawblock'))
         .then(getBuffer)
         .then(turnToBitcoreBlock)
-      this.scanBitcoreBlock(bitcoreBlock, height)
+      return this.scanBitcoreBlock(bitcoreBlock, height)
     } catch (error) {
       console.log('Error handling block', error, error.stack)
     }
@@ -104,6 +104,7 @@ export default class PoetInsightListener {
       poet        : txs
     }
     this.notifyPoetData(blockInfo)
+    return blockInfo
   }
 
   containsPoetForBitcore(tx: any): BlockMetadata {

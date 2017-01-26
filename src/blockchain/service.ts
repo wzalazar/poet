@@ -88,6 +88,8 @@ export default class BlockchainService {
 
     if (block) {
       return await this.confirmBlockWithData(blockInfo, block)
+    } else {
+      console.log('Still no data for block')
     }
     return
   }
