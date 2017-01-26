@@ -35,7 +35,7 @@ export default class Route<T> {
     return JSON.stringify(await this.prepareItem(item))
   }
 
-  async prepareItem(item: T) {
+  async prepareItem(item: T): Promise<any> {
     // TODO: Assert JSON.parse(JSON.stringify(item))) deep equals item
     return Promise.resolve(item)
   }
