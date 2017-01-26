@@ -33,6 +33,8 @@ export interface WorkOffering {
   attributes: {
     [key: string]: string
   }
+  description: string
+  licenses: ReadonlyArray<any>
 }
 
 export interface WorkProps extends FetchComponentProps, Claim {

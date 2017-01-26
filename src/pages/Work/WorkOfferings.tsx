@@ -6,44 +6,49 @@ import './WorkOfferings.scss';
 
 function renderLicense(license: any): JSX.Element {
   return (
-    <div className="license" key={license.id}>
+    <section className="license" key={license.id}>
       <div className="publisher">{ license.publisher }</div>
       <div className="url"><a href={ license.url } target="_blank">{ license.url }</a></div>
-    </div>
+    </section>
   )
 }
 
-function renderOffering(workOfferingProps: WorkOffering): JSX.Element {
+function renderLicenses(licenses: ReadonlyArray<any>) {
   return (
-    <div key={workOfferingProps.id} className="offering">
+    <section className="licenses">
+      <h3>Publishers with this license </h3>
+      { licenses.map(renderLicense) }
+    </section>
+  )
+}
+
+function renderOffering(workOffering: WorkOffering): JSX.Element {
+  return (
+    <section className="offering" key={workOffering.id} >
       <h3>License</h3>
       <div className="info row">
         <div className="description col-xs-7">
-          { workOfferingProps.offeringInfo }
+          { workOffering.description || 'This offering lacks a description. Please contact the author.' }
         </div>
         <div className="col-xs-5">
-          { workOfferingProps.offeringInfo && workOfferingProps.offeringInfo.price && <div className="price">
-            ${ workOfferingProps.offeringInfo.price.amount } { workOfferingProps.offeringInfo.price.currency }
-          </div> }
+          <div className="price">
+            ${ workOffering.offeringInfo.price && workOffering.offeringInfo.price.amount || 0 } { workOffering.offeringInfo.price && workOffering.offeringInfo.price.currency || 'BTC' }
+          </div>
           <div className="type">
-            { workOfferingProps.offeringType }
+            { workOffering.offeringType }
           </div>
         </div>
       </div>
-
-      <div className="licenses">
-        <h3>Publishers with this license </h3>
-        {/*{ workOfferingProps.licenses.map(renderLicense) }*/}
-      </div>
-    </div>
+      { workOffering.licenses && renderLicenses(workOffering.licenses) }
+    </section>
   );
 }
 
 function render(props: WorkProps): JSX.Element {
   return (
-    <div className="offerings">
+    <section className="offerings">
       { props.offerings.map(renderOffering) }
-    </div>
+    </section>
   )
 }
 
