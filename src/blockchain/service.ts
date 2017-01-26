@@ -298,7 +298,7 @@ export default class BlockchainService {
   }
 
   async augmentProfile(profile: Profile) {
-    const ids = [profile.id]
+    const ids = [profile.claim]
     if (profile.licenses) for (let license of profile.licenses) ids.push(license.id)
     if (profile.hasLicensesFor) for (let license of profile.hasLicensesFor) ids.push(license.id)
     if (profile.authoredWorks) for (let work of profile.authoredWorks) ids.push(work.id)
@@ -314,7 +314,7 @@ export default class BlockchainService {
       mapAttributes[id] = mapAttributes[id] || {}
       mapAttributes[id][attribute.key] = attribute.value
     }
-    profile.attributes = mapAttributes[profile.id]
+    profile.attributes = mapAttributes[profile.claim]
     if (profile.licenses) for (let license of profile.licenses) license.attributes = mapAttributes[license.id]
     if (profile.hasLicensesFor) for (let license of profile.hasLicensesFor) license.attributes = mapAttributes[license.id]
     if (profile.authoredWorks) for (let work of profile.authoredWorks) work.attributes = mapAttributes[work.id]
