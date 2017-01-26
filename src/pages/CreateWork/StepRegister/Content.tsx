@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import '../Layout.scss';
+import { TextUpload } from '../../../components/TextUpload';
 
 interface ContentProps {
   readonly className?: string;
@@ -9,6 +10,8 @@ interface ContentProps {
 interface ContentState {
   readonly content: string;
 }
+
+import './Content.scss';
 
 export class Content extends React.Component<ContentProps, ContentState> {
 
@@ -27,18 +30,22 @@ export class Content extends React.Component<ContentProps, ContentState> {
           <div className="form-group row">
             <label htmlFor={`inputContent`} className="col-sm-2 col-form-label">Content</label>
             <div className="col-sm-10">
-              <input type="text" className="form-control" id={`inputContent`} placeholder="Content" onChange={this.onChange.bind(this)} />
+              <TextUpload
+                className="text-upload"
+                buttonClassName="btn btn-secondary"
+                onChange={this.onChange.bind(this)}
+                placeholder="Content" />
             </div>
           </div>
-          <input type="file" accept="*/*" name="file" />
         </form>
       </section>
     )
   }
 
-  private onChange(event: any) {
+  private onChange(value: string) {
+    console.log('Content.onChange', value);
     this.setState({
-      content: event.target.value
+      content: value
     })
   }
 }
