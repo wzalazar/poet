@@ -5,7 +5,7 @@ import ProfileComponent, { ProfileProps } from '../hocs/ProfileComponent';
 
 function render(props: ProfileProps) {
   return (
-    <Link to={'/profiles/' + props.id}>{props.name}</Link>
+    <Link to={'/profiles/' + props.id}>{props.attributes['displayName'] }</Link>
   )
 }
 

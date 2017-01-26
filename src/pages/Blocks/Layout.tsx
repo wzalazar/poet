@@ -2,8 +2,8 @@ import * as React from 'react';
 import * as moment from 'moment';
 import { Link } from 'react-router';
 
-import FetchComponent from '../../hocs/FetchComponent'
 import LatestWorks from '../../components/LatestWorks'
+import BlockHeader from './components/Header'
 
 import './Layout.scss'
 import config from '../../config'
@@ -50,39 +50,12 @@ function DisplayBlock(block: BlockInfo) {
   </tr>)
 }
 
-const NumberOfPeers = FetchComponent(
-  () => ({ url: config.api.explorer + '/node '}),
-  (props => <span>{props.peers}</span>)
-);
-
-const Status = FetchComponent(
-  () => ({ url: config.api.explorer + '/node '}),
-  (props => <span>{props.status}</span>)
-);
-
 export default class BlockLayout extends React.Component<BlockList, undefined> {
 
   render() {
     return (
       <section className="blocks">
-        <div className="header">
-          <div className="row">
-            <div className="col-sm-12">
-              <h3>Block Explorer</h3>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-sm-6">
-              Connected to <strong>https://node1.po.et/</strong>
-            </div>
-            <div className="col-sm-3">
-              <strong>Peers:</strong> <NumberOfPeers />
-            </div>
-            <div className="col-sm-3">
-              <strong>Status:</strong> <Status />
-            </div>
-          </div>
-        </div>
+        <BlockHeader />
         <div className="row">
           <div className="leftCol col-sm-6 col-md-4">
             <div className="headHeight">

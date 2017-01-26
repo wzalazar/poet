@@ -11,7 +11,7 @@ function propsToQueryString(props: WorkProps): any {
 
   const queryParams = searchable
     .filter(key => props.attributes && props.attributes[key])
-    .map(key => `${key}=${props.attributes && props.attributes[key]}`);
+    .map(key => `${key}=${props.attributes[key]}`);
 
   return queryParams.join('&');
 }
