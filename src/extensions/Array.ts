@@ -3,6 +3,11 @@ interface Array<T> {
   filterTruthy(): Array<T>;
   toObject(cb: (el: any) => ({key: string, value: any})): any;
 }
+interface ReadonlyArray<T> {
+  includes(_: T): boolean;
+  filterTruthy(): Array<T>;
+  toObject(cb: (el: any) => ({key: string, value: any})): any;
+}
 
 if (!Array.prototype.includes) {
   Array.prototype.includes = function (elem) {

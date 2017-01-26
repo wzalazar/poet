@@ -1,20 +1,11 @@
 import * as React from 'react';
+import moment = require('moment');
 
-import Config from '../../config';
+import '../../extensions/Array';
 
-import FetchComponent, { FetchComponentProps } from '../../hocs/FetchComponent';
+import { AddressTransactions, AddressTransactionsProps, Transaction } from '../../hocs/AddressTransactions';
 
-interface TransactionsProps extends FetchComponentProps {
-  publicKey?: string;
-}
-
-function propsToUrl(props: TransactionsProps) {
-  return {
-    url: `http://localhost:4000${Config.api.user}/${props.publicKey}/transactions`
-  };
-}
-
-function render(props: TransactionsProps) {
+function render(props: AddressTransactionsProps) {
   return (
     <table className="table table-highlight">
       <thead>
@@ -25,20 +16,36 @@ function render(props: TransactionsProps) {
         </tr>
       </thead>
       <tbody>
-        { props.elements.map(renderTransaction) }
+        { props.txs.map(renderTransaction.bind(this, props.address)) }
       </tbody>
     </table>
   )
 }
 
-function renderTransaction(transaction: any) {
+function renderTransaction(address: string, transaction: Transaction) {
+  // TODO: work the deposit/withdrawal logic and value calculation
+  let type;
+
+  if (transaction.vin.find(vin => vin.addr == address)) {
+    type = 'deposit';
+  }
+
+  if (transaction.vout.find(vout => vout.scriptPubKey.addresses.includes(address))) {
+    type = 'withdrawal';
+  }
+
+  const valuesIn = transaction.vin.map(vin => vin.value).reduce((a, b) => a + b, 0);
+  const valuesOut = transaction.vout.map(vout => parseFloat(vout.value)).reduce((a, b) => a + b, 0);
+
+  const values = valuesOut;
+
   return (
-    <tr>
-      <td>{transaction.date}</td>
-      <td>{transaction.type}</td>
-      <td>{transaction.amount}</td>
+    <tr key={transaction.txid}>
+      <td>{moment().format()}</td>
+      <td>{type}</td>
+      <td>{valuesIn} {valuesOut}</td>
     </tr>
   )
 }
 
-export default FetchComponent.bind(null, propsToUrl, render)();
+export const Transactions = AddressTransactions(render);

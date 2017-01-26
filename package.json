@@ -21,6 +21,7 @@
     "@types/redux-saga": "^0.9.31",
     "@types/socket.io-client": "^1.4.29",
     "@types/uuid": "^2.0.29",
+    "bitcore-lib": "eordano/bitcore-lib",
     "moment": "^2.17.1",
     "protobufjs": "^6.5.3",
     "react": "^15.4.1",
