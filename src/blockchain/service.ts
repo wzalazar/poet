@@ -262,7 +262,7 @@ export default class BlockchainService {
       .leftJoinAndMapMany('profile.hasLicensesFor', 'profile.hasLicensesFor', 'hasLicensesFor')
       .leftJoinAndMapMany('profile.authoredWorks', 'profile.authoredWorks', 'authoredWorks')
       .leftJoinAndMapMany('profile.ownedWorks', 'profile.ownedWorks', 'ownedWorks')
-      .where('work.id=:id')
+      .where('profile.id=:id')
       .setParameters({ id })
       .getOne()
     const claim = await this.claimRepository.findOneById(profile.claim)
