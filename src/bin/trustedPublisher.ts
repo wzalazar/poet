@@ -44,7 +44,7 @@ export default async function createServer(options?: TrustedPublisherOptions) {
     let reference
     for (let claim of originalClaims) {
       if (claim.type === OFFERING) {
-        claim.attributes[Fields.REFERENCE] = claim.id
+        claim.attributes[Fields.REFERENCE] = reference
       }
       claims.push(claim)
       if (claim.type === WORK) {
