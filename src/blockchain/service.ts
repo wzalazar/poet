@@ -256,6 +256,23 @@ export default class BlockchainService {
     return await this.augmentWork(work)
   }
 
+  async getProfileFull(id: string) {
+    const profile = await this.profileRepository.createQueryBuilder('profile')
+      .leftJoinAndMapMany('profile.licenses', 'profile.licenses', 'license')
+      .leftJoinAndMapMany('profile.hasLicensesFor', 'profile.hasLicensesFor', 'hasLicensesFor')
+      .leftJoinAndMapMany('profile.authoredWorks', 'profile.authoredWorks', 'authoredWorks')
+      .leftJoinAndMapMany('profile.ownedWorks', 'profile.ownedWorks', 'ownedWorks')
+      .where('work.id=:id')
+      .setParameters({ id })
+      .getOne()
+    const claim = await this.claimRepository.findOneById(profile.claim)
+    profile.attributes = {}
+    for (let attribute of claim.attributes) {
+      profile.attributes[attribute.key] = attribute.value
+    }
+    return await this.augmentProfile(profile)
+  }
+
   async augmentWork(work: Work) {
     const ids = [work.id]
     if (work.title) ids.push(work.title.id)
@@ -283,6 +300,31 @@ export default class BlockchainService {
     if (work.offerings) for (let offering of work.offerings) offering.attributes = mapAttributes[offering.id]
     if (work.publishers) for (let publisher of work.publishers) publisher.attributes = mapAttributes[publisher.id]
     return work
+  }
+
+  async augmentProfile(profile: Profile) {
+    const ids = [profile.id]
+    if (profile.licenses) for (let license of profile.licenses) ids.push(license.id)
+    if (profile.hasLicensesFor) for (let license of profile.hasLicensesFor) ids.push(license.id)
+    if (profile.authoredWorks) for (let work of profile.authoredWorks) ids.push(work.id)
+    if (profile.ownedWorks) for (let work of profile.ownedWorks) ids.push(work.id)
+    const attributeResults = await this.attributeRepository.createQueryBuilder('attribute')
+      .where('attribute.claim IN (:ids)')
+      .leftJoinAndMapOne('attribute.claim', 'attribute.claim', 'claim')
+      .setParameters({ ids })
+      .getMany()
+    const mapAttributes: { [key: string]: { [key2: string]: string } } = {}
+    for (let attribute of attributeResults) {
+      const id = attribute.claim.id
+      mapAttributes[id] = mapAttributes[id] || {}
+      mapAttributes[id][attribute.key] = attribute.value
+    }
+    profile.attributes = mapAttributes[profile.id]
+    if (profile.licenses) for (let license of profile.licenses) license.attributes = mapAttributes[license.id]
+    if (profile.hasLicensesFor) for (let license of profile.hasLicensesFor) license.attributes = mapAttributes[license.id]
+    if (profile.authoredWorks) for (let work of profile.authoredWorks) work.attributes = mapAttributes[work.id]
+    if (profile.ownedWorks) for (let work of profile.ownedWorks) work.attributes = mapAttributes[work.id]
+    return profile
   }
 
   get blockInfoRepository(): Repository<BlockInfo> {

@@ -31,7 +31,7 @@ export default async function createServer(options?: TrustedPublisherOptions) {
     const claims: Claim[] = []
     for (let sig of sigs) {
       const claim = creator.serializedToClaim(
-	new Buffer(new Buffer(sig.message, 'hex').toString(), 'hex')
+        new Buffer(new Buffer(sig.message, 'hex').toString(), 'hex')
       )
       claim.signature = sig.signature
       claim.id = new Buffer(creator.getId(claim)).toString('hex')
