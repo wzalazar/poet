@@ -1,9 +1,14 @@
 .text-upload {
   textarea {
-    padding: 4px;
-    border: 1px solid lightgray;
     min-width: 400px;
     min-height: 150px;
+    max-width: 100%;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    resize: both;
+    color: gray;
   }
 
   span {
