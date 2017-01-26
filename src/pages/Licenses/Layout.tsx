@@ -8,7 +8,7 @@ import { LicensesFilters } from './LicensesFilters';
 import './Layout.scss';
 
 interface LicensesProps {
-  userId: HexString;
+  publicKey: HexString;
 }
 
 export class LicensesLayout extends React.Component<LicensesProps, undefined> {
@@ -17,7 +17,7 @@ export class LicensesLayout extends React.Component<LicensesProps, undefined> {
       <section className="licenses">
         <h2>Licenses</h2>
         <LicensesFilters/>
-        <Licenses author={this.props.userId} />
+        <Licenses publicKey={this.props.publicKey} />
       </section>
     )
   }

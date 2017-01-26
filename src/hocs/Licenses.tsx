@@ -2,8 +2,13 @@ import Config from '../config';
 
 import FetchComponent, { FetchComponentProps } from './FetchComponent'
 
-export default FetchComponent.bind(null, function (props: FetchComponentProps) {
+export interface LicensesProps extends FetchComponentProps {
+  readonly publicKey?: string;
+  readonly licenses?: ReadonlyArray<any>;
+}
+
+export const Licenses = FetchComponent.bind(null, function (props: LicensesProps) {
   return {
-    url: `${Config.api.explorer}/licenses/${'publicKey'}`
+    url: `${Config.api.explorer}/profiles/${props.publicKey}`
   };
 });

@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 
-import { FetchComponentProps } from '../../hocs/FetchComponent';
-import Licenses from '../../hocs/Licenses';
+import { Licenses, LicensesProps } from '../../hocs/Licenses';
 import { DropdownMenu } from '../../components/DropdownMenu';
 
 import './Layout.scss';
@@ -37,14 +36,26 @@ function optionSelected(license: any, option: string) {
   console.log('optionSelected', license, option);
 }
 
-function render(props: FetchComponentProps) {
+function renderLicenses(props: LicensesProps) {
   return (
     <section className="licenses">
       <ul className="row list-unstyled">
-        { props.elements.map(renderLicense) }
+        { props.licenses.map(renderLicense) }
       </ul>
     </section>
   )
+}
+
+function renderNoLicenses() {
+  return (
+    <section className="licenses">
+      <div>This user doesn't have any licenses yet!</div>
+    </section>
+  )
+}
+
+function render(props: LicensesProps) {
+  return props.licenses ? renderLicenses(props) : renderNoLicenses();
 }
 
 export default Licenses(render);

@@ -29,9 +29,8 @@ export class Licenses extends PageLoader<LicensesState, Object> {
   }
 
   select(state: any, ownProps: any): Object {
-    if (!state.session || !state.session.user || !state.session.user.id)
-      return {};
-
-    return { userId: state.session.user.id };
+    return {
+      publicKey: state.session && state.session.token && state.session.token.publicKey
+    }
   }
 }
