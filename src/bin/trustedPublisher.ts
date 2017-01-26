@@ -4,10 +4,11 @@ const bitcore = require('bitcore-lib')
 const Body = require('koa-body')
 const Route = require('koa-route')
 
-import { Claim, Block, WORK, TITLE } from "../claim"
+import { Claim, Block, WORK, TITLE, OFFERING } from "../claim"
 import { default as getCreator, ClaimBuilder } from "../serialization/builder"
 import { getHash } from '../helpers/torrentHash'
 import { Queue } from '../queue'
+import Fields from '../blockchain/fields'
 
 const privKey = 'cf5bd2d3d179493adfc41da206adb2ffd212ea34870722bc92655f8c8fd2ef33'
 
@@ -40,9 +41,14 @@ export default async function createServer(options?: TrustedPublisherOptions) {
       originalClaims.push(claim)
     }
     const claims = []
+    let reference
     for (let claim of originalClaims) {
+      if (claim.type === OFFERING) {
+        claim.attributes[Fields.REFERENCE] = claim.id
+      }
       claims.push(claim)
       if (claim.type === WORK) {
+        reference = claim.id
         claims.push(creator.createSignedClaim({
           type: TITLE,
           attributes: {
