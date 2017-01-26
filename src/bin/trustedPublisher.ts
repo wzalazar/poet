@@ -4,11 +4,12 @@ const bitcore = require('bitcore-lib')
 const Body = require('koa-body')
 const Route = require('koa-route')
 
-import { Claim, Block, WORK } from "../claim"
+import { Claim, Block, WORK, TITLE } from "../claim"
 import { default as getCreator, ClaimBuilder } from "../serialization/builder"
 import { getHash } from '../helpers/torrentHash'
 import { Queue } from '../queue'
 
+const privKey = 'cf5bd2d3d179493adfc41da206adb2ffd212ea34870722bc92655f8c8fd2ef33'
 
 export interface TrustedPublisherOptions {
   port: number
@@ -28,7 +29,7 @@ export default async function createServer(options?: TrustedPublisherOptions) {
 
   koa.use(Route.post('/claims', async (ctx: any) => {
     var sigs = JSON.parse(ctx.request.body).signatures
-    const claims: Claim[] = []
+    const originalClaims: Claim[] = []
     for (let sig of sigs) {
       const claim = creator.serializedToClaim(
         new Buffer(new Buffer(sig.message, 'hex').toString(), 'hex')
@@ -36,7 +37,20 @@ export default async function createServer(options?: TrustedPublisherOptions) {
       claim.signature = sig.signature
       claim.id = new Buffer(creator.getId(claim)).toString('hex')
       console.log(claim)
+      originalClaims.push(claim)
+    }
+    const claims = []
+    for (let claim of originalClaims) {
       claims.push(claim)
+      if (claim.type === WORK) {
+        claims.push(creator.createSignedClaim({
+          type: TITLE,
+          attributes: {
+            reference: claim.id,
+            owner: claim.publicKey
+          }
+        }, privKey))
+      }
     }
     const block: Block = creator.createBlock(claims)
     try {
