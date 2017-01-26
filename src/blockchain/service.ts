@@ -95,12 +95,13 @@ export default class BlockchainService {
   }
 
   async confirmBlockWithData(blockInfo: BlockMetadata, block: PureBlock) {
-    return await Promise.all(
-      block.claims.map((claim, index) => {
-        console.log('Confirming claim', claim)
-        return this.confirmClaim(claim, blockInfo, index)
-      })
-    )
+    const results = []
+    for (let index in block.claims) {
+      const claim = block.claims[index]
+      console.log('Confirming claim', claim)
+      results.push(await this.confirmClaim(claim, blockInfo, parseInt(index, 10)))
+    }
+    return results
   }
 
   async confirmClaim(claim: PureClaim, txInfo: BlockMetadata, index: number) {
