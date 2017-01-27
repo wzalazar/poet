@@ -14,8 +14,8 @@ function renderWork(props: any) {
   return (
     <li key={props.id} className="row py-1">
       <div className="col-sm-8 mb-1 text-left">
-        <div className="mb-1">{props.name || 'Untitled work'}</div>
-        <div>{ props.author ? <ProfileLink id={props.author} /> : 'Unknown author' }</div>
+        <h3><Link to={'/works/' + props.id}>{props.attributes.name}</Link></h3>
+        <div>{ props.attributes.authorPublicKey ? <ProfileLink id={props.attributes.authorPublicKey} /> : 'Unknown author' }</div>
       </div>
       <div className="col-sm-4 text-right">
         <div className="mb-1">{props.publicKey}</div>
