@@ -26,18 +26,23 @@ function renderOffering(workOffering: WorkOffering): JSX.Element {
   return (
     <section className="offering" key={workOffering.id} >
       <h3>License</h3>
-      <div className="info row">
-        <div className="description col-xs-7">
-          { workOffering.attributes.description || 'This offering lacks a description. Please contact the author.' }
+      <div className="info">
+        <div className="row mb-2">
+          <div className="description col-xs-7">
+            { workOffering.attributes.description || 'This offering lacks a description. Please contact the author.' }
+          </div>
+          <div className="col-xs-5">
+            <div className="price">
+              { workOffering.attributes.pricingPriceAmount || 0 }
+              { workOffering.attributes.pricingPriceCurrency || 'BTC' }
+            </div>
+            <div className="type">
+              { workOffering.attributes.type }
+            </div>
+          </div>
         </div>
-        <div className="col-xs-5">
-          <div className="price">
-            { workOffering.attributes.pricingPriceAmount || 0 }
-            { workOffering.attributes.pricingPriceCurrency || 'BTC' }
-          </div>
-          <div className="type">
-            { workOffering.attributes.type }
-          </div>
+        <div className="text-center">
+          <button className="btn btn-primary">Purchase License</button>
         </div>
       </div>
       { workOffering.licenses && renderLicenses(workOffering.licenses) }
