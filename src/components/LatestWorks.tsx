@@ -19,7 +19,7 @@ function renderWork(props: any) {
       </div>
       <div className="col-sm-4 text-right">
         <div className="mb-1">{props.publicKey}</div>
-        <div>{moment(props.published).fromNow()}</div>
+        <div>{moment(props.attributes.createdAt).fromNow()}</div>
       </div>
     </li>
   )
