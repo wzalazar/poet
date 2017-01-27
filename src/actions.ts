@@ -38,4 +38,12 @@ export default class Actions {
   public static readonly fakeClaimSign = 'fake sign claim requested';
 
   public static readonly blockInfoReceived = 'block info received';
+
+  public static readonly signTxSubmitRequested = 'sign tx submit requested';
+  public static readonly signTxModalDismissRequested = 'sign tx dismiss modal received';
+  public static readonly fakeTxSign = 'fake sign requested';
+  public static readonly txSubmittedSuccess = 'tx submitted';
+  public static readonly signTxIdReceived = 'sign tx id received';
+  public static readonly signTxModalHide = 'sign tx modal hide';
+  public static readonly signTxModalShow = 'sign tx modal show';
 }

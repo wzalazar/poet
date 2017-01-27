@@ -11,7 +11,7 @@ declare var require: (moduleId: string) => any;
 const jsonClaims = require('../claim.json');
 
 async function requestIdFromAuth(dataToSign: string[]) {
-  return await auth.getRequestIdForMultipleSigning(dataToSign)
+  return await auth.getRequestIdForMultipleSigning(dataToSign, false)
 }
 
 async function bindAuthResponse(request: any) {
@@ -83,7 +83,7 @@ function* signClaims(claimTemplates: any) {
   yield take(Actions.claimsModalDismissRequested);
   yield put({ type: Actions.signClaimsModalHide });
 
-  browserHistory.push(`/blocks/${result}`)
+  browserHistory.push(`/`);
 }
 
 function* mockLoginHit(action: any) {
