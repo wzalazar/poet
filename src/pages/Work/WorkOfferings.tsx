@@ -1,8 +1,10 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 
 import WorkComponent, { WorkProps, WorkOffering } from '../../hocs/WorkComponent';
 
 import './WorkOfferings.scss';
+import Actions from '../../actions'
 
 function renderLicense(license: any): JSX.Element {
   return (
@@ -22,7 +24,11 @@ function renderLicenses(licenses: ReadonlyArray<any>) {
   )
 }
 
-function renderOffering(workOffering: WorkOffering): JSX.Element {
+interface SubmitOffering {
+  purchase: any
+}
+
+function renderOfferingFunc(workOffering: WorkOffering & SubmitOffering): JSX.Element {
   return (
     <section className="offering" key={workOffering.id} >
       <h3>License</h3>
@@ -42,7 +48,10 @@ function renderOffering(workOffering: WorkOffering): JSX.Element {
           </div>
         </div>
         <div className="text-center">
-          <button className="btn btn-primary">Purchase License</button>
+          <button className="btn btn-primary" onClick={() => workOffering.purchase({
+            id: workOffering.id,
+            attributes: workOffering.attributes
+          })}>Purchase License</button>
         </div>
       </div>
       { workOffering.licenses && renderLicenses(workOffering.licenses) }
@@ -50,10 +59,17 @@ function renderOffering(workOffering: WorkOffering): JSX.Element {
   );
 }
 
+const RenderOffering = connect((e: any) => e, {
+  purchase: (offering: any) => ({
+    type: Actions.signTxSubmitRequested,
+    payload: offering
+  })
+})(renderOfferingFunc) as any;
+
 function render(props: WorkProps): JSX.Element {
   return (
     <section className="offerings">
-      { props.offerings.map(renderOffering) }
+      { props.offerings.map((offering: any, index: number) => <RenderOffering {...offering} key={index} />) }
     </section>
   )
 }

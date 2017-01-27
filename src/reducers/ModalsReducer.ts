@@ -10,6 +10,10 @@ export default function modalsReducer(state: any, action: any) {
       return { ...state, signWork: true };
     case Actions.signClaimsModalHide:
       return { ...state, signWork: false };
+    case Actions.signTxModalShow:
+      return { ...state, signTx: true };
+    case Actions.signTxModalHide:
+      return { ...state, signTx: false };
   }
   return state || {};
 }
