@@ -1,6 +1,22 @@
 version: "2"
 
 services:
+  auth:
+    build:
+      context: ..
+      dockerfile: ./Docker/auth.dockerfile
+    volumes:
+      - ../src:/poet/src
+    networks:
+      - http
+  mock_signer:
+    build:
+      context: ..
+      dockerfile: ./Docker/mock_signer.dockerfile
+    volumes:
+      - ../src:/poet/src
+    networks:
+      - http
   bitcoin_scanner:
     build:
       context: ..
@@ -25,8 +41,6 @@ services:
     networks:
       - db
       - outside
-    expose:
-      - "3050:3050"
   torrent_system:
     build:
       context: ..
@@ -34,21 +48,47 @@ services:
     volumes:
       - ../src:/poet/src
     networks:
-      - db
-      - outside
-    expose:
-      - "3050:3050"
+      - queue
+      - http
+  trusted_publisher:
+    build:
+      context: ..
+      dockerfile: ./Docker/trusted_publisher.dockerfile
+    volumes:
+      - ../src:/poet/src
+    networks:
+      - queue
+      - http
+  rabbitmq:
+    image: library/rabbitmq
+    networks:
+      - queue
   db:
-    image: postgres
+    build:
+      context: ..
+      dockerfile: ./poet_db.dockerfile
     volumes:
       - ./postgres:/var/lib/postgresql/data
     networks:
       - db
+  nginx:
+    build:
+      context: ..
+      dockerfile: ./nginx.dockerfile
+    volumes:
+      - ./letsencrypt:/etc/letsencrypt/
+    networks:
+      - http
+    expose:
+      - "80:80"
+      - "443:443"
 
 networks:
   db:
     internal: true
   queue:
+    internal: true
+  http:
     internal: true
   outside:
     driver: bridge

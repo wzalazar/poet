@@ -325,6 +325,12 @@ export default class BlockchainService {
     return profile
   }
 
+  async getOffering(referenceOfferingId: string) {
+    const claim = this.getClaim(referenceOfferingId)
+    const offering = this.offeringRepository.findOneById(referenceOfferingId)
+    return { ...claim, ...offering }
+  }
+
   get blockInfoRepository(): Repository<BlockInfo> {
     return this.db.getRepository(BlockInfo)
   }
@@ -364,4 +370,5 @@ export default class BlockchainService {
   get attributeRepository(): Repository<Attribute> {
     return this.db.getRepository(Attribute)
   }
+
 }

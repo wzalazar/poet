@@ -17,10 +17,11 @@ export function sha256(value: string | Uint8Array) {
 }
 
 export function sign(privateKey: string, value: Uint8Array): Uint8Array {
-  return bitcore.crypto.ECDSA.sign(
+  const signature =  bitcore.crypto.ECDSA.sign(
     value,
     new bitcore.PrivateKey(privateKey)
-  ).toBuffer()
+  )
+  return signature.toBuffer()
 }
 
 export function verify(publicKey: any, signature: Uint8Array, value: Uint8Array): Boolean {
