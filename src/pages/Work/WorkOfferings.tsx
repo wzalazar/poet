@@ -48,7 +48,7 @@ function renderOfferingFunc(workOffering: WorkOffering & SubmitOffering): JSX.El
           </div>
         </div>
         <div className="text-center">
-          <button className="btn btn-primary" onClick={() => workOffering.purchase({
+          <button className="purchase-button btn btn-sm btn-primary" onClick={() => workOffering.purchase({
             id: workOffering.id,
             attributes: workOffering.attributes
           })}>Purchase License</button>
