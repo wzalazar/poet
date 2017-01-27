@@ -28,15 +28,15 @@ function renderOffering(workOffering: WorkOffering): JSX.Element {
       <h3>License</h3>
       <div className="info row">
         <div className="description col-xs-7">
-          { workOffering.description || 'This offering lacks a description. Please contact the author.' }
+          { workOffering.attributes.description || 'This offering lacks a description. Please contact the author.' }
         </div>
         <div className="col-xs-5">
           <div className="price">
-            ${ workOffering.offeringInfo.price && workOffering.offeringInfo.price.amount || 0 } &nbsp;
-            { workOffering.offeringInfo.price && workOffering.offeringInfo.price.currency || 'BTC' }
+            { workOffering.attributes.pricingAmount || 0 }
+            { workOffering.attributes.pricingCurrency || 'BTC' }
           </div>
           <div className="type">
-            { workOffering.offeringType }
+            { workOffering.attributes.type }
           </div>
         </div>
       </div>

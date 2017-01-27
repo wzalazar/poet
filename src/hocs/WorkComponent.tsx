@@ -26,23 +26,38 @@ export interface ClaimInfo {
 }
 
 export interface WorkOffering {
-  id: string
-  owner: string
-  offeringType: string
-  offeringInfo: any
-  attributes: {
-    [key: string]: string
+  readonly id: string
+  readonly owner: string
+  readonly attributes: {
+    readonly [key: string]: string;
+    readonly type: string;
+    readonly description: string;
+    readonly pricingFrequency: string;
+    readonly pricingAmount: string;
+    readonly pricingCurrency: string;
   }
-  description: string
-  licenses: ReadonlyArray<any>
+  readonly licenses: ReadonlyArray<any>
 }
 
 export interface WorkProps extends FetchComponentProps, Claim {
-  claimInfo?: ClaimInfo
-  owner?: Claim
-  title?: Claim
-  author?: Claim
-  offerings?: ReadonlyArray<WorkOffering>
+  readonly claimInfo?: ClaimInfo
+  readonly owner?: Claim
+  readonly title?: Claim
+  readonly author?: Claim
+  readonly offerings?: ReadonlyArray<WorkOffering>
+  readonly attributes: {
+    readonly [key: string]: string
+    readonly name: string;
+    readonly publishedAt: string;
+    readonly createdAt: string;
+    readonly authorPublicKey: string;
+    readonly author: string;
+    readonly lastModified: string;
+    readonly tags: string;
+    readonly type: string;
+    readonly articleType: string;
+    readonly content?: string;
+  }
 }
 
 export default FetchComponent.bind(null, (props: WorkProps) => ({

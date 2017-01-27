@@ -90,8 +90,10 @@ export default class CreateWorkLayout extends React.Component<CreateWorkProps, C
       {
         type: 'Offering',
         attributes: {
-          'offeringType': this.state.licenseData.licenseType,
-          'offeringInfo': JSON.stringify(this.state.licenseData.pricing)
+          'type': this.state.licenseData.licenseType,
+          'pricingFrequency': this.state.licenseData.pricing.frequency,
+          'pricingPriceAmount': this.state.licenseData.pricing.price.amount,
+          'pricingPriceCurrency': this.state.licenseData.pricing.price.currency
         }
       }
     ])

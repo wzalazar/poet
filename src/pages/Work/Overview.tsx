@@ -20,6 +20,7 @@ function render(props: WorkProps) {
   if (!props) {
     return '';
   }
+
   const tableData = new Map<string, any>();
   tableData.set('Published', props.attributes.publishedAt);
   tableData.set('Last Modified', props.attributes.lastModified);

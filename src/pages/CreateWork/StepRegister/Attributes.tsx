@@ -23,7 +23,7 @@ export class Attributes extends React.Component<AttributesProps, AttributesState
   };
   private readonly defaultAttributes: ReadonlyArray<Attribute> = [
     {
-      key: 'title',
+      key: 'name',
       value: ''
     }
   ];
