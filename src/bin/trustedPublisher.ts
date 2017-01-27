@@ -28,6 +28,44 @@ export default async function createServer(options?: TrustedPublisherOptions) {
 
   koa.use(Body())
 
+  koa.use(Route.post('/licenses', async (ctx: any) => {
+    const body = JSON.parse(ctx.request.body)
+    const claims = [creator.createSignedClaim({
+      type: OFFERING,
+      attributes: {
+        reference: body.reference,
+        referenceOffering: body.referenceOffering,
+        proofType: "Bitcoin Transaction",
+        proofValue: JSON.stringify({
+          txId: body.txId,
+          outputIndex: body.outputIndex
+        }),
+        owner: body.owner
+      }
+    }, privKey)]
+    const block: Block = creator.createBlock(claims)
+    try {
+      await queue.announceBlockToSend(block)
+    } catch (error) {
+      console.log('Could not publish block', error, error.stack)
+    }
+
+    try {
+      const id = await getHash(creator.serializeBlockForSave(block), block.id)
+      const tx = await creator.createTransaction(id)
+      console.log('Bitcoin transaction hash is', tx.hash)
+      console.log('Torrent hash is', id)
+
+      if (!options.broadcast) {
+        return
+      }
+
+      ctx.body = await ClaimBuilder.broadcastTx(tx)
+    } catch (error) {
+      ctx.body = JSON.stringify({ error })
+    }
+  }))
+
   koa.use(Route.post('/claims', async (ctx: any) => {
     var sigs = JSON.parse(ctx.request.body).signatures
     const originalClaims: Claim[] = []

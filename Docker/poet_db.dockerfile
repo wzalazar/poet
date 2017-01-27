@@ -1,0 +1,4 @@
+FROM library/postgres
+ENV POSTGRES_USER poet
+ENV POSTGRES_PASSWORD poet
+ENV POSTGRES_DB poet
