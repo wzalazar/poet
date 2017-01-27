@@ -43,8 +43,8 @@ export interface WorkOffering extends Claim {
     readonly type: string;
     readonly description: string;
     readonly pricingFrequency: string;
-    readonly pricingAmount: string;
-    readonly pricingCurrency: string;
+    readonly pricingPriceAmount: string;
+    readonly pricingPriceCurrency: string;
   }
   readonly licenses: ReadonlyArray<any>
 }
