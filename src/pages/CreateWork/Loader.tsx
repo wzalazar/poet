@@ -31,7 +31,8 @@ export class CreateWork extends PageLoader<CreateWorkState, Object> {
 
   select(state: any, ownProps: any): Object {
     return {
-      userName: state.session.userProfile && state.session.userProfile.name
+      userName: state.session.userProfile && state.session.userProfile.name,
+      userPublicKey: state.session && state.session.token.publicKey
     };
   }
 

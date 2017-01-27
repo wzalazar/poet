@@ -33,7 +33,7 @@ function render(props: WorkProps) {
         <tbody>
           <tr key="author">
             <td>Author</td>
-            <td><ProfileLink id={props.author} /></td>
+            <td><ProfileLink id={props.attributes.authorPublicKey} /></td>
           </tr>
             { tableData.toKeyValueArray().map(renderRow) }
         </tbody>

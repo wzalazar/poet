@@ -10,6 +10,7 @@ import './Layout.scss'
 interface CreateWorkProps {
   readonly createWorkRequested: (claims: any[]) => any // Actions.claimsSubmitRequested
   readonly userName?: string;
+  readonly userPublicKey: string;
 }
 
 interface CreateWorkLayoutState {
@@ -82,7 +83,8 @@ export default class CreateWorkLayout extends React.Component<CreateWorkProps, C
         attributes: [
           ...this.state.workData.attributes,
           { key: 'articleType', value: this.state.workData.articleType },
-          { key: 'content', value: this.state.workData.content }
+          { key: 'content', value: this.state.workData.content },
+          { key: 'authorPublicKey', value: this.props.userPublicKey }
         ]
       },
       {

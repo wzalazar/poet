@@ -32,7 +32,8 @@ function renderOffering(workOffering: WorkOffering): JSX.Element {
         </div>
         <div className="col-xs-5">
           <div className="price">
-            ${ workOffering.offeringInfo.price && workOffering.offeringInfo.price.amount || 0 } { workOffering.offeringInfo.price && workOffering.offeringInfo.price.currency || 'BTC' }
+            ${ workOffering.offeringInfo.price && workOffering.offeringInfo.price.amount || 0 } &nbsp;
+            { workOffering.offeringInfo.price && workOffering.offeringInfo.price.currency || 'BTC' }
           </div>
           <div className="type">
             { workOffering.offeringType }
