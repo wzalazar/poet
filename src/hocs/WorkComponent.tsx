@@ -4,29 +4,39 @@ import { HexString } from '../common'
 import FetchComponent, { FetchComponentProps } from './FetchComponent'
 
 export interface Claim {
-  id: HexString
-  publicKey: HexString
-  signature: HexString
+  readonly id: HexString
+  readonly publicKey: HexString
+  readonly signature: HexString
 
-  attributes: any
+  readonly attributes: {
+    readonly [key: string]: string
+  }
+}
+
+export interface TitleClaim extends Claim {
+  readonly attributes: {
+    readonly [key: string]: string;
+    readonly owner: string;
+    readonly typeOfOwnership: string;
+    readonly status: string;
+  }
 }
 
 export interface ClaimInfo {
-  hash: string
-  torrentHash: string
-  timestamp?: number
-  bitcoinHeight?: number
-  bitcoinHash?: string
-  blockHeight?: number
-  blockHash?: string
-  transactionOrder?: string
-  transactionHash: string
-  outputIndex: number
-  claimOrder?: number
+  readonly hash: string
+  readonly torrentHash: string
+  readonly timestamp?: number
+  readonly bitcoinHeight?: number
+  readonly bitcoinHash?: string
+  readonly blockHeight?: number
+  readonly blockHash?: string
+  readonly transactionOrder?: string
+  readonly transactionHash: string
+  readonly outputIndex: number
+  readonly claimOrder?: number
 }
 
-export interface WorkOffering {
-  readonly id: string
+export interface WorkOffering extends Claim {
   readonly owner: string
   readonly attributes: {
     readonly [key: string]: string;
@@ -42,7 +52,7 @@ export interface WorkOffering {
 export interface WorkProps extends FetchComponentProps, Claim {
   readonly claimInfo?: ClaimInfo
   readonly owner?: Claim
-  readonly title?: Claim
+  readonly title?: TitleClaim
   readonly author?: Claim
   readonly offerings?: ReadonlyArray<WorkOffering>
   readonly attributes: {
