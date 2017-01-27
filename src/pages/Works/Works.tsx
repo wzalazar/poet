@@ -15,7 +15,7 @@ function renderWork(props: WorkProps) {
   return (
     <li key={props.id} className="mb-3">
       <h3><Link to={'/works/' + props.id}>{props.attributes.name}</Link></h3>
-      <div>by { props.author ? <ProfileLink id={props.author} /> : (props.attributes.author || 'Unknown author') }</div>
+      <div>by { props.attributes.authorPublicKey ? <ProfileLink id={props.attributes.authorPublicKey} /> : (props.attributes.authorDisplayName || 'Unknown author') }</div>
       <small>
         <span>Created: { moment(props.attributes.publishedAt || props.attributes.createdAt ).fromNow() }</span>
         <span className="ml-3">Timestamped: { moment(props.claimInfo && props.claimInfo.timestamp).fromNow() }</span>

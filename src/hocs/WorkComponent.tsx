@@ -61,7 +61,7 @@ export interface WorkProps extends FetchComponentProps, Claim {
     readonly publishedAt: string;
     readonly createdAt: string;
     readonly authorPublicKey: string;
-    readonly author: string;
+    readonly authorDisplayName: string;
     readonly lastModified: string;
     readonly tags: string;
     readonly type: string;
