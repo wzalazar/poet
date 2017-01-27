@@ -36,10 +36,11 @@ export default async function createServer(options: AuthServerOptons) {
    */
   const requests = {} as any
 
-  function makeRequest(id: string, payload: any, multiple: boolean) {
+  function makeRequest(id: string, payload: any, multiple: boolean, bitcoin: boolean,) {
     const signRequest = {
       id,
       multiple,
+      bitcoin,
       url: `http://localhost:5000/info/${id}`,
       message: payload,
       timestamp: new Date().getTime()
@@ -59,7 +60,7 @@ export default async function createServer(options: AuthServerOptons) {
   function handleMultiple(websocket: any, messages: any) {
 
     const id = uuid.v4()
-    const request = makeRequest(id, messages.payload, true)
+    const request = makeRequest(id, messages.payload, true, messages.bitcoin)
     const ref: string = messages.ref || ''
 
     requests[id] = request
@@ -86,7 +87,7 @@ export default async function createServer(options: AuthServerOptons) {
     }
 
     const id = uuid.v4()
-    const request = makeRequest(id, message.payload, false)
+    const request = makeRequest(id, message.payload, false, message.bitcoin)
     const ref: string = message.ref || ''
 
     requests[id] = request
@@ -95,13 +96,18 @@ export default async function createServer(options: AuthServerOptons) {
     websocket.emit('message', makeCreateResponse(request, ref))
   }
 
+  function doubleShaAndReverse(data: Buffer) {
+    const doubleSha = bitcore.crypto.Hash.sha256sha256(data)
+    return new bitcore.encoding.BufferReader(doubleSha).readReverse();
+  }
+
   function validSignatures(id: string, payload: Signature[]): boolean {
+    const request = JSON.parse(requests[id])
+    const verifyHash = request.bitcoin ? doubleShaAndReverse : sha256
     for (var index in payload) {
-      const encoded = new Buffer(JSON.parse(requests[id]).message[index], 'hex')
+      const encoded = new Buffer(request.message[index], 'hex')
       const signature = payload[index].signature
       const publicKey = payload[index].publicKey
-      console.log(encoded, signature, publicKey
-                 )
 
       if (!encoded || !signature || !publicKey) {
         return false
@@ -110,7 +116,7 @@ export default async function createServer(options: AuthServerOptons) {
       if (!verify(
           new bitcore.PublicKey(publicKey),
           new Buffer(signature, 'hex'),
-          sha256(encoded)))
+          verifyHash(encoded)))
       {
         console.log('Signature is invalid')
         return false
@@ -121,9 +127,11 @@ export default async function createServer(options: AuthServerOptons) {
   }
 
   function validSignature(id: string, payload: Signature): boolean {
-    const encoded = new Buffer(JSON.parse(requests[id]).message, 'hex')
+    const request = JSON.parse(requests[id])
+    const encoded = new Buffer(request.message, 'hex')
     const signature = payload.signature
     const publicKey = payload.publicKey
+    const verifyHash = request.bitcoin ? doubleShaAndReverse : sha256
 
     if (!encoded || !signature || !publicKey) {
       return false
@@ -132,7 +140,7 @@ export default async function createServer(options: AuthServerOptons) {
     if (!verify(
         new bitcore.PublicKey(publicKey),
         new Buffer(signature, 'hex'),
-        sha256(encoded)))
+        verifyHash(encoded)))
     {
       console.log('Signature is invalid')
       return false
@@ -174,7 +182,7 @@ export default async function createServer(options: AuthServerOptons) {
 
   koa.use(Route.post('/request', async (ctx: any) => {
     const id = uuid.v4()
-    const request = makeRequest(id, ctx.request.body, false)
+    const request = makeRequest(id, ctx.request.body, false, !!ctx.params.bitcoin)
 
     requests[id] = request
 

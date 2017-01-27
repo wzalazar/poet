@@ -5,8 +5,15 @@ const bitcore = require('bitcore-lib')
 const key = bitcore.PrivateKey()
 const id = process.argv[2]
 
-function signMessage(message: string) {
-  const signature = sign(key, sha256(new Buffer(message, 'hex'))) as any
+function doubleShaAndReverse(data: Buffer) {
+  const doubleSha = bitcore.crypto.Hash.sha256sha256(data);
+  const read = new bitcore.encoding.BufferReader(doubleSha).readReverse();
+  return read
+}
+
+function signMessage(bitcoin: boolean, message: string) {
+  const hash = bitcoin ? doubleShaAndReverse : sha256
+  const signature = sign(key, hash(new Buffer(message, 'hex'))) as any
 
   return {
     message: message,
@@ -17,10 +24,12 @@ function signMessage(message: string) {
 
 async function accept(id: string) {
   const body = await fetch('http://localhost:5000/request/' + id).then(res => res.json()) as any
+  const signFunc = signMessage.bind(null, body.bitcoin)
 
   const result = body.multiple
-    ? body.message.map(signMessage)
-    : signMessage(body.message)
+    ? body.message.map(signFunc)
+    : signFunc(body.message)
+  console.log('result is', result)
   const endpoint = body.multiple ? 'multiple': 'request'
 
   await fetch(`http://localhost:5000/${endpoint}/${id}`, {

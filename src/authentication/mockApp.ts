@@ -16,8 +16,14 @@ interface AuthServerOptons {
 
 const server = '192.168.0.168:5000'
 
-function signMessage(message: string) {
-  const signature = sign(key, sha256(new Buffer(message, 'hex'))) as any
+function doubleShaAndReverse(data: Buffer) {
+  const doubleSha = bitcore.crypto.Hash.sha256sha256(data)
+  return new bitcore.encoding.BufferReader(doubleSha).readReverse();
+}
+
+function signMessage(bitcore: boolean, message: string) {
+  const hash = bitcore ? doubleShaAndReverse : sha256
+  const signature = sign(key, hash(new Buffer(message, 'hex'))) as any
 
   return {
     message: message,
@@ -37,10 +43,11 @@ export default async function createServer(options: AuthServerOptons) {
       const request = await fetch(`http://${server}/request/${id}`)
       const body = await request.json() as any
       console.log(body)
+      const signFunc = signMessage.bind(null, body.bitcoin)
 
       const result = body.multiple
-        ? body.message.map(signMessage)
-        : signMessage(body.message)
+        ? body.message.map(signFunc)
+        : signFunc(body.message)
       const endpoint = body.multiple ? 'multiple': 'request'
 
       await fetch(`http://${server}/${endpoint}/${id}`, {

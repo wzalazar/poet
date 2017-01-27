@@ -8,6 +8,7 @@ socket.on('connected', () => {
   console.log('connected')
   socket.emit('request', JSON.stringify({
     type: 'create',
+    bitcoin: true,
     payload: new Buffer('Sign this').toString('hex')
   }))
 })
