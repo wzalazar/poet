@@ -2,13 +2,11 @@ import * as React from 'react';
 
 import WorkComponent, { WorkProps } from '../../hocs/WorkComponent';
 
+import './ContentTab.scss';
+
 function renderAttributes(props: WorkProps): JSX.Element {
   return (
     <table>
-      <colgroup>
-        <col className="keys"/>
-        <col className="values"/>
-      </colgroup>
       <tbody>
       {
         Object.keys(props.attributes).map(key => (
@@ -25,12 +23,12 @@ function renderAttributes(props: WorkProps): JSX.Element {
 
 function render(props: WorkProps): JSX.Element {
   return (
-    <div className="contentTab">
-      <div className="attributes">
+    <section className="contentTab">
+      <section className="attributes">
         { renderAttributes(props) }
-      </div>
-      <div className="content">{ props.attributes.content }</div>
-    </div>
+      </section>
+      <section className="content">{ props.attributes.content }</section>
+    </section>
   )
 }
 

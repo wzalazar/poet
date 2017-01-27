@@ -6,13 +6,9 @@ import './Title.scss';
 
 function render(props: WorkProps): JSX.Element {
   return (
-    <div className="title">
+    <section className="title">
       <h3>Title</h3>
       <table>
-        <colgroup>
-          <col className="keys"/>
-          <col className="values"/>
-        </colgroup>
         <tbody>
           <tr>
             <td>Owner</td>
@@ -28,7 +24,7 @@ function render(props: WorkProps): JSX.Element {
           </tr>
         </tbody>
       </table>
-    </div>
+    </section>
   )
 }
 
