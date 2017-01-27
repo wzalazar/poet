@@ -105,7 +105,9 @@ export default async function createServer(options: AuthServerOptons) {
     const request = JSON.parse(requests[id])
     const verifyHash = request.bitcoin ? doubleShaAndReverse : sha256
     for (var index in payload) {
-      const encoded = new Buffer(request.message[index], 'hex')
+      const encoded = request.bitcoin
+        ? new Buffer(new Buffer(request.message[index], 'hex').toString(), 'hex')
+        : new Buffer(request.message[index], 'hex')
       const signature = payload[index].signature
       const publicKey = payload[index].publicKey
 
@@ -128,7 +130,9 @@ export default async function createServer(options: AuthServerOptons) {
 
   function validSignature(id: string, payload: Signature): boolean {
     const request = JSON.parse(requests[id])
-    const encoded = new Buffer(request.message, 'hex')
+    const encoded = request.bitcoin
+      ? new Buffer(new Buffer(request.message, 'hex').toString(), 'hex')
+      : new Buffer(request.message, 'hex')
     const signature = payload.signature
     const publicKey = payload.publicKey
     const verifyHash = request.bitcoin ? doubleShaAndReverse : sha256

@@ -13,7 +13,10 @@ function doubleShaAndReverse(data: Buffer) {
 
 function signMessage(bitcoin: boolean, message: string) {
   const hash = bitcoin ? doubleShaAndReverse : sha256
-  const signature = sign(key, hash(new Buffer(message, 'hex'))) as any
+  const msg = bitcoin
+    ? new Buffer(new Buffer(message, 'hex').toString(), 'hex')
+    : new Buffer(message, 'hex')
+  const signature = sign(key, hash(msg)) as any
 
   return {
     message: message,
@@ -23,16 +26,16 @@ function signMessage(bitcoin: boolean, message: string) {
 }
 
 async function accept(id: string) {
-  const body = await fetch('http://localhost:5000/request/' + id).then(res => res.json()) as any
+  const body = await fetch('http://192.168.0.168:5000/request/' + id).then(res => res.json()) as any
   const signFunc = signMessage.bind(null, body.bitcoin)
 
   const result = body.multiple
     ? body.message.map(signFunc)
     : signFunc(body.message)
-  console.log('result is', result)
+  console.log('result is', result, body.message)
   const endpoint = body.multiple ? 'multiple': 'request'
 
-  await fetch(`http://localhost:5000/${endpoint}/${id}`, {
+  await fetch(`http://192.168.0.168:5000/${endpoint}/${id}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(result)

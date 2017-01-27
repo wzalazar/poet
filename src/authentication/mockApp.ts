@@ -21,9 +21,12 @@ function doubleShaAndReverse(data: Buffer) {
   return new bitcore.encoding.BufferReader(doubleSha).readReverse();
 }
 
-function signMessage(bitcore: boolean, message: string) {
-  const hash = bitcore ? doubleShaAndReverse : sha256
-  const signature = sign(key, hash(new Buffer(message, 'hex'))) as any
+function signMessage(bitcoin: boolean, message: string) {
+  const hash = bitcoin ? doubleShaAndReverse : sha256
+  const msg = bitcoin
+    ? new Buffer(new Buffer(message, 'hex').toString(), 'hex')
+    : new Buffer(message, 'hex')
+  const signature = sign(key, hash(msg)) as any
 
   return {
     message: message,
