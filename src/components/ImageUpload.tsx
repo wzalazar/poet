@@ -3,7 +3,7 @@ import * as React from 'react';
 export interface ImageUploadProps {
   className?: string;
   buttonClassName?: string;
-  sizeLimit?: number;
+  fileSizeLimit?: number;
   defaultImageData?: string;
   useDefaultStyles?: boolean;
 }
@@ -37,7 +37,7 @@ export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadSt
 
   componentWillReceiveProps(props: ImageUploadProps) {
     console.log('componentWillReceiveProps', props);
-    this.sizeLimit = props.sizeLimit;
+    this.sizeLimit = props.fileSizeLimit;
     this.setState({
       imageData: props.defaultImageData
     });
