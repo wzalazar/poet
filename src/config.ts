@@ -7,6 +7,10 @@ const config = {
     auth: 'ws://192.168.0.168:5000',
     mockApp: '/api/mockApp',
     insight: 'https://test-insight.bitpay.com/api'
+  },
+  imageUpload: {
+    maxWidth: 100,
+    maxHeight: 100
   }
 };
 

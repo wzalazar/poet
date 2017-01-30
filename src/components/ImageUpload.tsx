@@ -4,6 +4,8 @@ export interface ImageUploadProps {
   className?: string;
   buttonClassName?: string;
   fileSizeLimit?: number;
+  imageWidthLimit?: number;
+  imageHeightLimit?: number;
   defaultImageData?: string;
   useDefaultStyles?: boolean;
 }
@@ -14,7 +16,9 @@ export interface ImageUploadState {
 
 export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadState> {
   public static defaultProps: ImageUploadProps = {
-    useDefaultStyles: true
+    useDefaultStyles: true,
+    imageWidthLimit: 128,
+    imageHeightLimit: 128
   };
   private components: {
     fileInput?: HTMLInputElement;
@@ -99,9 +103,47 @@ export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadSt
   }
 
   private onImageLoaded(event: any) {
+    const imageData = event.target.result;
+
+    const resizedImageData = this.resizeImage(imageData, this.props.imageWidthLimit, this.props.imageHeightLimit);
+
     this.setState({
-      imageData: event.target.result
+      imageData: resizedImageData
     })
+  }
+
+  /**
+   * Takes the data url of an image
+   * @param imageDataUrl
+   * @returns imageDataUrl of the resized image
+   */
+  private resizeImage(imageDataUrl: string, maxWidth: number, maxHeight: number): string {
+    const canvas = document.createElement('canvas');
+    const image = document.createElement('img');
+
+    image.src = imageDataUrl;
+
+    // TODO: crop image into square from center before resizing
+
+    const { width: newWidth, height: newHeight } = this.scaleDownSize(image.width, image.height, maxWidth, maxHeight);
+
+    canvas.width = newWidth;
+    canvas.height = newHeight;
+
+    const canvasContext = canvas.getContext('2d');
+
+    canvasContext.drawImage(image, 0, 0, newWidth, newHeight);
+
+    return canvas.toDataURL("image/png");
+  }
+
+  private scaleDownSize(width: number, height: number, maxWidth: number, maxHeight: number): {width: number, height: number} {
+    if (width <= maxWidth && height <= maxHeight)
+      return { width, height };
+    else if (width / maxWidth > height / maxHeight)
+      return { width: maxWidth, height: height * maxWidth / width};
+    else
+      return { width: width * maxHeight / height, height: maxHeight };
   }
 
 }
