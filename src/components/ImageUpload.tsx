@@ -8,24 +8,26 @@ export interface ImageUploadProps {
   imageHeightLimit?: number;
   defaultImageData?: string;
   useDefaultStyles?: boolean;
+  spinnerUrl?: string;
 }
 
 export interface ImageUploadState {
-  imageData: string;
+  imageData?: string;
+  isLoading?: boolean;
 }
 
 export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadState> {
   public static defaultProps: ImageUploadProps = {
     useDefaultStyles: true,
     imageWidthLimit: 128,
-    imageHeightLimit: 128
+    imageHeightLimit: 128,
+    spinnerUrl: 'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif',
+    fileSizeLimit: Math.pow(1024, 2) // 1 MB
   };
   private components: {
     fileInput?: HTMLInputElement;
     image?: HTMLImageElement
   } = {};
-  private sizeLimit: number;
-  private readonly defaultSizeLimit = Math.pow(1024, 2); // 1 MB
 
   private readonly styleDisplayFlex = {
     display: 'flex',
@@ -40,8 +42,6 @@ export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadSt
   }
 
   componentWillReceiveProps(props: ImageUploadProps) {
-    console.log('componentWillReceiveProps', props);
-    this.sizeLimit = props.fileSizeLimit;
     this.setState({
       imageData: props.defaultImageData
     });
@@ -61,7 +61,7 @@ export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadSt
           <div>
             <img
               ref={image => this.components.image = image }
-              src={this.state.imageData}
+              src={this.state.isLoading ? this.props.spinnerUrl : this.state.imageData}
               className="rounded-circle"
               onClick={this.onClick.bind(this)}
             />
@@ -91,52 +91,47 @@ export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadSt
       return;
     }
 
-    if (file.size > this.sizeLimit) {
+    if (file.size > this.props.fileSizeLimit) {
       console.log('Size is too big');
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = this.onImageLoaded.bind(this);
-    reader.readAsDataURL(file);
-
+    const imageData = URL.createObjectURL(file);
+    this.onImageLoaded(imageData);
   }
 
-  private onImageLoaded(event: any) {
-    const imageData = event.target.result;
-
-    let lastTime = performance.now();
-
-    const imageDataUrlToCanvas = this.imageDataUrlToCanvas(imageData);
-    console.log('imageDataUrlToCanvas', performance.now() - lastTime); lastTime = performance.now();
-
-    const cropImageIntoSquareFromCenter = this.cropImageIntoSquareFromCenter(imageDataUrlToCanvas);
-    console.log('cropImageIntoSquareFromCenter', performance.now() - lastTime); lastTime = performance.now();
-
-    const resizeImage = this.resizeImage(cropImageIntoSquareFromCenter, this.props.imageWidthLimit, this.props.imageHeightLimit);
-    console.log('resizeImage', performance.now() - lastTime); lastTime = performance.now();
-
-    const toDataURL = resizeImage.toDataURL("image/png");
-    console.log('toDataURL', performance.now() - lastTime); lastTime = performance.now();
-
+  private onImageLoaded(imageData: any) {
     this.setState({
-      imageData: toDataURL
+      isLoading: true
+    });
+    this.imageDataUrlToCanvas(imageData).then((imageDataUrlToCanvas: HTMLCanvasElement) => {
+      const cropImageIntoSquareFromCenter = this.cropImageIntoSquareFromCenter(imageDataUrlToCanvas);
+      const resizeImage = this.resizeImage(cropImageIntoSquareFromCenter, this.props.imageWidthLimit, this.props.imageHeightLimit);
+      const toDataURL = resizeImage.toDataURL("image/png");
+      this.setState({
+        imageData: toDataURL,
+        isLoading: false
+      })
     })
+
   }
 
-  private imageDataUrlToCanvas(imageDataUrl: string): HTMLCanvasElement {
-    const canvas = document.createElement('canvas');
-    const image = document.createElement('img');
+  private imageDataUrlToCanvas(imageDataUrl: string): Promise<HTMLCanvasElement> {
+    return new Promise<HTMLCanvasElement>((resolve, reject) => {
+      const image = document.createElement('img');
+      image.src = imageDataUrl;
 
-    image.src = imageDataUrl;
+      image.onload = function() {
+        const canvas = document.createElement('canvas');
+        canvas.width = image.width;
+        canvas.height = image.height;
 
-    canvas.width = image.width;
-    canvas.height = image.height;
+        const canvasContext = canvas.getContext('2d');
+        canvasContext.drawImage(image, 0, 0);
 
-    const canvasContext = canvas.getContext('2d');
-    canvasContext.drawImage(image, 0, 0);
-
-    return canvas;
+        resolve(canvas);
+      };
+    });
   }
 
   /**
