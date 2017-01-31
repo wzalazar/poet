@@ -27,7 +27,7 @@ export default class ClaimRoute extends Route<Claim> {
     // (1): The real fetch
     const claimData = await this.service.getClaim(claim.id)
     const info = await this.service.getClaimInfo(claim.id)
-    return { ...claimData, ...info }
+    return { ...claimData, claimInfo: info }
   }
 
   async getCollection(opts: QueryOptions) {
@@ -43,7 +43,7 @@ export default class ClaimRoute extends Route<Claim> {
     }
     return claims.map(claim => {
       const info = mapInfo[claim.id] || {}
-      return {...claim, ...info}
+      return { ...claim, claimInfo: info }
     })
   }
 }
