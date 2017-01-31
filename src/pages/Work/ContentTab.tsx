@@ -9,7 +9,7 @@ function renderAttributes(props: WorkProps): JSX.Element {
     <table>
       <tbody>
       {
-        Object.keys(props.attributes).map(key => (
+        Object.keys(props.attributes).filter(key => key !== 'content').map(key => (
           <tr key={key}>
             <td>{key}</td>
             <td>{props.attributes[key]}</td>
