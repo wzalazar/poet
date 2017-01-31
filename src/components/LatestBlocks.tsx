@@ -38,10 +38,7 @@ function render(props: FetchComponentProps) {
   )
 }
 
-export interface LatestBlocksProps extends FetchComponentProps {
-}
-
-function propsToUrl(props: LatestBlocksProps) {
+function propsToUrl(props: FetchComponentProps) {
   return {
     url: `${Config.api.explorer}/blocks`
   }

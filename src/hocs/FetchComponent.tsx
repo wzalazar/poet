@@ -12,11 +12,11 @@ interface FetchRequestParams {
 }
 
 export interface FetchComponentProps {
-  readonly dispatchRequest: (payload: any) => void;
-  readonly error: any;
-  readonly status: FetchStatus;
+  readonly dispatchRequest: (payload: FetchRequestParams) => void;
   readonly requestParams: RequestParams;
   readonly render: Render;
+  readonly status: FetchStatus;
+  readonly error: any;
   readonly elements: ReadonlyArray<any>;
 }
 
