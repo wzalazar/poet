@@ -38,11 +38,13 @@ export interface License {
 export interface LicensesProps {
   readonly publicKey?: string;
   readonly limit?: number;
+  readonly showActions?: boolean;
 }
 
 export default class Licenses extends ResourceProvider<LicensesResource, LicensesProps, undefined> {
   static defaultProps: LicensesProps = {
-    limit: 5
+    limit: 5,
+    showActions: true
   };
 
   renderElement(licenses: LicensesResource) {
@@ -77,11 +79,11 @@ export default class Licenses extends ResourceProvider<LicensesResource, License
         <div className="card-block">
           <div className="card-title " >
             <h5>{ license.reference.attributes.name }</h5>
-            <div className="menu">
+            { this.props.showActions && <div className="menu">
               <DropdownMenu options={['Edit', 'Transfer', 'Revoke']} optionSelected={this.optionSelected.bind(this, license)}>
                 Actions
               </DropdownMenu>
-            </div>
+            </div> }
           </div>
           <div>
             <div className="box-placeholder" />
