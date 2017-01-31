@@ -229,6 +229,10 @@ export default class BlockchainService {
     return BlockchainService.transformEntityToPureClaim(claim)
   }
 
+  async getClaimInfo(id: string) {
+    return await this.claimInfoRepository.findOne({hash: id})
+  }
+
   async getWork(id: string) {
     const work = await this.workRepository.createQueryBuilder('work')
       .leftJoinAndMapOne('work.title', 'work.title', 'title')

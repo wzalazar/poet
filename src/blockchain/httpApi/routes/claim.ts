@@ -26,7 +26,7 @@ export default class ClaimRoute extends Route<Claim> {
   async prepareItem(claim: Claim) {
     // (1): The real fetch
     const claimData = await this.service.getClaim(claim.id)
-    const info = await this.service.claimInfoRepository.findOne({ hash: claim.id })
+    const info = await this.service.getClaimInfo(claim.id)
     return { ...claimData, ...info }
   }
 
