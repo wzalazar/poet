@@ -58,7 +58,9 @@ export default async function createServer(options: AuthServerOptons) {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(result)
       }).then(async(res) => {
-        console.log(await res.text())
+        const text = await res.text()
+        console.log(text)
+        ctx.response.body = text
       })
     } catch (error) {
       console.log(error, error.stack)
