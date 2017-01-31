@@ -33,6 +33,12 @@ export interface License {
       readonly name: string;
     }
   }
+
+  readonly referenceOffering: {
+    readonly attributes: {
+      readonly type: string;
+    }
+  }
 }
 
 export interface LicensesProps {
@@ -88,7 +94,7 @@ export default class Licenses extends ResourceProvider<LicensesResource, License
           <div>
             <div className="box-placeholder" />
             <div>
-              <div>{ license.licenseType }</div>
+              <div>{ license.referenceOffering.attributes.type }</div>
               <div>{ license.licenseHolder && license.licenseHolder.attributes && license.licenseHolder.attributes.name }</div>
               <div>{ license.issueDate && new Date(license.issueDate).toISOString() }</div>
             </div>
