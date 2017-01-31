@@ -341,8 +341,8 @@ export default class BlockchainService {
   }
 
   async getOffering(referenceOfferingId: string) {
-    const claim = this.getClaim(referenceOfferingId)
-    const offering = this.offeringRepository.findOneById(referenceOfferingId)
+    const claim = await this.getClaim(referenceOfferingId)
+    const offering = await this.offeringRepository.findOneById(referenceOfferingId)
     return { ...claim, ...offering }
   }
 
