@@ -9,6 +9,7 @@ const Route = require('koa-route')
 const IO = require('koa-socket')
 
 const key = bitcore.PrivateKey(sha256(process.argv[2]).toString('hex'))
+console.log(key)
 
 interface AuthServerOptons {
   port: number
@@ -16,16 +17,14 @@ interface AuthServerOptons {
 
 const server = '192.168.0.168:5000'
 
-function doubleShaAndReverse(data: Buffer) {
-  const doubleSha = bitcore.crypto.Hash.sha256sha256(data)
-  return new bitcore.encoding.BufferReader(doubleSha).readReverse();
+function doubleSha(data: Buffer) {
+  return bitcore.crypto.Hash.sha256sha256(data)
 }
 
 function signMessage(bitcoin: boolean, message: string) {
-  const hash = bitcoin ? doubleShaAndReverse : sha256
-  const msg = bitcoin
-    ? new Buffer(new Buffer(message, 'hex').toString(), 'hex')
-    : new Buffer(message, 'hex')
+  const hash = bitcoin ? doubleSha : sha256
+  const msg = new Buffer(message, 'hex')
+console.log('hash to sign', hash(msg))
   const signature = sign(key, hash(msg)) as any
 
   return {

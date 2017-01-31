@@ -96,18 +96,15 @@ export default async function createServer(options: AuthServerOptons) {
     websocket.emit('message', makeCreateResponse(request, ref))
   }
 
-  function doubleShaAndReverse(data: Buffer) {
-    const doubleSha = bitcore.crypto.Hash.sha256sha256(data)
-    return new bitcore.encoding.BufferReader(doubleSha).readReverse();
+  function doubleSha(data: Buffer) {
+    return bitcore.crypto.Hash.sha256sha256(data)
   }
 
   function validSignatures(id: string, payload: Signature[]): boolean {
     const request = JSON.parse(requests[id])
-    const verifyHash = request.bitcoin ? doubleShaAndReverse : sha256
+    const verifyHash = request.bitcoin ? doubleSha : sha256
     for (var index in payload) {
-      const encoded = request.bitcoin
-        ? new Buffer(new Buffer(request.message[index], 'hex').toString(), 'hex')
-        : new Buffer(request.message[index], 'hex')
+      const encoded = new Buffer(request.message[index], 'hex')
       const signature = payload[index].signature
       const publicKey = payload[index].publicKey
 
@@ -135,7 +132,7 @@ export default async function createServer(options: AuthServerOptons) {
       : new Buffer(request.message, 'hex')
     const signature = payload.signature
     const publicKey = payload.publicKey
-    const verifyHash = request.bitcoin ? doubleShaAndReverse : sha256
+    const verifyHash = request.bitcoin ? doubleSha : sha256
 
     if (!encoded || !signature || !publicKey) {
       return false
