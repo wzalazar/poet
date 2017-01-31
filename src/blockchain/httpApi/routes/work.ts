@@ -21,15 +21,16 @@ export default class WorkRoute extends Route<Work> {
   async getItem(id: string) {
     const work = await this.service.getWorkFull(id)
     const claim = await this.service.getClaim(id)
-    return { ...claim, ...work }
+    const info = await this.service.getClaimInfo(id)
+    return { claimInfo: info, ...claim, ...work }
   }
 
   async getCollection(opts: QueryOptions) {
     const items = await super.getCollection(opts)
     return await Promise.all(items.map(
       async (item) => {
-        const work = this.service.getWorkFull(item.id)
-        const info = this.service.getClaimInfo(item.id)
+        const work = await this.service.getWorkFull(item.id)
+        const info = await this.service.getClaimInfo(item.id)
         return { claimInfo: info, ...work }
       }
     ))
