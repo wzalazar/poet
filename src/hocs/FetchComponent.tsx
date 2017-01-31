@@ -8,16 +8,16 @@ type RequestParams = (props: any) => FetchRequestParams;
 type Render = (props: any) => JSX.Element;
 
 interface FetchRequestParams {
-  url: string;
+  readonly url: string;
 }
 
 export interface FetchComponentProps {
-  dispatchRequest: (payload: any) => void;
-  error: any;
-  status: FetchStatus;
-  requestParams: RequestParams;
-  render: Render;
-  elements: any;
+  readonly dispatchRequest: (payload: any) => void;
+  readonly error: any;
+  readonly status: FetchStatus;
+  readonly requestParams: RequestParams;
+  readonly render: Render;
+  readonly elements: ReadonlyArray<any>;
 }
 
 class FetchComponent<T extends FetchComponentProps, S> extends React.Component<T, S> {
