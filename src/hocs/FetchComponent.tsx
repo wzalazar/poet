@@ -72,7 +72,9 @@ function mapStateToProps(requestParams: RequestParams, render: Render, state: an
   };
 }
 
+const mapDispatch = {
+  dispatchRequest: (payload: any) => ({ type: Actions.fetchRequest, payload })
+};
+
 export default (requestParams: RequestParams, render: Render) =>
-  connect(mapStateToProps.bind(null, requestParams, render), {
-    dispatchRequest: (payload) => ({ type: Actions.fetchRequest, payload })
-  })(FetchComponent);
+  connect(mapStateToProps.bind(null, requestParams, render), mapDispatch)(FetchComponent);
