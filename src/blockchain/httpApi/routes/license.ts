@@ -21,7 +21,9 @@ export default class LicenseRoute extends Route<License> {
   }
 
   async getItem(id: string) {
-    return await this.service.getLicenseFull(id)
+    const info = await this.service.getClaimInfo(id)
+    const license = await this.service.getLicenseFull(id)
+    return { claimInfo: info, ...license }
   }
 
   async getCollection(opts: QueryOptions) {

@@ -230,7 +230,7 @@ export default class BlockchainService {
   }
 
   async getClaimInfo(id: string) {
-    return await this.claimInfoRepository.findOne({hash: id})
+    return await this.claimInfoRepository.findOne( {hash: id })
   }
 
   async getWork(id: string) {
@@ -258,8 +258,7 @@ export default class BlockchainService {
       .where('work.id=:id')
       .setParameters({ id })
       .getOne()
-    const info = await this.claimInfoRepository.findOne({ hash: id })
-    work.claimInfo = info
+    work.claimInfo = await this.getClaimInfo(id)
     return await this.augmentWork(work)
   }
 
