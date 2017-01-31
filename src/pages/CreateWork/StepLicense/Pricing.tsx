@@ -21,7 +21,7 @@ export class Pricing extends React.Component<undefined, PricingState> {
     this.state = {
       price: {
         amount: 0,
-        currency: 'USD',
+        currency: 'BTC',
       },
       frequency: 'oneTime'
     }
@@ -43,7 +43,7 @@ export class Pricing extends React.Component<undefined, PricingState> {
             <div className="input-group">
               <span className="input-group-addon">$</span>
               <input onChange={this.onAmountChange.bind(this)} type="number" className="form-control" aria-label="Amount (to the nearest dollar)" />
-              <span className="input-group-addon">BTC</span>
+              <span className="input-group-addon">{ this.state.price.currency }</span>
             </div>
           </div>
         </div>
