@@ -3,6 +3,7 @@ import { Route } from 'react-router';
 import { Action } from 'redux';
 import { Saga } from 'redux-saga';
 
+import Constants from '../../constants';
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
 import { LandingLayout } from './Layout';
 
@@ -32,6 +33,6 @@ export class LandingLoader extends PageLoader<Object, Object> {
   }
 
   select(state: any, ownProps: any): Object {
-    return { loggedIn: state.session && !!state.session.user};
+    return { loggedIn: state.session && state.session.state === Constants.LOGGED_IN };
   }
 }
