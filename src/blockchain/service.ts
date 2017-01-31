@@ -268,7 +268,10 @@ export default class BlockchainService {
       .where('profile.id=:id')
       .setParameters({ id })
       .getOne()
-    return await this.augmentProfile(profile)
+    if (profile) {
+      return await this.augmentProfile(profile)
+    }
+    return null
   }
 
   async getLicenseFull(id: string) {
