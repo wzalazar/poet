@@ -9,6 +9,7 @@ import getBuilder from '../../serialization/builder'
 import BlockRoute from './routes/blocks'
 import ProfileRoute from './routes/profile'
 import ClaimRoute from "./routes/claim";
+import LicenseRoute from './routes/license'
 
 export default class BlockchainRouter {
   service: BlockchainService
@@ -35,6 +36,7 @@ export default class BlockchainRouter {
       new BlockRoute(this.service).addRoutes(router)
       new ProfileRoute(this.service).addRoutes(router)
       new ClaimRoute(this.service).addRoutes(router)
+      new LicenseRoute(this.service).addRoutes(router)
     } catch (error) {
       console.log('Unable to setup route', error, error.stack)
     }

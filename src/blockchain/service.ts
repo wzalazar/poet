@@ -271,6 +271,15 @@ export default class BlockchainService {
     return await this.augmentProfile(profile)
   }
 
+  async getLicenseFull(id: string) {
+    const license = await this.licenseRepository.findOneById(id)
+    const claim = await this.getClaim(id)
+    license.reference = await this.getWorkFull(claim.attributes.reference)
+    license.referenceOffering = await this.getOffering(claim.attributes.referenceOffering)
+    license.licenseHolder = await this.getProfileFull(claim.attributes.licenseHolder)
+    return { ...claim, ...license }
+  }
+
   async augmentWork(work: Work) {
     const ids = [work.id]
     if (work.title) ids.push(work.title.id)
