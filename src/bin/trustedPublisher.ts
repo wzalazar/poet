@@ -57,14 +57,14 @@ export default async function createServer(options?: TrustedPublisherOptions) {
     const claims = [creator.createSignedClaim({
       type: LICENSE,
       attributes: {
-        reference: body.reference,
-        referenceOffering: body.referenceOffering,
-        proofType: "Bitcoin Transaction",
-        proofValue: JSON.stringify({
+        [Fields.REFERENCE]: body.reference,
+        [Fields.REFERENCE_OFFERING]: body.referenceOffering,
+        [Fields.PROOF_TYPE]: "Bitcoin Transaction",
+        [Fields.PROOF_VALUE]: JSON.stringify({
           txId: body.txId,
           outputIndex: body.outputIndex
         }),
-        owner: body.owner
+        [Fields.LICENSE_HOLDER]: body.owner
       }
     }, privKey)]
     await createBlock(claims, ctx)
