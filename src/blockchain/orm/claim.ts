@@ -18,8 +18,7 @@ export default class Claim {
 
   @OneToMany((type => Attribute), attribute => attribute.claim, {
     cascadeInsert: true,
-    cascadeUpdate: true,
-    cascadeRemove: true
+    cascadeUpdate: true
   })
   @JoinTable()
   attributes: Attribute[]

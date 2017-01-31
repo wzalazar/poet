@@ -106,11 +106,11 @@ export default class BlockchainService {
 
   async confirmClaim(claim: PureClaim, txInfo: BlockMetadata, index: number) {
     await this.claimInfoRepository.persist(this.claimInfoRepository.create({
+      ...txInfo,
       hash: claim.id,
       blockHash: txInfo.hash,
       blockHeight: txInfo.height,
       claimOrder: index,
-      ...txInfo
     }))
     const result = await bluebird.all(
       this.confirmHooks[claim.type].map(hook => hook(this, claim, txInfo))

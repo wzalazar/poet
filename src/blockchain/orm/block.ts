@@ -9,7 +9,6 @@ export default class Block {
   @ManyToMany(type => Claim, {
     cascadeInsert: true,
     cascadeUpdate: true,
-    cascadeRemove: true
   })
   @JoinTable()
   claims: Claim[]
