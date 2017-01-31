@@ -9,4 +9,6 @@ function render(props: ProfileProps) {
   )
 }
 
-export default ProfileComponent(render);
+export const ProfileLink = ProfileComponent(render);
+
+export default ProfileLink;

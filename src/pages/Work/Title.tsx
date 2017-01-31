@@ -3,6 +3,7 @@ import * as React from 'react';
 import '../../extensions/String';
 
 import WorkComponent, { WorkProps } from '../../hocs/WorkComponent';
+import { ProfileLink } from '../../components/ProfileLink';
 
 import './Title.scss';
 
@@ -14,7 +15,7 @@ function render(props: WorkProps): JSX.Element {
         <tbody>
           <tr>
             <td>Owner</td>
-            <td>{props.title.attributes.owner.firstAndLastCharacters(6)}</td>
+            <td><ProfileLink id={props.title.attributes.owner} /></td>
           </tr>
           <tr>
             <td>Type of Ownership</td>
