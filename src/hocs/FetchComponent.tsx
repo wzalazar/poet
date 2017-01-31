@@ -73,7 +73,7 @@ function mapStateToProps(requestParams: RequestParams, render: Render, state: an
 }
 
 const mapDispatch = {
-  dispatchRequest: (payload: any) => ({ type: Actions.fetchRequest, payload })
+  dispatchRequest: (payload: FetchRequestParams) => ({ type: Actions.fetchRequest, payload })
 };
 
 export default (requestParams: RequestParams, render: Render) =>
