@@ -19,20 +19,26 @@ async function requestIdFromAuth(dataToSign: Buffer[], bitcoin: boolean) {
 async function insightSubmit(tx: string) {
   return await fetch(
     'https://test-insight.bitpay.com/api/tx/send',
-    { method: 'POST', body: tx }
-  ).then((res: any) => res.text())
+    {
+      method: 'POST',
+      body: JSON.stringify({ rawtx: tx }),
+      headers:{
+        'content-type': 'application/json'
+      }
+    }
+  ).then((res: any) => res.json()).then((res: any) => res.txid)
 }
 
 async function bindAuthResponse(request: any) {
   return await auth.onResponse(request.id) as any;
 }
 
-async function submitLicense(reference: string, txId: string, outputNumber: number, publicKey: string, referenceOffering: string) {
-  return await fetch(config.api.user + '/license', {
+async function submitLicense(reference: string, txId: string, outputIndex: number, publicKey: string, referenceOffering: string) {
+  return await fetch(config.api.user + '/licenses', {
     method: 'POST',
     body: JSON.stringify({
       txId,
-      outputNumber: '' + outputNumber,
+      outputIndex: '' + outputIndex,
       owner: publicKey,
       reference,
       referenceOffering
@@ -80,20 +86,16 @@ function* signTx(action: any) {
   yield put({ type: Actions.signTxIdReceived, payload: requestId.id });
   const response = yield call(bindAuthResponse, requestId);
 
-  tx.sign('b698d86c67a2cff80405bd47af322216c552fd3a52f9c58a70f7b3a3313895b1')
-   /*
-   TODO Unmock
-   tx.inputs.map(
-    (input: any, index: number) => {
-      tx.applySignature({
-        inputIndex: index,
-        sigtype: bitcore.crypto.Signature.SIGHASH_ALL,
-        publicKey: publicKey,
-        signature: bitcore.crypto.Signature.fromDER(new Buffer(response.signatures[index].signature, 'hex'))
-      })
-    }
+  tx.inputs.map(
+   (input: any, index: number) => {
+     tx.applySignature({
+       inputIndex: index,
+       sigtype: bitcore.crypto.Signature.SIGHASH_ALL,
+       publicKey: publicKey,
+       signature: bitcore.crypto.Signature.fromDER(new Buffer(response.signatures[index].signature, 'hex'))
+     })
+   }
   )
-  */
   const submit = yield call(insightSubmit, tx.toString())
 
   const result = yield call(submitLicense, reference, submit, 0, publicKey.toString(), offering.id);
