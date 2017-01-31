@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { Price } from '../../../common';
+import { Price, LicenseType } from '../../../common';
 
 import { TermsOfUse } from './TermsOfUse'
 import { Preview } from './Preview'
@@ -12,6 +12,7 @@ export interface StepPublishAndReviewProps {
   readonly authorName?: string;
   readonly workTitle: string;
   readonly price: Price;
+  readonly licenseType: LicenseType;
 }
 
 export default class StepPublishAndReview extends React.Component<StepPublishAndReviewProps, any> {
@@ -30,6 +31,7 @@ export default class StepPublishAndReview extends React.Component<StepPublishAnd
             workTitle={this.props.workTitle}
             mediaType="Article"
             price={this.props.price}
+            licenseType={this.props.licenseType}
           />
         </div>
       </section>

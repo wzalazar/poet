@@ -3,7 +3,7 @@ import * as React from 'react';
 export interface RadioButtonGroupProps {
   readonly className?: string;
   readonly radioButtons: ReadonlyArray<RadioButton>;
-  readonly onSelectionChange?: (id: string, text: string) => void;
+  readonly onSelectionChange?: (id: string) => void;
 }
 
 interface RadioButtonGroupState {
@@ -45,11 +45,16 @@ export class RadioButtonGroup extends React.Component<RadioButtonGroupProps, Rad
     )
   }
 
+  componentDidUpdate(prevProps: RadioButtonGroupProps, prevState: RadioButtonGroupState) {
+    if (prevState.selectedIndex !== this.state.selectedIndex)
+      this.props.onSelectionChange && this.props.onSelectionChange(this.props.radioButtons[this.state.selectedIndex].id)
+  }
+
+
   private onItemToggle(index: number) {
     this.setState({
       selectedIndex: index
     });
-    this.props.onSelectionChange && this.props.onSelectionChange(this.props.radioButtons[index].id, this.props.radioButtons[index].text)
   }
 
   public getSelectedItem() {

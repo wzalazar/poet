@@ -35,7 +35,7 @@ function renderOfferingFunc(workOffering: WorkOffering & SubmitOffering): JSX.El
       <div className="info">
         <div className="row mb-2">
           <div className="description col-xs-7">
-            { workOffering.attributes.description || 'This offering lacks a description. Please contact the author.' }
+            { workOffering.attributes.licenseDescription || 'This offering lacks a description. Please contact the author.' }
           </div>
           <div className="col-xs-5">
             <div className="price">
@@ -43,7 +43,7 @@ function renderOfferingFunc(workOffering: WorkOffering & SubmitOffering): JSX.El
               { workOffering.attributes.pricingPriceCurrency || 'BTC' }
             </div>
             <div className="type">
-              { workOffering.attributes.type }
+              { workOffering.attributes.licenseType }
             </div>
           </div>
         </div>

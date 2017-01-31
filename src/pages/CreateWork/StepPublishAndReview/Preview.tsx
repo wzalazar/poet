@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as moment from 'moment';
 
-import { Price } from '../../../common';
+import { Price, LicenseType } from '../../../common';
 
 export interface PreviewProps {
   readonly className?: string;
@@ -9,6 +9,7 @@ export interface PreviewProps {
   readonly mediaType: string;
   readonly workTitle: string;
   readonly price: Price;
+  readonly licenseType: LicenseType;
 }
 
 export class Preview extends React.Component<PreviewProps, undefined> {
@@ -68,17 +69,10 @@ export class Preview extends React.Component<PreviewProps, undefined> {
         <hr/>
         <section>
           <div className="row mb-2">
-            <div className="col-sm-6"><h5>MIT License</h5></div>
+            <div className="col-sm-6"><h5>{ this.props.licenseType.name }</h5></div>
             <div className="col-sm-6 text-right"><h5>$ {this.props.price.amount} {this.props.price.currency}</h5></div>
           </div>
-          <p>
-            Permission is hereby granted, free of charge, to any person obtaining a copy
-            of this software and associated documentation files (the "Software"), to deal
-            in the Software without restriction, including without limitation the rights
-            to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-            copies of the Software, and to permit persons to whom the Software is
-            furnished to do so, subject to the following conditions:
-          </p>
+          <p>{ this.props.licenseType.description }</p>
         </section>
         <hr/>
         <section>

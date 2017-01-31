@@ -40,8 +40,8 @@ export interface WorkOffering extends Claim {
   readonly owner: string
   readonly attributes: {
     readonly [key: string]: string;
-    readonly type: string;
-    readonly description: string;
+    readonly licenseType: string;
+    readonly licenseDescription: string;
     readonly pricingFrequency: string;
     readonly pricingPriceAmount: string;
     readonly pricingPriceCurrency: string;

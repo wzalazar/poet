@@ -2,10 +2,11 @@ import * as React from 'react';
 
 import { Pricing, PricingState } from './Pricing';
 import { LicensePreview } from './LicensePreview';
-import { LicenseType } from './LicenseType';
+import { LicenseTypeComponent } from './LicenseType';
+import { LicenseType } from '../../../common';
 
 export interface StepLicenseData {
-  readonly licenseType: string;
+  readonly licenseType: LicenseType;
   readonly pricing: PricingState;
 }
 
@@ -15,7 +16,7 @@ export interface StepLicenseProps {
 
 export class StepLicense extends React.Component<StepLicenseProps, StepLicenseData> {
   private readonly controls: {
-    licenseType?: LicenseType,
+    licenseType?: LicenseTypeComponent,
     pricing?: Pricing;
     licensePreview?: LicensePreview;
   } = {};
@@ -27,8 +28,8 @@ export class StepLicense extends React.Component<StepLicenseProps, StepLicenseDa
         <div className="row">
           <div className="col-sm-6">
             <h3>License</h3>
-            <LicenseType
-              ref={ licenseType => this.controls.licenseType = licenseType}
+            <LicenseTypeComponent
+              ref={ licenseType => this.controls.licenseType = licenseType }
               onSelectionChange={this.onLicenseTypeSelectionChange.bind(this)} />
             <Pricing ref={ pricing => this.controls.pricing = pricing } />
           </div>
@@ -46,7 +47,7 @@ export class StepLicense extends React.Component<StepLicenseProps, StepLicenseDa
     });
   }
 
-  private onLicenseTypeSelectionChange(id: string, text: string) {
-    this.controls.licensePreview.setLicenseType(text);
+  private onLicenseTypeSelectionChange(licenseType: LicenseType) {
+    this.controls.licensePreview.setLicenseType(licenseType);
   }
 }

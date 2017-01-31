@@ -48,7 +48,9 @@ export default class CreateWorkLayout extends React.Component<CreateWorkProps, C
             <StepPublishAndReview
               workTitle={this.state.workTitle}
               price={this.state.licenseData && this.state.licenseData.pricing.price}
-              onSubmit={this.submitWork.bind(this)} />
+              onSubmit={this.submitWork.bind(this)}
+              licenseType={this.state.licenseData && this.state.licenseData.licenseType}
+            />
           </TabPanel>
         </Tabs>
       </section>
@@ -90,7 +92,8 @@ export default class CreateWorkLayout extends React.Component<CreateWorkProps, C
       {
         type: 'Offering',
         attributes: {
-          'type': this.state.licenseData.licenseType,
+          'licenseType': this.state.licenseData.licenseType.name,
+          'licenseDescription': this.state.licenseData.licenseType.description,
           'pricingFrequency': this.state.licenseData.pricing.frequency,
           'pricingPriceAmount': this.state.licenseData.pricing.price.amount,
           'pricingPriceCurrency': this.state.licenseData.pricing.price.currency
