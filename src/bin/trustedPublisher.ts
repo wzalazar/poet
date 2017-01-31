@@ -95,7 +95,7 @@ export default async function createServer(options?: TrustedPublisherOptions) {
           type: TITLE,
           attributes: {
             reference: claim.id,
-            owner: claim.publicKey
+            owner: claim.publicKey,
           }
         }, privKey))
       }

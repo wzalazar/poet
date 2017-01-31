@@ -37,12 +37,16 @@ export default {
     }
     const referenceOfferingId = claim.attributes[ReferenceOffering]
     const referenceOffering = referenceOfferingId
-      ? await service.getOffering(referenceOfferingId)
-      : null
+      && await service.getOffering(referenceOfferingId)
+    if (!referenceOffering) {
+      console.log('Could not find referred offering')
+      return
+    }
+
     const holderId = claim.attributes[Holder]
     const holder = holderId
-      ? await service.profileRepository.findOneById(holderId)
-      : null
+      && await service.profileRepository.findOneById(holderId)
+
     const proofType = claim.attributes[ProofType]
     let proofValue
     try {
