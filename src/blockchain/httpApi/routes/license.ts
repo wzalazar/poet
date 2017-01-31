@@ -3,12 +3,14 @@ import * as Koa from 'koa'
 
 import BlockchainService from '../../service'
 import Route, { QueryOptions } from '../route'
-import Work from '../../orm/derived/work'
-import OfferingRoute from './offerings'
-import Router = require('koa-router')
-import Profile from "../../orm/derived/profile";
-import Context = Koa.Context
 import License from '../../orm/derived/license'
+import Router = require('koa-router')
+import Context = Koa.Context
+import { QueryBuilder } from 'typeorm'
+
+interface LicenseQueryOptions extends QueryOptions {
+  holder?: string
+}
 
 export default class LicenseRoute extends Route<License> {
   service: BlockchainService
@@ -28,5 +30,13 @@ export default class LicenseRoute extends Route<License> {
       item => this.service.getLicenseFull(item.id)
     ))
 
+  }
+
+  ownFilter(queryBuilder: QueryBuilder<License>, opts: LicenseQueryOptions): QueryBuilder<License> {
+    if (opts.holder) {
+      return queryBuilder
+        .andWhere("licenseHolder=:holder", { "holder": opts.holder })
+    }
+    return queryBuilder
   }
 }

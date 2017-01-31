@@ -276,6 +276,9 @@ export default class BlockchainService {
 
   async getLicenseFull(id: string) {
     const license = await this.licenseRepository.findOneById(id)
+    if (!license) {
+      return null
+    }
     const claim = await this.getClaim(id)
     license.reference = await this.getWorkFull(claim.attributes[Fields.REFERENCE])
     license.referenceOffering = await this.getOffering(claim.attributes[Fields.REFERENCE_OFFERING])
