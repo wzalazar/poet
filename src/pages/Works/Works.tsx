@@ -9,18 +9,18 @@ import Pagination from '../../components/Pagination';
 import WorksComponent from '../../hocs/Works';
 import { WorkProps } from '../../hocs/WorkComponent';
 
-import './Layout.scss';
+import './Works.scss';
 
 function renderWork(props: WorkProps) {
   return (
     <li key={props.id} className="mb-3">
       <h3><Link to={'/works/' + props.id}>{props.attributes.name}</Link></h3>
-      <div>by { props.attributes.authorPublicKey ? <ProfileLink id={props.attributes.authorPublicKey} /> : (props.attributes.authorDisplayName || 'Unknown author') }</div>
+      <div className="author">by { props.attributes.authorPublicKey ? <ProfileLink id={props.attributes.authorPublicKey} /> : (props.attributes.authorDisplayName || 'Unknown author') }</div>
       <small>
-        <span>Created: { moment(props.attributes.publishedAt || props.attributes.createdAt ).fromNow() }</span>
-        <span className="ml-3">Timestamped: { moment(props.claimInfo && props.claimInfo.timestamp).fromNow() }</span>
+        <span><strong>Created:</strong> { moment(props.attributes.publishedAt || props.attributes.createdAt ).fromNow() }</span>
+        <span className="ml-3"><strong>Timestamped:</strong> { moment(props.claimInfo && props.claimInfo.timestamp).fromNow() }</span>
       </small>
-      <div>{props.attributes.content}</div>
+      <div className="content">{props.attributes.content}</div>
     </li>
   )
 }
