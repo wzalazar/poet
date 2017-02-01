@@ -1,5 +1,5 @@
 import * as React from 'react';
-import moment = require('moment');
+import * as moment from 'moment';
 import * as ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
