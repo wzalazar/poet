@@ -7,6 +7,8 @@ const Bitcore = require('bitcore-lib');
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
 
 import { WalletLayout } from './Layout';
+import { currentPublicKey } from '../../selectors/session'
+import { publicKeyToAddress } from '../../bitcoin/addressHelpers'
 
 export interface UserWalletProps {
   publicKey?: string;
@@ -34,8 +36,8 @@ export class UserWallet extends PageLoader<UserWalletProps, Object> {
   }
 
   select(state: any, ownProps: any): Object {
-    const publicKey = state.session && state.session.token && state.session.token.publicKey;
-    const address = publicKey && Bitcore.Address.fromPublicKey(Bitcore.PublicKey(publicKey), Bitcore.Networks.testnet).toString();
+    const publicKey = currentPublicKey(state);
+    const address = publicKey && publicKeyToAddress(publicKey);
 
     return { publicKey, address };
   }

@@ -5,6 +5,7 @@ import { Saga } from 'redux-saga';
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
 import CreateWorkLayout from './Layout';
 import Actions from '../../actions'
+import { currentPublicKey } from '../../selectors/session'
 
 interface CreateWorkState {
 }
@@ -32,7 +33,7 @@ export class CreateWork extends PageLoader<CreateWorkState, Object> {
   select(state: any, ownProps: any): Object {
     return {
       userName: state.session.userProfile && state.session.userProfile.name,
-      userPublicKey: state.session && state.session.token.publicKey
+      userPublicKey: currentPublicKey(state)
     };
   }
 

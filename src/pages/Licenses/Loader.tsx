@@ -4,6 +4,7 @@ import { Saga } from 'redux-saga';
 
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
 import { LicensesLayout } from './Layout';
+import { currentPublicKey } from '../../selectors/session'
 
 interface LicensesState {
 }
@@ -30,7 +31,7 @@ export class Licenses extends PageLoader<LicensesState, Object> {
 
   select(state: any, ownProps: any): Object {
     return {
-      publicKey: state.session && state.session.token && state.session.token.publicKey
+      publicKey: currentPublicKey(state)
     }
   }
 }

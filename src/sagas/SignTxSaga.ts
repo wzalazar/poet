@@ -66,8 +66,10 @@ function getSighash(tx: any, address: string): Buffer[] {
 function* signTx(action: any) {
   yield put({ type: Actions.signTxModalShow });
 
-  const publicKey = bitcore.PublicKey(yield select(state => state.session.token.publicKey));
+  const publicKey = bitcore.PublicKey(yield select(currentPublicKey));
+
   const offering = action.payload;
+
   const reference = offering.attributes.reference;
 
   const myAddress = bitcore.Address(publicKey, bitcore.Networks.testnet);

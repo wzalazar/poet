@@ -6,6 +6,7 @@ import * as protobuf from 'protobufjs'
 import Actions from '../actions'
 import auth from '../auth'
 import config from '../config'
+import { currentPublicKey } from '../selectors/session'
 
 declare var require: (moduleId: string) => any;
 const jsonClaims = require('../claim.json');
@@ -66,7 +67,7 @@ const builder = new ClaimBuilder();
 function* signClaims(claimTemplates: any) {
   yield put({ type: Actions.signClaimsModalShow });
 
-  const publicKey = yield select(state => state.session.token.publicKey);
+  const publicKey = yield select(currentPublicKey);
 
   const serializedToSign = claimTemplates.payload.map((template: any) => {
     return builder.getEncodedForSigning(template, publicKey);
