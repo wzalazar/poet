@@ -1,15 +1,14 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 
-import Modal, { ModalVisible, ModalProps } from './Modal'
+const QR = require('react-qr');
+
+import Modal, { ModalProps } from './Modal'
 import Actions from '../actions'
-import Loading from '../components/Loading';
+import Loading from '../components/Loading'
 
 import './Modal.scss'
 import './Login.scss'
-
-declare var require: (moduleId: string) => any;
-const QR = require('react-qr');
 
 interface SignProps {
   requestId: string;

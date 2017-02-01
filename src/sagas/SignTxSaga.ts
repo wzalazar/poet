@@ -1,32 +1,18 @@
 import { Saga, takeEvery } from 'redux-saga'
 import { call, put, select, take } from 'redux-saga/effects'
 import { browserHistory } from 'react-router'
-import * as protobuf from 'protobufjs'
-
 import Actions from '../actions'
 import auth from '../auth'
 import config from '../config'
 
 const bitcore = require('bitcore-lib');
 
-declare var require: (moduleId: string) => any;
-const jsonClaims = require('../claim.json');
+import { getUtxos, submitTx } from '../bitcoin/insight';
+import { getSighash, applyHexSignaturesInOrder } from '../bitcoin/txHelpers';
+import { currentPublicKey } from '../selectors/session'
 
 async function requestIdFromAuth(dataToSign: Buffer[], bitcoin: boolean) {
   return await auth.getRequestIdForMultipleSigningBuffers(dataToSign, bitcoin)
-}
-
-async function insightSubmit(tx: string) {
-  return await fetch(
-    'https://test-insight.bitpay.com/api/tx/send',
-    {
-      method: 'POST',
-      body: JSON.stringify({ rawtx: tx }),
-      headers:{
-        'content-type': 'application/json'
-      }
-    }
-  ).then((res: any) => res.json()).then((res: any) => res.txid)
 }
 
 async function bindAuthResponse(request: any) {
@@ -66,10 +52,8 @@ function getSighash(tx: any, address: string): Buffer[] {
 function* signTx(action: any) {
   yield put({ type: Actions.signTxModalShow });
 
-  const publicKey = bitcore.PublicKey(yield select(currentPublicKey));
-
+  const publicKey = bitcore.PublicKey(yield select(state => state.session.token.publicKey));
   const offering = action.payload;
-
   const reference = offering.attributes.reference;
 
   const myAddress = bitcore.Address(publicKey, bitcore.Networks.testnet);
@@ -88,25 +72,15 @@ function* signTx(action: any) {
   yield put({ type: Actions.signTxIdReceived, payload: requestId.id });
   const response = yield call(bindAuthResponse, requestId);
 
-  tx.inputs.map(
-   (input: any, index: number) => {
-     tx.applySignature({
-       inputIndex: index,
-       sigtype: bitcore.crypto.Signature.SIGHASH_ALL,
-       publicKey: publicKey,
-       signature: bitcore.crypto.Signature.fromDER(new Buffer(response.signatures[index].signature, 'hex'))
-     })
-   }
-  )
-  const submit = yield call(insightSubmit, tx.toString())
-
-  const result = yield call(submitLicense, reference, submit, 0, publicKey.toString(), offering.id);
+  applyHexSignaturesInOrder(tx, response.signatures, publicKey);
+  const txId = yield call(submitTx, tx.toString());
+  const license = yield call(submitLicense, reference, txId, 0, publicKey.toString(), offering.id);
 
   yield put({ type: Actions.txSubmittedSuccess });
   yield take(Actions.signTxModalDismissRequested);
   yield put({ type: Actions.signTxModalHide });
 
-  browserHistory.push(`/blocks/${result}`)
+  browserHistory.push(`/claims/${license}`)
 }
 
 function* mockLoginHit(action: any) {

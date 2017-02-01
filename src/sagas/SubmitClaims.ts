@@ -8,7 +8,6 @@ import auth from '../auth'
 import config from '../config'
 import { currentPublicKey } from '../selectors/session'
 
-declare var require: (moduleId: string) => any;
 const jsonClaims = require('../claim.json');
 
 async function requestIdFromAuth(dataToSign: string[]) {

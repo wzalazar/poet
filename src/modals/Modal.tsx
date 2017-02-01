@@ -1,5 +1,3 @@
-declare var require: (moduleId: string) => any;
-
 import * as React from 'react'
 
 const Overlays = require('react-overlays');

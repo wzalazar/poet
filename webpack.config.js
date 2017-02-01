@@ -5,13 +5,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const vendor = [
+  'bitcore-lib',
   'react',
   'react-dom',
-  'react-redux',
   'react-overlays',
+  'react-redux',
+  'react-tabs',
   'redux',
   'redux-saga',
-  'react-tabs',
   'moment'
 ];
 

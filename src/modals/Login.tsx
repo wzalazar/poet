@@ -1,22 +1,16 @@
-/// <amd-dependency path="react-bootstrap-modal" />
-import { ModalVisible } from './Modal'
-declare var require: (moduleId: string) => any;
+import * as React from 'react'
+import { Link } from 'react-router'
+import { connect } from 'react-redux'
+import { Action } from 'redux'
 
 const QR = require('react-qr');
 
-import * as React from 'react';
-import { Link } from 'react-router';
-import { connect } from 'react-redux';
-import { Action } from 'redux';
+import Modal, { ModalVisible, ModalProps } from './Modal'
+import Loading from '../components/Loading'
+import Actions from '../actions'
 
-import Loading from '../components/Loading';
-import Modal from './Modal'
-import { ModalProps } from './Modal'
-
-import Actions from '../actions';
-
-import './Modal.scss';
-import './Login.scss';
+import './Modal.scss'
+import './Login.scss'
 
 interface LoginActions extends ModalProps {
   mockLoginRequest: (id: string) => Action;
