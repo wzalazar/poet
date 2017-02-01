@@ -31,5 +31,13 @@ nav.navbar {
       margin-left: 5px;
       margin-right: 15px;
     }
+
+    li.avatar {
+      img {
+        $avatar-size: 30px;
+        width: $avatar-size;
+        height: $avatar-size;
+      }
+    }
   }
 }

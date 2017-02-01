@@ -46,4 +46,7 @@ export default class Actions {
   public static readonly signTxIdReceived = 'sign tx id received';
   public static readonly signTxModalHide = 'sign tx modal hide';
   public static readonly signTxModalShow = 'sign tx modal show';
+
+  public static readonly fetchProfileData = 'fetch profile data';
+  public static readonly profileDataFetched = 'profile data fetched';
 }

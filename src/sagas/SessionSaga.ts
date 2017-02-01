@@ -37,6 +37,7 @@ function* logoutButtonClickedAction(action: any) {
 function* loginResponseAction(action: any) {
   yield put({ type: Actions.loginModalClose });
   yield put({ type: Actions.loginSuccess, token: action.payload });
+  yield put({ type: Actions.fetchProfileData, profilePublicKey: action.payload.publicKey });
   browserHistory.push('/'); // TODO: redirect to login_success
   localStorage.setItem(LOCALSTORAGE_SESSION, JSON.stringify(action.payload));
 }
@@ -54,7 +55,9 @@ function sessionSaga(): Saga {
     const session = localStorage.getItem(LOCALSTORAGE_SESSION);
 
     if (session) {
-      yield put({ type: Actions.loginSuccess, token: JSON.parse(session) });
+      const token = JSON.parse(session);
+      yield put({ type: Actions.loginSuccess, token });
+      yield put({ type: Actions.fetchProfileData, profilePublicKey: token.publicKey });
     }
 
     yield takeEvery(Actions.loginButtonClicked, loginButtonClickedAction);
@@ -62,6 +65,7 @@ function sessionSaga(): Saga {
     yield takeEvery(Actions.loginModalDisposeRequested, loginModalDisposeRequestedAction);
     yield takeEvery(Actions.loginResponse, loginResponseAction);
     yield takeEvery(Actions.mockLoginRequest, mockLoginHit);
+    yield takeEvery(Actions.loginSuccess, mockLoginHit);
 
   }
 }

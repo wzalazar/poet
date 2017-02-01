@@ -15,7 +15,8 @@ interface NavbarActions {
 }
 
 export interface NavbarProps {
-  loggedIn: boolean;
+  readonly loggedIn: boolean;
+  readonly avatar: string;
 }
 
 class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undefined> {
@@ -41,6 +42,14 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
     return <li key={key} className="nav-item"><Link to={'/' + key} className="btn btn-primary btn-sm">{text}</Link></li>;
   }
 
+  private renderAvatar() {
+    return (
+      <Link to={'/user/profile'} className="nav-link">
+        <img key="avatar" src={this.props.avatar} className="rounded-circle" />
+      </Link>
+   );
+  }
+
   private notLoggedActions(): JSX.Element[] {
     return [
       this.renderNavLink('about', 'About'),
@@ -54,7 +63,7 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
     return [
       this.renderNavLink('portfolio', 'Portfolio'),
       this.renderNavLink('licenses', 'Licenses'),
-      this.renderNavLink('user/profile', 'User'),
+      <li key="avatar" className="nav-item avatar">{ this.renderAvatar() }</li>,
       <li key="logout"><LogoutButton>Logout</LogoutButton></li>,
       this.renderNavButton('create-work', 'New Work')
     ];
@@ -63,7 +72,8 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
 
 function mapStateToProps(state: any): NavbarProps {
   return {
-    loggedIn: state.session && (state.session.state === Constants.LOGGED_IN)
+    loggedIn: state.session && (state.session.state === Constants.LOGGED_IN),
+    avatar: state.profile && state.profile.attributes && state.profile.attributes.imageData
   }
 }
 
