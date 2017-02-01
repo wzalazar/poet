@@ -41,12 +41,6 @@ export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadSt
     }
   }
 
-  componentWillReceiveProps(props: ImageUploadProps) {
-    this.setState({
-      imageData: props.defaultImageData
-    });
-  }
-
   render() {
     return (
       <section className={this.props.className} >
@@ -61,7 +55,7 @@ export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadSt
           <div>
             <img
               ref={image => this.components.image = image }
-              src={this.state.isLoading ? this.props.spinnerUrl : this.state.imageData}
+              src={this.state.isLoading ? this.props.spinnerUrl : (this.state.imageData || this.props.defaultImageData)}
               className="rounded-circle"
               onClick={this.onClick.bind(this)}
             />
