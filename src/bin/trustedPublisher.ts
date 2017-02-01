@@ -26,7 +26,7 @@ export default async function createServer(options?: TrustedPublisherOptions) {
   const creator = await getCreator()
   const queue = new Queue()
 
-  koa.use(Body({ formLimit: '1mb' }))
+  koa.use(Body({ formLimit: 1000000, jsonLimit: 1000000 }))
 
   const createBlock = async (claims: Claim[], ctx: any) => {
     const block: Block = creator.createBlock(claims)
