@@ -10,7 +10,21 @@ export interface FilterComponentState {
   readonly dateTo?: moment.Moment;
 }
 
-export default class FiltersComponent extends React.Component<any, FilterComponentState> {
+class CustomInput extends React.Component<any, any>{
+  render() {
+    return (
+      <div>
+        <button
+          className="btn btn-secondary btn-sm"
+          onClick={this.props.onClick}>
+          {this.props.value}
+        </button>
+      </div>
+    )
+  }
+}
+
+export class FiltersComponent extends React.Component<any, FilterComponentState> {
   constructor() {
     super(...arguments);
     this.state = {
@@ -32,11 +46,11 @@ export default class FiltersComponent extends React.Component<any, FilterCompone
   private renderDateSelector(text: string) {
     return (
       <div className="date-picker pr-1">
-        <span className="mr-1">{text}</span>
-        <span>between</span>
-        <ReactDatePicker onChange={this.onDateFromChange.bind(this)} selected={this.state.dateFrom} />
-        <span>and</span>
-        <ReactDatePicker onChange={this.onToFromChange.bind(this)} selected={this.state.dateTo} />
+        <span>{text}</span>
+        <span className="ml-1 mr-1">between</span>
+        <ReactDatePicker onChange={this.onDateFromChange.bind(this)} selected={this.state.dateFrom} customInput={<CustomInput/>} />
+        <span className="mx-1">and</span>
+        <ReactDatePicker onChange={this.onToFromChange.bind(this)} selected={this.state.dateTo} customInput={<CustomInput/>} />
       </div>
     );
   }
