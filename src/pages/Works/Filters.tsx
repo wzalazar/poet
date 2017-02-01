@@ -28,7 +28,7 @@ export class FiltersComponent extends React.Component<any, FilterComponentState>
   constructor() {
     super(...arguments);
     this.state = {
-      dateFrom: moment(),
+      dateFrom: moment().subtract(7, 'days'),
       dateTo: moment()
     }
   }
@@ -46,8 +46,8 @@ export class FiltersComponent extends React.Component<any, FilterComponentState>
   private renderDateSelector(text: string) {
     return (
       <div className="date-picker pr-1">
-        <span>{text}</span>
-        <span className="ml-1 mr-1">between</span>
+        <strong>{text}&nbsp;</strong>
+        <span className="mr-1">between</span>
         <ReactDatePicker onChange={this.onDateFromChange.bind(this)} selected={this.state.dateFrom} customInput={<CustomInput/>} />
         <span className="mx-1">and</span>
         <ReactDatePicker onChange={this.onToFromChange.bind(this)} selected={this.state.dateTo} customInput={<CustomInput/>} />
@@ -58,7 +58,7 @@ export class FiltersComponent extends React.Component<any, FilterComponentState>
 
   render() {
     return (
-      <header className="mb-3 d-flex p-1 no-margin-bottom">
+      <header>
         { this.renderDropdown('Sort by', ['Most Trusted', 'Date Published', 'Licenses Sold'])}
         { this.renderDropdown('License', ['Free to Use', 'MIT', 'Private'])}
         { this.renderDateSelector('Created')}

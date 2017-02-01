@@ -1,7 +1,20 @@
 header {
+  //$background-color: #f7f7f;
+  $background-color: rgb(240, 240, 240);
+
   display: flex; // bootstrap's d-flex isn't working for some reason
   font-size: .7em;
+  align-items: center;
+  background-color: $background-color;
+  border-top: 3px solid darken($background-color, 5%);
+  border-bottom: 2px solid darken($background-color, 10%);
+  padding: 7px 12px 5px 8px !important;
+  margin-bottom: 22px !important;
+
   >div {
+    display: flex;
+    align-items: center;
+
     select, input[type="text"] {
       border: 1px solid lightgray;
     }
