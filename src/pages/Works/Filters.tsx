@@ -1,9 +1,23 @@
 import * as React from 'react';
+import moment = require('moment');
+import * as ReactDatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 import './Filters.scss';
 
-export default class FiltersComponent extends React.Component<any, undefined> {
+export interface FilterComponentState {
+  readonly dateFrom?: moment.Moment;
+  readonly dateTo?: moment.Moment;
+}
 
+export default class FiltersComponent extends React.Component<any, FilterComponentState> {
+  constructor() {
+    super(...arguments);
+    this.state = {
+      dateFrom: moment(),
+      dateTo: moment()
+    }
+  }
   private renderDropdown(text: string, options: string[]) {
     return (
       <div className="pr-1">
@@ -20,10 +34,9 @@ export default class FiltersComponent extends React.Component<any, undefined> {
       <div className="date-picker pr-1">
         <span className="mr-1">{text}</span>
         <span>between</span>
-        <input type="text" className="px-1 mx-1" placeholder="this will be a date picker" />
+        <ReactDatePicker onChange={this.onDateFromChange.bind(this)} selected={this.state.dateFrom} />
         <span>and</span>
-        <input type="text" className="px-1 mx-1" placeholder="this will be a date picker" />
-
+        <ReactDatePicker onChange={this.onToFromChange.bind(this)} selected={this.state.dateTo} />
       </div>
     );
   }
@@ -38,4 +51,17 @@ export default class FiltersComponent extends React.Component<any, undefined> {
       </header>
     );
   }
+
+  private onDateFromChange(dateFrom: moment.Moment) {
+    this.setState({
+      dateFrom
+    });
+  }
+
+  private onToFromChange(dateTo: moment.Moment) {
+    this.setState({
+      dateTo
+    });
+  }
+
 }

@@ -44,7 +44,7 @@ module.exports = {
     loaders: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
       { test: /\.tsx?$/, loaders: ['react-hot', 'babel', 'awesome-typescript-loader'] },
-      { test: /\.scss$/, loader: production
+      { test: /\.s?css$/, loader: production
         ? ExtractTextPlugin.extract('css!sass')
         : 'style!css?sourceMap!sass?sourceMap'
       },
