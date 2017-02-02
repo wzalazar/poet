@@ -1,5 +1,7 @@
 import * as Koa from 'koa'
-import { sha256, verify } from '../common'
+import { sha256 } from '../common'
+import { Signature } from './interfaces'
+import { doubleSha, verifies } from './helpers'
 
 const bitcore = require('bitcore-lib')
 const uuid = require('uuid')
@@ -7,21 +9,8 @@ const Body = require('koa-body')
 const Route = require('koa-route')
 const IO = require('koa-socket')
 
-interface AuthServerOptons {
+export interface AuthServerOptons {
   port: number
-}
-
-interface SignedMessage {
-  encodedHash: string
-  timestamp: number
-  accept: boolean
-  extra: string
-}
-
-interface Signature {
-  signature: string
-  publicKey: string
-  message: string
 }
 
 export default async function createServer(options: AuthServerOptons) {
@@ -96,10 +85,6 @@ export default async function createServer(options: AuthServerOptons) {
     websocket.emit('message', makeCreateResponse(request, ref))
   }
 
-  function doubleSha(data: Buffer) {
-    return bitcore.crypto.Hash.sha256sha256(data)
-  }
-
   function validSignatures(id: string, payload: Signature[]): boolean {
     const request = JSON.parse(requests[id])
     const verifyHash = request.bitcoin ? doubleSha : sha256
@@ -107,17 +92,7 @@ export default async function createServer(options: AuthServerOptons) {
       const encoded = new Buffer(request.message[index], 'hex')
       const signature = payload[index].signature
       const publicKey = payload[index].publicKey
-
-      if (!encoded || !signature || !publicKey) {
-        return false
-      }
-
-      if (!verify(
-          new bitcore.PublicKey(publicKey),
-          new Buffer(signature, 'hex'),
-          verifyHash(encoded)))
-      {
-        console.log('Signature is invalid')
+      if (!verifies(verifyHash, encoded, signature, publicKey)) {
         return false
       }
     }
@@ -134,19 +109,9 @@ export default async function createServer(options: AuthServerOptons) {
     const publicKey = payload.publicKey
     const verifyHash = request.bitcoin ? doubleSha : sha256
 
-    if (!encoded || !signature || !publicKey) {
+    if (!verifies(verifyHash, encoded, signature, publicKey)) {
       return false
     }
-
-    if (!verify(
-        new bitcore.PublicKey(publicKey),
-        new Buffer(signature, 'hex'),
-        verifyHash(encoded)))
-    {
-      console.log('Signature is invalid')
-      return false
-    }
-
     return true
   }
 
@@ -255,18 +220,3 @@ export default async function createServer(options: AuthServerOptons) {
   return koa
 }
 
-export async function start(options: AuthServerOptons) {
-  options = Object.assign({}, {
-    port: 5000
-  }, options || {})
-  const server = await createServer(options)
-  await server.listen(options.port)
-
-  console.log('Server started successfully.')
-}
-
-if (!module.parent) {
-  start({ port: 5000 }).catch(error => {
-    console.log('Unable to start Trusted Publisher server:', error, error.stack)
-  })
-}

@@ -4,6 +4,7 @@
   "description": "A subjective truth engine system",
   "main": "./src/index.js",
   "scripts": {
+    "auth-server": "./node_modules/.bin/ts-node ./src/bin/authServer.ts",
     "build": "tsc",
     "bitcoin-scanner": "./node_modules/.bin/ts-node ./src/bin/bitcoinScanner.ts",
     "explorer-api": "./node_modules/.bin/ts-node ./src/bin/explorerApi.ts",
