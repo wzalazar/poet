@@ -28,7 +28,7 @@
     "@types/bluebird": "^3.0.36",
     "@types/ioredis": "0.0.21",
     "@types/isomorphic-fetch": "0.0.31",
-    "@types/koa": "^2.0.34",
+    "@types/koa": "^2.0.37",
     "@types/koa-router": "^7.0.21",
     "@types/lodash": "^4.14.50",
     "@types/rx": "^4.1.1",

@@ -2,6 +2,8 @@ import * as SocketIO from 'socket.io-client'
 import { v4 } from 'uuid'
 import config from './config'
 
+const bitcore = require('bitcore-lib');
+
 interface PromiseInfo<T> {
   promise: Promise<T>
   resolve: (value: T) => void
