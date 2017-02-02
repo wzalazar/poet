@@ -23,9 +23,9 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
   render() {
     return (
       <nav className="navbar">
-        <a className="navbar-brand" href="/">Poet</a>
+        <a className="navbar-brand" href="/">po.et</a>
         <div className="search" >
-          <input type="text" placeholder="Search Creative Works" onClick={this.props.dispatchSearchClick} />
+          <input type="text" placeholder="Search" onClick={this.props.dispatchSearchClick} />
         </div>
         <ul className="navbar-nav">
           { this.props.loggedIn ? this.loggedInActions() : this.notLoggedActions() }

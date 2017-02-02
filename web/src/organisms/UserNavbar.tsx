@@ -1,14 +1,18 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 
-//import './UserNavbar.scss'
+import './UserNavbar.scss'
 
-export class UserNavbar extends React.Component<undefined, undefined> {
+interface UserNavbarProps {
+  location?: string;
+}
+
+export class UserNavbar extends React.Component<UserNavbarProps, undefined> {
   render() {
     return (
-      <nav className="navbar">
-        <ul className="navbar-nav">
-          { this.renderNavLink('user/profile', 'Profile') }
+      <nav className="user-nav">
+        <ul>
+          { this.renderNavLink('user/profile', 'Settings') }
           { this.renderNavLink('user/wallet', 'Wallet') }
         </ul>
       </nav>
@@ -16,7 +20,7 @@ export class UserNavbar extends React.Component<undefined, undefined> {
   }
 
   private renderNavLink(key: string, text: string): JSX.Element {
-    return <li key={key} className="nav-item"><Link to={'/' + key} className="nav-link">{text}</Link></li>
+    return <li key={key} className={ this.props.location === '/' + key && 'selected' }><Link to={'/' + key}>{text}</Link></li>
   }
 
 }

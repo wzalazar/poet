@@ -5,19 +5,27 @@ $almost-white: #fafafa; // she don't lie she don't lie
 nav.navbar {
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
-  border-bottom: 1px solid $almost-white;
-  font-size: 12px;
+  padding: 2px 6px;
 
-  h1 {
-    margin: 0 20px 0 10px;
-    padding-right: 32px;
-    border-right: 1px solid lightgray;
+  .navbar-brand {
+    color: #463F38;
+    font-size: 30px;
+    font-family: 'Roboto Slab';
+    border-right: 1px solid #ececec;
+    padding-right: 30px;
+  }
+
+  .nav-link {
+    color: #000;
+    font-family: 'Roboto Slab';
+    font-size: 12px;
   }
 
   .search {
     input[type=text] {
       width: 300px;
+      font-size: 14px;
+      font-family: 'Roboto Slab', serif;
     }
   }
 
