@@ -1,13 +1,99 @@
 import * as React from 'react';
-
-import './Layout.scss';
+import { Action } from 'redux';
 
 import Config from '../../config';
 
+import { PROFILE, Claim } from '../../Claim';
 import { ImageUpload } from '../../components/ImageUpload';
 
-import { UserProfileProps } from './Loader';
-import { PROFILE } from '../../Claim';
+import './Layout.scss';
+
+export interface ProfileAttributes {
+  readonly displayName?: string;
+  readonly email?: string;
+  readonly avatarImageData?: string;
+  readonly currency?: string;
+}
+
+export interface UserProfileProps extends ProfileAttributes {
+  readonly submitProfileRequested?: (payload: Claim) => Action;
+}
+
+export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttributes> {
+  private imageUpload?: ImageUpload;
+
+  constructor(props: UserProfileProps) {
+    super(...arguments);
+    this.state = ProfileLayout.propsToState(props)
+  }
+
+  componentWillReceiveProps(props: UserProfileProps) {
+    this.setState(ProfileLayout.propsToState(props))
+  }
+
+  private static propsToState(props: UserProfileProps) {
+    return {
+      displayName: props.displayName || '',
+      email: props.email || '',
+      currency: props.currency || ''
+    }
+  }
+
+  render() {
+    return (
+      <section className="user-edit">
+        <div className="header">
+          <h2>Edit profile</h2>
+        </div>
+        <form className="container">
+          <div className="form-group">
+            <ProfileLayoutRow label="Display name">
+              <input
+                onChange={(event: any) => this.setState({displayName: event.target.value})}
+                className="form-control"
+                value={this.state.displayName}/>
+            </ProfileLayoutRow>
+            <ProfileLayoutRow label="Email">
+              <input
+                onChange={(event: any) => this.setState({email: event.target.value})}
+                className="form-control"
+                value={this.state.email}/>
+            </ProfileLayoutRow>
+            <ProfileLayoutRow label="Image">
+              <ImageUpload
+                ref={imageUpload => this.imageUpload = imageUpload}
+                className="image-upload"
+                buttonClassName="btn btn-primary"
+                imageWidthLimit={Config.imageUpload.maxWidth}
+                imageHeightLimit={Config.imageUpload.maxHeight}
+                imageData={this.props.avatarImageData}
+              />
+            </ProfileLayoutRow>
+            <ProfileLayoutRow label="Preferred currency">
+              <input
+                onChange={(event: any) => this.setState({currency: event.target.value})}
+                className="form-control"
+                value={this.state.currency}/>
+            </ProfileLayoutRow>
+          </div>
+        </form>
+        <button onClick={this.onSubmit.bind(this)} className="btn btn-primary outlined">Save</button>
+      </section>
+    );
+  }
+
+  private onSubmit() {
+    this.props.submitProfileRequested({
+      type: PROFILE,
+      attributes: {
+        displayName: this.state.displayName,
+        email: this.state.email,
+        imageData: this.imageUpload.state.imageData,
+        currency: this.state.currency
+      }
+    });
+  }
+}
 
 class ProfileLayoutRow extends React.Component<any, undefined> {
   render() {
@@ -21,60 +107,5 @@ class ProfileLayoutRow extends React.Component<any, undefined> {
         </div>
       </div>
     );
-  }
-}
-
-export class ProfileLayout extends React.Component<UserProfileProps, undefined> {
-  private readonly controls: {
-    displayNameInput?: HTMLInputElement;
-    emailInput?: HTMLInputElement;
-    imageUpload?: ImageUpload;
-    currencyInput?: HTMLInputElement;
-
-  } = {};
-
-  render() {
-    return (
-      <section className="user-edit">
-        <div className="header">
-          <h2>Edit profile</h2>
-        </div>
-        <form className="container">
-          <div className="form-group">
-            <ProfileLayoutRow label="Display name">
-              <input ref={displayNameInput => this.controls.displayNameInput = displayNameInput} className="form-control" defaultValue={this.props.displayName}/>
-            </ProfileLayoutRow>
-            <ProfileLayoutRow label="Email">
-              <input ref={emailInput => this.controls.emailInput = emailInput} className="form-control" defaultValue={this.props.email} />
-            </ProfileLayoutRow>
-            <ProfileLayoutRow label="Image">
-              <ImageUpload
-                ref={imageUpload => this.controls.imageUpload = imageUpload}
-                className="image-upload"
-                buttonClassName="btn btn-primary"
-                imageWidthLimit={Config.imageUpload.maxWidth}
-                imageHeightLimit={Config.imageUpload.maxHeight}
-              />
-            </ProfileLayoutRow>
-            <ProfileLayoutRow label="Preferred currency">
-              <input ref={currencyInput => this.controls.currencyInput = currencyInput} className="form-control" defaultValue={this.props.currency}/>
-            </ProfileLayoutRow>
-          </div>
-        </form>
-        <button onClick={this.onSubmit.bind(this)} className="btn btn-primary outlined">Save</button>
-      </section>
-    );
-  }
-
-  private onSubmit() {
-    this.props.submitProfileRequested({
-      type: PROFILE,
-      attributes: {
-        displayName: this.controls.displayNameInput.value,
-        email: this.controls.emailInput.value,
-        imageData: this.controls.imageUpload.state.imageData,
-        currency: this.controls.currencyInput.value
-      }
-    });
   }
 }

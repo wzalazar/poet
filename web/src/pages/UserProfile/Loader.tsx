@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Route } from 'react-router';
-import { Action } from 'redux';
 import { Saga, delay, takeEvery } from 'redux-saga';
 import { put } from 'redux-saga/effects';
 
@@ -8,15 +7,7 @@ import { Claim } from '../../Claim';
 import Actions from '../../actions'
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
 
-import { ProfileLayout } from './Layout';
-
-export interface UserProfileProps {
-  readonly displayName?: string;
-  readonly email?: string;
-  readonly avatarImageData?: string;
-  readonly currency?: string;
-  readonly submitProfileRequested?: (payload: Claim) => Action;
-}
+import { ProfileLayout, UserProfileProps } from './Layout';
 
 export class UserProfile extends PageLoader<UserProfileProps, Object> {
 
@@ -46,7 +37,15 @@ export class UserProfile extends PageLoader<UserProfileProps, Object> {
   }
 
   select(state: any, ownProps: any): Object {
-    return { id: ownProps.params.id };
+    const { displayName = '', imageData = '', email = '', currency = '' } = state.profile && state.profile.attributes || {};
+
+    return {
+      id: ownProps.params.id,
+      displayName,
+      avatarImageData: imageData,
+      email,
+      currency
+    };
   }
 
   mapDispatchToProps(): Object {

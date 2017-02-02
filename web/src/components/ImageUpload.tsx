@@ -7,6 +7,7 @@ export interface ImageUploadProps {
   imageWidthLimit?: number;
   imageHeightLimit?: number;
   defaultImageData?: string;
+  imageData?: string;
   useDefaultStyles?: boolean;
   spinnerUrl?: string;
 }
@@ -37,8 +38,16 @@ export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadSt
   constructor() {
     super(...arguments);
     this.state = {
-      imageData: null
+      imageData: this.props.imageData
     }
+  }
+
+  componentWillReceiveProps(props: ImageUploadProps) {
+    // TODO: hacky fix, convert ImageUpload into a controlled component
+    if (!this.state.imageData)
+      this.setState({
+        imageData: props.imageData
+      })
   }
 
   render() {
