@@ -18,6 +18,7 @@ export function verifies(hashFn: any, encoded: Buffer, signature: string, public
     console.log('Signature is invalid')
     return false
   }
+  return true
 }
 
 export function signMessage(bitcoin: boolean, key: any /* TODO: TYPE: PrivateKey */, message: string) {

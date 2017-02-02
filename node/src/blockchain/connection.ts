@@ -3,10 +3,10 @@ import { createConnection } from 'typeorm'
 import { delay } from '../common'
 
 export default async function getConnection() {
-  let attempts = 10
+  let attempts = 20
   while (attempts--) {
     try {
-      return createConnection({
+      return await createConnection({
         driver: {
           type: 'postgres',
           host: 'db',

@@ -1,3 +1,7 @@
 FROM poet-base
+
 VOLUME /poet/src
-CMD [ "npm", "run", "torrent-system" ]
+
+EXPOSE 6000
+
+CMD [ "npm", "run", "trusted-publisher" ]

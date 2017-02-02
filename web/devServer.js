@@ -9,8 +9,6 @@ const config = require('./webpack.config');
 
 const compiler = webpack(config);
 
-const SERVER = process.env.SERVER || 'poet.host'
-
 const webpackConfig = {
   noInfo: true,
   progress: true,
@@ -20,19 +18,19 @@ const webpackConfig = {
   },
   proxy: {
     '/api/explorer': {
-      target: 'http://' + SERVER + ':4000',
+      target: 'http://explorer:4000',
       secure: false
     },
     '/api/auth': {
-      target: 'http://' + SERVER + ':5000',
+      target: 'http://auth:5000',
       secure: false
     },
     '/api/user': {
-      target: 'http://' + SERVER + ':6000',
+      target: 'http://trusted-publisher:6000',
       secure: false
     },
     '/api/mockApp': {
-      target: 'http://' + SERVER + ':7000',
+      target: 'http://mock-signer:7000',
       secure: false
     }
   }

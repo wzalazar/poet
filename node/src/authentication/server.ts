@@ -30,7 +30,7 @@ export default async function createServer(options: AuthServerOptions) {
       id,
       multiple,
       bitcoin,
-      url: `http://localhost:5000/info/${id}`,
+      url: `http://auth:5000/info/${id}`,
       message: payload,
       timestamp: new Date().getTime()
     }
@@ -101,9 +101,7 @@ export default async function createServer(options: AuthServerOptions) {
 
   function validSignature(id: string, payload: Signature): boolean {
     const request = JSON.parse(requests[id])
-    const encoded = request.bitcoin
-      ? new Buffer(new Buffer(request.message, 'hex').toString(), 'hex')
-      : new Buffer(request.message, 'hex')
+    const encoded = new Buffer(request.message, 'hex')
     const signature = payload.signature
     const publicKey = payload.publicKey
     const verifyHash = request.bitcoin ? doubleSha : sha256

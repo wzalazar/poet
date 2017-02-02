@@ -13,7 +13,7 @@ export interface MockSignerServerOptions {
   port: number
 }
 
-const server = '192.168.0.168:5000'
+const server = 'auth:5000'
 
 export default async function createServer(options: MockSignerServerOptions) {
 
@@ -27,11 +27,11 @@ export default async function createServer(options: MockSignerServerOptions) {
     try {
       const request = await fetch(`http://${server}/request/${id}`)
       const body = await request.json() as any
-      const signFunc = signMessage.bind(null, body.bitcoin)
+      const signFunc = signMessage.bind(null, body.bitcoin, privateKey)
 
       const result = body.multiple
-        ? body.message.map((message: string) => signFunc(message, privateKey))
-        : signFunc(body.message, privateKey)
+        ? body.message.map((message: string) => signFunc(message))
+        : signFunc(body.message)
       const endpoint = body.multiple ? 'multiple': 'request'
 
       await fetch(`http://${server}/${endpoint}/${id}`, {

@@ -4,7 +4,7 @@ const config = {
   api: {
     explorer: '/api/explorer',
     user: '/api/user',
-    auth: 'ws://192.168.0.168:5000',
+    auth: 'ws://localhost:5000',
     mockApp: '/api/mockApp',
     insight: 'https://test-insight.bitpay.com/api'
   },
