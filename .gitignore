@@ -1,8 +1,9 @@
-node_modules
-*.sw[a-z]
-npm-debug.log
-.vscode
+dist
 .idea
-torrents
 *.js
 *.js.map
+node_modules
+npm-debug.log
+*.sw[a-z]
+torrents
+.vscode

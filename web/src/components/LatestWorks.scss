@@ -1,0 +1,22 @@
+.text-right {
+  text-align: right; // bootstrap 4-alpha.5 not working for this
+}
+
+.latest-works {
+  border: 1px solid lightgray;
+  text-align: left;
+
+  header {
+    border-bottom: 1px solid lightgray;
+
+    .more-link {
+      margin-left: auto;
+    }
+  }
+
+  ul{
+    li {
+      border-bottom: 1px solid lightgray;
+    }
+  }
+}

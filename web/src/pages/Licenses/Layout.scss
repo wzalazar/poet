@@ -1,0 +1,15 @@
+.show {
+  >.dropdown-menu {
+    display: block;
+  }
+}
+
+.licenses {
+  .card-title {
+    display: flex;
+
+    .menu {
+      margin-left: auto;
+    }
+  }
+}

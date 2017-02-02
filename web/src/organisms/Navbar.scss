@@ -1,0 +1,43 @@
+// TODO(eordano): Extract this to a global variable
+$almost-black: #222;
+$almost-white: #fafafa; // she don't lie she don't lie
+
+nav.navbar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  border-bottom: 1px solid $almost-white;
+  font-size: 12px;
+
+  h1 {
+    margin: 0 20px 0 10px;
+    padding-right: 32px;
+    border-right: 1px solid lightgray;
+  }
+
+  .search {
+    input[type=text] {
+      width: 300px;
+    }
+  }
+
+  ul {
+    display: flex;
+    margin: 0 0 0 auto;
+    align-items: center;
+    list-style: none;
+
+    li {
+      margin-left: 5px;
+      margin-right: 15px;
+    }
+
+    li.avatar {
+      img {
+        $avatar-size: 30px;
+        width: $avatar-size;
+        height: $avatar-size;
+      }
+    }
+  }
+}

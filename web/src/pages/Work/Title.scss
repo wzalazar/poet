@@ -1,0 +1,22 @@
+.title {
+  padding: 10px;
+  overflow: hidden;
+  border: 1px solid #bbb;
+
+  h3 {
+    margin: 10px 0;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  table {
+    font-size: 12px;
+
+    > tbody > tr > td:first-child {
+      min-width: 120px;
+    }
+
+  }
+}
+

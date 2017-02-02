@@ -1,0 +1,14 @@
+.contentTab {
+  font-family: monospace;
+  font-size: 12px;
+  overflow: hidden;
+
+  table {
+    margin-bottom: 30px;
+
+    > tbody > tr > td:first-child {
+      min-width: 150px;
+    }
+  }
+
+}

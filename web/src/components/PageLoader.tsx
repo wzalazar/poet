@@ -1,0 +1,30 @@
+import * as React from "react";
+import {Reducer} from "redux";
+import {Saga} from "redux-saga";
+import {connect, StatelessComponent, ComponentClass} from "react-redux";
+
+export interface ReducerDescription<T> {
+  subState: string
+  reducer: Reducer<T>
+}
+
+abstract class PageLoader<State, Properties> {
+
+  abstract readonly component: ComponentClass<Properties> | StatelessComponent<Properties>;
+
+  abstract initialState(): State
+  abstract routeHook(key: string): JSX.Element[]
+  abstract reducerHook<State>(): ReducerDescription<State>
+  abstract sagaHook(): Saga
+  abstract select(state: any, ownProps: any): Properties
+  mapDispatchToProps(): any {
+    return {}
+  }
+
+  protected container() {
+    return connect(this.select.bind(this), this.mapDispatchToProps())(this.component)
+  }
+
+}
+
+export default PageLoader;

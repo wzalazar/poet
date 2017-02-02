@@ -1,0 +1,33 @@
+.offerings {
+  font-size: 12px;
+
+  .offering {
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #bbb;
+
+    h3 {
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .info {
+      margin-bottom: 16px;
+
+      .price {
+        text-align: right;
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .type {
+        text-align: right;
+      }
+
+      .purchase-button {
+        width: 100%;
+      }
+    }
+  }
+}

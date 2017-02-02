@@ -1,0 +1,13 @@
+.preview {
+  >section {
+    >table {
+      >tbody {
+        >tr {
+          >td:first-child {
+            min-width: 130px;
+          }
+        }
+      }
+    }
+  }
+}
