@@ -6,7 +6,7 @@ services:
       context: ..
       dockerfile: ./Docker/auth.dockerfile
     volumes:
-      - ../src:/poet/src
+      - ../node/src:/poet/src
     networks:
       - http
   mock_signer:
@@ -14,7 +14,7 @@ services:
       context: ..
       dockerfile: ./Docker/mock_signer.dockerfile
     volumes:
-      - ../src:/poet/src
+      - ../node/src:/poet/src
     networks:
       - http
   bitcoin_scanner:

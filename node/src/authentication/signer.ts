@@ -1,47 +1,62 @@
-import * as fetch from 'isomorphic-fetch'
+import * as Koa from 'koa'
 import { sign, sha256 } from '../common'
+import { doubleSha, signMessage } from './helpers'
+import * as fetch from 'isomorphic-fetch'
+
 const bitcore = require('bitcore-lib')
+const uuid = require('uuid')
+const Body = require('koa-body')
+const Route = require('koa-route')
+const IO = require('koa-socket')
 
-const key = bitcore.PrivateKey()
-const id = process.argv[2]
-
-function doubleShaAndReverse(data: Buffer) {
-  const doubleSha = bitcore.crypto.Hash.sha256sha256(data);
-  const read = new bitcore.encoding.BufferReader(doubleSha).readReverse();
-  return read
+export interface MockSignerServerOptions {
+  port: number
 }
 
-function signMessage(bitcoin: boolean, message: string) {
-  const hash = bitcoin ? doubleShaAndReverse : sha256
-  const msg = bitcoin
-    ? new Buffer(new Buffer(message, 'hex').toString(), 'hex')
-    : new Buffer(message, 'hex')
-  const signature = sign(key, hash(msg)) as any
+const server = '192.168.0.168:5000'
 
-  return {
-    message: message,
-    publicKey: key.publicKey.toString(),
-    signature: signature.toString('hex'),
-  }
-}
+export default async function createServer(options: MockSignerServerOptions) {
 
-async function accept(id: string) {
-  const body = await fetch('http://192.168.0.168:5000/request/' + id).then(res => res.json()) as any
-  const signFunc = signMessage.bind(null, body.bitcoin)
+  const koa = new Koa() as any
+  koa.use(Body())
 
-  const result = body.multiple
-    ? body.message.map(signFunc)
-    : signFunc(body.message)
-  console.log('result is', result, body.message)
-  const endpoint = body.multiple ? 'multiple': 'request'
+  koa.use(Route.post('/:key/:id', async (ctx: any, key: string, id: string) => {
 
-  await fetch(`http://192.168.0.168:5000/${endpoint}/${id}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(result)
-  }).then(async (res) => {
-    console.log(await res.text())
+    const privateKey = bitcore.PrivateKey(sha256(process.argv[2] + key).toString('hex'))
+
+    try {
+      const request = await fetch(`http://${server}/request/${id}`)
+      const body = await request.json() as any
+      const signFunc = signMessage.bind(null, body.bitcoin)
+
+      const result = body.multiple
+        ? body.message.map((message: string) => signFunc(message, privateKey))
+        : signFunc(body.message, privateKey)
+      const endpoint = body.multiple ? 'multiple': 'request'
+
+      await fetch(`http://${server}/${endpoint}/${id}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(result)
+      }).then(async(res) => {
+        const text = await res.text()
+        console.log(text)
+        ctx.response.body = text
+      })
+    } catch (error) {
+      console.log(error, error.stack)
+    }
+
+  }))
+
+  koa.use(async (ctx: any, next: Function) => {
+    try {
+      await next()
+    } catch (error) {
+      console.log(`Error processing ${ctx.method} ${ctx.path}`, error, error.stack)
+    }
   })
+
+  return koa
 }
 
-accept(id).catch(error => console.log(error))

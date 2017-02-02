@@ -10,4 +10,4 @@ RUN npm install
 VOLUME /poet/src
 
 EXPOSE 5000
-CMD [ "npm", "run", "auth-server" ]
+CMD [ "npm", "run", "mock-signer" ]

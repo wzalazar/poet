@@ -4,11 +4,13 @@
   "description": "A subjective truth engine system",
   "main": "./src/index.js",
   "scripts": {
-    "auth-server": "./node_modules/.bin/ts-node ./src/bin/authServer.ts",
     "build": "tsc",
+
+    "auth-server": "./node_modules/.bin/ts-node ./src/bin/authServer.ts",
     "bitcoin-scanner": "./node_modules/.bin/ts-node ./src/bin/bitcoinScanner.ts",
-    "explorer-api": "./node_modules/.bin/ts-node ./src/bin/explorerApi.ts",
     "claims-to-db": "./node_modules/.bin/ts-node ./src/bin/claimsToDb.ts",
+    "explorer-api": "./node_modules/.bin/ts-node ./src/bin/explorerApi.ts",
+    "mock-signer": "./node_modules/.bin/ts-node ./src/bin/mockSigner.ts",
     "torrent-system": "./node_modules/.bin/ts-node ./src/bin/torrentSystem.ts",
     "trusted-publisher": "./node_modules/.bin/ts-node ./src/bin/trustedPublisher.ts"
   },

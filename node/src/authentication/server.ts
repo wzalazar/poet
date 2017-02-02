@@ -218,4 +218,3 @@ export default async function createServer(options: AuthServerOptions) {
 
   return koa
 }
-
