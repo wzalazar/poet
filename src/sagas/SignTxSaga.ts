@@ -32,23 +32,6 @@ async function submitLicense(reference: string, txId: string, outputIndex: numbe
   }).then((res: any) => res.text())
 }
 
-async function getUtxos(address: string) {
-  return await fetch(`https://test-insight.bitpay.com/api/addr/${address}/utxo`)
-    .then((res: any) => res.json())
-}
-
-function getSighash(tx: any, address: string): Buffer[] {
-  return tx.inputs.map(
-    (input: any, index: number) =>
-      bitcore.Transaction.Sighash.sighashPreimage(
-        tx,
-        bitcore.crypto.Signature.SIGHASH_ALL,
-        index,
-        bitcore.Script.buildPublicKeyHashOut(address)
-      )
-  )
-}
-
 function* signTx(action: any) {
   yield put({ type: Actions.signTxModalShow });
 
