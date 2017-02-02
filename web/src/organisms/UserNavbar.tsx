@@ -12,8 +12,8 @@ export class UserNavbar extends React.Component<UserNavbarProps, undefined> {
     return (
       <nav className="user-nav">
         <ul>
-          { this.renderNavLink('user/profile', 'Settings') }
-          { this.renderNavLink('user/wallet', 'Wallet') }
+          { this.renderNavLink('account/settings', 'Settings') }
+          { this.renderNavLink('account/wallet', 'Wallet') }
         </ul>
       </nav>
     )

@@ -24,7 +24,7 @@ export class UserWallet extends PageLoader<UserWalletProps, Object> {
   }
 
   routeHook(key: string) {
-    return [<Route path="/user/wallet" key={key} component={this.container()} />]
+    return [<Route path="/account/wallet" key={key} component={this.container()} />]
   }
 
   reducerHook<State>(): ReducerDescription<null> {

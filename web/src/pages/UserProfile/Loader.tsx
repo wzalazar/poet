@@ -18,7 +18,7 @@ export class UserProfile extends PageLoader<UserProfileProps, Object> {
   }
 
   routeHook(key: string) {
-    return [<Route path="/user/profile" key={key} component={this.container()} />]
+    return [<Route path="/account/settings" key={key} component={this.container()} />]
   }
 
   reducerHook<State>(): ReducerDescription<null> {

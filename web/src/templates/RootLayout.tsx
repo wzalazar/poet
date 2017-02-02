@@ -7,7 +7,7 @@ import './RootLayout.scss'
 
 const modals = Modals.map((Modal, index) => <Modal key={index}/>);
 
-const userPaths = ['/user/profile', '/user/wallet'];
+const userPaths = ['/account/settings', '/account/wallet'];
 
 export function Layout(props: any) {
   return (
