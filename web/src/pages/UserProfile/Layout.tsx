@@ -20,7 +20,6 @@ export interface UserProfileProps extends ProfileAttributes {
 }
 
 export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttributes> {
-  private imageUpload?: ImageUpload;
 
   constructor(props: UserProfileProps) {
     super(...arguments);
@@ -33,9 +32,10 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
 
   private static propsToState(props: UserProfileProps) {
     return {
-      displayName: props.displayName || '',
-      email: props.email || '',
-      currency: props.currency || ''
+      displayName: props.displayName,
+      email: props.email,
+      currency: props.currency,
+      avatarImageData: props.avatarImageData
     }
   }
 
@@ -61,12 +61,12 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
             </ProfileLayoutRow>
             <ProfileLayoutRow label="Image">
               <ImageUpload
-                ref={imageUpload => this.imageUpload = imageUpload}
                 className="image-upload"
                 buttonClassName="btn btn-primary"
                 imageWidthLimit={Config.imageUpload.maxWidth}
                 imageHeightLimit={Config.imageUpload.maxHeight}
-                imageData={this.props.avatarImageData}
+                imageData={this.state.avatarImageData}
+                onChange={imageDataUrl => this.setState({avatarImageData: imageDataUrl})}
               />
             </ProfileLayoutRow>
             <ProfileLayoutRow label="Preferred currency">
@@ -88,7 +88,7 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
       attributes: {
         displayName: this.state.displayName,
         email: this.state.email,
-        imageData: this.imageUpload.state.imageData,
+        imageData: this.state.avatarImageData,
         currency: this.state.currency
       }
     });

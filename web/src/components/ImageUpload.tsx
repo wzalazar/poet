@@ -1,19 +1,18 @@
 import * as React from 'react';
 
 export interface ImageUploadProps {
+  onChange?: (imageDataUrl: string) => void;
   className?: string;
   buttonClassName?: string;
   fileSizeLimit?: number;
   imageWidthLimit?: number;
   imageHeightLimit?: number;
-  defaultImageData?: string;
   imageData?: string;
   useDefaultStyles?: boolean;
   spinnerUrl?: string;
 }
 
 export interface ImageUploadState {
-  imageData?: string;
   isLoading?: boolean;
 }
 
@@ -25,53 +24,39 @@ export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadSt
     spinnerUrl: 'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif',
     fileSizeLimit: Math.pow(1024, 2) // 1 MB
   };
-  private components: {
-    fileInput?: HTMLInputElement;
-    image?: HTMLImageElement
-  } = {};
+
+  state = {
+    isLoading: false
+  };
+
+  private fileInput: HTMLInputElement;
 
   private readonly styleDisplayFlex = {
     display: 'flex',
     alignItems: 'center'
   };
 
-  constructor() {
-    super(...arguments);
-    this.state = {
-      imageData: this.props.imageData
-    }
-  }
-
-  componentWillReceiveProps(props: ImageUploadProps) {
-    // TODO: hacky fix, convert ImageUpload into a controlled component
-    if (!this.state.imageData)
-      this.setState({
-        imageData: props.imageData
-      })
-  }
-
   render() {
     return (
       <section className={this.props.className} >
         <input
           type="file"
-          ref={fileInput => this.components.fileInput = fileInput}
-          onChange={this.onChange.bind(this)}
+          ref={fileInput => this.fileInput = fileInput}
+          onChange={this.onFileChange.bind(this)}
           accept="image/*"
           style={{'display': 'none'}}
         />
         <div style={this.props.useDefaultStyles && this.styleDisplayFlex}>
           <div>
             <img
-              ref={image => this.components.image = image }
-              src={this.state.isLoading ? this.props.spinnerUrl : (this.state.imageData || this.props.defaultImageData)}
+              src={this.state.isLoading ? this.props.spinnerUrl : this.props.imageData}
               className="rounded-circle"
-              onClick={this.onClick.bind(this)}
+              onClick={this.onImageClick.bind(this)}
             />
           </div>
           <div>
             <div>
-              <button onClick={this.onClick.bind(this)} className={this.props.buttonClassName}>Upload Image</button>
+              <button onClick={this.onImageClick.bind(this)} className={this.props.buttonClassName}>Upload Image</button>
             </div>
             <div>File Formats: .jpg, .png, .tiff</div>
           </div>
@@ -80,15 +65,15 @@ export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadSt
     )
   }
 
-  private onClick(event: Event) {
+  private onImageClick(event: Event) {
     event.preventDefault();
-    this.components.fileInput.click();
+    this.fileInput.click();
   }
 
-  private onChange(event: Event) {
+  private onFileChange(event: Event) {
     event.preventDefault();
 
-    const file = this.components.fileInput.files[0];
+    const file = this.fileInput.files[0];
 
     if (!file) {
       return;
@@ -99,29 +84,29 @@ export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadSt
       return;
     }
 
-    const imageData = URL.createObjectURL(file);
-    this.onImageLoaded(imageData);
-  }
-
-  private onImageLoaded(imageData: any) {
     this.setState({
       isLoading: true
     });
-    this.imageDataUrlToCanvas(imageData).then((imageDataUrlToCanvas: HTMLCanvasElement) => {
-      const cropImageIntoSquareFromCenter = this.cropImageIntoSquareFromCenter(imageDataUrlToCanvas);
-      const resizeImage = this.resizeImage(cropImageIntoSquareFromCenter, this.props.imageWidthLimit, this.props.imageHeightLimit);
-      const toDataURL = resizeImage.toDataURL("image/png");
-      this.setState({
-        imageData: toDataURL,
-        isLoading: false
-      })
-    })
 
+    const imageObjectUrl = URL.createObjectURL(file);
+
+    this.imageDataUrlToCanvas(imageObjectUrl).then((canvas: HTMLCanvasElement) => {
+      URL.revokeObjectURL(imageObjectUrl);
+      const croppedImage = this.cropImageIntoSquareFromCenter(canvas);
+      const resizedImage = this.resizeImage(croppedImage, this.props.imageWidthLimit, this.props.imageHeightLimit);
+      const imageDataUrl = resizedImage.toDataURL("image/png");
+
+      this.setState({
+        isLoading: false
+      });
+
+      this.props.onChange(imageDataUrl);
+    })
   }
 
   private imageDataUrlToCanvas(imageDataUrl: string): Promise<HTMLCanvasElement> {
     return new Promise<HTMLCanvasElement>((resolve, reject) => {
-      const image = document.createElement('img');
+      const image = new Image();
       image.src = imageDataUrl;
 
       image.onload = function() {
@@ -134,6 +119,10 @@ export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadSt
 
         resolve(canvas);
       };
+
+      image.onerror = function(error: ErrorEvent) {
+        reject(error);
+      }
     });
   }
 
