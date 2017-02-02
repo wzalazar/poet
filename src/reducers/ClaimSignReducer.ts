@@ -6,6 +6,8 @@ export default function modalsReducer(state: any, action: any) {
       return { ...state, id: action.payload };
     case Actions.claimsSubmitedSuccess:
       return { ...state, success: true };
+    case Actions.signClaimsModalHide:
+      return { ...state, success: null, id: null };
   }
   return state || {};
 }

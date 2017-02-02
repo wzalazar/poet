@@ -1,3 +1,5 @@
+import { FetchStatus } from '../enums/FetchStatus'
+
 export interface PoetSessionToken {
   publicKey: string
   message: string
@@ -9,8 +11,17 @@ export interface PoetSession {
   publicKey: string
 }
 
+export interface FetchStore {
+  [key: string]: {
+    status: FetchStatus
+    body: any
+    error: any
+  }
+}
+
 export interface PoetAppState {
   session: PoetSession
+  fetch: FetchStore
 }
 
 export default PoetAppState;
