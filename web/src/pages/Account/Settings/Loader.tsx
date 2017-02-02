@@ -3,9 +3,9 @@ import { Route } from 'react-router';
 import { Saga, delay, takeEvery } from 'redux-saga';
 import { put } from 'redux-saga/effects';
 
-import { Claim } from '../../Claim';
-import Actions from '../../actions'
-import PageLoader, { ReducerDescription } from '../../components/PageLoader';
+import { Claim } from '../../../Claim';
+import Actions from '../../../actions'
+import PageLoader, { ReducerDescription } from '../../../components/PageLoader';
 
 import { ProfileLayout, UserProfileProps } from './Layout';
 

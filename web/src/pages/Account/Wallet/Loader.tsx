@@ -4,11 +4,11 @@ import { Saga } from 'redux-saga';
 
 const Bitcore = require('bitcore-lib');
 
-import PageLoader, { ReducerDescription } from '../../components/PageLoader';
+import PageLoader, { ReducerDescription } from '../../../components/PageLoader';
 
 import { WalletLayout } from './Layout';
-import { currentPublicKey } from '../../selectors/session'
-import { publicKeyToAddress } from '../../bitcoin/addressHelpers'
+import { currentPublicKey } from '../../../selectors/session'
+import { publicKeyToAddress } from '../../../bitcoin/addressHelpers'
 
 export interface UserWalletProps {
   publicKey?: string;

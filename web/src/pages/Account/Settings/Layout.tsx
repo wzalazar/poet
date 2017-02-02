@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Action } from 'redux';
 
-import Config from '../../config';
+import Config from '../../../config';
 
-import { PROFILE, Claim } from '../../Claim';
-import { ImageUpload } from '../../components/ImageUpload';
+import { PROFILE, Claim } from '../../../Claim';
+import { ImageUpload } from '../../../components/ImageUpload';
 
 import './Layout.scss';
 

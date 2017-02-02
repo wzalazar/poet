@@ -10,8 +10,8 @@ import { Documentation } from "./Documentation/Loader";
 import { Portfolio } from "./Portfolio/Loader";
 import { Licenses } from "./Licenses/Loader";
 import { CreateWork } from "./CreateWork/Loader";
-import { UserProfile } from "./UserProfile/Loader";
-import { UserWallet } from "./UserWallet/Loader";
+import { UserProfile } from "./Account/Settings/Loader";
+import { UserWallet } from "./Account/Wallet/Loader";
 
 export default [
   LandingLoader,

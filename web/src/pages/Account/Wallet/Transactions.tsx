@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as moment from 'moment';
 
-import '../../extensions/Array';
+import '../../../extensions/Array';
 
-import { AddressTransactions, AddressTransactionsProps, Transaction } from '../../hocs/AddressTransactions';
+import { AddressTransactions, AddressTransactionsProps, Transaction } from '../../../hocs/AddressTransactions';
 
 function render(props: AddressTransactionsProps) {
   return (
