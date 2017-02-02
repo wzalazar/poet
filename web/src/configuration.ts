@@ -9,7 +9,7 @@ export const Configuration = {
   api: {
     explorer: '/api/explorer',
     user: '/api/user',
-    auth: 'ws://localhost:5000',
+    auth: 'wss://auth.poet.host',
     mockApp: '/api/mockApp',
     insight: 'https://test-insight.bitpay.com/api',
     blockchain: 'https://blockchain.info'
