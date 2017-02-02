@@ -9,26 +9,28 @@ services:
       - ../node/src:/poet/src
     networks:
       - http
-  mock_signer:
+  mock-signer:
     build:
       context: ..
-      dockerfile: ./Docker/mock_signer.dockerfile
+      dockerfile: ./Docker/mock-signer.dockerfile
     volumes:
       - ../node/src:/poet/src
     networks:
       - http
-  bitcoin_scanner:
+  bitcoin-scanner:
     build:
       context: ..
-      dockerfile: ./Docker/bitcoin_scanner.dockerfile
+      dockerfile: ./Docker/bitcoin-scanner.dockerfile
     volumes:
-      - ../src:/poet/src
+      - ../node/src:/poet/src
     networks:
       - queue
   claims-to-db:
     build:
       context: ..
-      dockerfile: ./Docker/claims_to_db.dockerfile
+      dockerfile: ./Docker/claims-to-db.dockerfile
+    volumes:
+      - ../node/src:/poet/src
     networks:
       - queue
       - db
@@ -37,25 +39,26 @@ services:
       context: ..
       dockerfile: ./Docker/explorer.dockerfile
     volumes:
-      - ../src:/poet/src
+      - ../node/src:/poet/src
     networks:
       - db
       - outside
-  torrent_system:
+  torrent-system:
     build:
       context: ..
-      dockerfile: ./Docker/torrent_system.dockerfile
+      dockerfile: ./Docker/torrent-system.dockerfile
     volumes:
-      - ../src:/poet/src
+      - ../node/src:/poet/src
+      - ../node/torrents:/poet/torrents
     networks:
       - queue
       - http
-  trusted_publisher:
+  trusted-publisher:
     build:
       context: ..
-      dockerfile: ./Docker/trusted_publisher.dockerfile
+      dockerfile: ./Docker/trusted-publisher.dockerfile
     volumes:
-      - ../src:/poet/src
+      - ../node/src:/poet/src
     networks:
       - queue
       - http
@@ -66,7 +69,7 @@ services:
   db:
     build:
       context: ..
-      dockerfile: ./poet_db.dockerfile
+      dockerfile: ./Docker/db.dockerfile
     volumes:
       - ./postgres:/var/lib/postgresql/data
     networks:
@@ -74,14 +77,13 @@ services:
   nginx:
     build:
       context: ..
-      dockerfile: ./nginx.dockerfile
-    volumes:
-      - ./letsencrypt:/etc/letsencrypt/
+      dockerfile: ./Docker/nginx.dockerfile
     networks:
+      - outside
       - http
     expose:
-      - "80:80"
-      - "443:443"
+      - "80"
+      - "443"
 
 networks:
   db:

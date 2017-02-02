@@ -5,13 +5,22 @@ import { Channel } from "amqplib"
 
 import { BitcoinBlockMetadata, BlockMetadata } from './events'
 import { Block } from './claim'
+import { delay } from './common'
 
 const BITCOIN_BLOCK = 'bitcoinBlock'
 const BITCOIN_TRANSACTION = 'bitcoinTransaction'
 const BLOCK_READY = 'blockReady'
 const SEND_BLOCK = 'sendBlock'
 
-const amqpConnect = bluebird.promisify(amqp.connect, amqp)
+const amqpConnect = bluebird.promisify(amqp.connect, amqp) as any
+
+async function connect() {
+  try {
+    return amqpConnect('amqp://guest:guest@rabbitmq:15672') as amqp.Connection
+  } catch (error) {
+    await delay(1000)
+  }
+}
 
 export class Queue {
   bitcoinBlock(): Rx.Observable<BitcoinBlockMetadata> {
@@ -51,7 +60,7 @@ export class Queue {
       let connection, channel: Channel
 
       try {
-        connection = await amqpConnect() as amqp.Connection
+        connection = await connect()
         channel = await bluebird.promisify(connection.createChannel.bind(connection))() as Channel
       } catch (error) {
         observer.onError(error)

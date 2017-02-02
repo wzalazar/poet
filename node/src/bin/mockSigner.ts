@@ -3,7 +3,7 @@ import { MockSignerServerOptions } from '../authentication/signer'
 
 export async function start(options?: MockSignerServerOptions) {
   options = Object.assign({}, {
-    port: parseInt(process.argv[2], 10)
+    port: 7000
   }, options || {})
   const server = await createServer(options)
   await server.listen(options.port, '0.0.0.0')

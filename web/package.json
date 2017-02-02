@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node devServer.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "mock-server": "./node_modules/.bin/json-server --watch ./mock_server/db.json --port 4000 --routes ./mock_server/routes.json",
-    "mock-server-throttle": "./node_modules/.bin/json-server --watch ./mock_server/db.json --port 4000 --middlewares ./mock_server/throttle.js"
+    "build": "webpack"
   },
   "keywords": [],
   "author": "",

@@ -2,6 +2,12 @@ import * as fs from 'fs'
 
 const bitcore = require('bitcore-lib')
 
+export async function delay(millis: number) {
+  return new Promise((resolve, reject) => {
+    setTimeout(resolve, millis)
+  })
+}
+
 export function assert(value: boolean, message: string) {
   if (!value) {
     throw new Error(message)

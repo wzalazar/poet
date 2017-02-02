@@ -9,7 +9,7 @@ const config = require('./webpack.config');
 
 const compiler = webpack(config);
 
-const SERVER = '192.168.0.168'
+const SERVER = process.env.SERVER || 'poet.host'
 
 const webpackConfig = {
   noInfo: true,
@@ -20,23 +20,19 @@ const webpackConfig = {
   },
   proxy: {
     '/api/explorer': {
-      target: 'http://192.168.0.168:4000',
-      secure: false
-    },
-    '/api/user': {
-      target: 'http://192.168.0.168:3000',
+      target: 'http://' + SERVER + ':4000',
       secure: false
     },
     '/api/auth': {
-      target: 'http://192.168.0.168:5000',
+      target: 'http://' + SERVER + ':5000',
+      secure: false
+    },
+    '/api/user': {
+      target: 'http://' + SERVER + ':6000',
       secure: false
     },
     '/api/mockApp': {
-      target: 'http://192.168.0.168:7000',
-      secure: false
-    },
-    '/api/mockApp2': {
-      target: 'http://192.168.0.168:8000',
+      target: 'http://' + SERVER + ':7000',
       secure: false
     }
   }

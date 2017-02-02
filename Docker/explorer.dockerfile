@@ -1,13 +1,6 @@
-FROM node:latest
-
-RUN mkdir -p /poet
-WORKDIR /poet
-
-COPY ./package.json /poet
-COPY ./tsconfig.json /poet
-RUN npm install
+FROM poet-base
 
 VOLUME /poet/src
 
 EXPOSE 3000
-CMD [ "npm", "start" ]
+CMD [ "npm", "run", "explorer-api" ]

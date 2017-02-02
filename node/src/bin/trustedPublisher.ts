@@ -82,8 +82,8 @@ export default async function createServer(options?: TrustedPublisherOptions) {
       console.log(claim)
       originalClaims.push(claim)
     }
-    const claims = []
-    let reference
+    const claims: any[] = []
+    let reference: any
     for (let claim of originalClaims) {
       if (claim.type === OFFERING) {
         claim.attributes[Fields.REFERENCE] = reference
@@ -116,7 +116,7 @@ export default async function createServer(options?: TrustedPublisherOptions) {
 
 export async function start(options?: TrustedPublisherOptions) {
   options = Object.assign({}, {
-    port: 3000,
+    port: 6000,
     broadcast: true
   }, options || {})
   const server = await createServer(options)
