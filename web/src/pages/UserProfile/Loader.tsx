@@ -37,11 +37,13 @@ export class UserProfile extends PageLoader<UserProfileProps, Object> {
   }
 
   select(state: any, ownProps: any): Object {
-    const { displayName = '', imageData = '', email = '', currency = '' } = state.profile && state.profile.attributes || {};
+    const { displayName = '', firstName = '', lastName = '', imageData = '', email = '', currency = '' } = state.profile && state.profile.attributes || {};
 
     return {
       id: ownProps.params.id,
       displayName,
+      firstName,
+      lastName,
       avatarImageData: imageData,
       email,
       currency
