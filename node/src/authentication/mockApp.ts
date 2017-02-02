@@ -1,5 +1,4 @@
 import * as Koa from 'koa'
-import * as fetch from 'isomorphic-fetch'
 import { sign, sha256 } from '../common'
 import { doubleSha, signMessage } from './helpers'
 
@@ -8,9 +7,6 @@ const uuid = require('uuid')
 const Body = require('koa-body')
 const Route = require('koa-route')
 const IO = require('koa-socket')
-
-const key = bitcore.PrivateKey(sha256(process.argv[2]).toString('hex'))
-console.log(key)
 
 interface AuthServerOptons {
   port: number
@@ -23,7 +19,9 @@ export default async function createServer(options: AuthServerOptons) {
   const koa = new Koa() as any
   koa.use(Body())
 
-  koa.use(Route.post('/:id', async (ctx: any, id: string) => {
+  koa.use(Route.post('/:key/:id', async (ctx: any, key: string, id: string) => {
+
+    const privateKey = bitcore.PrivateKey(sha256(process.argv[2] + key).toString('hex'))
 
     try {
       const request = await fetch(`http://${server}/request/${id}`)
@@ -31,8 +29,8 @@ export default async function createServer(options: AuthServerOptons) {
       const signFunc = signMessage.bind(null, body.bitcoin)
 
       const result = body.multiple
-        ? body.message.map((message: string) => signFunc(message, key))
-        : signFunc(body.message, key)
+        ? body.message.map((message: string) => signFunc(message, privateKey))
+        : signFunc(body.message, privateKey)
       const endpoint = body.multiple ? 'multiple': 'request'
 
       await fetch(`http://${server}/${endpoint}/${id}`, {

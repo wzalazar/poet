@@ -1,6 +1,7 @@
 import { Saga, takeEvery } from 'redux-saga'
 import { call, put, select, take } from 'redux-saga/effects'
 import { browserHistory } from 'react-router'
+
 import Actions from '../actions'
 import auth from '../auth'
 import config from '../config'
@@ -10,6 +11,7 @@ const bitcore = require('bitcore-lib');
 import { getUtxos, submitTx } from '../bitcoin/insight';
 import { getSighash, applyHexSignaturesInOrder } from '../bitcoin/txHelpers';
 import { currentPublicKey } from '../selectors/session'
+import { getMockPrivateKey } from '../mockKey'
 
 async function requestIdFromAuth(dataToSign: Buffer[], bitcoin: boolean) {
   return await auth.getRequestIdForMultipleSigningBuffers(dataToSign, bitcoin)
@@ -67,7 +69,7 @@ function* signTx(action: any) {
 }
 
 function* mockLoginHit(action: any) {
-  yield call(fetch, config.api.mockApp + '/' + action.payload, { method: 'POST' })
+  yield call(fetch, config.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
 }
 
 function claimSubmitSaga(): Saga {

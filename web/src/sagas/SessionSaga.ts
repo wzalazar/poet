@@ -5,6 +5,7 @@ import { call, put } from 'redux-saga/effects'
 import Actions from '../actions'
 import auth from '../auth'
 import config from '../config'
+import { getMockPrivateKey } from '../mockKey'
 
 const LOCALSTORAGE_SESSION = 'session';
 
@@ -43,7 +44,7 @@ function* loginResponseAction(action: any) {
 }
 
 function* mockLoginHit(action: any) {
-  yield call(fetch, config.api.mockApp + '/' + action.payload, { method: 'POST' })
+  yield call(fetch, config.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
 }
 
 function* loginModalDisposeRequestedAction(action: any) {

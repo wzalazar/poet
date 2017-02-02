@@ -7,6 +7,7 @@ import Actions from '../actions'
 import auth from '../auth'
 import config from '../config'
 import { currentPublicKey } from '../selectors/session'
+import { getMockPrivateKey } from '../mockKey'
 
 const jsonClaims = require('../claim.json');
 
@@ -87,7 +88,7 @@ function* signClaims(claimTemplates: any) {
 }
 
 function* mockLoginHit(action: any) {
-  yield call(fetch, config.api.mockApp + '/' + action.payload, { method: 'POST' })
+  yield call(fetch, config.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
 }
 
 function claimSubmitSaga(): Saga {

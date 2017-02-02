@@ -9,11 +9,11 @@ const Body = require('koa-body')
 const Route = require('koa-route')
 const IO = require('koa-socket')
 
-export interface AuthServerOptons {
+export interface AuthServerOptions {
   port: number
 }
 
-export default async function createServer(options: AuthServerOptons) {
+export default async function createServer(options: AuthServerOptions) {
 
   /**
    * We store a mapping from request id to websocket owning the request
@@ -34,8 +34,7 @@ export default async function createServer(options: AuthServerOptons) {
       message: payload,
       timestamp: new Date().getTime()
     }
-    const encoded = JSON.stringify(signRequest)
-    return encoded
+    return JSON.stringify(signRequest)
   }
 
   function makeCreateResponse(payload: string, ref: string) {
