@@ -1,17 +1,18 @@
 import { Saga, takeEvery } from 'redux-saga'
-import { call, put, select, take } from 'redux-saga/effects'
-import { browserHistory } from 'react-router'
+import { call, put, select } from 'redux-saga/effects'
 
 import Actions from '../actions'
 import auth from '../auth'
+import { getMockPrivateKey } from '../mockKey'
 import config from '../config'
 
-const bitcore = require('bitcore-lib');
+import { getUtxos, submitTx } from '../bitcoin/insight'
+import { getSighash, applyHexSignaturesInOrder } from '../bitcoin/txHelpers'
+import { race } from 'redux-saga/effects'
+import { take } from 'redux-saga/effects'
 
-import { getUtxos, submitTx } from '../bitcoin/insight';
-import { getSighash, applyHexSignaturesInOrder } from '../bitcoin/txHelpers';
-import { currentPublicKey } from '../selectors/session'
-import { getMockPrivateKey } from '../mockKey'
+
+const bitcore = require('bitcore-lib');
 
 async function requestIdFromAuth(dataToSign: Buffer[], bitcoin: boolean) {
   return await auth.getRequestIdForMultipleSigningBuffers(dataToSign, bitcoin)
@@ -21,32 +22,25 @@ async function bindAuthResponse(request: any) {
   return await auth.onResponse(request.id) as any;
 }
 
-async function submitLicense(reference: string, txId: string, outputIndex: number, publicKey: string, referenceOffering: string) {
-  return await fetch(config.api.user + '/licenses', {
-    method: 'POST',
-    body: JSON.stringify({
-      txId,
-      outputIndex: '' + outputIndex,
-      owner: publicKey,
-      reference,
-      referenceOffering
-    })
-  }).then((res: any) => res.text())
+export interface SignTransactionParameters {
+  paymentAddress: string
+  paymentAmountInSatoshis: number
+  conceptOf: string
+  resultAction: Actions
+  resultPayload: any
 }
 
-function* signTx(action: any) {
-  yield put({ type: Actions.signTxModalShow });
+export function* signTx(action: { payload: SignTransactionParameters }) {
+  yield put({ type: Actions.signTxModalShow, payload: action.payload });
 
   const publicKey = bitcore.PublicKey(yield select(state => state.session.token.publicKey));
-  const offering = action.payload;
-  const reference = offering.attributes.reference;
 
   const myAddress = bitcore.Address(publicKey, bitcore.Networks.testnet);
   const myAddressString = myAddress.toString();
   const utxos = yield call(getUtxos, myAddress);
 
-  const targetAddress = offering.attributes.paymentAddress || myAddressString;
-  const amount = 100000 // parseInt(offering.attributes.pricingPriceAmount, 10) || 1000000;
+  const targetAddress = action.payload.paymentAddress;
+  const amount = action.payload.paymentAmountInSatoshis;
 
   const tx = new bitcore.Transaction().from(utxos)
     .to(targetAddress, amount)
@@ -59,22 +53,28 @@ function* signTx(action: any) {
 
   applyHexSignaturesInOrder(tx, response.signatures, publicKey);
   const txId = yield call(submitTx, tx.toString());
-  const license = yield call(submitLicense, reference, txId, 0, publicKey.toString(), offering.id);
+  yield put({ type: action.payload.resultAction, payload: action.payload.resultPayload, transaction: txId });
 
   yield put({ type: Actions.txSubmittedSuccess });
-  yield take(Actions.signTxModalDismissRequested);
-  yield put({ type: Actions.signTxModalHide });
-
-  browserHistory.push(`/claims/${license}`)
 }
 
-function* mockLoginHit(action: any) {
+export function* signTxCancellable(action: { payload: SignTransactionParameters }) {
+  yield race([
+    signTx,
+    function* () {
+      yield take(Actions.signTxModalDismissRequested);
+      yield put({ type: Actions.signTxModalHide })
+    }
+  ]);
+}
+
+export function* mockLoginHit(action: any) {
   yield call(fetch, config.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
 }
 
-function claimSubmitSaga(): Saga {
+export function claimSubmitSaga(): Saga {
   return function*() {
-    yield takeEvery(Actions.signTxSubmitRequested, signTx);
+    yield takeEvery(Actions.signTxSubmitRequested, signTxCancellable as any);
     yield takeEvery(Actions.fakeTxSign, mockLoginHit);
   }
 }
