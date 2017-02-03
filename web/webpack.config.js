@@ -52,7 +52,7 @@ module.exports = {
       {
         test: /\.s?css$/, loader: production
         ? ExtractTextPlugin.extract('css!sass')
-        : 'style!css?sourceMap!postcss!sass?sourceMap'
+        : 'style!css?sourceMap&importLoaders=1!postcss!sass?sourceMap'
       },
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.svg$/, loader: 'file-loader' }
@@ -62,6 +62,12 @@ module.exports = {
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
       { test: /\.js$/, loader: 'source-map-loader' }
     ]
+  },
+
+  postcss: () => {
+    return [
+      require('autoprefixer')
+    ];
   },
 
   plugins: [
