@@ -24,7 +24,7 @@ async function bindAuthResponse(request: any) {
 
 export interface SignTransactionParameters {
   paymentAddress: string
-  paymentAmountInSatoshis: number
+  amountInSatoshis: number
   conceptOf: string
   resultAction: Actions
   resultPayload: any
@@ -40,7 +40,7 @@ export function* signTx(action: { payload: SignTransactionParameters }) {
   const utxos = yield call(getUtxos, myAddress);
 
   const targetAddress = action.payload.paymentAddress;
-  const amount = action.payload.paymentAmountInSatoshis;
+  const amount = parseInt('' + action.payload.amountInSatoshis, 10);
 
   const tx = new bitcore.Transaction().from(utxos)
     .to(targetAddress, amount)
@@ -65,11 +65,11 @@ export function* signTx(action: { payload: SignTransactionParameters }) {
 
 export function* signTxCancellable(action: { payload: SignTransactionParameters }) {
   yield race([
-    signTx,
-    function* () {
+    call(signTx, action),
+    call(function* () {
       yield take(Actions.signTxModalDismissRequested);
       yield put({ type: Actions.signTxModalHide })
-    }
+    })
   ]);
 }
 

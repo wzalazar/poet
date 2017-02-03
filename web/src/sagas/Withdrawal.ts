@@ -10,14 +10,14 @@ import { takeEvery } from 'redux-saga'
  */
 
 function* withdraw(action: any) {
-  const address = action.paymentAddress;
-  const amountInSatoshis = action.amountInSatoshis;
+  const paymentAddress = action.payload.paymentAddress;
+  const amountInSatoshis = action.payload.amountInSatoshis;
 
   yield put({
     type: Actions.signTxSubmitRequested,
     payload: {
-      paymentAddress: address,
-      paymentAmountInSatoshis: amountInSatoshis,
+      paymentAddress,
+      amountInSatoshis,
       conceptOf: action.payload.conceptOf,
       resultAction: Actions.withdrawalDone,
       resultPayload: {}

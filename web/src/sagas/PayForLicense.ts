@@ -25,8 +25,8 @@ function* payForLicense(action: any) {
   yield put({
     type: Actions.signTxSubmitRequested,
     payload: {
-      paymentAddress: offering.paymentAddress,
-      paymentAmountInSatoshis: offering.amountInSatoshis,
+      address: offering.paymentAddress,
+      amountInSatoshis: offering.amountInSatoshis,
       conceptOf: action.payload.conceptOf,
       resultAction: Actions.licensePaid,
       resultPayload: offering
