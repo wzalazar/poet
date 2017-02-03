@@ -8,3 +8,4 @@ npm-debug.log
 torrents
 .vscode
 .DS_Store
+Docker/docker-compose.yaml
