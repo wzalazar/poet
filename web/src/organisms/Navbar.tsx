@@ -12,6 +12,7 @@ import { LogoutButton } from "../components/LogoutButton";
 
 //import * as logoUrl from '../images/logo.svg';
 const logoUrl = require('../images/logo.svg');
+const glassUrl = require('../images/glass.svg');
 
 interface NavbarActions {
   dispatchSearchClick: () => Action;
@@ -28,7 +29,7 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
       <nav className="navbar">
         <a className="navbar-brand" href="/"><img src={logoUrl} /></a>
         <div className="search" >
-          <input type="text" placeholder="Search" onClick={this.props.dispatchSearchClick} />
+          <img src={glassUrl} /><input type="text" placeholder="Search" onClick={this.props.dispatchSearchClick} />
         </div>
         <ul className="navbar-nav">
           { this.props.loggedIn ? this.loggedInActions() : this.notLoggedActions() }
