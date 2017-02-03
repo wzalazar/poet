@@ -15,7 +15,7 @@ const SEND_BLOCK = 'sendBlock'
 const amqpConnect = bluebird.promisify(amqp.connect, amqp) as any
 
 export async function connect() {
-  let attempts = 20
+  let attempts = 30
   while (attempts--) {
     try {
       return (await amqpConnect('amqp://rabbit:rabbit@rabbitmq:5672')) as amqp.Connection

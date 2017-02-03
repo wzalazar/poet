@@ -9,6 +9,8 @@ import PageLoader, { ReducerDescription } from '../../../components/PageLoader';
 import { WalletLayout } from './Layout';
 import { currentPublicKey } from '../../../selectors/session'
 import { publicKeyToAddress } from '../../../bitcoin/addressHelpers'
+import { WithdrawalInfo } from './interfaces'
+import Actions from '../../../actions'
 
 export interface UserWalletProps {
   publicKey?: string;
@@ -43,6 +45,11 @@ export class UserWallet extends PageLoader<UserWalletProps, Object> {
   }
 
   mapDispatchToProps(): Object {
-    return null;
+    return {
+      requestWithdrawal: (info: WithdrawalInfo) => ({
+        type: Actions.withdrawalRequested,
+        payload: info
+      })
+    };
   }
 }

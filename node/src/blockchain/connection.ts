@@ -3,7 +3,8 @@ import { createConnection } from 'typeorm'
 import { delay } from '../common'
 
 export default async function getConnection() {
-  let attempts = 20
+  let attempts = 30
+  let lastError
   while (attempts--) {
     try {
       return await createConnection({
@@ -22,8 +23,11 @@ export default async function getConnection() {
         autoSchemaSync: true
       })
     } catch (error) {
+      lastError = error
       await delay(1000)
     }
   }
+  console.log('Never connected!', lastError, lastError.stack)
+  throw new Error('Unable to connect to db')
 }
 
