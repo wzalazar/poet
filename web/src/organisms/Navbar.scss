@@ -33,7 +33,13 @@ nav.navbar {
       width: 300px;
       font-size: 14px;
       font-family: 'Roboto Slab', serif;
+
+      &::placeholder {
+        font-weight: bold;
+      }
+
     }
+
   }
 
   ul {
