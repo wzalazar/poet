@@ -25,6 +25,7 @@ services:
       - ../node/src:/poet/src
     networks:
       - queue
+      - outside
   claims-to-db:
     build:
       context: ..
@@ -53,6 +54,7 @@ services:
     networks:
       - queue
       - http
+      - outside
   trusted-publisher:
     build:
       context: ..
@@ -62,12 +64,14 @@ services:
     networks:
       - queue
       - http
+      - outside
   rabbitmq:
     build:
       context: ..
       dockerfile: ./Docker/queue.dockerfile
     networks:
       - queue
+    hostname: rabbitmq
   db:
     build:
       context: ..

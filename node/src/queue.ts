@@ -14,16 +14,17 @@ const SEND_BLOCK = 'sendBlock'
 
 const amqpConnect = bluebird.promisify(amqp.connect, amqp) as any
 
-async function connect() {
+export async function connect() {
   let attempts = 20
   while (attempts--) {
     try {
-      return await amqpConnect('amqp://rabbit:rabbit@rabbitmq:5672') as amqp.Connection
+      return (await amqpConnect('amqp://rabbit:rabbit@rabbitmq:5672')) as amqp.Connection
     } catch (error) {
-      console.log(error)
+      console.log('Reconnecting...')
       await delay(1000)
     }
   }
+  console.log('Never connected!!')
   throw new Error('Unable to find rabbit')
 }
 
@@ -90,7 +91,7 @@ export class Queue {
   private async publish(target: string, payload: any) {
       let connection, channel
     try {
-      connection = await connect() as amqp.Connection
+      connection = (await connect()) as amqp.Connection
       channel = await bluebird.promisify(connection.createChannel.bind(connection))() as Channel
       await channel.assertExchange(target, 'fanout', { durable: true })
       await channel.publish(target, '', new Buffer(JSON.stringify(payload)))
