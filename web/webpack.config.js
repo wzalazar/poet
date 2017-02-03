@@ -48,7 +48,7 @@ module.exports = {
       {
         test: /\.s?css$/, loader: production
         ? ExtractTextPlugin.extract('css!sass')
-        : 'style!css?sourceMap!sass?sourceMap'
+        : 'style!css?sourceMap!postcss!sass?sourceMap'
       },
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.svg$/, loader: 'file-loader' }
