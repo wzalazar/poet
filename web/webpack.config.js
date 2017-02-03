@@ -28,28 +28,30 @@ module.exports = {
     'vendor': vendor
   },
   output: {
-      filename: '[name].[hash].js',
-      path: path.join(__dirname, 'dist'),
-      publicPath: "/"
+    filename: '[name].[hash].js',
+    path: path.join(__dirname, 'dist'),
+    publicPath: "/"
   },
 
   // Enable sourcemaps for debugging webpack's output.
   devtool: 'cheap-eval-source-map',
 
   resolve: {
-      // Add '.ts' and '.tsx' as resolvable extensions.
-      extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.json']
+    // Add '.ts' and '.tsx' as resolvable extensions.
+    extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.json']
   },
 
   module: {
     loaders: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
       { test: /\.tsx?$/, loaders: ['react-hot', 'babel', 'awesome-typescript-loader'] },
-      { test: /\.s?css$/, loader: production
+      {
+        test: /\.s?css$/, loader: production
         ? ExtractTextPlugin.extract('css!sass')
         : 'style!css?sourceMap!sass?sourceMap'
       },
-      { test: /\.json$/, loader: 'json-loader' }
+      { test: /\.json$/, loader: 'json-loader' },
+      { test: /\.svg$/, loader: 'file-loader' }
     ],
 
     preLoaders: [

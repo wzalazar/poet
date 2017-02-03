@@ -10,6 +10,9 @@ import Constants from '../constants';
 import { LoginButton } from "../components/LoginButton";
 import { LogoutButton } from "../components/LogoutButton";
 
+//import * as logUrl from '../images/logo.svg';
+const logUrl = require('../images/logo.svg');
+
 interface NavbarActions {
   dispatchSearchClick: () => Action;
 }
@@ -23,7 +26,7 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
   render() {
     return (
       <nav className="navbar">
-        <a className="navbar-brand" href="/">po.et</a>
+        <a className="navbar-brand" href="/"><img src={logUrl} /></a>
         <div className="search" >
           <input type="text" placeholder="Search" onClick={this.props.dispatchSearchClick} />
         </div>
