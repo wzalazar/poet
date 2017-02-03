@@ -22,7 +22,7 @@ function apiFetch(url: string) {
       if (r.status !== 200) {
         return r.body().then((error: any) => ({ error }));
       }
-      return r.json().then((json: any) => ({ body: json }));
+      return r.json().then((json: any) => ({ result: json }));
     })
     .catch((error: any) => ({ error }));
 }
@@ -36,7 +36,7 @@ function* fetchData(action: any) {
     return
   }
   yield put({ fetchType: 'mark loading', type: 'mark loading ' + short, url });
-  const { body, error } = yield call(apiFetch, url);
+  const { result, error } = yield call(apiFetch, url);
 
   if (error) {
     if (error === NOT_FOUND) {
@@ -45,8 +45,9 @@ function* fetchData(action: any) {
       yield put({ fetchType: 'error for', type: 'error for ' + short, url, payload: error });
     }
   } else {
-    yield put({ fetchType: 'set result', type: 'set result ' + short, url, payload: body });
+    yield put({ fetchType: 'set result', type: 'set result ' + short, url, payload: result });
   }
+  return { result, error }
 }
 
 export default function watchForFetchCall(): Saga {

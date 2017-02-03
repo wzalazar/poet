@@ -49,4 +49,10 @@ export default class Actions {
 
   public static readonly fetchProfileData = 'fetch profile data';
   public static readonly profileDataFetched = 'profile data fetched';
+
+  public static readonly payForLicenseRequested = 'pay for license';
+  public static readonly licensePaid = 'license paid';
+
+  public static readonly withdrawalRequested = 'withdrawal started';
+  public static readonly withdrawalDone = 'withdrawal done';
 }

@@ -5,4 +5,7 @@ import ProfileSaga from './ProfileSaga';
 import SignTxSaga from './SignTxSaga';
 import SubmitClaims from './SubmitClaims';
 
-export default [ FetchSaga, NavbarSaga, SessionSaga, ProfileSaga, SubmitClaims, SignTxSaga ]
+import Withdrawal from './Withdrawal';
+import PayForLicense from './PayForLicense';
+
+export default [ FetchSaga, NavbarSaga, SessionSaga, ProfileSaga, SubmitClaims, SignTxSaga, Withdrawal, PayForLicense ];
