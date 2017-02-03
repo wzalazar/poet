@@ -1,4 +1,7 @@
-base-images:
+prepare:
+	mkdir -p torrents
+
+base-images: prepare
 	docker build --file Docker/poet-base.dockerfile --tag poet-base:latest .
 	docker build --file Docker/poet-web-base.dockerfile --tag poet-web-base:latest .
 
@@ -10,5 +13,5 @@ development: base-images
 	cd Docker && cp docker-compose-development.yaml docker-compose.yaml
 	cd Docker && docker-compose build
 
-start:
+start: prepare
 	cd Docker && docker-compose up
