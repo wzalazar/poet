@@ -6,14 +6,18 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const vendor = [
   'bitcore-lib',
+  'moment',
+  'protobufjs',
   'react',
+  'react-datepicker',
   'react-dom',
   'react-overlays',
+  'react-qr',
   'react-redux',
   'react-tabs',
   'redux',
   'redux-saga',
-  'moment'
+  'socket.io-client',
 ];
 
 const production = !!process.env['PRODUCTION'];
