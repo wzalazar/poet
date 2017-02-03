@@ -6,6 +6,7 @@ import { StepLicense, StepLicenseData } from './StepLicense/StepLicense'
 import StepPublishAndReview from './StepPublishAndReview/StepPublishAndReview'
 
 import './Layout.scss'
+import { publicKeyToAddress } from '../../bitcoin/addressHelpers'
 
 interface CreateWorkProps {
   readonly createWorkRequested: (claims: any[]) => any // Actions.claimsSubmitRequested
@@ -96,7 +97,9 @@ export default class CreateWorkLayout extends React.Component<CreateWorkProps, C
           'licenseDescription': this.state.licenseData.licenseType.description,
           'pricingFrequency': this.state.licenseData.pricing.frequency,
           'pricingPriceAmount': this.state.licenseData.pricing.price.amount,
-          'pricingPriceCurrency': this.state.licenseData.pricing.price.currency
+          'pricingPriceCurrency': this.state.licenseData.pricing.price.currency,
+          'paymentAddress': publicKeyToAddress(this.props.userPublicKey),
+          'amountInSatoshis': (this.state.licenseData.pricing.price.amount * 1e8).toFixed(0)
         }
       }
     ])
