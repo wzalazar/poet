@@ -6,6 +6,8 @@ import Config from '../../../config';
 import { PROFILE, Claim } from '../../../Claim';
 import { ImageUpload } from '../../../components/ImageUpload';
 
+const anonUserUrl = require('../../../images/user.svg');
+
 import './Layout.scss';
 
 export interface ProfileAttributes {
@@ -82,10 +84,12 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
             <ProfileLayoutRow label="Image">
               <ImageUpload
                 className="image-upload"
+                classNames={[this.state.avatarImageData && 'loaded']}
                 buttonClassName="btn btn-primary"
                 imageWidthLimit={Config.imageUpload.maxWidth}
                 imageHeightLimit={Config.imageUpload.maxHeight}
-                imageData={this.state.avatarImageData}
+                imageData={this.state.avatarImageData || anonUserUrl}
+                fileSizeLimit={Math.pow(1024, 2) * 20}
                 onChange={imageDataUrl => this.setState({avatarImageData: imageDataUrl})}
               />
             </ProfileLayoutRow>

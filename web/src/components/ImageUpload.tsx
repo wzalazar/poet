@@ -3,6 +3,7 @@ import * as React from 'react';
 export interface ImageUploadProps {
   onChange?: (imageDataUrl: string) => void;
   className?: string;
+  readonly classNames?: ReadonlyArray<string>;
   buttonClassName?: string;
   fileSizeLimit?: number;
   imageWidthLimit?: number;
@@ -38,7 +39,7 @@ export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadSt
 
   render() {
     return (
-      <section className={this.props.className} >
+      <section className={[this.props.className, ...this.props.classNames].filterTruthy().join(' ')} >
         <input
           type="file"
           ref={fileInput => this.fileInput = fileInput}

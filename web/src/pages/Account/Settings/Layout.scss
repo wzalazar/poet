@@ -13,9 +13,14 @@
       width: 75px;
       height: 75px;
       background-color: gray;
-      border: 1px solid black;
+      border: 1px solid #979797;
       cursor: pointer;
       margin-right: 20px;
+
     }
+
   }
+    .image-upload.loaded img {
+      border-color: black;
+    }
 }
