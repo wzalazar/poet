@@ -1,13 +1,11 @@
 import * as React from 'react';
+
+import { ClassNameProps } from '../../../common';
 import { Checkbox } from '../../../components/Checkbox';
 
 import './TermsOfUse.scss';
 
-export interface TermsOfUseProps {
-  readonly className?: string;
-}
-
-export class TermsOfUse extends React.Component<TermsOfUseProps, undefined> {
+export class TermsOfUse extends React.Component<ClassNameProps, undefined> {
   render() {
     return (
       <section className={'terms-of-use ' + this.props.className}>

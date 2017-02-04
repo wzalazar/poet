@@ -6,17 +6,17 @@ import '../extensions/String';
 
 import './LatestWorks.scss';
 
+import Config from '../config';
+import { ClassNameProps } from '../common';
+
 import { WorkProps } from '../hocs/WorkComponent';
 
 import { ProfileLink } from './ProfileLink';
 import { ResourceProvider } from './ResourceProvider';
 
-import Config from '../config';
-
 type LatestWorksResource = ReadonlyArray<WorkProps>;
 
-export interface LatestWorksProps {
-  readonly className?: string;
+export interface LatestWorksProps extends ClassNameProps {
   readonly limit?: number;
   readonly showLink?: boolean;
 }

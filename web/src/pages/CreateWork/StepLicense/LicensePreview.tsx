@@ -1,15 +1,11 @@
 import * as React from 'react';
-import { LicenseType, LicenseTypes } from '../../../common';
-
-export interface LicensePreviewProps {
-  readonly className?: string;
-}
+import { LicenseType, LicenseTypes, ClassNameProps } from '../../../common';
 
 export interface LicensePreviewState {
   readonly licenseType?: LicenseType;
 }
 
-export class LicensePreview extends React.Component<LicensePreviewProps, LicensePreviewState> {
+export class LicensePreview extends React.Component<ClassNameProps, LicensePreviewState> {
   constructor() {
     super(...arguments);
     this.state = {

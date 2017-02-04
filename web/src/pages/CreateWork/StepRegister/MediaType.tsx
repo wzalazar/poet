@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 import { RadioButtonGroup, RadioButton } from '../../../components/RadioButtonGroup';
+import { ClassNameProps } from '../../../common';
 
-export interface MediaTypeProps {
-  readonly className?: string;
+export interface MediaTypeProps extends ClassNameProps {
   readonly onChange?: (selectedId: string) => void;
 }
 

@@ -1,10 +1,9 @@
 import * as React from 'react';
 import * as moment from 'moment';
 
-import { Price, LicenseType } from '../../../common';
+import { Price, LicenseType, ClassNameProps } from '../../../common';
 
-export interface PreviewProps {
-  readonly className?: string;
+export interface PreviewProps extends ClassNameProps {
   readonly authorName?: string;
   readonly mediaType: string;
   readonly workTitle: string;

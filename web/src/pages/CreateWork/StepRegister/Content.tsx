@@ -1,19 +1,16 @@
 import * as React from 'react';
 
 import '../Layout.scss';
-import { TextUpload } from '../../../components/TextUpload';
+import './Content.scss';
 
-interface ContentProps {
-  readonly className?: string;
-}
+import { ClassNameProps } from '../../../common';
+import { TextUpload } from '../../../components/TextUpload';
 
 interface ContentState {
   readonly content: string;
 }
 
-import './Content.scss';
-
-export class Content extends React.Component<ContentProps, ContentState> {
+export class Content extends React.Component<ClassNameProps, ContentState> {
 
   constructor() {
     super(...arguments);

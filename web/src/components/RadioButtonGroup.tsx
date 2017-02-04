@@ -1,7 +1,8 @@
 import * as React from 'react';
 
-export interface RadioButtonGroupProps {
-  readonly className?: string;
+import { ClassNameProps } from '../common';
+
+export interface RadioButtonGroupProps extends ClassNameProps {
   readonly radioButtons: ReadonlyArray<RadioButton>;
   readonly onSelectionChange?: (id: string) => void;
 }

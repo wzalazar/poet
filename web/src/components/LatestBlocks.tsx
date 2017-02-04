@@ -6,6 +6,7 @@ import '../extensions/String';
 import './LatestBlocks.scss';
 
 import Config from '../config';
+import { ClassNameProps } from '../common';
 
 import { ResourceProvider } from './ResourceProvider';
 
@@ -18,8 +19,7 @@ interface Block {
 
 type LatestBlocksResource = ReadonlyArray<Block>;
 
-export interface LatestBlocksProps {
-  readonly className?: string;
+export interface LatestBlocksProps extends ClassNameProps {
   readonly limit?: number;
 }
 

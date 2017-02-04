@@ -1,10 +1,7 @@
 import * as React from 'react';
 
 import '../Layout.scss';
-
-interface AttributesProps {
-  readonly className?: string;
-}
+import { ClassNameProps } from '../../../common';
 
 export interface Attribute {
   key: string;
@@ -15,7 +12,7 @@ interface AttributesState {
   readonly attributes: ReadonlyArray<Attribute>;
 }
 
-export class Attributes extends React.Component<AttributesProps, AttributesState> {
+export class Attributes extends React.Component<ClassNameProps, AttributesState> {
   private readonly controls: {
     attributeKeyInputs?: HTMLInputElement[];
   } = {
