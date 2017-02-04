@@ -1,20 +1,20 @@
 import * as React from 'react';
 
 export interface ImageUploadProps {
-  onChange?: (imageDataUrl: string) => void;
-  className?: string;
+  readonly onChange?: (imageDataUrl: string) => void;
+  readonly className?: string;
   readonly classNames?: ReadonlyArray<string>;
-  buttonClassName?: string;
-  fileSizeLimit?: number;
-  imageWidthLimit?: number;
-  imageHeightLimit?: number;
-  imageData?: string;
-  useDefaultStyles?: boolean;
-  spinnerUrl?: string;
+  readonly buttonClassName?: string;
+  readonly fileSizeLimit?: number;
+  readonly imageWidthLimit?: number;
+  readonly imageHeightLimit?: number;
+  readonly imageData?: string;
+  readonly useDefaultStyles?: boolean;
+  readonly spinnerUrl?: string;
 }
 
 export interface ImageUploadState {
-  isLoading?: boolean;
+  readonly isLoading?: boolean;
 }
 
 export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadState> {
