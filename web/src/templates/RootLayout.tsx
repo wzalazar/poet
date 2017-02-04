@@ -13,9 +13,13 @@ export function Layout(props: any) {
   return (
     <div className="root-layout">
       { modals }
-      <Navbar />
-      { userPaths.includes(props.location.pathname) && <UserNavbar location={props.location.pathname}/> }
-      { props.children }
+      <div >
+        <Navbar />
+        { userPaths.includes(props.location.pathname) && <UserNavbar location={props.location.pathname}/> }
+      </div>
+      <div className="container">
+        { props.children }
+      </div>
     </div>
   );
 }
