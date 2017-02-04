@@ -23,3 +23,8 @@ export const LicenseTypes: ReadonlyArray<LicenseType> = [
   new LicenseType('one-off', 'One Off', 'Lorem Ipsum One Off'),
   new LicenseType('pay-to-publish', 'Pay to Publish', 'Lorem Ipsum Pay to Publish')
 ];
+
+export interface ClassNameProps {
+  readonly className?: string;
+  readonly classNames?: ReadonlyArray<string>;
+}

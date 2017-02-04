@@ -1,9 +1,8 @@
 import * as React from 'react';
+import { ClassNameProps } from '../common';
 
-export interface ImageUploadProps {
+export interface ImageUploadProps extends ClassNameProps {
   readonly onChange?: (imageDataUrl: string) => void;
-  readonly className?: string;
-  readonly classNames?: ReadonlyArray<string>;
   readonly buttonClassName?: string;
   readonly fileSizeLimit?: number;
   readonly imageWidthLimit?: number;
