@@ -11,10 +11,12 @@ export class UserNavbar extends React.Component<UserNavbarProps, undefined> {
   render() {
     return (
       <nav className="user-nav">
-        <ul>
-          { this.renderNavLink('account/settings', 'Settings') }
-          { this.renderNavLink('account/wallet', 'Wallet') }
-        </ul>
+        <div className="container">
+          <ul>
+            { this.renderNavLink('account/settings', 'Settings') }
+            { this.renderNavLink('account/wallet', 'Wallet') }
+          </ul>
+        </div>
       </nav>
     )
   }
