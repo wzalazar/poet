@@ -13,6 +13,7 @@ import { LogoutButton } from "../components/LogoutButton";
 //import * as logoUrl from '../images/logo.svg';
 const logoUrl = require('../images/logo.svg');
 const glassUrl = require('../images/glass.svg');
+const quillUrl = require('../images/quill.svg');
 
 interface NavbarActions {
   dispatchSearchClick: () => Action;
@@ -59,7 +60,11 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
       this.renderNavLink('about', 'About'),
       this.renderNavLink('documentation', 'Documentation'),
       <li key="login"><LoginButton>Login</LoginButton></li>,
-      this.renderNavButton('try-it-out', 'Try it Out')
+      <li key='try-it-out' className='try-it-out'>
+        <Link to={'/try-it-out'} className="try-it-out">
+          <img src={quillUrl} /><span>Try It Out</span>
+        </Link>
+      </li>
     ];
   }
 

@@ -6,30 +6,35 @@ nav.navbar {
   display: flex;
   align-items: center;
   padding: 2px 20px;
-  box-shadow: 0 4px 2px -2px rgba(0,0,0,0.16);
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1);
 
   .navbar-brand {
-    border-right: 1px solid #ececec;
-    padding: 10px 30px 10px 0;
+    padding: 14px 26px 14px 4px;
   }
 
   .nav-link {
-    color: #000;
+    color: #413D3B;
     font-family: 'Roboto Slab', serif;
     font-size: 12px;
+    font-weight: bold;
+    opacity: 0.75;
   }
 
   .search {
     display: flex;
+    flex-grow: 1;
+    max-width: 560px;
     align-items: center;
-    margin-left: 6px;
+    margin: 0 12px 0 6px;
+    padding: 10px;
+    box-shadow: 2px 2px 9px 0 rgba(0,0,0,0.06);
 
     img {
       margin-right: 10px;
     }
 
     input[type=text] {
-      width: 300px;
+      flex-grow: 1;
       font-size: 14px;
       font-family: 'Roboto Slab', serif;
 
@@ -58,6 +63,29 @@ nav.navbar {
         width: $avatar-size;
         height: $avatar-size;
       }
+    }
+
+    .try-it-out {
+      display: flex;
+      align-items: center;
+      padding: 3px 6px;
+      background-color: #43B980;
+      border-radius: 4px;
+      text-decoration: none;
+
+      img {
+        margin-right: 8px;
+      }
+
+      span {
+        color: white;
+        font-family: "Roboto Slab";
+        font-size: 10px;
+        font-weight: bold;
+        text-align: center;
+
+      }
+
     }
   }
 }
