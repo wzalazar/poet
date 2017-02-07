@@ -16,7 +16,7 @@ function renderWork(props: WorkProps) {
     <li key={props.id} className="mb-3">
       <div className="name"><Link to={'/works/' + props.id}>{props.attributes.name}</Link></div>
       <div className="info">
-        <span className="timestamp"><strong>Timestamped</strong> { moment(props.claimInfo && props.claimInfo.timestamp).fromNow() }</span>&nbsp;
+        <span className="timestamp">Timestamped { moment(props.claimInfo && props.claimInfo.timestamp).fromNow() }</span>&nbsp;
         <span className="author">by { props.attributes.authorPublicKey ? <ProfileLink id={props.attributes.authorPublicKey} /> : (props.attributes.authorDisplayName || 'Unknown author') }</span>
       </div>
       <div className="content">{props.attributes.content}</div>
