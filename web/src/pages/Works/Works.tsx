@@ -14,8 +14,8 @@ import './Works.scss';
 function renderWork(props: WorkProps) {
   return (
     <li key={props.id} className="mb-3">
-      <h3><Link to={'/works/' + props.id}>{props.attributes.name}</Link></h3>
-      <div>
+      <div className="name"><Link to={'/works/' + props.id}>{props.attributes.name}</Link></div>
+      <div className="info">
         <span className="timestamp"><strong>Timestamped</strong> { moment(props.claimInfo && props.claimInfo.timestamp).fromNow() }</span>&nbsp;
         <span className="author">by { props.attributes.authorPublicKey ? <ProfileLink id={props.attributes.authorPublicKey} /> : (props.attributes.authorDisplayName || 'Unknown author') }</span>
       </div>

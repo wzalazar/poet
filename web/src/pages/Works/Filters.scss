@@ -7,6 +7,8 @@
   box-shadow: 0 4px 6px 0 rgba(0,0,0,0.1);
   background-color: white;
 
+
+
   >div {
     display: flex;
     align-items: center;
@@ -20,7 +22,31 @@
     }
   }
 
-}
-.no-margin-bottom {
-  margin-bottom: 0!important;
+  .date-picker {
+
+    .calendar-button {
+      border-radius: 3px;
+      font-size: 10px;
+      text-align: center;
+      //line-height: 25px;
+      border: 1px solid #E6E4E1;
+      padding: 5px 7px;
+
+      span {
+        font-family: 'Roboto';
+        font-weight: 300;
+      }
+
+      img {
+        position: relative;
+        top: -1px;
+        margin-left: 6px;
+      }
+    }
+
+    .date-picker-separator {
+      margin: 0 8px;
+    }
+  }
+
 }

@@ -5,6 +5,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import './Filters.scss';
 
+const calendarIconUrl = require('../../images/calendar.svg');
+
 export interface FilterComponentState {
   readonly dateFrom?: moment.Moment;
   readonly dateTo?: moment.Moment;
@@ -13,13 +15,12 @@ export interface FilterComponentState {
 class CustomInput extends React.Component<any, any>{
   render() {
     return (
-      <div>
-        <button
-          className="btn btn-secondary btn-sm"
-          onClick={this.props.onClick}>
-          {this.props.value}
-        </button>
-      </div>
+      <button
+        className="calendar-button"
+        onClick={this.props.onClick}>
+        <span>{this.props.value}</span>
+        <img src={calendarIconUrl}/>
+      </button>
     )
   }
 }
@@ -49,7 +50,7 @@ export class FiltersComponent extends React.Component<any, FilterComponentState>
         <strong>{text}&nbsp;</strong>
         <span className="mr-1">between</span>
         <ReactDatePicker onChange={this.onDateFromChange.bind(this)} selected={this.state.dateFrom} customInput={<CustomInput/>} />
-        <span className="mx-1">and</span>
+        <span className="date-picker-separator">and</span>
         <ReactDatePicker onChange={this.onToFromChange.bind(this)} selected={this.state.dateTo} customInput={<CustomInput/>} />
       </div>
     );
