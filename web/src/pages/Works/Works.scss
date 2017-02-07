@@ -1,18 +1,29 @@
 .works-results {
+  font-family: 'Roboto Slab';
+
   .showing-results {
-    font-size: 16px;
-  }
-  h3 {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
+    font-family: inherit;
+    margin-bottom: 48px;
   }
-  .author {
-    font-size: 12px;
-  }
-  small {
-    font-size: 10px;
-  }
-  .content {
-    font-size: 12px;
+
+  ul {
+    font-family: inherit;
+
+    li {
+      font-size: 12px;
+      font-family: inherit;
+
+      a {
+        color: #4A4A4A;
+        font-family: inherit;
+      }
+
+      h3 {
+        font-size: 16px;
+        font-weight: bold;
+      }
+    }
   }
 }

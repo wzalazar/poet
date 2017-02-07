@@ -20,14 +20,15 @@ interface NavbarActions {
 }
 
 export interface NavbarProps {
-  readonly loggedIn: boolean;
-  readonly avatar: string;
+  readonly loggedIn?: boolean;
+  readonly avatar?: string;
+  readonly shadow: boolean;
 }
 
 class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undefined> {
   render() {
     return (
-      <nav className="navbar">
+      <nav className={'navbar ' + (this.props.shadow ? 'shadow' : '') }>
         <a className="navbar-brand" href="/"><img src={logoUrl} /></a>
         <div className="search" >
           <img src={glassUrl} /><input type="text" placeholder="Search" onClick={this.props.dispatchSearchClick} />
@@ -79,8 +80,9 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
   }
 }
 
-function mapStateToProps(state: any): NavbarProps {
+function mapStateToProps(state: any, ownProps: NavbarProps): NavbarProps {
   return {
+    ...ownProps,
     loggedIn: state.session && (state.session.state === Constants.LOGGED_IN),
     avatar: state.profile && state.profile.attributes && state.profile.attributes.imageData
   }

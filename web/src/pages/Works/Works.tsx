@@ -15,11 +15,10 @@ function renderWork(props: WorkProps) {
   return (
     <li key={props.id} className="mb-3">
       <h3><Link to={'/works/' + props.id}>{props.attributes.name}</Link></h3>
-      <div className="author">by { props.attributes.authorPublicKey ? <ProfileLink id={props.attributes.authorPublicKey} /> : (props.attributes.authorDisplayName || 'Unknown author') }</div>
-      <small>
-        <span><strong>Created:</strong> { moment(props.attributes.publishedAt || props.attributes.createdAt ).fromNow() }</span>
-        <span className="ml-3"><strong>Timestamped:</strong> { moment(props.claimInfo && props.claimInfo.timestamp).fromNow() }</span>
-      </small>
+      <div>
+        <span className="timestamp"><strong>Timestamped</strong> { moment(props.claimInfo && props.claimInfo.timestamp).fromNow() }</span>&nbsp;
+        <span className="author">by { props.attributes.authorPublicKey ? <ProfileLink id={props.attributes.authorPublicKey} /> : (props.attributes.authorDisplayName || 'Unknown author') }</span>
+      </div>
       <div className="content">{props.attributes.content}</div>
     </li>
   )
@@ -27,13 +26,13 @@ function renderWork(props: WorkProps) {
 
 function render(props: FetchComponentProps) {
   return (
-    <div className="works-results">
-      <h4 className="mb-3 showing-results">Showing {props.elements.length} results</h4>
+    <section className="works-results container">
+      <h4 className="showing-results">Showing {props.elements.length} Results</h4>
       <ul className="list-unstyled">
         { props.elements.map(renderWork) }
       </ul>
       <Pagination />
-    </div>
+    </section>
   )
 }
 

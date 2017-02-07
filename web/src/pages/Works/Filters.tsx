@@ -59,9 +59,11 @@ export class FiltersComponent extends React.Component<any, FilterComponentState>
   render() {
     return (
       <header>
-        { this.renderDropdown('Sort by', ['Most Trusted', 'Date Published', 'Licenses Sold'])}
-        { this.renderDropdown('License', ['Free to Use', 'MIT', 'Private'])}
-        { this.renderDateSelector('Created')}
+        <div className="container">
+          { this.renderDropdown('Sort by', ['Most Trusted', 'Date Published', 'Licenses Sold'])}
+          { this.renderDropdown('License', ['Free to Use', 'MIT', 'Private'])}
+          { this.renderDateSelector('Created')}
+        </div>
       </header>
     );
   }

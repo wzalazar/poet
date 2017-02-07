@@ -1,12 +1,12 @@
-// TODO(eordano): Extract this to a global variable
-$almost-black: #222;
-$almost-white: #fafafa; // she don't lie she don't lie
-
 nav.navbar {
   display: flex;
   align-items: center;
   padding: 2px 20px;
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1);
+  background-color: white;
+
+  &.shadow {
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1);
+  }
 
   .navbar-brand {
     padding: 14px 26px 14px 4px;
