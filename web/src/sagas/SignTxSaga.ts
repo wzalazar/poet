@@ -1,15 +1,13 @@
-import { Saga, takeEvery } from 'redux-saga'
-import { call, put, select } from 'redux-saga/effects'
+import {Saga, takeEvery} from "redux-saga";
+import {call, put, select, take, fork} from "redux-saga/effects";
 
-import Actions from '../actions'
-import auth from '../auth'
-import { getMockPrivateKey } from '../mockKey'
-import config from '../config'
-
-import { getUtxos, submitTx } from '../bitcoin/insight'
-import { getSighash, applyHexSignaturesInOrder } from '../bitcoin/txHelpers'
-import { race } from 'redux-saga/effects'
-import { take } from 'redux-saga/effects'
+import Actions from "../actions";
+import auth from "../auth";
+import {getMockPrivateKey} from "../mockKey";
+import config from "../config";
+import {getUtxos, submitTx} from "../bitcoin/insight";
+import {getSighash, applyHexSignaturesInOrder} from "../bitcoin/txHelpers";
+import {race} from "redux-saga/effects";
 
 
 const bitcore = require('bitcore-lib');
@@ -43,6 +41,8 @@ export function* signTx(action: { payload: SignTransactionParameters }) {
   const amount = parseInt('' + action.payload.amountInSatoshis, 10);
   if (!utxos.reduce((prev: number, next: any) => prev + next.satoshis, 0)) {
     yield put({ type: Actions.noBalanceAvailable });
+    yield take(Actions.signTxModalDismissRequested);
+    yield put({ type: Actions.signTxModalHide });
     return
   }
   const tx = new bitcore.Transaction().from(utxos)
