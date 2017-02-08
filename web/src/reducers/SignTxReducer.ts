@@ -8,6 +8,8 @@ export default function modalsReducer(state: any, action: any) {
       return { ...state, id: null, success: null };
     case Actions.txSubmittedSuccess:
       return { ...state, id: null, success: true };
+    case Actions.noBalanceAvailable:
+      return { ...state, id: null, success: null, noBalance: true };
   }
   return state || {};
 }

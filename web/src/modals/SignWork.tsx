@@ -1,14 +1,12 @@
-import * as React from 'react'
-import { connect } from 'react-redux'
+import * as React from "react";
+import {connect} from "react-redux";
+import Modal, {ModalProps} from "./Modal";
+import Actions from "../actions";
+import Loading from "../components/Loading";
+import "./Modal.scss";
+import "./Login.scss";
 
 const QR = require('react-qr');
-
-import Modal, { ModalProps } from './Modal'
-import Actions from '../actions'
-import Loading from '../components/Loading'
-
-import './Modal.scss'
-import './Login.scss'
 
 interface SignProps {
   requestId: string;
@@ -38,7 +36,6 @@ class SignWorkModal extends Modal<SignProps & SignActions & ModalProps> {
             <div className="scan">
               <div className="placeholder-box" />
               <div className="ml-2">
-                <div>Work: El Quijote</div>
                 <div className="text-muted">Login to the app &gt; scan QR code</div>
               </div>
             </div>
@@ -58,7 +55,7 @@ function mapStateToProps(state: any): SignProps {
   return {
     visible: state.modals.signWork,
     requestId: state.claimSign.id,
-    success: state.claimSign.success
+    success: state.claimSign.success,
   }
 }
 

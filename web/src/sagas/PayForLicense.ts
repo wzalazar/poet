@@ -4,6 +4,7 @@ import { put, select, take, call } from 'redux-saga/effects'
 import Actions from '../actions'
 import { currentPublicKey } from '../selectors/session'
 import config from '../config'
+import {race} from "redux-saga/effects";
 
 async function submitLicense(reference: string, txId: string, outputIndex: number, publicKey: string, referenceOffering: string) {
   return await fetch(config.api.user + '/licenses', {
@@ -34,7 +35,16 @@ function* payForLicense(action: any) {
   });
 
   while (true) {
-    const result = yield take(Actions.licensePaid);
+    const result = yield race([
+      take(Actions.licensePaid),
+      call(function* () {
+        yield take(Actions.noBalanceAvailable);
+        return false
+      })
+    ]);
+    if (!result) {
+      return;
+    }
     if (result.payload.id !== offering.id) {
       continue;
     }

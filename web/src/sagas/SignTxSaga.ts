@@ -41,7 +41,10 @@ export function* signTx(action: { payload: SignTransactionParameters }) {
 
   const targetAddress = action.payload.paymentAddress;
   const amount = parseInt('' + action.payload.amountInSatoshis, 10);
-
+  if (!utxos.reduce((prev: number, next: any) => prev + next.satoshis, 0)) {
+    yield put({ type: Actions.noBalanceAvailable });
+    return
+  }
   const tx = new bitcore.Transaction().from(utxos)
     .to(targetAddress, amount)
     .change(myAddressString);

@@ -55,4 +55,6 @@ export default class Actions {
 
   public static readonly withdrawalRequested = 'withdrawal started';
   public static readonly withdrawalDone = 'withdrawal done';
+
+  public static readonly noBalanceAvailable = 'no balance available';
 }
