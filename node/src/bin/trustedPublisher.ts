@@ -4,7 +4,7 @@ const bitcore = require('bitcore-lib')
 const Body = require('koa-body')
 const Route = require('koa-route')
 
-import { Claim, Block, WORK, TITLE, OFFERING, LICENSE } from "../claim"
+import {Claim, Block, WORK, TITLE, OFFERING, LICENSE, CERTIFICATE} from "../claim"
 import { default as getCreator, ClaimBuilder } from "../serialization/builder"
 import { getHash } from '../helpers/torrentHash'
 import { Queue } from '../queue'
@@ -17,10 +17,6 @@ export interface TrustedPublisherOptions {
   broadcast: boolean
 }
 
-const createClaim = (creator: ClaimBuilder, claimInfo: any, privateKey: string): Claim => {
-  return creator.createSignedClaim(claimInfo, privateKey)
-}
-
 export default async function createServer(options?: TrustedPublisherOptions) {
   const koa = new Koa()
   const creator = await getCreator()
@@ -29,6 +25,15 @@ export default async function createServer(options?: TrustedPublisherOptions) {
   koa.use(Body({ textLimit: 1000000 }))
 
   const createBlock = async (claims: Claim[], ctx: any) => {
+
+    const certificates = claims.map(claim => creator.createSignedClaim({
+      type: CERTIFICATE,
+      attributes: {
+        [Fields.REFERENCE]: claim.id,
+        [Fields.CERTIFICATION_TIME]: '' + Date.now()
+      }
+    }, privKey))
+
     const block: Block = creator.createBlock(claims)
     try {
       await queue.announceBlockToSend(block)

@@ -16,7 +16,12 @@ export default {
     }
     const notaryApproves = await service.notaryApproval(claim)
     if (notaryApproves) {
-      service.certifyClaim(claim, txInfo)
+      const reference = await service.getClaim(referenceId)
+      if (!reference) {
+        console.log('problem with certificate: no referred claim found')
+        return
+      }
+      service.certifyClaim(reference, txInfo)
     }
   }
 }
