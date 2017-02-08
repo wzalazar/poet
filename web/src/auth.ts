@@ -62,23 +62,10 @@ export class AuthSocket {
     this.handler(payload)
   }
 
-  getRequestIdFor(payload: Buffer) {
-    const ref = v4();
-    const data = JSON.stringify({
-      type: 'create',
-      payload: payload.toString('hex'),
-      ref
-    });
-    const defer = AuthSocket.defer();
-    this.promises[ref] = defer;
-    this.socket.emit('request', data);
-    return defer.promise
-  }
-
   getRequestIdForLogin(): Promise<string> {
-    return this.getRequestIdFor(new Buffer(JSON.stringify({
+    return this.getRequestIdForMultipleSigningBuffers([new Buffer(JSON.stringify({
       timestamp: Date.now()
-    })));
+    }))], false);
   }
 
   getRequestIdForMultipleSigning(payload: string[], bitcoin: boolean): Promise<string> {

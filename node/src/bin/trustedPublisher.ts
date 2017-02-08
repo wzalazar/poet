@@ -34,7 +34,7 @@ export default async function createServer(options?: TrustedPublisherOptions) {
       }
     }, privKey))
 
-    const block: Block = creator.createBlock(claims)
+    const block: Block = creator.createBlock(claims.concat(certificates))
     try {
       await queue.announceBlockToSend(block)
     } catch (error) {

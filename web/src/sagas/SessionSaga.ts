@@ -14,10 +14,10 @@ async function requestIdFromAuth() {
 }
 
 async function bindAuthResponse(request: any) {
-  const data = await auth.onResponse(request.id) as any;
+  const data = (await auth.onResponse(request.id) as any).signatures[0];
   return {
-    publicKey: data.signature.publicKey,
-    token: { ...data.signature, message: data.message }
+    publicKey: data.publicKey,
+    token: { ...data, message: data.message }
   }
 }
 
@@ -37,10 +37,12 @@ function* logoutButtonClickedAction(action: any) {
 
 function* loginResponseAction(action: any) {
   yield put({ type: Actions.loginModalClose });
+
+  localStorage.setItem(LOCALSTORAGE_SESSION, JSON.stringify(action.payload));
   yield put({ type: Actions.loginSuccess, token: action.payload });
+
   yield put({ type: Actions.fetchProfileData, profilePublicKey: action.payload.publicKey });
   browserHistory.push('/'); // TODO: redirect to login_success
-  localStorage.setItem(LOCALSTORAGE_SESSION, JSON.stringify(action.payload));
 }
 
 function* mockLoginHit(action: any) {
@@ -66,8 +68,6 @@ function sessionSaga(): Saga {
     yield takeEvery(Actions.loginModalDisposeRequested, loginModalDisposeRequestedAction);
     yield takeEvery(Actions.loginResponse, loginResponseAction);
     yield takeEvery(Actions.mockLoginRequest, mockLoginHit);
-    yield takeEvery(Actions.loginSuccess, mockLoginHit);
-
   }
 }
 
