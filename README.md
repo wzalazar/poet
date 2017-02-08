@@ -1,5 +1,7 @@
 # poet
 
+[Current Target: Milestone #1 (Feb 10th)](https://github.com/poetapp/poet/milestone/1)
+
 ## About
 
 poet is a subjective trust engine used for copyright management.
