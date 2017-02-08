@@ -1,10 +1,11 @@
 import 'reflect-metadata'
 import * as bluebird from 'bluebird'
 import { Connection, Repository } from 'typeorm'
+
 import { Block as PureBlock, ClaimType, Claim as PureClaim } from '../claim'
 import { getHash } from '../helpers/torrentHash'
 import { BlockMetadata } from '../events'
-import rules, { Hook } from './rules'
+import rules, { Hook } from './certification'
 import { ClaimBuilder } from '../serialization/builder'
 import Fields from './fields'
 import Claim from './orm/claim'
@@ -31,7 +32,17 @@ export default class BlockchainService {
     'Offering'    : [] as Hook[],
     'Profile'     : [] as Hook[],
     'Certificate' : [] as Hook[],
-    'Revokation'  : [] as Hook[],
+    'Revocation'  : [] as Hook[],
+  }
+
+  certificateHooks: { [key in ClaimType]: Hook[] } = {
+    'Work'        : [] as Hook[],
+    'Title'       : [] as Hook[],
+    'License'     : [] as Hook[],
+    'Offering'    : [] as Hook[],
+    'Profile'     : [] as Hook[],
+    'Certificate' : [] as Hook[],
+    'Revocation'  : [] as Hook[],
   }
 
   constructor()
@@ -41,7 +52,7 @@ export default class BlockchainService {
   }
 
   setupHooks() {
-    // TODO: Scan "rules" folder
+    // TODO: Scan "certification" folder
     for (let rule of rules) {
       this.addHook(rule.type, rule.hook)
     }
@@ -104,6 +115,12 @@ export default class BlockchainService {
     return results
   }
 
+  async certifyClaim(claim: PureClaim, txInfo: BlockMetadata) {
+    return await bluebird.all(
+      this.certificateHooks[claim.type].map(hook => hook(this, claim, txInfo))
+    )
+  }
+
   async confirmClaim(claim: PureClaim, txInfo: BlockMetadata, index: number) {
     await this.claimInfoRepository.persist(this.claimInfoRepository.create({
       ...txInfo,
@@ -112,10 +129,9 @@ export default class BlockchainService {
       blockHeight: txInfo.height,
       claimOrder: index,
     }))
-    const result = await bluebird.all(
+    return await bluebird.all(
       this.confirmHooks[claim.type].map(hook => hook(this, claim, txInfo))
     )
-    return result
   }
 
   private async saveBlockIfNotExists(block: PureBlock) {
@@ -234,7 +250,7 @@ export default class BlockchainService {
   }
 
   async getWork(id: string) {
-    const work = await this.workRepository.createQueryBuilder('work')
+    return await this.workRepository.createQueryBuilder('work')
       .leftJoinAndMapOne('work.title', 'work.title', 'title')
       .leftJoinAndMapOne('work.owner', 'work.owner', 'owner')
       .leftJoinAndMapOne('work.author', 'work.author', 'author')
@@ -244,7 +260,6 @@ export default class BlockchainService {
       .where('work.id=:id')
       .setParameters({id})
       .getOne()
-    return work
   }
 
   async getWorkFull(id: string) {
@@ -389,4 +404,9 @@ export default class BlockchainService {
     return this.db.getRepository(Attribute)
   }
 
+  async notaryApproval(claim: PureClaim) {
+    // TODO: Validate signature
+    // TODO: Validate public key is trusted
+    return true
+  }
 }

@@ -19,7 +19,7 @@ export interface HookDescription {
 
 const rules: HookDescription[] = []
 
-// Add here rules
+// Add here certification
 rules.push(work)
 rules.push(profile)
 rules.push(title)
