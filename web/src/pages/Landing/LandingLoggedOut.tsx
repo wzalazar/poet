@@ -5,6 +5,7 @@ import './LandingLoggedOut.scss';
 import LatestBlocks from '../../components/LatestBlocks';
 import LatestWorks from '../../components/LatestWorks';
 import { Reviews } from './Reviews';
+import { Partners } from './Partners';
 
 export interface LandingProps {
 }
@@ -36,6 +37,7 @@ export class LandingLoggedOut extends React.Component<LandingProps, undefined> {
           <LatestWorks/>
         </div>
         <Reviews/>
+        <Partners/>
       </section>
     )
   }
