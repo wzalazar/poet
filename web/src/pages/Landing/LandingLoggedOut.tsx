@@ -4,6 +4,7 @@ import './LandingLoggedOut.scss';
 
 import LatestBlocks from '../../components/LatestBlocks';
 import LatestWorks from '../../components/LatestWorks';
+import { Reviews } from './Reviews';
 
 export interface LandingProps {
 }
@@ -16,32 +17,25 @@ export class LandingLoggedOut extends React.Component<LandingProps, undefined> {
         <h2>Built on the bitcoin blockchain, the most secure globally verifiable
         <br/> record of human history the world has ever seen</h2>
         <div className="cta-header">
-          <button className="btn btn-outline-primary">Learn more</button>
+          <button className="">Learn more</button>
         </div>
-        <div className="row landing-boxes mb-3">
-          <div className="col-sm-4">
-            <section>
-              <LatestBlocks />
-            </section>
-          </div>
-          <div className="col-sm-4">
-            <section className="raised boxed">
-              <div className="invisible"/>
-              <div className="number">$10,500,00</div>
-              <div className="explain">raised</div>
-            </section>
-          </div>
-          <div className="col-sm-4">
-            <section className="registered boxed">
-              <div className="invisible"/>
-              <div className="number">1.4M</div>
-              <div className="explain">works registered</div>
-            </section>
-          </div>
-        </div>
+        <section className="row landing-boxes">
+          <section className="col-sm-4">
+            {/*<LatestBlocks />*/}
+          </section>
+          <section className="col-sm-4 boxed">
+            <div className="number">$1,000,000</div>
+            <div className="explain">Amount Raised</div>
+          </section>
+          <section className="col-sm-4 registered boxed">
+            <div className="number">12,014</div>
+            <div className="explain">Creative Works Registered</div>
+          </section>
+        </section>
         <div>
           <LatestWorks/>
         </div>
+        <Reviews/>
       </section>
     )
   }

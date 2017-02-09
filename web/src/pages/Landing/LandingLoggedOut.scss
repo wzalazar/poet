@@ -1,23 +1,61 @@
 .landing-logged-out {
+  font-family: "Roboto Slab";
   text-align: center;
   height: 100%;
   margin-top: 60px;
+
   h1 {
-    margin-bottom: 60px;
-    font-size: 1.8em;
+    margin-bottom: 16px;
+    font-size: 32px;
+    font-weight: bold;
+    color: #413D3B;
+    line-height: 43px;
   }
+
   h2 {
-    margin-bottom: 60px;
-    font-size: 1.2em;
+    margin-bottom: 26px;
+    font-size: 16px;
+    color: #413D3B;
+    font-weight: normal;
+    line-height: 22px;
   }
+
   .cta-header {
     margin-bottom: 60px;
+
+    button {
+      width: 146px;
+      height: 30px;
+      font-size: 10px;
+      border: 1px solid #413D3B;
+      border-radius: 4px;
+      background-color: white;
+      font-weight: bold;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #FAFAFA;
+      }
+    }
   }
 
   .landing-boxes {
-    border: 1px solid #cacaca;
+    align-items: center;
+    border: 1px solid #E3E1DF;
     border-radius: 5px;
-    padding-bottom: 30px;
+    margin-bottom: 66px;
+    color: #43B980;
+    background-color: white;
+    box-shadow: 0 2px 0 0 #F0F0F0;
+
+    >section {
+      height: 100%;
+
+      &:not(:first-child) {
+        padding: 36px;
+        border-left: 1px solid #E6E4E1;
+      }
+    }
   }
 
   .boxed {
@@ -31,12 +69,17 @@
       visibility: hidden;
     }
     .number {
-      font-size: 1.6em;
-      font-weight: 400;
-      margin-top: auto;
+      font-size: 48px;
+      font-weight: bold;
     }
     .explain  {
-      margin-top: auto;
+      font-size: 12px;
+      font-weight: bold;
+      color: #737373;
     }
+  }
+
+  .latest-works {
+    margin-bottom: 105px;
   }
 }
