@@ -16,7 +16,7 @@ interface WalletLayoutProps {
 export class WalletLayout extends React.Component<WalletLayoutProps, undefined> {
   render() {
     return (
-      <section className="user-wallet">
+      <section className="container user-wallet">
         <div className="header">
           <h2>Wallet: {this.props.address}</h2>
         </div>

@@ -32,7 +32,7 @@ export default class CreateWorkLayout extends React.Component<CreateWorkProps, C
 
   render() {
     return (
-      <section className="create-work">
+      <section className="container create-work">
         <Tabs selectedIndex={this.state.selectedStep}>
           <TabList className="tab-list">
             <Tab>Register</Tab>

@@ -11,7 +11,7 @@ export interface LandingProps {
 export class LandingLoggedOut extends React.Component<LandingProps, undefined> {
   render() {
     return (
-      <div className="landing-logged-out">
+      <section className="landing-logged-out">
         <h1>Poet is a platform for managing <br/> timestamped intellectual property</h1>
         <h2>Built on the bitcoin blockchain, the most secure globally verifiable
         <br/> record of human history the world has ever seen</h2>
@@ -42,7 +42,7 @@ export class LandingLoggedOut extends React.Component<LandingProps, undefined> {
         <div>
           <LatestWorks/>
         </div>
-      </div>
+      </section>
     )
   }
 }

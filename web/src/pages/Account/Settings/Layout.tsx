@@ -47,7 +47,7 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
 
   render() {
     return (
-      <section className="user-edit">
+      <section className="container user-edit">
         <div className="header">
           <h2>Profile</h2>
         </div>

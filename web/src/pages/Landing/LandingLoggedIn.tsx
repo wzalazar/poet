@@ -11,7 +11,7 @@ export interface LandingProps {
 export class LandingLoggedIn extends React.Component<LandingProps, undefined> {
   render() {
     return (
-      <div className="landing-logged-in">
+      <section className="landing-logged-in">
         <h1>Poet</h1>
         <h4 className="mb-2">Proof of existence for transactions</h4>
         <section className="search mb-3">
@@ -26,7 +26,7 @@ export class LandingLoggedIn extends React.Component<LandingProps, undefined> {
             <LatestWorks showLink={true} />
           </div>
         </section>
-      </div>
+      </section>
     )
   }
 }

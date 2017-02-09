@@ -8,7 +8,7 @@ import { ProfileTabs } from './ProfileTabs';
 export class ProfileLayout extends React.Component<any, undefined> {
   render() {
     return (
-      <div className="profile row">
+      <div className="container profile row">
         <ProfileOverview id={this.props.id}/>
         <ProfileTabs id={this.props.id}/>
       </div>

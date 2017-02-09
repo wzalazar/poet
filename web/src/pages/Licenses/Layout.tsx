@@ -14,7 +14,7 @@ interface LicensesProps {
 export class LicensesLayout extends React.Component<LicensesProps, undefined> {
   render() {
     return (
-      <section className="licenses">
+      <section className="container licenses">
         <h2>Licenses</h2>
         <LicensesFilters/>
         <Licenses publicKey={this.props.publicKey} />

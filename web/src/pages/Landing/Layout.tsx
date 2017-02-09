@@ -12,7 +12,7 @@ export interface LandingProps {
 export class LandingLayout extends React.Component<LandingProps, undefined> {
   render() {
     return (
-      <div className="landing">
+      <div className="container landing">
         { this.props.loggedIn ? <LandingLoggedIn /> : <LandingLoggedOut /> }
       </div>
     )

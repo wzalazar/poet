@@ -18,17 +18,19 @@ export class WorkLayout extends React.Component<WorkProps, undefined> {
     const workId = this.props.id;
 
     return (
-      <div className="work row">
-        <div className="col-xs-7">
-          <Overview id={workId} />
-          <WorkTabs id={workId} />
+      <section className="container work">
+        <div className="row">
+          <div className="col-xs-7">
+            <Overview id={workId}/>
+            <WorkTabs id={workId}/>
+          </div>
+          <div className="col-xs-1"/>
+          <div className="col-xs-4">
+            <WorkOfferings id={workId}/>
+            <Title id={workId}/>
+          </div>
         </div>
-        <div className="col-xs-1" />
-        <div className="col-xs-4">
-          <WorkOfferings id={workId} />
-          <Title id={workId} />
-        </div>
-      </div>
+      </section>
     )
   }
 }

@@ -5,9 +5,9 @@ import './Layout.scss';
 export class AboutLayout extends React.Component<undefined, undefined> {
   render() {
     return (
-      <div className="about">
+      <section className="container about">
         <h1>About</h1>
-      </div>
+      </section>
     )
   }
 }

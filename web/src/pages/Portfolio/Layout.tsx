@@ -14,7 +14,7 @@ interface PortfolioProps {
 export class PortfolioLayout extends React.Component<PortfolioProps, undefined> {
   render() {
     return (
-      <section className="portfolio">
+      <section className="container portfolio">
         <h2>Portfolio</h2>
         <PortfolioWorksFilters/>
         <PortfolioWorks author={this.props.userId} />
