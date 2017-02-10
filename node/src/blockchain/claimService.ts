@@ -217,9 +217,9 @@ export class ClaimService {
 
   async getHeight(blockMetadata: BlockMetadata) {
     return await this.blockInfoRepository.createQueryBuilder('info')
-        .where(`info.height <  :height OR (' +
-                  info.height <> :height AND info.transactionOrder <  :transactionOrder) OR (
-                  info.height <> :height AND info.transactionOrder <> :transactionOrder AND info.outputIndex < :outputIndex)`)
+        .where(`info.height<:height OR 
+           (info.height=:height AND info.transactionOrder<:transactionOrder) OR
+           (info.height=:height AND info.transactionOrder=:transactionOrder AND info.outputIndex<:outputIndex)`)
         .setParameters(blockMetadata)
         .getCount() + 1
   }
