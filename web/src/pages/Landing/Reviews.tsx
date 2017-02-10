@@ -37,9 +37,9 @@ export class Reviews extends React.Component<undefined, undefined> {
     )
   }
 
-  private renderReview(review: Review) {
+  private renderReview(review: Review, index: number) {
     return (
-      <div className="col-sm-4 review">
+      <div key={index} className="col-sm-4 review">
         <div>
           <img src={review.authorAvatar} />
         </div>

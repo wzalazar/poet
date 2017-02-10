@@ -14,9 +14,9 @@ export class Partners extends React.Component<undefined, undefined> {
     )
   }
 
-  private renderLogo(logo: string) {
+  private renderLogo(logo: string, index: number) {
     return (
-      <li className="partner">
+      <li key={index} className="partner">
         { logo }
       </li>
     )
