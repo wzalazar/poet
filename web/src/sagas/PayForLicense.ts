@@ -52,6 +52,8 @@ function* payForLicense(action: any) {
     const outputIndex = result[0].outputIndex;
     const publicKey = yield select(currentPublicKey);
 
+    const licenseTx = yield call(submitLicense, reference, transaction, outputIndex, publicKey, offering.id);
+
     yield take(Actions.signTxModalDismissRequested);
     yield put({ type: Actions.signTxModalHide })
   }
