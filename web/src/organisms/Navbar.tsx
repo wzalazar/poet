@@ -9,11 +9,7 @@ import Actions from '../actions';
 import Constants from '../constants';
 import { LoginButton } from "../components/LoginButton";
 import { LogoutButton } from "../components/LogoutButton";
-
-//import * as logoUrl from '../images/logo.svg';
-const logoUrl = require('../images/logo.svg');
-const glassUrl = require('../images/glass.svg');
-const quillUrl = require('../images/quill.svg');
+import { Images } from '../images/Images';
 
 interface NavbarActions {
   dispatchSearchClick: () => Action;
@@ -29,9 +25,9 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
   render() {
     return (
       <nav className={'navbar ' + (this.props.shadow ? 'shadow' : '') }>
-        <a className="navbar-brand" href="/"><img src={logoUrl} /></a>
+        <a className="navbar-brand" href="/"><img src={Images.Logo} /></a>
         <div className="search" >
-          <img src={glassUrl} /><input type="text" placeholder="Search" onClick={this.props.dispatchSearchClick} />
+          <img src={Images.Glass} /><input type="text" placeholder="Search" onClick={this.props.dispatchSearchClick} />
         </div>
         <ul className="navbar-nav">
           { this.props.loggedIn ? this.loggedInActions() : this.notLoggedActions() }
@@ -63,7 +59,7 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
       <li key="login"><LoginButton>Login</LoginButton></li>,
       <li key='try-it-out' className='try-it-out'>
         <Link to={'/try-it-out'} className="try-it-out">
-          <img src={quillUrl} /><span>Try It Out</span>
+          <img src={Images.Quill} /><span>Try It Out</span>
         </Link>
       </li>
     ];

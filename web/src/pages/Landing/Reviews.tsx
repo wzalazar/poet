@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import './Reviews.scss';
+import { Images } from '../../images/Images';
 
-const avatarUrl = require('../../images/user.svg');
+import './Reviews.scss';
 
 class Review {
   readonly authorName: string;
@@ -21,9 +21,9 @@ class Review {
 export class Reviews extends React.Component<undefined, undefined> {
   readonly reviewLoremIpsum = 'Lorem - this is a quote about the project and how it is going to change the way that we publish articles  in the future, but it doesn’t stop with articles, it goes much more beyond that.';
   readonly reviews: ReadonlyArray<Review> = [
-    new Review('Satoshi Nakamoto', 'Bitcoin Creator', avatarUrl, this.reviewLoremIpsum),
-    new Review('Satoshi Nakamoto', 'Bitcoin Creator', avatarUrl, this.reviewLoremIpsum),
-    new Review('Satoshi Nakamoto', 'Bitcoin Creator', avatarUrl, this.reviewLoremIpsum)
+    new Review('Satoshi Nakamoto', 'Bitcoin Creator', Images.Anon, this.reviewLoremIpsum),
+    new Review('Satoshi Nakamoto', 'Bitcoin Creator', Images.Anon, this.reviewLoremIpsum),
+    new Review('Satoshi Nakamoto', 'Bitcoin Creator', Images.Anon, this.reviewLoremIpsum)
   ];
   render() {
     return (

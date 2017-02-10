@@ -3,9 +3,9 @@ import * as moment from 'moment';
 import * as ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import './Filters.scss';
+import { Images } from '../../images/Images';
 
-const calendarIconUrl = require('../../images/calendar.svg');
+import './Filters.scss';
 
 export interface FilterComponentState {
   readonly dateFrom?: moment.Moment;
@@ -19,7 +19,7 @@ class CustomInput extends React.Component<any, any>{
         className="calendar-button"
         onClick={this.props.onClick}>
         <span>{this.props.value}</span>
-        <img src={calendarIconUrl}/>
+        <img src={Images.Calendar}/>
       </button>
     )
   }

@@ -5,4 +5,8 @@ export class Images {
   static Github = require('./github.svg');
   static Reddit = require('./reddit.svg');
   static Slack = require('./slack.svg');
+  static Glass = require('./glass.svg');
+  static Quill = require('./quill.svg');
+  static Calendar = require('./calendar.svg');
+  static Anon = require('./user.svg');
 }
