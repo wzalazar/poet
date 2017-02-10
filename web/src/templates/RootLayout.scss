@@ -25,4 +25,8 @@ html, body, #app, .root-layout {
 .root-layout {
   display: flex;
   flex-direction: column;
+
+  >* {
+    flex-shrink: 0;
+  }
 }
