@@ -10,14 +10,8 @@ poet is a subjective trust engine used for copyright management.
 
 1. Install `docker` (instructions vary according to your operating system).
 2. Install the latest version of `docker-compose` using `pip install docker-compose`.
-3. Set up the system (you may need root access). You can target `development` or `staging` (`production` to come soon):
-  ```
-  make development
-  ```
-4. Run the node
-  ```
-  make start
-  ```
+3. Build the system (you may need root access) with `make development`. You can also target `make staging` or (soon) `make production`.
+4. Run the node with `make start`
 5. Access `localhost:10000` for development or `https://localhost' for staging
 
 ## Hacking
