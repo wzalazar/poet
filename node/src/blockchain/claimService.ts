@@ -219,10 +219,10 @@ export class ClaimService {
     if (!blockMetadata.bitcoinHeight) {
       return undefined
     }
-    return await this.blockInfoRepository.createQueryBuilder('info')
-        .where(`info.bitcoinHeight < :bitcoinHeight`)
-        .orWhere(`info.bitcoinHeight = :bitcoinHeight AND info.transactionOrder < :transactionOrder`)
-        .orWhere(`info.bitcoinHeight = :bitcoinHeight AND info.transactionOrder = :transactionOrder AND info.outputIndex < :outputIndex`)
+    return await this.blockInfoRepository.createQueryBuilder('blockInfo')
+        .where(`(blockInfo.bitcoinHeight < :bitcoinHeight) OR 
+        (blockInfo.bitcoinHeight = :bitcoinHeight AND blockInfo.transactionOrder < :transactionOrder) OR 
+        (blockInfo.bitcoinHeight = :bitcoinHeight AND blockInfo.transactionOrder = :transactionOrder AND blockInfo.outputIndex < :outputIndex)`)
         .setParameters(blockMetadata)
         .getCount() + 1
   }
