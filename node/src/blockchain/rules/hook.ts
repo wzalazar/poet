@@ -10,5 +10,3 @@ export interface HookDescription {
   type: ClaimType
   hook: Hook
 }
-
-const rules: HookDescription[] = []

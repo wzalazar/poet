@@ -25,7 +25,8 @@ export default class DomainService extends ClaimService {
   async createOrUpdateClaimInfo(claim: PureClaim, txInfo: BlockMetadata) {
     const storedClaim = await super.createOrUpdateClaimInfo(claim, txInfo)
 
-    listenRules[claim.type].map(rule => rule(this, claim, txInfo))
+    console.log('Rulse', claim, listenRules[claim.type])
+    await Promise.all(listenRules[claim.type].map(rule => rule.hook(this, claim, txInfo)))
 
     return storedClaim
   }

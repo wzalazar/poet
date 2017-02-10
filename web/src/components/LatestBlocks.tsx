@@ -51,7 +51,7 @@ export default class LatestBlocks extends ResourceProvider<LatestBlocksResource,
   private renderBlock(props: Block) {
     return (
       <tr key={props.torrentHash}>
-        <td><span className="text-truncate">{props.height}</span></td>
+        <td><span className="text-truncate">{props.height || 'Unconfirmed'}</span></td>
         <td><span className="text-truncate">{props.id
           ? <Link to={`/blocks/${props.id}`}>{props.id.firstAndLastCharacters(4)}</Link>
           : 'not ready'

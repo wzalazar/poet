@@ -60,7 +60,12 @@ export class ClaimService {
     } else {
 
       // This will just update the SHA256 hash on the db entry
-      return await this.createOrUpdateBlockInfo(preliminarInfo)
+      const blockData = await this.createOrUpdateBlockInfo(preliminarInfo)
+
+      // Remember to store info for claims
+      await this.updateClaimInfoForBlock(preliminarInfo, block)
+
+      return blockData
 
     }
   }
@@ -143,7 +148,7 @@ export class ClaimService {
     if (existent) {
 
       console.log('Claim already exists')
-      return await this.claimInfoRepository.persist(Object.assign({}, existent, txInfo))
+      return await this.claimInfoRepository.persist(Object.assign(existent, txInfo))
 
     } else {
 

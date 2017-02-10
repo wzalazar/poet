@@ -19,7 +19,7 @@ export default class BlockchainRouter {
   }
 
   async addRoutes(router: Router) {
-    await this.service.start(() => getConnection(false), getBuilder)
+    await this.service.start(() => getConnection(true), getBuilder)
 
     function route<T>(repository: Repository<T>, resourcePath: string) {
       const route = new Route<T>(repository, resourcePath)

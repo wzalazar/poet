@@ -2,6 +2,7 @@ import {Claim as PureClaim} from "../claim";
 import {BlockMetadata} from "../events";
 import {default as certificationRules} from "./rules/certification";
 import DomainService from "./domainService";
+import {Hook, HookDescription} from "./rules/hook";
 
 export default class CertificationService {
 
@@ -20,7 +21,7 @@ export default class CertificationService {
 
   async certifyClaim(reference: PureClaim, txInfo: BlockMetadata) {
     return await Promise.all(certificationRules[reference.type].map(
-      rule => rule(this.domainService, reference, txInfo)
+      rule => rule.hook(this.domainService, reference, txInfo)
     ))
   }
 }
