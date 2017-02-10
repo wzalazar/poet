@@ -27,7 +27,7 @@ function* payForLicense(action: any) {
     type: Actions.signTxSubmitRequested,
     payload: {
       paymentAddress: offering.paymentAddress,
-      amountInSatoshis: offering.amountInSatoshis,
+      amountInSatoshis: parseFloat(offering.pricingPriceAmount) * (offering.pricingPriceCurrency === "BTC" ? 1e8 : 1),
       conceptOf: 'License',
       resultAction: Actions.licensePaid,
       resultPayload: offering

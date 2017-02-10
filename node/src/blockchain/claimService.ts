@@ -216,10 +216,13 @@ export class ClaimService {
   }
 
   async getHeight(blockMetadata: BlockMetadata) {
+    if (!blockMetadata.bitcoinHeight) {
+      return undefined
+    }
     return await this.blockInfoRepository.createQueryBuilder('info')
-        .where(`info.height<:height OR 
-           (info.height=:height AND info.transactionOrder<:transactionOrder) OR
-           (info.height=:height AND info.transactionOrder=:transactionOrder AND info.outputIndex<:outputIndex)`)
+        .where(`info.bitcoinHeight < :bitcoinHeight`)
+        .orWhere(`info.bitcoinHeight = :bitcoinHeight AND info.transactionOrder < :transactionOrder`)
+        .orWhere(`info.bitcoinHeight = :bitcoinHeight AND info.transactionOrder = :transactionOrder AND info.outputIndex < :outputIndex`)
         .setParameters(blockMetadata)
         .getCount() + 1
   }

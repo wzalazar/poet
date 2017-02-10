@@ -1,6 +1,6 @@
-import { Queue } from '../src/queue'
-import { BitcoinBlockMetadata } from '../src/events'
-import { default as Insight } from '../src/insight'
+import { Queue } from '../queue'
+import { BitcoinBlockMetadata } from '../events'
+import { default as Insight } from '../insight'
 
 export async function publish(id: string) {
   const queue = new Queue()
