@@ -14,16 +14,10 @@ poet is a subjective trust engine used for copyright management.
 ```
 make development
 ```
-or
-```
-make staging
-```
-
 4. Run the node
 ```
 make start
 ```
-
 5. Access `localhost:10000` for development or `https://localhost' for staging
 
 ## Hacking
