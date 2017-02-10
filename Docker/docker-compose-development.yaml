@@ -65,6 +65,8 @@ services:
       - queue
       - http
       - outside
+    depends_on:
+      - explorer
   rabbitmq:
     build:
       context: ..

@@ -1,5 +1,6 @@
 prepare:
 	mkdir -p torrents
+	mkdir -p Docker/postgres
 
 base-images: prepare
 	docker build --file Docker/poet-base.dockerfile --tag poet-base:latest .
