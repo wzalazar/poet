@@ -1,6 +1,6 @@
-import BlockchainService from '../service'
-import { BlockMetadata } from '../../events'
-import { Claim, REVOCATION } from '../../claim'
+import BlockchainService from '../../domainService'
+import { BlockMetadata } from '../../../events'
+import { Claim, REVOCATION } from '../../../claim'
 import Fields from '../fields'
 
 const Reference = Fields.REFERENCE

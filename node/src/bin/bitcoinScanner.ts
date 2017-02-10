@@ -3,6 +3,8 @@ import Bluebird = require("bluebird")
 import PoetInsightListener from '../insight'
 import { Queue } from '../queue'
 
+const minimumHeight = 1088160
+
 async function startup() {
   let insight
 

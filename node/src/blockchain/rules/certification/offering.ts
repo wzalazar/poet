@@ -1,6 +1,6 @@
-import BlockchainService from '../service'
-import { BlockMetadata } from '../../events'
-import { Claim, OFFERING } from '../../claim'
+import BlockchainService from '../../domainService'
+import { BlockMetadata } from '../../../events'
+import { Claim, OFFERING } from '../../../claim'
 import Fields from '../fields'
 
 const Reference = Fields.REFERENCE
@@ -27,7 +27,7 @@ export default {
         reference: reference,
         owner: owner,
         offeringType: claim.attributes[OfferingType],
-        offeringInfo: claim.attributes[OfferingInfo]
+        offeringInfo: claim.attributes[OfferingInfo],
       }
     ))
   }

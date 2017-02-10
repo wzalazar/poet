@@ -1,8 +1,8 @@
 import 'reflect-metadata'
 import * as Koa from 'koa'
-import BlockchainService from '../../service'
+import BlockchainService from '../../domainService'
 import Route, { QueryOptions } from '../route'
-import Work from '../../orm/derived/work'
+import Work from '../../orm/domain/work'
 import OfferingRoute from './offerings'
 import Router = require('koa-router')
 import Context = Koa.Context

@@ -24,7 +24,7 @@ export interface BlockInfoListener {
 export default class PoetInsightListener {
 
   static BARD = new Buffer('BARD')
-  static VERSION = new Buffer([0, 0, 0, 1])
+  static VERSION = new Buffer([0, 0, 0, 2])
 
   insightUrl: string
   socket: SocketIOClient.Socket

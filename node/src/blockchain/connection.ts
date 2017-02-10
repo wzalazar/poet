@@ -18,13 +18,13 @@ export default async function getConnection() {
         },
         entities: [
           path.join(__dirname, 'orm', '*.ts'),
-          path.join(__dirname, 'orm', 'derived', '*.ts')
+          path.join(__dirname, 'orm', 'domain', '*.ts')
         ],
         autoSchemaSync: true
       })
     } catch (error) {
       lastError = error
-      await delay(1000)
+      await delay(3000)
     }
   }
   console.log('Never connected!', lastError, lastError.stack)

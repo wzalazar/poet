@@ -1,7 +1,7 @@
 import * as Router from 'koa-router'
 import { Repository } from 'typeorm'
 
-import BlockchainService from '../service'
+import BlockchainService from '../domainService'
 import Route from './route'
 import WorkRoute from './routes/work'
 import getConnection from '../connection'

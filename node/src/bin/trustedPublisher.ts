@@ -8,7 +8,7 @@ import {Claim, Block, WORK, TITLE, OFFERING, LICENSE, CERTIFICATE} from "../clai
 import { default as getCreator, ClaimBuilder } from "../serialization/builder"
 import { getHash } from '../helpers/torrentHash'
 import { Queue } from '../queue'
-import Fields from '../blockchain/fields'
+import Fields from '../blockchain/rules/fields'
 
 const privKey = 'cf5bd2d3d179493adfc41da206adb2ffd212ea34870722bc92655f8c8fd2ef33'
 

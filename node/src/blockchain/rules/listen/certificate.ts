@@ -1,10 +1,9 @@
-import BlockchainService from '../service'
-import { BlockMetadata } from '../../events'
-import { Claim, CERTIFICATE } from '../../claim'
-import Fields from '../fields'
+import BlockchainService from "../../domainService";
+import {BlockMetadata} from "../../../events";
+import {Claim, CERTIFICATE} from "../../../claim";
+import Fields from "../fields";
 
 const Reference = Fields.REFERENCE
-const Owner = Fields.OWNER_KEY
 
 export default {
   type: CERTIFICATE,
@@ -14,14 +13,14 @@ export default {
       console.log('Odd certificate: no reference', claim)
       return
     }
-    const notaryApproves = await service.notaryApproval(claim)
+    const notaryApproves = await service.certificationService.notaryApproval(claim)
     if (notaryApproves) {
       const reference = await service.getClaim(referenceId)
       if (!reference) {
         console.log('problem with certificate: no referred claim found')
         return
       }
-      service.certifyClaim(reference, txInfo)
+      service.certificationService.certifyClaim(reference, txInfo)
     }
   }
 }

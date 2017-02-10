@@ -1,6 +1,6 @@
-import BlockchainService from '../service'
-import { BlockMetadata } from '../../events'
-import { Claim, PROFILE } from '../../claim'
+import BlockchainService from '../../domainService'
+import { BlockMetadata } from '../../../events'
+import { Claim, PROFILE } from '../../../claim'
 
 export default {
   type: PROFILE,

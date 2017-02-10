@@ -1,8 +1,7 @@
-import BlockchainService from '../service'
-import { BlockMetadata } from '../../events'
-import { Claim, LICENSE } from '../../claim'
-import Fields from '../fields'
-import License from '../orm/derived/license'
+import BlockchainService from "../../domainService";
+import {BlockMetadata} from "../../../events";
+import {Claim, LICENSE} from "../../../claim";
+import Fields from "../fields";
 
 const Reference = Fields.REFERENCE
 const ReferenceOffering = Fields.REFERENCE_OFFERING

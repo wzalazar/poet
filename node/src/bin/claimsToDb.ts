@@ -1,4 +1,4 @@
-import { default as BlockchainService } from '../blockchain/service'
+import { default as BlockchainService } from '../blockchain/domainService'
 import { Queue } from '../queue'
 import { Block } from '../claim'
 import { BitcoinBlockMetadata } from '../events'
@@ -16,7 +16,7 @@ async function startListening() {
     queue.blockDownloaded().subscribeOnNext(async (block: Block) => {
       console.log('Storing block', JSON.stringify(block, null, 2))
       try {
-        await blockchain.storeBlock(block)
+        await blockchain.blockSeen(block)
       } catch (error) {
         console.log(error, error.stack)
       }
@@ -25,7 +25,7 @@ async function startListening() {
     queue.blocksToSend().subscribeOnNext(async (block: Block) => {
       console.log('Storing block', JSON.stringify(block, null, 2))
       try {
-        await blockchain.storeBlock(block)
+        await blockchain.blockSeen(block)
       } catch (error) {
         console.log(error, error.stack)
       }
@@ -38,7 +38,7 @@ async function startListening() {
           poetTx.bitcoinHash = block.blockHash
           poetTx.bitcoinHeight = block.blockHeight
           poetTx.timestamp = block.timestamp
-          await blockchain.confirmBlock(poetTx)
+          await blockchain.blockConfirmed(poetTx)
         }
       } catch (error) {
         console.log(error, error.stack)

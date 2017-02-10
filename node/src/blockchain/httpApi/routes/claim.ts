@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import * as Koa from 'koa'
 
-import BlockchainService from '../../service'
+import BlockchainService from '../../domainService'
 import Route, { QueryOptions } from '../route'
 import ClaimInfo from '../../orm/claimInfo'
 import Claim from '../../orm/claim'
