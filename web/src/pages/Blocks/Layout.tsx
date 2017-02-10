@@ -54,29 +54,31 @@ export default class BlockLayout extends React.Component<BlockList, undefined> {
 
   render() {
     return (
-      <section className="blocks">
-        <BlockHeader />
-        <div className="row">
-          <div className="leftCol col-sm-6 col-md-4">
-            <div className="headHeight">
-              <div className="number">
-                {this.props.blocks[0] && this.props.blocks[0].height}
+      <div className="container">
+        <section className="blocks">
+          <BlockHeader />
+          <div className="row">
+            <div className="leftCol col-sm-6 col-md-4">
+              <div className="headHeight">
+                <div className="number">
+                  {this.props.blocks[0] && this.props.blocks[0].height}
+                </div>
+                <div className="desc">
+                  block height
+                </div>
               </div>
-              <div className="desc">
-                block height
-              </div>
+              <table className="table">
+                <tbody>
+                  { this.props.blocks.map(DisplayBlock) }
+                </tbody>
+              </table>
             </div>
-            <table className="table">
-              <tbody>
-                { this.props.blocks.map(DisplayBlock) }
-              </tbody>
-            </table>
+            <div className="col-sm-6 col-md-8">
+              <LatestWorks />
+            </div>
           </div>
-          <div className="col-sm-6 col-md-8">
-            <LatestWorks />
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
     )
   }
 }

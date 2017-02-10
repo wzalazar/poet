@@ -58,17 +58,19 @@ const ClaimList = (block: any) => <div>{block.claims.map(DisplayClaim)}</div>
 const Layout = FetchComponent(
   (props: {id: string}) => ({ url: `${config.api.explorer}/blocks/${props.id}`}),
   (block =>
-    <section className="blocks">
-      <BlockHeader title={`Block #${block.id}`} />
-      <div className="row">
-        <div className="leftCol col-sm-6 col-md-4">
-          <BlockInfo {...block} />
+    <div className="container">
+      <section className="blocks">
+        <BlockHeader title={`Block #${block.id}`} />
+        <div className="row">
+          <div className="leftCol col-sm-6 col-md-4">
+            <BlockInfo {...block} />
+          </div>
+          <div className="col-sm-6 col-md-8">
+            <ClaimList {...block} />
+          </div>
         </div>
-        <div className="col-sm-6 col-md-8">
-          <ClaimList {...block} />
-        </div>
-      </div>
-    </section>
+      </section>
+    </div>
   )
 );
 
