@@ -20,15 +20,15 @@ async function submitLicense(reference: string, txId: string, outputIndex: numbe
 }
 
 function* payForLicense(action: any) {
-  const offering = action.payload.offering;
-  const reference = offering.attributes.reference;
+  const offering = action.payload;
+  const reference = offering.reference;
 
   yield put({
     type: Actions.signTxSubmitRequested,
     payload: {
-      address: offering.paymentAddress,
+      paymentAddress: offering.paymentAddress,
       amountInSatoshis: offering.amountInSatoshis,
-      conceptOf: action.payload.conceptOf,
+      conceptOf: 'License',
       resultAction: Actions.licensePaid,
       resultPayload: offering
     }
@@ -42,16 +42,18 @@ function* payForLicense(action: any) {
         return false
       })
     ]);
-    if (!result) {
+    if (!result[0]) {
       return;
     }
-    if (result.payload.id !== offering.id) {
+    if (result[0].payload.id !== offering.id) {
       continue;
     }
-    const transaction = result.transaction;
-    const outputIndex = result.outputIndex;
+    const transaction = result[0].transaction;
+    const outputIndex = result[0].outputIndex;
     const publicKey = yield select(currentPublicKey);
-    yield call(submitLicense, reference, transaction, outputIndex, publicKey, offering.id);
+
+    yield take(Actions.signTxModalDismissRequested);
+    yield put({ type: Actions.signTxModalHide })
   }
 }
 

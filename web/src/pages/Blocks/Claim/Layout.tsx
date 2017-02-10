@@ -14,16 +14,18 @@ const DisplayClaim = (claim: any) => (<div key={claim.id}>
 const Layout = FetchComponent(
   (props: {id: string}) => ({ url: `${config.api.explorer}/claims/${props.id}`}),
   (claim =>
-    <section className="blocks">
-      <BlockHeader title={`Block Explorer - Claim #${claim.id}`} />
-      <div className="row">
-        <div className="col-sm-3 col-md-4">
+    <div className="container">
+      <section className="blocks">
+        <BlockHeader title={`Block Explorer - Claim #${claim.id}`} />
+        <div className="row">
+          <div className="col-sm-3 col-md-4">
+          </div>
+          <div className="col-sm-6 col-md-4">
+            <DisplayClaim {...claim} />
+          </div>
         </div>
-        <div className="col-sm-6 col-md-4">
-          <DisplayClaim {...claim} />
-        </div>
-      </div>
-    </section>
+      </section>
+    </div>
   )
 );
 

@@ -230,10 +230,6 @@ export class ClaimService {
 
     if (existent) {
 
-      if (!existent.height && blockMetadata.bitcoinHeight) {
-        blockMetadata.height = await this.getHeight(blockMetadata)
-      }
-
       return await this.updateBlockInfo(existent, blockMetadata)
 
     } else {
@@ -255,6 +251,8 @@ export class ClaimService {
       }
 
     }
+    existent.height = await this.getHeight(existent)
+
     return await this.blockInfoRepository.persist(existent)
   }
 
