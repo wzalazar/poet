@@ -56,7 +56,7 @@ export default class LatestBlocks extends ResourceProvider<LatestBlocksResource,
           ? <Link to={`/blocks/${props.id}`}>{props.id.firstAndLastCharacters(4)}</Link>
           : 'not ready'
         }</span></td>
-        <td>{moment(props.timestamp * 1000).fromNow()}</td>
+        <td>{props.timestamp ? moment(props.timestamp * 1000).fromNow() : '(pending)'}</td>
       </tr>
     )
   }
