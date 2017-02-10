@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {Repository} from "typeorm";
-import Fields from "./rules/fields";
+import Fields from "./fields";
 import {Claim as PureClaim} from "../claim";
 import Profile from "./orm/domain/profile";
 import License from "./orm/domain/license";

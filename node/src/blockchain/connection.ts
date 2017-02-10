@@ -2,7 +2,7 @@ import * as path from 'path'
 import { createConnection } from 'typeorm'
 import { delay } from '../common'
 
-export default async function getConnection() {
+export default async function getConnection(createSchema: boolean) {
   let attempts = 30
   let lastError
   while (attempts--) {
@@ -20,7 +20,7 @@ export default async function getConnection() {
           path.join(__dirname, 'orm', '*.ts'),
           path.join(__dirname, 'orm', 'domain', '*.ts')
         ],
-        autoSchemaSync: true
+        autoSchemaSync: createSchema
       })
     } catch (error) {
       lastError = error

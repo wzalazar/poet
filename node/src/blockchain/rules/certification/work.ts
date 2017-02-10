@@ -1,7 +1,7 @@
 import BlockchainService from '../../domainService'
 import { BlockMetadata } from '../../../events'
 import { WORK, Claim } from '../../../claim'
-import Fields from '../fields'
+import Fields from '../../fields'
 
 export default {
   type: WORK,

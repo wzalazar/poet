@@ -2,6 +2,9 @@ import * as fs from 'fs'
 
 const bitcore = require('bitcore-lib')
 
+export const BARD = new Buffer('BARD')
+export const VERSION = new Buffer([0, 0, 0, 2])
+
 export async function delay(millis: number) {
   return new Promise((resolve, reject) => {
     setTimeout(resolve, millis)

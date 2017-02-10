@@ -4,6 +4,7 @@ import { Claim, Block } from '../claim'
 import * as common from '../common'
 import { hex } from '../common'
 import { default as loadBuilders, Builders } from './loaders'
+import {BARD, VERSION} from "../common";
 
 const bitcore = require('bitcore-lib')
 const explorers = require('bitcore-explorers')
@@ -177,8 +178,8 @@ export class ClaimBuilder {
   createTransaction(blockId: string) {
     console.log('Creating tx for', blockId)
     const data = Buffer.concat([
-      new Buffer('BARD'),
-      new Buffer([0, 0, 0, 1]),
+      BARD,
+      VERSION,
       new Buffer(blockId, 'hex')
     ])
     return insight.getUtxos(poetAddress)

@@ -35,7 +35,6 @@ export default class BlockRoute extends Route<BlockInfo> {
 
   ownFilter(queryBuilder: QueryBuilder<BlockInfo>, opts: QueryOptions): QueryBuilder<BlockInfo> {
     return queryBuilder
-      .where('item.height<>0')
       .orderBy('item.height', 'DESC')
   }
 }

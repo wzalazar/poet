@@ -1,7 +1,7 @@
 import BlockchainService from "../../domainService";
 import {BlockMetadata} from "../../../events";
 import {Claim, LICENSE} from "../../../claim";
-import Fields from "../fields";
+import Fields from "../../fields";
 
 const Reference = Fields.REFERENCE
 const ReferenceOffering = Fields.REFERENCE_OFFERING

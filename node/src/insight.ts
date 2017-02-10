@@ -2,6 +2,8 @@ import * as socketIO from 'socket.io-client'
 import * as fetch from 'isomorphic-fetch'
 
 import { BitcoinBlockMetadata, BlockMetadata } from './events'
+import {BARD} from "./common";
+import {VERSION} from "./common";
 
 const bitcore = require('bitcore-lib')
 
@@ -22,9 +24,6 @@ export interface BlockInfoListener {
 }
 
 export default class PoetInsightListener {
-
-  static BARD = new Buffer('BARD')
-  static VERSION = new Buffer([0, 0, 0, 2])
 
   insightUrl: string
   socket: SocketIOClient.Socket
@@ -112,8 +111,8 @@ export default class PoetInsightListener {
       if (script.classify() !== bitcore.Script.types.DATA_OUT)
         return
       const data: Buffer = script.getData()
-      return data.indexOf(PoetInsightListener.BARD) === 0
-          && data.indexOf(PoetInsightListener.VERSION) === 4
+      return data.indexOf(BARD) === 0
+          && data.indexOf(VERSION) === 4
           ? {
             transactionHash : tx.hash,
             outputIndex     : index,
