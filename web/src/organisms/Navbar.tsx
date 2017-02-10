@@ -40,10 +40,6 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
     return <li key={key} className="nav-item"><Link to={'/' + key} className="nav-link">{text}</Link></li>
   }
 
-  private renderNavButton(key: string, text: string): JSX.Element {
-    return <li key={key} className="nav-item"><Link to={'/' + key} className="btn btn-primary btn-sm">{text}</Link></li>;
-  }
-
   private renderAvatar() {
     return (
       <Link to={'/account/settings'} className="nav-link">
@@ -71,7 +67,7 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
       this.renderNavLink('licenses', 'Licenses'),
       <li key="avatar" className="nav-item avatar">{ this.renderAvatar() }</li>,
       <li key="logout"><LogoutButton>Logout</LogoutButton></li>,
-      this.renderNavButton('create-work', 'New Work')
+      <li key="create-work" className="nav-item"><Link to={'/create-work'} className="button-primary">New Work</Link></li>
     ];
   }
 }
