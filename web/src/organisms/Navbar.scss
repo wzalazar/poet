@@ -10,6 +10,10 @@ nav.navbar {
     box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1);
   }
 
+  &.transparent {
+    background-color: transparent;
+  }
+
   .navbar-brand {
     padding: 14px 26px 14px 4px;
   }

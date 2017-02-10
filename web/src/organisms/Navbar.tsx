@@ -18,17 +18,32 @@ interface NavbarActions {
 export interface NavbarProps {
   readonly loggedIn?: boolean;
   readonly avatar?: string;
-  readonly shadow: boolean;
+  readonly shadow?: boolean;
+  readonly transparent?: boolean;
+  readonly displayLogo?: boolean;
+  readonly displaySearch?: boolean;
 }
 
 class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undefined> {
+  static defaultProps: NavbarProps = {
+    shadow: true,
+    transparent: false,
+    displayLogo: true,
+    displaySearch: true
+  };
+
   render() {
+    const navClasses = [
+      'navbar',
+      this.props.shadow && 'shadow',
+      this.props.transparent && 'transparent'
+    ];
     return (
-      <nav className={'navbar ' + (this.props.shadow ? 'shadow' : '') }>
-        <a className="navbar-brand" href="/"><img src={Images.Logo} /></a>
-        <div className="search" >
+      <nav className={ navClasses.filterTruthy().join(' ') }>
+        { this.props.displayLogo && <a className="navbar-brand" href="/"><img src={Images.Logo} /></a> }
+        { this.props.displaySearch && <div className="search" >
           <img src={Images.Glass} /><input type="text" placeholder="Search" onClick={this.props.dispatchSearchClick} />
-        </div>
+        </div> }
         <ul className="navbar-nav">
           { this.props.loggedIn ? this.loggedInActions() : this.notLoggedActions() }
         </ul>
