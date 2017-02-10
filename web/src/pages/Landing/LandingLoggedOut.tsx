@@ -6,7 +6,6 @@ import LatestBlocks from '../../components/LatestBlocks';
 import LatestWorks from '../../components/LatestWorks';
 import { Reviews } from './Reviews';
 import { Partners } from './Partners';
-import { Footer } from './Footer';
 
 export interface LandingProps {
 }
@@ -51,7 +50,6 @@ export class LandingLoggedOut extends React.Component<LandingProps, undefined> {
             </div>
           </div>
         </section>
-        <Footer/>
       </section>
     )
   }
