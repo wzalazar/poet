@@ -22,21 +22,6 @@
 
   .cta-header {
     margin-bottom: 60px;
-
-    button {
-      width: 146px;
-      height: 30px;
-      font-size: 10px;
-      border: 1px solid #413D3B;
-      border-radius: 4px;
-      background-color: white;
-      font-weight: bold;
-      cursor: pointer;
-
-      &:hover {
-        background-color: #FAFAFA;
-      }
-    }
   }
 
   .landing-boxes {
@@ -98,6 +83,10 @@
       font-size: 18px;
       line-height: 18px;
       color: #FFFFFF;
+    }
+
+    button {
+      margin: 0 8px;
     }
   }
 }

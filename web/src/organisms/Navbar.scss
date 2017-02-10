@@ -1,3 +1,5 @@
+@import '../templates/Buttons';
+
 nav.navbar {
   display: flex;
   align-items: center;
@@ -65,27 +67,15 @@ nav.navbar {
       }
     }
 
+    .login-button {
+      width: 61px;
+      height: 30px;
+    }
+
     .try-it-out {
-      display: flex;
-      align-items: center;
-      padding: 3px 6px;
-      background-color: #43B980;
-      border-radius: 4px;
-      text-decoration: none;
-
-      img {
-        margin-right: 8px;
-      }
-
-      span {
-        color: white;
-        font-family: "Roboto Slab";
-        font-size: 10px;
-        font-weight: bold;
-        text-align: center;
-
-      }
-
+      @extend .button-primary;
+      width: 109px;
+      height: 30px;
     }
   }
 }

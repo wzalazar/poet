@@ -10,7 +10,7 @@ interface LoginProps {
 
 class Component extends React.Component<LoginProps, undefined> {
   render() {
-    return <a className="btn btn-outline-primary btn-sm" href="#" onClick={this.props.login}>{this.props.children}</a>;
+    return <button className="login-button button-secondary" onClick={this.props.login}>{this.props.children}</button>;
   }
 }
 

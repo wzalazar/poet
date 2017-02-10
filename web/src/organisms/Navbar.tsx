@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { Action } from 'redux';
 import { connect } from "react-redux";
 
-import './Navbar.scss'
+import './Navbar.scss';
 
 import Actions from '../actions';
 import Constants from '../constants';
@@ -57,7 +57,7 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
       this.renderNavLink('about', 'About'),
       this.renderNavLink('documentation', 'Documentation'),
       <li key="login"><LoginButton>Login</LoginButton></li>,
-      <li key='try-it-out' className='try-it-out'>
+      <li key='try-it-out'>
         <Link to={'/try-it-out'} className="try-it-out">
           <img src={Images.Quill} /><span>Try It Out</span>
         </Link>

@@ -20,7 +20,7 @@ export class LandingLoggedOut extends React.Component<LandingProps, undefined> {
           <h2>Built on the bitcoin blockchain, the most secure globally verifiable
           <br/> record of human history the world has ever seen</h2>
           <div className="cta-header">
-            <button className="">Learn more</button>
+            <button className="button-secondary">Learn more</button>
           </div>
           <section className="row landing-boxes">
             <section className="col-sm-4">
@@ -46,8 +46,8 @@ export class LandingLoggedOut extends React.Component<LandingProps, undefined> {
             <h1>Another headline and a call to action</h1>
             <h2>But not sure what we want to emphasize here</h2>
             <div>
-              <button>Primary Button</button>
-              <button>Secondary Button</button>
+              <button className="button-primary">Primary Button</button>
+              <button className="button-secondary">Secondary Button</button>
             </div>
           </div>
         </section>
