@@ -58,7 +58,7 @@ export default class LatestBlocks extends ResourceProvider<LatestWorksResource, 
           {/*<div className="author">{ props.attributes.authorPublicKey ? <ProfileLink id={props.attributes.authorPublicKey} /> : 'Unknown author' }</div>*/}
         </td>
         <td className="id">
-          {props.id && props.id.firstAndLastCharacters(4)}
+          {props.id && props.id.firstAndLastCharacters(6)}
         </td>
         <td className="date">
           {moment(props.attributes.createdAt).fromNow()}

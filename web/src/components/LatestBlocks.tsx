@@ -54,7 +54,7 @@ export default class LatestBlocks extends ResourceProvider<LatestBlocksResource,
       <tr key={props.torrentHash}>
         <td className="height">{props.height || 'Unconfirmed'}</td>
         <td className="id">
-          { props.id ? <Link to={`/blocks/${props.id}`}>{props.id.firstAndLastCharacters(4)}</Link> : 'not ready' }
+          { props.id ? <Link to={`/blocks/${props.id}`}>{props.id.firstAndLastCharacters(6)}</Link> : 'not ready' }
         </td>
         <td className="date">{props.timestamp ? moment(props.timestamp * 1000).fromNow() : '(pending)'}</td>
       </tr>
