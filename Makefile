@@ -19,3 +19,6 @@ start: prepare
 
 psql:
 	cd Docker && docker-compose exec db /usr/bin/psql -U poet
+
+scripting:
+	cd Docker && docker-compose exec explorer /bin/bash
