@@ -1,20 +1,68 @@
+table.latest-blocks {
+  width: 100%;
+  border-collapse: initial;
+  border-spacing: 0;
+  border: 1px solid #E3E1DF;
+  border-radius: 4px 4px 0 0;
+  text-align: left;
+  font-family: "Roboto Slab";
 
-.table.latest-blocks {
-  border: 1px solid lightgray;
+  td {
+    padding: 10px 4px;
+    border-bottom: 1px solid #E3E1DF;
+    vertical-align: middle;
+  }
 
-  thead {
-    tr {
-      th {
-        border-top: none;
-        border-bottom: none;
+  tr td:first-child {
+    padding-left: 16px;
+  }
+
+  tr td:last-child {
+    padding-right: 16px;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  thead tr {
+    td.title {
+      font-size: 10px;
+      font-weight: bold;
+      color: #676767;
+    }
+
+    td.view-all {
+      text-align: right;
+      a {
+        font-size: 10px;
+        font-weight: bold;
+        text-align: right;
+        color: #4A9699;
       }
     }
   }
 
-  .more-link {
-    text-align: right;
-    a {
-      font-weight: 200;
+  tbody tr {
+    td.height {
+      font-family: "Source Code Pro";
+      font-size: 10px;
+      font-weight: 600;
+      color: #737373;
+    }
+
+    td.id {
+      font-family: "Source Code Pro";
+      font-size: 10px;
+      font-weight: 600;
+      color: #737373;
+    }
+
+    td.date {
+      font-size: 11px;
+      font-weight: bold;
+      text-align: right;
+      color: #737373;
     }
   }
 }

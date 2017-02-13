@@ -29,13 +29,14 @@ export default class LatestBlocks extends ResourceProvider<LatestBlocksResource,
   };
 
   renderElement(blocks: LatestBlocksResource) {
+
     return (
-      <table className={`table table-hover latest-blocks ${this.props.className}`}>
+      <table className={`latest-blocks ${this.props.className}`}>
         <thead>
-        <tr>
-          <th colSpan={2}>Poet Blockchain</th>
-          <th className="more-link"><Link to="/blocks">view all »</Link></th>
-        </tr>
+          <tr>
+            <td className="title" colSpan={2}>Poet Blockchain</td>
+            <td className="view-all"><Link to="/blocks">View All</Link></td>
+          </tr>
         </thead>
         <tbody>
           { blocks.map(this.renderBlock.bind(this)) }
@@ -51,12 +52,11 @@ export default class LatestBlocks extends ResourceProvider<LatestBlocksResource,
   private renderBlock(props: Block) {
     return (
       <tr key={props.torrentHash}>
-        <td><span className="text-truncate">{props.height || 'Unconfirmed'}</span></td>
-        <td><span className="text-truncate">{props.id
-          ? <Link to={`/blocks/${props.id}`}>{props.id.firstAndLastCharacters(4)}</Link>
-          : 'not ready'
-        }</span></td>
-        <td>{props.timestamp ? moment(props.timestamp * 1000).fromNow() : '(pending)'}</td>
+        <td className="height">{props.height || 'Unconfirmed'}</td>
+        <td className="id">
+          { props.id ? <Link to={`/blocks/${props.id}`}>{props.id.firstAndLastCharacters(4)}</Link> : 'not ready' }
+        </td>
+        <td className="date">{props.timestamp ? moment(props.timestamp * 1000).fromNow() : '(pending)'}</td>
       </tr>
     )
   }

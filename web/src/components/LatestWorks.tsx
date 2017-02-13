@@ -35,7 +35,7 @@ export default class LatestBlocks extends ResourceProvider<LatestWorksResource, 
               Latest Works
             </td>
             <td className="view-latest">
-              { this.props.showLink && <Link to="/blocks">View Latest »</Link> }
+              { this.props.showLink && <Link to="/blocks">View Latest</Link> }
             </td>
           </tr>
         </thead>
