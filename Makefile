@@ -16,3 +16,6 @@ development: base-images
 
 start: prepare
 	cd Docker && docker-compose up
+
+psql:
+	cd Docker && docker-compose exec db /usr/bin/psql -U poet

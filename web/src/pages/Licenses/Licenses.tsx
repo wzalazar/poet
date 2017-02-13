@@ -8,6 +8,7 @@ import './Layout.scss';
 import Config from '../../config';
 
 import '../../extensions/String';
+import OwnerName from '../../atoms/OwnerName';
 
 type LicensesResource = ReadonlyArray<License>;
 
@@ -20,24 +21,22 @@ export interface License {
   readonly issueDate: string;
 
   readonly reference: {
-    readonly owner: {
-      readonly id: string;
-    }
-    readonly attributes: {
-      readonly name: string;
-    }
-  }
-
-  readonly licenseHolder: {
     readonly attributes: {
       readonly name: string;
     }
   }
 
   readonly referenceOffering: {
+    readonly id: string;
     readonly attributes: {
-      readonly type: string;
-    }
+      readonly licenseType: string;
+      readonly licenseDescription: string;
+    };
+  }
+
+  readonly attributes: {
+    readonly licenseHolder: string;
+    readonly reference: string;
   }
 }
 
@@ -50,7 +49,7 @@ export interface LicensesProps {
 export default class Licenses extends ResourceProvider<LicensesResource, LicensesProps, undefined> {
   static defaultProps: LicensesProps = {
     limit: 5,
-    showActions: true
+    showActions: false
   };
 
   renderElement(licenses: LicensesResource) {
@@ -58,7 +57,9 @@ export default class Licenses extends ResourceProvider<LicensesResource, License
   }
 
   resourceLocator() {
-    return { url: `${Config.api.explorer}/licenses?limit=${this.props.limit}` }
+    const limit = `limit=${this.props.limit}`
+    const holder = `holder=${this.props.publicKey}`
+    return { url: `${Config.api.explorer}/licenses?${limit}&${holder}` }
   }
 
   private renderLicenses(licenses: LicensesResource) {
@@ -94,12 +95,11 @@ export default class Licenses extends ResourceProvider<LicensesResource, License
           <div>
             <div className="box-placeholder" />
             <div>
-              <div>{ license.referenceOffering.attributes.type }</div>
-              <div>{ license.licenseHolder && license.licenseHolder.attributes && license.licenseHolder.attributes.name }</div>
+              <div>{ license.referenceOffering.attributes.licenseType }</div>
               <div>{ license.issueDate && new Date(license.issueDate).toISOString() }</div>
             </div>
           </div>
-          <div>{ license.publicKey.firstAndLastCharacters(6) }</div>
+          <div>Owned by: <OwnerName work={ license.referenceOffering.id }/></div>
         </div>
       </li>
     )

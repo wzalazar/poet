@@ -5,7 +5,6 @@
   "main": "./src/index.js",
   "scripts": {
     "build": "tsc",
-
     "auth-server": "./node_modules/.bin/ts-node ./src/bin/authServer.ts",
     "bitcoin-scanner": "./node_modules/.bin/ts-node ./src/bin/bitcoinScanner.ts",
     "claims-to-db": "./node_modules/.bin/ts-node ./src/bin/claimsToDb.ts",
@@ -68,5 +67,8 @@
     "typeorm": "0.0.6",
     "typescript": "^2.2.0-dev.20170105",
     "webtorrent": "^0.98.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
   }
 }
