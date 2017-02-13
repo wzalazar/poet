@@ -21,11 +21,12 @@ interface RootLayoutProps {
 
 function render(props: RootLayoutProps) {
   // TODO: a way for pages to provide these so the RootLayout doesn't need to know what urls are mapped to what pages
-  const navbarShadow = !['/works', '/'].includes(props.location.pathname) || !props.loggedIn;
+  const navbarShadow = !['/works', '/'].includes(props.location.pathname);
   const navbarTransparent = ['/'].includes(props.location.pathname) && props.loggedIn;
   const displayNavbarLogo = !['/'].includes(props.location.pathname) || !props.loggedIn;
   const displayNavbarSearch = !['/'].includes(props.location.pathname) || !props.loggedIn;
   const displayUserNavbar = ['/account/settings', '/account/wallet'].includes(props.location.pathname);
+  const searchShadow = ['/works'].includes(props.location.pathname);
 
   return (
     <div className="root-layout">
@@ -35,6 +36,7 @@ function render(props: RootLayoutProps) {
         displayLogo={displayNavbarLogo}
         displaySearch={displayNavbarSearch}
         transparent={navbarTransparent}
+        searchShadow={searchShadow}
       />
       { displayUserNavbar && <UserNavbar location={props.location.pathname}/> }
       { props.children }

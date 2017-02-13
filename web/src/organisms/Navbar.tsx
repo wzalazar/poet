@@ -22,6 +22,7 @@ export interface NavbarProps {
   readonly transparent?: boolean;
   readonly displayLogo?: boolean;
   readonly displaySearch?: boolean;
+  readonly searchShadow?: boolean;
 }
 
 class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undefined> {
@@ -38,10 +39,14 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
       this.props.shadow && 'shadow',
       this.props.transparent && 'transparent'
     ];
+    const searchClasses = [
+      'search',
+      this.props.searchShadow && 'shadow'
+    ];
     return (
       <nav className={ navClasses.filterTruthy().join(' ') }>
         { this.props.displayLogo && <a className="navbar-brand" href="/"><img src={Images.Logo} /></a> }
-        { this.props.displaySearch && <div className="search" >
+        { this.props.displaySearch && <div className={ searchClasses.filterTruthy().join(' ') }  >
           <img src={Images.Glass} /><input type="text" placeholder="Search" onClick={this.props.dispatchSearchClick} />
         </div> }
         <ul className="navbar-nav">
