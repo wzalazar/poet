@@ -1,6 +1,7 @@
-const bitcore = require('bitcore-lib')
+import * as bitcore from 'bitcore-lib'
+import { Transaction, Address, PublicKey } from 'bitcore-lib'
 
-export function getSighash(tx: any /* TODO: TYPE: bitcore.Transaction */, address: string /* TODO: TYPE: bitcore.Address */): Buffer[] {
+export function getSighash(tx: Transaction, address: Address) {
   return tx.inputs.map(
     (input: any, index: number) =>
       bitcore.Transaction.Sighash.sighashPreimage(
@@ -12,7 +13,7 @@ export function getSighash(tx: any /* TODO: TYPE: bitcore.Transaction */, addres
   )
 }
 
-export function applyHexSignaturesInOrder(tx: any /* TODO: TYPE: bitcore.Transaction */, signatures: any, publicKey: any /* TODO: TYPE: bitcore.PublicKey */) {
+export function applyHexSignaturesInOrder(tx: Transaction, signatures: any, publicKey: PublicKey) {
   return tx.inputs.map(
     (input: any, index: number) => {
       tx.applySignature({

@@ -1,3 +1,4 @@
+import * as bitcore from 'bitcore-lib';
 import {Saga, takeEvery} from "redux-saga";
 import {call, put, select, take, fork} from "redux-saga/effects";
 
@@ -9,8 +10,6 @@ import {getUtxos, submitTx} from "../bitcoin/insight";
 import {getSighash, applyHexSignaturesInOrder} from "../bitcoin/txHelpers";
 import {race} from "redux-saga/effects";
 
-
-const bitcore = require('bitcore-lib');
 
 async function requestIdFromAuth(dataToSign: Buffer[], bitcoin: boolean) {
   return await auth.getRequestIdForMultipleSigningBuffers(dataToSign, bitcoin)
