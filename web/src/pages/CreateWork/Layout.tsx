@@ -60,8 +60,6 @@ export default class CreateWorkLayout extends React.Component<CreateWorkProps, C
   }
 
   private onStepRegisterSubmit(workData: StepRegisterData) {
-    console.log('onStepRegisterSubmit', workData);
-
     const workTitleAttribute = workData.attributes.find(attribute => attribute.key == 'title');
 
     this.setState({
@@ -72,7 +70,6 @@ export default class CreateWorkLayout extends React.Component<CreateWorkProps, C
   }
 
   private onStepLicenseSubmit(licenseData: StepLicenseData) {
-    console.log('onStepLicenseSubmit', licenseData);
     this.setState({
       selectedStep: 2,
       licenseData: licenseData

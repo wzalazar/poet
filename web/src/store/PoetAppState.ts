@@ -11,12 +11,14 @@ export interface PoetSession {
   publicKey: string
 }
 
+export interface FetchStoreEntry {
+  status: FetchStatus
+  body?: any
+  error?: any
+}
+
 export interface FetchStore {
-  [key: string]: {
-    status: FetchStatus
-    body: any
-    error: any
-  }
+  [key: string]: FetchStoreEntry
 }
 
 export interface PoetAppState {

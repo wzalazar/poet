@@ -1,54 +1,76 @@
 import { FetchStatus } from '../enums/FetchStatus'
-import { FetchStore } from '../store/PoetAppState'
+import { FetchStore, FetchStoreEntry } from '../store/PoetAppState'
 
-const MARK_LOADING = 'mark loading';
-const SET_RESULT = 'set result';
-const ERRORED = 'error for';
-const CLEAR = 'clear for';
-const NOT_FOUND = 'not found';
+export class FetchType {
+  static readonly MARK_LOADING = 'mark loading';
+  static readonly SET_RESULT = 'set result';
+  static readonly ERROR = 'error for';
+  static readonly CLEAR = 'clear for';
+  static readonly NOT_FOUND = 'not found';
 
-export function updateKey(object: { [key: string]: any }, key: string, updateValue: any) {
-  return Object.assign({}, object, { [key]: updateValue });
+  static readonly Types: ReadonlyArray<string> = [FetchType.CLEAR, FetchType.MARK_LOADING, FetchType.SET_RESULT, FetchType.ERROR, FetchType.NOT_FOUND];
 }
 
-const types = [CLEAR, MARK_LOADING, SET_RESULT, ERRORED, NOT_FOUND];
+export function fetchReducer(store: FetchStore, action: any): FetchStore {
+  if (!actionIsFetchAction(action))
+    return store || {};
 
-function secondSpacePosition(str: string) {
-  return str.indexOf(' ', str.indexOf(' ') + 1)
-}
+  const newFetchStoreEntry = actionToFetchStoreEntry(action);
 
-function retrieveKey(str: string) {
-  return str.slice(secondSpacePosition(str) + 1)
-}
+  if (!newFetchStoreEntry)
+    return store || {};
 
-function getActionType(str: string) {
-  for (let type of types) {
-    if (str.indexOf(type) === 0) {
-      return type
-    }
+  if (action.fetchType === FetchType.CLEAR) {
+    return clearCache(store, action.url, newFetchStoreEntry);
+  } else {
+    return { ...store, [action.url]: newFetchStoreEntry }
   }
+
 }
 
-export default function fetchReducer(store: FetchStore, action: any) {
-  let newValue;
-  switch(action.fetchType) {
-    case CLEAR:
-      newValue = { status: FetchStatus.Uninitialized, body: null };
-      break;
-    case MARK_LOADING:
-      newValue = { status: FetchStatus.Loading };
-      break;
-    case SET_RESULT:
-      newValue = { status: FetchStatus.Loaded, body: action.payload };
-      break;
-    case NOT_FOUND:
-      newValue = { status: FetchStatus.NotFound, error: action.payload };
-      break;
-    case ERRORED:
-      newValue = { status: FetchStatus.Error, error: action.payload };
-      break;
+function actionIsFetchAction(action: any): action is FetchAction {
+  // action.type.startsWith('fetch') && ...
+  return action.fetchType && FetchType.Types.includes(action.fetchType);
+}
+
+interface FetchAction {
+  readonly type: string;
+  readonly fetchType: string;
+  readonly url: string;
+  readonly payload: any;
+}
+
+function actionToFetchStoreEntry(action: FetchAction): FetchStoreEntry {
+  switch (action.fetchType) {
+    case FetchType.CLEAR:
+      return { status: FetchStatus.Uninitialized, body: null };
+    case FetchType.MARK_LOADING:
+      return { status: FetchStatus.Loading };
+    case FetchType.SET_RESULT:
+      return { status: FetchStatus.Loaded, body: action.payload };
+    case FetchType.NOT_FOUND:
+      return { status: FetchStatus.NotFound, error: action.payload };
+    case FetchType.ERROR:
+      return { status: FetchStatus.Error, error: action.payload };
     default:
-      return store || {}
+      return null;
   }
-  return updateKey(store, action.url, newValue);
+}
+
+/**
+ * Clears cache for all entries that without the query params match the baseUrl
+ */
+function clearCache(store: FetchStore, baseUrl: string, newValue: FetchStoreEntry) {
+  const matchingUrls = getMatchingUrls(store, baseUrl);
+  const newFetchStoreEntries: FetchStore = {};
+
+  for (let matchingUrl of matchingUrls) {
+    newFetchStoreEntries[matchingUrl] = newValue;
+  }
+
+  return { ...store, ...newFetchStoreEntries }
+}
+
+function getMatchingUrls(store: FetchStore, baseUrl: string) {
+  return Object.keys(store).filter(url => url.split('?')[0] === baseUrl);
 }

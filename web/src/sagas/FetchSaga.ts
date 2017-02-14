@@ -5,6 +5,7 @@ import Actions from '../actions';
 import { PoetAppState } from '../store/PoetAppState'
 import { FetchStatus } from '../enums/FetchStatus'
 import { getResourceState } from '../selectors/fetch'
+import { FetchType } from '../reducers/FetchReducer';
 
 const NOT_FOUND = 'not found';
 
@@ -35,22 +36,23 @@ function* fetchData(action: any) {
   if (currentState === FetchStatus.Loading) {
     return
   }
-  yield put({ fetchType: 'mark loading', type: 'mark loading ' + short, url });
+  yield put({ fetchType: FetchType.MARK_LOADING, type: 'mark loading ' + short, url });
   const { result, error } = yield call(apiFetch, url);
 
   if (error) {
     if (error === NOT_FOUND) {
-      yield put({ fetchType: 'not found', type: 'not found ' + short, url, payload: error });
+      yield put({ fetchType: FetchType.NOT_FOUND, type: 'not found ' + short, url, payload: error });
     } else {
-      yield put({ fetchType: 'error for', type: 'error for ' + short, url, payload: error });
+      yield put({ fetchType: FetchType.ERROR, type: 'error for ' + short, url, payload: error });
     }
   } else {
-    yield put({ fetchType: 'set result', type: 'set result ' + short, url, payload: result });
+    yield put({ fetchType: FetchType.SET_RESULT, type: 'set result ' + short, url, payload: result });
   }
+
   return { result, error }
 }
 
-export default function watchForFetchCall(): Saga {
+export function fetchSaga(): Saga {
   return function*() {
     yield takeEvery(Actions.fetchRequest, fetchData);
   }

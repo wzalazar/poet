@@ -8,6 +8,7 @@ import auth from '../auth'
 import config from '../config'
 import { currentPublicKey } from '../selectors/session'
 import { getMockPrivateKey } from '../mockKey'
+import { Claim } from '../Claim';
 
 const jsonClaims = require('../claim.json');
 
@@ -78,9 +79,9 @@ function* signClaims(claimTemplates: any) {
   const response = yield call(bindAuthResponse, requestId);
   yield put({ type: Actions.claimsResponse, payload: response });
 
-  const result = yield call(submitClaims, response)
+  const result = yield call(submitClaims, response);
 
-  yield put({ type: Actions.claimsSubmitedSuccess });
+  yield put({ type: Actions.claimsSubmitedSuccess, claims: claimTemplates.payload });
   yield take(Actions.claimsModalDismissRequested);
   yield put({ type: Actions.signClaimsModalHide });
 

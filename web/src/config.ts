@@ -14,4 +14,6 @@ const config = {
   }
 };
 
+export const Configuration = config;
+
 export default config;

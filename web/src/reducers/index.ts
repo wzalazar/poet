@@ -1,4 +1,4 @@
-import FetchReducer from './FetchReducer';
+import { fetchReducer } from './FetchReducer';
 import ModalsReducer from './ModalsReducer';
 import SessionReducer from './SessionReducer';
 import ProfileReducer from './ProfileReducer';
@@ -7,7 +7,7 @@ import BlockReducer from './BlockReducer';
 import SignTxReducer from './SignTxReducer';
 
 export default {
-  fetch: FetchReducer,
+  fetch: fetchReducer,
   modals: ModalsReducer,
   session: SessionReducer,
   profile: ProfileReducer,
