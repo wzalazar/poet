@@ -9,6 +9,7 @@ import config from "../config";
 import {getUtxos, submitTx} from "../bitcoin/insight";
 import {getSighash, applyHexSignaturesInOrder} from "../bitcoin/txHelpers";
 import {race} from "redux-saga/effects";
+import { currentPublicKey } from '../selectors/session';
 
 
 async function requestIdFromAuth(dataToSign: Buffer[], bitcoin: boolean) {
@@ -30,7 +31,7 @@ export interface SignTransactionParameters {
 export function* signTx(action: { payload: SignTransactionParameters }) {
   yield put({ type: Actions.signTxModalShow, payload: action.payload });
 
-  const publicKey = bitcore.PublicKey(yield select(state => state.session.token.publicKey));
+  const publicKey = bitcore.PublicKey(yield select(currentPublicKey))
 
   const myAddress = bitcore.Address(publicKey, bitcore.Networks.testnet);
   const myAddressString = myAddress.toString();

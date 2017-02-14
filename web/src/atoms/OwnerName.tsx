@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ResourceProvider, ResourceLocator } from '../components/ResourceProvider';
 import Config from '../config';
+import { PoetAPIResourceProvider } from './base/PoetApiResource';
 
 interface Profile {
   readonly attributes: {
@@ -12,14 +13,13 @@ interface SelectByWork {
   readonly work: string
 }
 
-export default class OwnerName extends ResourceProvider<Profile, SelectByWork, undefined> {
+export default class OwnerName extends PoetAPIResourceProvider<Profile, SelectByWork, undefined> {
 
   renderElement(resource: Profile): JSX.Element {
     return <div>{this.props.resource.attributes.displayName}</div>;
   }
 
-  resourceLocator(): ResourceLocator {
-    return { url: `${Config.api.explorer}/ownerOf/${this.props.work}` }
+  poetURL() {
+    return `/ownerOf/${this.props.work}`
   }
-
 }

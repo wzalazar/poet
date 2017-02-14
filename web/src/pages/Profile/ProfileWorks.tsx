@@ -5,7 +5,6 @@ import { FetchComponentProps } from '../../hocs/FetchComponent';
 import WorksComponent from '../../hocs/Works';
 import { WorkProps } from '../../hocs/WorkComponent';
 
-//import './Layout.scss';
 
 function renderTableRow(props: WorkProps) {
   return (

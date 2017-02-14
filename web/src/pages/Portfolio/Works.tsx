@@ -4,8 +4,18 @@ import { Link } from 'react-router';
 import { FetchComponentProps } from '../../hocs/FetchComponent';
 import WorksComponent from '../../hocs/Works';
 import { WorkProps } from '../../hocs/WorkComponent';
+import { ResourceProvider, ResourceLocator } from '../../components/ResourceProvider';
 
-//import './Layout.scss';
+export class PortfolioWorks extends ResourceProvider<WorkProps, undefined, undefined> {
+  renderElement(resource: WorkProps): JSX.Element {
+    return undefined;
+  }
+
+  resourceLocator(): ResourceLocator {
+    return undefined;
+  }
+
+}
 
 function renderTableRow(props: WorkProps) {
   return (
