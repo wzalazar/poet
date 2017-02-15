@@ -8,37 +8,12 @@ import './Layout.scss';
 import Config from '../../config';
 
 import '../../extensions/String';
-import { OwnerName } from '../../atoms/Work';
+import { OwnerName, WorkNameById } from '../../atoms/Work';
+import { License } from '../../atoms/Interfaces';
+import { TimeSinceIssueDate, ReferencedWorkName } from '../../atoms/License';
+import { OfferingType } from '../../atoms/Offering';
 
 type LicensesResource = ReadonlyArray<License>;
-
-export interface License {
-  readonly id: string;
-  readonly publicKey: string;
-  readonly title: string;
-  readonly licenseType: string;
-  readonly owner: string;
-  readonly issueDate: string;
-
-  readonly reference: {
-    readonly attributes: {
-      readonly name: string;
-    }
-  }
-
-  readonly referenceOffering: {
-    readonly id: string;
-    readonly attributes: {
-      readonly licenseType: string;
-      readonly licenseDescription: string;
-    };
-  }
-
-  readonly attributes: {
-    readonly licenseHolder: string;
-    readonly reference: string;
-  }
-}
 
 export interface LicensesProps {
   readonly publicKey?: string;
@@ -66,7 +41,7 @@ export default class Licenses extends ResourceProvider<LicensesResource, License
     return (
       <section className="licenses">
         <ul className="row list-unstyled">
-          { licenses.map(this.renderLicense.bind(this)) }
+          { licenses.map(license => this.renderLicense(license)) }
         </ul>
       </section>
     )
@@ -85,9 +60,9 @@ export default class Licenses extends ResourceProvider<LicensesResource, License
       <li key={license.id} className="card col-sm-5 col-sm-3 col-lg-3 m-1">
         <div className="card-block">
           <div className="card-title " >
-            <h5>{ license.reference.attributes.name }</h5>
+            <h5><ReferencedWorkName license={license} /></h5>
             { this.props.showActions && <div className="menu">
-              <DropdownMenu options={['Edit', 'Transfer', 'Revoke']} optionSelected={this.optionSelected.bind(this, license)}>
+              <DropdownMenu options={['Revoke']} optionSelected={this.optionSelected.bind(this, license)}>
                 Actions
               </DropdownMenu>
             </div> }
@@ -95,11 +70,11 @@ export default class Licenses extends ResourceProvider<LicensesResource, License
           <div>
             <div className="box-placeholder" />
             <div>
-              <div>{ license.referenceOffering.attributes.licenseType }</div>
-              <div>{ license.issueDate && new Date(license.issueDate).toISOString() }</div>
+              <div><OfferingType offering={license.referenceOffering} /></div>
+              <div><TimeSinceIssueDate license={license} /></div>
             </div>
           </div>
-          <div>Owned by: <OwnerName work={ license.referenceOffering.id }/></div>
+          <div>Owned by: <OwnerName workId={ license.reference.id }/></div>
         </div>
       </li>
     )

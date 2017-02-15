@@ -9,7 +9,7 @@ function render(props: ProfileProps) {
       <Link to={'/profiles/' + props.id}>{props.attributes['displayName'] }</Link>
     )
   }
-  return <Link to={'/profiles/' + props.id}>Unknown ({props.id.firstAndLastCharacters(4)})</Link>
+  return <Link to={'/profiles/' + props.id}>Anonymous ({props.id.firstAndLastCharacters(4)})</Link>
 }
 
 export const ProfileLink = ProfileComponent(render);

@@ -24,7 +24,7 @@ export default class OwnedWorks extends PoetAPIResourceProvider<Work[], SelectWo
           </tr>
           </thead>
           <tbody>
-          { this.props.resource.map(this.renderRow.bind(this)) }
+          { resource.map(work => this.renderRow(work)) }
           </tbody>
         </table>
       </div>

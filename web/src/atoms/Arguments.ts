@@ -1,5 +1,5 @@
-export interface SelectProfileOwnerOfWorkId {
-  readonly work: string
+export interface SelectWorkById {
+  readonly workId: string
 }
 
 export interface SelectWorksByAuthor {

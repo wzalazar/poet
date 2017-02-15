@@ -72,3 +72,30 @@ export interface Work extends Claim {
     readonly content?: string;
   }
 }
+
+export interface Offering {
+  readonly id: string;
+  readonly attributes: {
+    readonly licenseType: string;
+    readonly licenseDescription: string;
+  };
+}
+
+export interface License {
+  readonly id: string;
+  readonly publicKey: string;
+  readonly title: string;
+  readonly licenseType: string;
+  readonly owner: string;
+
+  readonly reference: Work;
+
+  readonly referenceOffering: Offering;
+
+  readonly attributes: {
+    readonly licenseHolder: string;
+    readonly issueDate: string;
+    readonly reference: string;
+  }
+}
+

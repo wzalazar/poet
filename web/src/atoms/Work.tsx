@@ -6,24 +6,31 @@ import * as moment from 'moment';
 import { Config } from '../config';
 import { PoetAPIResourceProvider } from './base/PoetApiResource';
 import { Work, Profile } from './Interfaces';
-import { SelectProfileOwnerOfWorkId } from './Arguments';
+import { SelectWorkById } from './Arguments';
 import { ProfileLink } from '../components/ProfileLink';
 
-export class OwnerName extends PoetAPIResourceProvider<Profile, SelectProfileOwnerOfWorkId, undefined> {
+export class OwnerName extends PoetAPIResourceProvider<Profile, SelectWorkById, undefined> {
 
   renderElement(resource: Profile): JSX.Element {
-    return (<div>{this.props.resource.attributes.displayName}</div>);
+    return (<div>{resource.attributes.displayName}</div>);
   }
 
   poetURL() {
-    return `/ownerOf/${this.props.work}`
+    return `/ownerOf/${this.props.workId}`
   }
 }
 
 export function OwnerNameWithLink(props: { work: Work }) {
-  return <Link to={'/profile/' + props.work.owner.publicKey}>
-    { props.work.owner.attributes.displayName || 'Unknown Author' }
-  </Link>
+  const publicKey = props.work && props.work.owner && props.work.owner.publicKey
+  const authorName = props.work
+    && props.work.owner
+    && props.work.owner.attributes
+    && props.work.owner.attributes.displayName
+    || 'Unknown Author'
+  if (!publicKey) {
+    return <span>{ authorName }</span>
+  }
+  return <Link to={'/profile/' + publicKey}> { authorName }</Link>
 }
 
 export function AuthorWithLink(props: { work: Work }) {
@@ -34,15 +41,32 @@ export function AuthorWithLink(props: { work: Work }) {
 }
 
 export function WorkNameWithLink(props: { work: Work }) {
-  return <Link to={'/works/' + props.work.id}>{props.work.attributes.name}</Link>
+  const title = props.work && props.work.attributes
+    && props.work.attributes.name
+    || '(untitled)'
+  return <Link to={'/works/' + props.work.id}> { title }</Link>
 }
 
 export function WorkName(props: { work: Work }) {
   return <span>{ props.work.attributes.name || '(untitled)' }</span>
 }
 
+export class WorkNameById extends PoetAPIResourceProvider<Work, SelectWorkById, undefined> {
+
+  renderElement(resource: Work): JSX.Element {
+    const title = resource.attributes
+      && resource.attributes.name
+      || '(untitled)';
+    return <span>{ title }</span>;
+  }
+
+  poetURL() {
+    return `/works/${this.props.workId}`
+  }
+}
+
 export function WorkType(props: { work: Work }) {
-  return <span> { props.work.attributes.type || '(unknown article type)' } </span>
+  return <span> { props.work.attributes.type || '' } </span>
 }
 
 export function WorkPublishedDate(props: { work: Work }) {
@@ -52,7 +76,7 @@ export function WorkPublishedDate(props: { work: Work }) {
   return (<span>{
     publishDate
       ? moment(publishDate).format(Config.dateFormat)
-      : '(unknown publish date)'
+      : '(unknown publication date)'
   }</span>)
 }
 

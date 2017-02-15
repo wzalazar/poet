@@ -20,6 +20,6 @@ export const Config = {
   dateFormat: 'MMMM Do YYYY'
 };
 
-export const Configuration = config;
+export const Configuration = Config;
 
 export default Config;

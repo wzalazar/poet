@@ -61,6 +61,9 @@ export default class WorkRoute extends Route<Work> {
   }
 
   ownFilter(queryBuilder: QueryBuilder<Work>, opts: WorkQueryOpts): QueryBuilder<Work> {
+    if (opts.articleType) {
+      queryBuilder.andWhere('')
+    }
     return queryBuilder
   }
 
