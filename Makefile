@@ -1,5 +1,5 @@
 prepare:
-	mkdir -p torrents
+	mkdir -p node/torrents
 	mkdir -p Docker/postgres
 
 base-images: prepare
