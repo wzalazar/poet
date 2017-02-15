@@ -48,11 +48,11 @@ export default class LicenseRoute extends Route<License> {
   ownFilter(queryBuilder: QueryBuilder<License>, opts: LicenseQueryOptions): QueryBuilder<License> {
     if (opts.holder) {
       return queryBuilder
-        .andWhere("licenseHolder=:holder", { "holder": opts.holder })
+        .andWhere("item.licenseHolder=:holder", { "holder": opts.holder })
     }
     if (opts.emitter) {
       return queryBuilder
-        .andWhere("licenseEmitter=:emitter", { "emitter": opts.emitter })
+        .andWhere("item.licenseEmitter=:emitter", { "emitter": opts.emitter })
     }
     return queryBuilder
   }

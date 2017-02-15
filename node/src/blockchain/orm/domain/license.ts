@@ -1,4 +1,4 @@
-import { Column, ManyToOne, Table, PrimaryColumn } from 'typeorm'
+import { Column, ManyToOne, Table, PrimaryColumn, JoinTable } from 'typeorm'
 import Work from './work'
 import Profile from './profile'
 import Offering from './offering'
@@ -19,6 +19,7 @@ export default class License {
   licenseHolder: Profile
 
   @ManyToOne(type => Profile, profile => profile.licensesEmitted, { nullable: true })
+  @JoinTable()
   licenseEmitter: Profile
 
   @Column({ nullable: true })
