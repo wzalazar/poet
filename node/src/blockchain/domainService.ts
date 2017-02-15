@@ -75,7 +75,7 @@ export default class DomainService extends ClaimService {
     return await this.augmentWork(work)
   }
 
-  async getProfileFull(id: string) {
+  async getProfile(id: string) {
     const profile = await this.profileRepository.createQueryBuilder('profile')
       .leftJoinAndMapMany('profile.licenses', 'profile.licenses', 'license')
       .leftJoinAndMapMany('profile.hasLicensesFor', 'profile.hasLicensesFor', 'hasLicensesFor')
@@ -84,6 +84,11 @@ export default class DomainService extends ClaimService {
       .where('profile.id=:id')
       .setParameters({ id })
       .getOne()
+    return profile
+  }
+
+  async getProfileFull(id: string) {
+    const profile = await this.getProfile(id)
     if (profile) {
       return await this.augmentProfile(profile)
     }
@@ -96,9 +101,9 @@ export default class DomainService extends ClaimService {
       return null
     }
     const claim = await this.getClaim(id)
-    license.reference = await this.getWorkFull(claim.attributes[Fields.REFERENCE])
+    license.reference = await this.getWork(claim.attributes[Fields.REFERENCE])
     license.referenceOffering = await this.getOffering(claim.attributes[Fields.REFERENCE_OFFERING])
-    license.licenseHolder = await this.getProfileFull(claim.attributes[Fields.LICENSE_HOLDER])
+    license.licenseHolder = await this.getProfile(claim.attributes[Fields.LICENSE_HOLDER])
     return { ...claim, ...license }
   }
 

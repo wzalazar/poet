@@ -17,7 +17,7 @@ export class PortfolioLayout extends React.Component<PortfolioProps, undefined> 
       <section className="container portfolio">
         <h2>Portfolio</h2>
         <PortfolioWorksFilters/>
-        <PortfolioWorks author={this.props.userId} />
+        <PortfolioWorks owner={this.props.userId} />
       </section>
     )
   }

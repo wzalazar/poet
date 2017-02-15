@@ -8,7 +8,7 @@ import './Layout.scss';
 import Config from '../../config';
 
 import '../../extensions/String';
-import OwnerName from '../../atoms/OwnerName';
+import { OwnerName } from '../../atoms/Work';
 
 type LicensesResource = ReadonlyArray<License>;
 

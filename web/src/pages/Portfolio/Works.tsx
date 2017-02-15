@@ -1,67 +1,54 @@
 import * as React from 'react';
-import { Link } from 'react-router';
+import { WorkNameWithLink, WorkType, WorkPublishedDate, OwnerNameWithLink } from '../../atoms/Work';
+import { Work } from '../../atoms/Interfaces';
+import { PoetAPIResourceProvider } from '../../atoms/base/PoetApiResource';
+import { SelectWorksByOwner } from '../../atoms/Arguments';
 
-import { FetchComponentProps } from '../../hocs/FetchComponent';
-import WorksComponent from '../../hocs/Works';
-import { WorkProps } from '../../hocs/WorkComponent';
-import { ResourceProvider, ResourceLocator } from '../../components/ResourceProvider';
+export default class OwnedWorks extends PoetAPIResourceProvider<Work[], SelectWorksByOwner, undefined> {
 
-export class PortfolioWorks extends ResourceProvider<WorkProps, undefined, undefined> {
-  renderElement(resource: WorkProps): JSX.Element {
-    return undefined;
+  poetURL(): string {
+    return `/works?owner=${this.props.owner}`
   }
 
-  resourceLocator(): ResourceLocator {
-    return undefined;
-  }
-
-}
-
-function renderTableRow(props: WorkProps) {
-  return (
-    <tr key={props.id}>
-      <td>
-        <div>
-          <Link to={'/works/' + props.id}>{props.attributes.name}</Link>
-        </div>
-        <div>
-          <small className="mr-2">{ props.attributes.type }</small>
-          <small>{props.attributes.name}</small>
-        </div>
-      </td>
-      <td>{props.publicKey}</td>
-      <td>{props.attributes.publishedAt}</td>
-      <td></td>
-      <td>
-        <select>
-          <option>Edit</option>
-          <option>Transfer</option>
-          <option>Delete</option>
-        </select>
-      </td>
-    </tr>
-  )
-}
-
-function render(props: WorkProps) {
-  return (
-    <div className="portfolio-works">
-      <table className="table table-hover">
-        <thead>
+  renderElement(resource: Work[]): JSX.Element {
+    return (
+      <div className="portfolio-works">
+        <table className="table table-hover">
+          <thead>
           <tr>
             <td>Name</td>
-            <td>Hash</td>
+            <td>Owner</td>
             <td>Timestamped</td>
             <td>Notary</td>
             <td>Actions</td>
           </tr>
-        </thead>
-        <tbody>
-          { props.elements.map(renderTableRow) }
-        </tbody>
-      </table>
-    </div>
-  )
-}
+          </thead>
+          <tbody>
+          { this.props.resource.map(this.renderRow.bind(this)) }
+          </tbody>
+        </table>
+      </div>
+    )
+  }
 
-export default WorksComponent(render);
+  renderRow(props: Work) {
+    return (
+      <tr key={props.id}>
+        <td>
+          <WorkType work={props} />
+          <WorkNameWithLink work={props} />
+        </td>
+        <td><OwnerNameWithLink work={props}/></td>
+        <td><WorkPublishedDate work={props}/></td>
+        <td>Poet</td>
+        <td>
+          <select>
+            <option>Edit</option>
+            <option>Transfer</option>
+            <option>Delete</option>
+          </select>
+        </td>
+      </tr>
+    )
+  }
+}

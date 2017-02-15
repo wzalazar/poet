@@ -2,12 +2,13 @@ import * as React from 'react';
 
 import '../../extensions/String';
 
-import WorkComponent, { WorkProps } from '../../hocs/WorkComponent';
+import WorkComponent from '../../hocs/WorkComponent';
 import { ProfileLink } from '../../components/ProfileLink';
 
 import './Title.scss';
+import { Work } from '../../atoms/Interfaces';
 
-function render(props: WorkProps): JSX.Element {
+function render(props: Work): JSX.Element {
   return (
     <section className="title">
       <h3>Title</h3>

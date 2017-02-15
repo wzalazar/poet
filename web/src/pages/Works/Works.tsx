@@ -1,23 +1,22 @@
 import * as React from 'react';
-import { Link } from 'react-router';
-import * as moment from 'moment';
 
 import { FetchComponentProps } from '../../hocs/FetchComponent';
-import ProfileLink from '../../components/ProfileLink';
-
 import Pagination from '../../components/Pagination';
-import WorksComponent from '../../hocs/Works';
-import { WorkProps } from '../../hocs/WorkComponent';
 
+import WorksComponent from '../../hocs/Works';
 import './Works.scss';
 
-function renderWork(props: WorkProps) {
+import { Work } from '../../atoms/Interfaces';
+import { WorkNameWithLink, AuthorWithLink } from '../../atoms/Work';
+import { TimeElapsedSinceTimestamp } from '../../atoms/Claim';
+
+function renderWork(props: Work) {
   return (
     <li key={props.id} className="mb-3">
-      <div className="name"><Link to={'/works/' + props.id}>{props.attributes.name}</Link></div>
+      <div className="name"><WorkNameWithLink work={props} /></div>
       <div className="info">
-        <span className="timestamp">Timestamped { moment(props.claimInfo && props.claimInfo.timestamp).fromNow() }</span>&nbsp;
-        <span className="author">by { props.attributes.authorPublicKey ? <ProfileLink id={props.attributes.authorPublicKey} /> : (props.attributes.authorDisplayName || 'Unknown author') }</span>
+        <span className="timestamp">Timestamped <TimeElapsedSinceTimestamp claimInfo={props.claimInfo} /></span>
+        <span className="author">by <AuthorWithLink work={props}/> </span>
       </div>
       <div className="content">{props.attributes.content}</div>
     </li>

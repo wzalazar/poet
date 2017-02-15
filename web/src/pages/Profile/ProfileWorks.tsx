@@ -1,17 +1,15 @@
 import * as React from 'react';
-import { Link } from 'react-router';
-
 import { FetchComponentProps } from '../../hocs/FetchComponent';
 import WorksComponent from '../../hocs/Works';
-import { WorkProps } from '../../hocs/WorkComponent';
+import { Work } from '../../atoms/Interfaces';
+import { WorkNameWithLink, WorkPublishedDate } from '../../atoms/Work';
 
 
-function renderTableRow(props: WorkProps) {
+function renderTableRow(props: Work) {
   return (
     <tr key={props.id}>
-      <td><Link to={'/works/' + props.id}>{props.attributes.name}</Link></td>
-      <td>{props.publicKey}</td>
-      <td>{props.attributes.publishedAt}</td>
+      <td><WorkNameWithLink work={props} /></td>
+      <td><WorkPublishedDate work={props}/></td>
     </tr>
   )
 }

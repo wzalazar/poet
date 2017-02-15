@@ -1,12 +1,11 @@
 import Config from '../config';
-
-import FetchComponent, { FetchComponentProps } from './FetchComponent'
-import { WorkProps } from './WorkComponent';
+import FetchComponent from './FetchComponent';
+import { Work } from '../atoms/Interfaces';
 
 // TODO: FetchManyComponent,
 // export interface FetchManyProps<ElementProps, Query> extends FetchProps { elements: ElementProps[], query: Query }
 
-function propsToQueryString(props: WorkProps): any {
+function propsToQueryString(props: Work): any {
   const searchable: string[] = ['author']; // TODO: Object.keys(props).filter(...).map(...), but we can'd do this on WorkProps since it extends from FetchComponentProps
 
   const queryParams = searchable
@@ -16,7 +15,7 @@ function propsToQueryString(props: WorkProps): any {
   return queryParams.join('&');
 }
 
-export default FetchComponent.bind(null, function (props: WorkProps) {
+export default FetchComponent.bind(null, function (props: Work) {
   const queryString = propsToQueryString(props);
   return {
     url: `${Config.api.explorer}/works?${queryString}`

@@ -1,10 +1,11 @@
 import * as React from 'react';
 
-import WorkComponent, { WorkProps } from '../../hocs/WorkComponent';
+import WorkComponent from '../../hocs/WorkComponent';
 
 import './ContentTab.scss';
+import { Work } from '../../atoms/Interfaces';
 
-function renderAttributes(props: WorkProps): JSX.Element {
+function renderAttributes(props: Work): JSX.Element {
   return (
     <table>
       <tbody>
@@ -21,7 +22,7 @@ function renderAttributes(props: WorkProps): JSX.Element {
   );
 }
 
-function render(props: WorkProps): JSX.Element {
+function render(props: Work): JSX.Element {
   return (
     <section className="contentTab">
       <section className="attributes">

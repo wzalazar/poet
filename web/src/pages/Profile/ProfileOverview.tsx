@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import ProfileComponent, { ProfileProps } from '../../hocs/ProfileComponent';
 
 function render(props: ProfileProps) {

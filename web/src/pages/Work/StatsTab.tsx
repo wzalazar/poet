@@ -1,8 +1,9 @@
 import * as React from 'react';
 
-import WorkComponent, { WorkProps } from '../../hocs/WorkComponent';
+import WorkComponent from '../../hocs/WorkComponent';
+import { Work } from '../../atoms/Interfaces';
 
-function render(props: WorkProps): JSX.Element {
+function render(props: Work): JSX.Element {
   return (
     <div className="statsTab">
       <h1>Stats</h1>

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import WorkComponent, { WorkProps, WorkOffering } from '../../hocs/WorkComponent';
+import WorkComponent from '../../hocs/WorkComponent';
 
 import './WorkOfferings.scss';
 import Actions from '../../actions'
+import { Work, WorkOffering } from "../../atoms/Interfaces";
 
 function renderLicense(license: any): JSX.Element {
   return (
@@ -66,7 +67,7 @@ const RenderOffering = connect((e: any) => e, {
   })
 })(renderOfferingFunc) as any;
 
-function render(props: WorkProps): JSX.Element {
+function render(props: Work): JSX.Element {
   return (
     <section className="offerings">
       { props.offerings.map((offering: any, index: number) => <RenderOffering {...offering} key={index} />) }

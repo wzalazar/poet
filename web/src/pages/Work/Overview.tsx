@@ -1,11 +1,10 @@
 import * as React from 'react';
 
 import '../../extensions/Map';
-
-import WorkComponent, { WorkProps } from '../../hocs/WorkComponent';
+import WorkComponent from '../../hocs/WorkComponent';
 import ProfileLink from '../../components/ProfileLink';
-
 import './Overview.scss';
+import { Work } from '../../atoms/Interfaces';
 
 function renderRow({key, value}: {key: string, value: string}) {
   return (
@@ -16,7 +15,7 @@ function renderRow({key, value}: {key: string, value: string}) {
   );
 }
 
-function render(props: WorkProps) {
+function render(props: Work) {
   if (!props) {
     return '';
   }

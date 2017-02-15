@@ -6,6 +6,30 @@ import Work from '../../orm/domain/work'
 import OfferingRoute from './offerings'
 import Router = require('koa-router')
 import Context = Koa.Context
+import { QueryBuilder } from 'typeorm';
+
+interface WorkQueryOpts extends QueryOptions {
+  owner?: string
+  author?: string
+  licensedTo?: string
+
+  relatedTo?: string
+
+  articleType?: string
+
+  startCreationDate?: number
+  endCreationDate?: number
+}
+
+const OWNER = 'owner'
+const AUTHOR = 'author'
+const RELATED_TO = 'related_to'
+const LICENSED_TO = 'licensed_to'
+
+const ARTICLE_TYPE = 'type'
+
+const START_CREATION_DATE = 'from'
+const END_CREATION_DATE = 'until'
 
 export default class WorkRoute extends Route<Work> {
   service: BlockchainService
@@ -34,6 +58,23 @@ export default class WorkRoute extends Route<Work> {
         return { claimInfo: info, ...work }
       }
     ))
+  }
+
+  ownFilter(queryBuilder: QueryBuilder<Work>, opts: WorkQueryOpts): QueryBuilder<Work> {
+    return queryBuilder
+  }
+
+  getParamOpts(ctx: Context): WorkQueryOpts {
+    const result = super.getParamOpts(ctx)
+    return Object.assign(result, {
+      owner: ctx.params[OWNER],
+      author: ctx.params[AUTHOR],
+      licensedTo: ctx.params[LICENSED_TO],
+      relatedTo: ctx.params[RELATED_TO],
+      articleType: ctx.params[ARTICLE_TYPE],
+      startCreationDate: ctx.params[START_CREATION_DATE],
+      endCreationDate: ctx.params[END_CREATION_DATE],
+    }) as WorkQueryOpts
   }
 
   addRoutes(router: Router): any {
