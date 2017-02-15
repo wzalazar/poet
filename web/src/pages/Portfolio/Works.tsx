@@ -4,7 +4,7 @@ import { Work } from '../../atoms/Interfaces';
 import { PoetAPIResourceProvider } from '../../atoms/base/PoetApiResource';
 import { SelectWorksByOwner } from '../../atoms/Arguments';
 
-export default class OwnedWorks extends PoetAPIResourceProvider<Work[], SelectWorksByOwner, undefined> {
+export class OwnedWorks extends PoetAPIResourceProvider<Work[], SelectWorksByOwner, undefined> {
 
   poetURL(): string {
     return `/works?owner=${this.props.owner}`
@@ -17,7 +17,7 @@ export default class OwnedWorks extends PoetAPIResourceProvider<Work[], SelectWo
           <thead>
           <tr>
             <td>Name</td>
-            <td>Owner</td>
+            <td>Author</td>
             <td>Timestamped</td>
             <td>Notary</td>
             <td>Actions</td>

@@ -18,6 +18,9 @@ export default class License {
   @ManyToOne(type => Profile, profile => profile.licenses, { nullable: true })
   licenseHolder: Profile
 
+  @ManyToOne(type => Profile, profile => profile.licensesEmitted, { nullable: true })
+  licenseEmitter: Profile
+
   @Column({ nullable: true })
   proofType: string
 

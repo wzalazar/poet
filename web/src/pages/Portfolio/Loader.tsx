@@ -4,23 +4,22 @@ import { Saga } from 'redux-saga';
 
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
 import { PortfolioLayout } from './Layout';
+import { currentPublicKey } from '../../selectors/session';
+import { SelectProfileById } from '../../atoms/Arguments';
 
-interface PortfolioState {
-}
-
-export class Portfolio extends PageLoader<PortfolioState, Object> {
+export class Portfolio extends PageLoader<null, SelectProfileById> {
 
   component = PortfolioLayout;
 
-  initialState() {
-    return {};
+  initialState(): null {
+    return null;
   }
 
   routeHook(key: string) {
     return [<Route path="/portfolio" key={key} component={this.container()} />]
   }
 
-  reducerHook<State>(): ReducerDescription<PortfolioState> {
+  reducerHook<State>(): ReducerDescription<null> {
     return null;
   }
 
@@ -28,10 +27,7 @@ export class Portfolio extends PageLoader<PortfolioState, Object> {
     return null;
   }
 
-  select(state: any, ownProps: any): Object {
-    if (!state.session || !state.session.user || !state.session.user.id)
-      return {};
-
-    return { userId: state.session.user.id };
+  select(state: any, ownProps: any) {
+    return { profileId: currentPublicKey(state) }
   }
 }

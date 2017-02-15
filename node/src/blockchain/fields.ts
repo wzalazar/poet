@@ -2,6 +2,7 @@ export default class Fields {
   // License
   static REFERENCE = 'reference'
   static LICENSE_HOLDER = 'licenseHolder'
+  static REFERENCE_OWNER = 'referenceOwner'
   static REFERENCE_OFFERING = 'referenceOffering'
   static PROOF_VALUE = 'proofValue'
   static PROOF_TYPE = 'proofType'
@@ -12,7 +13,9 @@ export default class Fields {
 
   // Title, Work
   static OWNER_KEY = 'owner'
-  static AUTHOR = 'author'
+  static AUTHOR = 'authorPublicKey'
   static PAYMENT_ADDRESS = 'paymentAddress'
+
+  // Certificate
   static CERTIFICATION_TIME = 'certificationTime'
 }

@@ -18,6 +18,9 @@ export default class Profile {
   @ManyToMany(type => Work, work => work.publishers)
   hasLicensesFor: Work[]
 
+  @ManyToMany(type => License, license => license.licenseEmitter)
+  licensesEmitted: License[]
+
   @OneToMany(type => Work, work => work.author)
   @JoinTable()
   authoredWorks: Work[]

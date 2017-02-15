@@ -9,6 +9,7 @@ import Context = Koa.Context
 import { QueryBuilder } from 'typeorm'
 
 interface LicenseQueryOptions extends QueryOptions {
+  emitter?: string
   holder?: string
 }
 
@@ -35,13 +36,23 @@ export default class LicenseRoute extends Route<License> {
         return { claimInfo: info, ...license }
       }
     ))
+  }
 
+  getParamOpts(ctx: Context): LicenseQueryOptions {
+    const options = super.getParamOpts(ctx) as LicenseQueryOptions;
+    options.emitter = ctx.request.query['emitter']
+    options.holder = ctx.request.query['holder']
+    return options
   }
 
   ownFilter(queryBuilder: QueryBuilder<License>, opts: LicenseQueryOptions): QueryBuilder<License> {
     if (opts.holder) {
       return queryBuilder
         .andWhere("licenseHolder=:holder", { "holder": opts.holder })
+    }
+    if (opts.emitter) {
+      return queryBuilder
+        .andWhere("licenseEmitter=:emitter", { "emitter": opts.emitter })
     }
     return queryBuilder
   }

@@ -1,23 +1,17 @@
 import * as React from 'react';
 
-import { HexString } from '../../common';
-
-import PortfolioWorks from './Works'
-import { PortfolioWorksFilters } from './WorksFilters';
+import { OwnedWorks } from './Works';
+import { SelectProfileById } from '../../atoms/Arguments';
 
 import './Layout.scss';
 
-interface PortfolioProps {
-  userId: HexString;
-}
-
-export class PortfolioLayout extends React.Component<PortfolioProps, undefined> {
+export class PortfolioLayout extends React.Component<SelectProfileById, undefined> {
   render() {
     return (
       <section className="container portfolio">
         <h2>Portfolio</h2>
-        <PortfolioWorksFilters/>
-        <PortfolioWorks owner={this.props.userId} />
+        { /* <PortfolioWorksFilters/> */ }
+        <OwnedWorks owner={this.props.profileId} />
       </section>
     )
   }

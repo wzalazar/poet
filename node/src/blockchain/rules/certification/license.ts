@@ -42,6 +42,14 @@ export default {
       return
     }
 
+    const ownerStated = claim.attributes[Fields.REFERENCE_OWNER]
+    const ownerOnRecord = await service.getOwnerPublicKey(workId)
+
+    if (ownerOnRecord && ownerStated && ownerOnRecord !== ownerStated) {
+      console.log('Different owner on record')
+      return
+    }
+
     const holderId = claim.attributes[Holder]
     const holder = holderId
       && await service.profileRepository.findOneById(holderId)
@@ -83,7 +91,8 @@ export default {
       licenseHolder: holder,
       referenceOffering: referenceOffering,
       proofType: proofType,
-      proofValue: proofValue
+      proofValue: proofValue,
+      licenseEmitter: ownerOnRecord
     }))
     work.publishers = work.publishers || []
     work.publishers.push(holder)

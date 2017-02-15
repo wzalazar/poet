@@ -9,3 +9,7 @@ export interface SelectWorksByAuthor {
 export interface SelectWorksByOwner {
   readonly owner: string
 }
+
+export interface SelectProfileById {
+  readonly profileId: string
+}

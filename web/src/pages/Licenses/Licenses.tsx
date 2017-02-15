@@ -23,7 +23,7 @@ export interface LicensesProps {
 
 export default class Licenses extends ResourceProvider<LicensesResource, LicensesProps, undefined> {
   static defaultProps: LicensesProps = {
-    limit: 5,
+    limit: 100,
     showActions: false
   };
 
