@@ -1,12 +1,13 @@
 import * as React from 'react'
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+
+import { publicKeyToAddress } from '../../bitcoin/addressHelpers'
 
 import { StepRegister, StepRegisterData } from './StepRegister/StepRegister'
 import { StepLicense, StepLicenseData } from './StepLicense/StepLicense'
 import StepPublishAndReview from './StepPublishAndReview/StepPublishAndReview'
 
-import './Layout.scss'
-import { publicKeyToAddress } from '../../bitcoin/addressHelpers'
+import './Layout.scss';
+import { CurrentStep } from './CurrentStep';
 
 interface CreateWorkProps {
   readonly createWorkRequested: (claims: any[]) => any // Actions.claimsSubmitRequested
@@ -21,39 +22,36 @@ interface CreateWorkLayoutState {
   readonly workTitle?: string;
 }
 
-export default class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWorkLayoutState> {
+export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWorkLayoutState> {
+  private readonly StepNames: ReadonlyArray<string> = ['Register a Work', 'Add a License', 'Preview and Publish'];
 
   constructor() {
     super(...arguments);
     this.state = {
-      selectedStep: 0,
+      selectedStep: 0
     }
   }
 
   render() {
     return (
       <section className="container create-work">
-        <Tabs selectedIndex={this.state.selectedStep}>
-          <TabList className="tab-list">
-            <Tab>Register</Tab>
-            <Tab>License</Tab>
-            <Tab>Review &amp; Publish</Tab>
-          </TabList>
-          <TabPanel>
-            <StepRegister onSubmit={this.onStepRegisterSubmit.bind(this)} />
-          </TabPanel>
-          <TabPanel>
-            <StepLicense onSubmit={this.onStepLicenseSubmit.bind(this)} />
-          </TabPanel>
-          <TabPanel>
-            <StepPublishAndReview
-              workTitle={this.state.workTitle}
-              price={this.state.licenseData && this.state.licenseData.pricing.price}
-              onSubmit={this.submitWork.bind(this)}
-              licenseType={this.state.licenseData && this.state.licenseData.licenseType}
-            />
-          </TabPanel>
-        </Tabs>
+        <header>
+          <h1>{ this.StepNames[this.state.selectedStep] }</h1>
+          <CurrentStep
+            selectedStep={this.state.selectedStep}
+            className="current-step"
+            onClick={(index: number) => this.setState({ selectedStep: index })}
+          />
+        </header>
+        { this.state.selectedStep === 0 && <StepRegister onSubmit={this.onStepRegisterSubmit.bind(this)} /> }
+        { this.state.selectedStep === 1 && <StepLicense onSubmit={this.onStepLicenseSubmit.bind(this)} /> }
+        { this.state.selectedStep === 2 &&
+          <StepPublishAndReview
+            workTitle={this.state.workTitle}
+            price={this.state.licenseData && this.state.licenseData.pricing.price}
+            onSubmit={this.submitWork.bind(this)}
+            licenseType={this.state.licenseData && this.state.licenseData.licenseType}
+            /> }
       </section>
 
     )

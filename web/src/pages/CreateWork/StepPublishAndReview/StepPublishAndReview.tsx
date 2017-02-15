@@ -19,14 +19,13 @@ export default class StepPublishAndReview extends React.Component<StepPublishAnd
   render() {
     return (
       <section className="step-3-publish">
-        <h2>Review &amp; Publish</h2>
         <div className="row">
           <div className="col-sm-7">
-            <TermsOfUse className="mb-2"/>
+            <TermsOfUse />
             <button onClick={this.props.onSubmit} className="btn btn-primary">Timestamp to the blockchain</button>
           </div>
           <Preview
-            className="preview col-sm-5 mb-2 border-1 p-1"
+            className="col-sm-5"
             authorName={this.props.authorName}
             workTitle={this.props.workTitle}
             mediaType="Article"

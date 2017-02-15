@@ -1,18 +1,35 @@
-.text-upload {
-  textarea {
-    min-width: 400px;
-    min-height: 150px;
-    max-width: 100%;
-    width: 100%;
-    padding: 12px;
-    border: 1px solid lightgray;
-    border-radius: 8px;
-    resize: both;
-    color: gray;
+.create-work .step-1-register .content {
+  margin-bottom: 30px;
+
+  h2 {
+
   }
 
-  span {
-    margin-left: 10px;
-    color: gray;
+  .text-upload {
+    textarea {
+      min-width: 400px;
+      min-height: 150px;
+      max-width: 100%;
+      width: 100%;
+      padding: 12px;
+      resize: both;
+      border: 1px solid #E6E4E1;
+      border-radius: 3px;
+      font-family: "Source Sans Pro";
+      font-size: 12px;
+      line-height: 18px;
+      background-color: #FFF;
+      color: #AAA;
+
+      &::placeholder {
+        color: #CCC;
+
+      }
+    }
+
+    span {
+      margin-left: 10px;
+      color: gray;
+    }
   }
 }

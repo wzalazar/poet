@@ -1,0 +1,17 @@
+.create-work .step-1-register .attributes {
+  margin-bottom: 82px;
+
+  input[type="text"] {
+    font-family: "Source Sans Pro";
+    font-size: 12px;
+    line-height: 18px;
+    border: 1px solid #E6E4E1;
+    border-radius: 4px;
+    color: #666666;
+    background-color: #FFFFFF;
+
+    &::placeholder {
+      color: #CCCCCC;
+    }
+  }
+}

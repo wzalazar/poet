@@ -3,14 +3,13 @@ import * as React from 'react';
 import '../Layout.scss';
 import './Content.scss';
 
-import { ClassNameProps } from '../../../common';
 import { TextUpload } from '../../../components/TextUpload';
 
 interface ContentState {
   readonly content: string;
 }
 
-export class Content extends React.Component<ClassNameProps, ContentState> {
+export class Content extends React.Component<undefined, ContentState> {
 
   constructor() {
     super(...arguments);
@@ -21,7 +20,7 @@ export class Content extends React.Component<ClassNameProps, ContentState> {
 
   render() {
     return (
-      <section className={this.props.className}>
+      <section className="content">
         <h2>Content</h2>
         <form>
           <TextUpload

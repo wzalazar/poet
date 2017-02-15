@@ -1,7 +1,8 @@
 import * as React from 'react';
 
-import '../Layout.scss';
 import { ClassNameProps } from '../../../common';
+
+import './Attributes.scss';
 
 export interface Attribute {
   key: string;
@@ -34,12 +35,14 @@ export class Attributes extends React.Component<ClassNameProps, AttributesState>
 
   render() {
     return (
-      <section className={'mb-3 ' + this.props.className}>
+      <section className={'attributes ' + this.props.className}>
         <h2>Attributes</h2>
         <form>
           { this.state.attributes.map(this.renderField.bind(this)) }
         </form>
-        <button onClick={this.onAddAttribute.bind(this)} className="btn btn-secondary">Add Field</button>
+        <button
+          onClick={this.onAddAttribute.bind(this)}
+          className="button-secondary">Add Field</button>
       </section>
     )
   }
@@ -48,13 +51,26 @@ export class Attributes extends React.Component<ClassNameProps, AttributesState>
     return (
       <div key={index} className="form-group row">
         <div className="col-sm-4">
-          <input ref={this.setAttributeInputRef.bind(this, index)} onChange={this.onKeyChange.bind(this, index)} type="text" className="form-control" placeholder="Attribute Name" value={key} />
+          <input
+            ref={this.setAttributeInputRef.bind(this, index)}
+            onChange={this.onKeyChange.bind(this, index)}
+            type="text"
+            className="form-control"
+            placeholder="Attribute Name"
+            value={key} />
         </div>
         <div className="col-sm-7">
-          <input onChange={this.onChange.bind(this, index)} type="text" className="form-control" placeholder="Attribute Value" value={value} />
+          <input
+            onChange={this.onChange.bind(this, index)}
+            type="text"
+            className="form-control"
+            placeholder="Attribute Value"
+            value={value} />
         </div>
         <div className="col-sm-1">
-          <button onClick={this.onRemoveAttribute.bind(this, index)} className="btn btn-secondary">X</button>
+          <button
+            onClick={this.onRemoveAttribute.bind(this, index)}
+            className="btn btn-secondary">X</button>
         </div>
       </div>
     );

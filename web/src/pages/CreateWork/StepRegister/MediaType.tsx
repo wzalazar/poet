@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+const classNames = require('classnames');
 
 import { RadioButtonGroup, RadioButton } from '../../../components/RadioButtonGroup';
 import { ClassNameProps } from '../../../common';
+
+import './MediaType.scss';
 
 export interface MediaTypeProps extends ClassNameProps {
   readonly onChange?: (selectedId: string) => void;
@@ -25,9 +28,9 @@ export class MediaType extends React.Component<MediaTypeProps, any> {
 
   render() {
     return (
-      <section className={this.props.className}>
+      <section className={classNames('media-type', this.props.className)}>
         <h2>Media Type</h2>
-        <Tabs>
+        <Tabs className="media-type-tabs">
           <TabList>
             <Tab>Article</Tab>
             {/*<Tab>Audio</Tab>*/}
@@ -37,15 +40,6 @@ export class MediaType extends React.Component<MediaTypeProps, any> {
           <TabPanel>
             <RadioButtonGroup radioButtons={this.radioButtons} onSelectionChange={this.onChange.bind(this)} />
           </TabPanel>
-          {/*<TabPanel>*/}
-            {/*<RadioButtonGroup radioButtons={radioButtonsAudio} onSelectionChange={this.props.onChange} />*/}
-          {/*</TabPanel>*/}
-          {/*<TabPanel>*/}
-          {/**/}
-          {/*</TabPanel>*/}
-          {/*<TabPanel>*/}
-          {/**/}
-          {/*</TabPanel>*/}
         </Tabs>
       </section>
     )

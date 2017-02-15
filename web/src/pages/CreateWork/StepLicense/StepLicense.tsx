@@ -24,7 +24,6 @@ export class StepLicense extends React.Component<StepLicenseProps, StepLicenseDa
   render() {
     return (
       <section className="step-2-license">
-        <h2>Add a License</h2>
         <div className="row">
           <div className="col-sm-6">
             <h3>License</h3>

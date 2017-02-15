@@ -3,7 +3,7 @@ import { Route } from 'react-router';
 import { Saga } from 'redux-saga';
 
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
-import CreateWorkLayout from './Layout';
+import { CreateWorkLayout } from './Layout';
 import Actions from '../../actions'
 import { currentPublicKey } from '../../selectors/session'
 

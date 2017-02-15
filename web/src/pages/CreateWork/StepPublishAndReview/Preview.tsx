@@ -1,7 +1,10 @@
 import * as React from 'react';
 import * as moment from 'moment';
+const classNames = require('classnames'); // TODO: we have typings for this...
 
 import { Price, LicenseType, ClassNameProps } from '../../../common';
+
+import './Preview.scss';
 
 export interface PreviewProps extends ClassNameProps {
   readonly authorName?: string;
@@ -14,7 +17,7 @@ export interface PreviewProps extends ClassNameProps {
 export class Preview extends React.Component<PreviewProps, undefined> {
   render() {
     return (
-      <section className={this.props.className} >
+      <section className={classNames('preview', this.props.className)} >
         <section>
           <div className="text-center mb-2">
             <h5>Title of Ownership</h5>
@@ -68,10 +71,10 @@ export class Preview extends React.Component<PreviewProps, undefined> {
         <hr/>
         <section>
           <div className="row mb-2">
-            <div className="col-sm-6"><h5>{ this.props.licenseType.name }</h5></div>
-            <div className="col-sm-6 text-right"><h5>$ {this.props.price.amount} {this.props.price.currency}</h5></div>
+            <div className="col-sm-6"><h5>{ this.props.licenseType && this.props.licenseType.name || 'No License Selected' }</h5></div>
+            <div className="col-sm-6 text-right"><h5>$ {this.props.price && this.props.price.amount || 0} {this.props.price && this.props.price.currency || 'BTC'}</h5></div>
           </div>
-          <p>{ this.props.licenseType.description }</p>
+          <p>{ this.props.licenseType && this.props.licenseType.description || 'No License Selected' }</p>
         </section>
         <hr/>
         <section>

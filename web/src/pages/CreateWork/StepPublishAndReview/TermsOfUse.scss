@@ -1,4 +1,16 @@
 .terms-of-use {
+  font-family: "Source Sans Pro";
   font-size: 12px;
-  color: gray;
+  color: #666666;
+
+  h2 {
+    margin-bottom: 27px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  P {
+    margin-bottom: 34px;
+    font-size: 12px;
+  }
 }
