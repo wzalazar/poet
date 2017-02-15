@@ -61,8 +61,25 @@ export default class WorkRoute extends Route<Work> {
   }
 
   ownFilter(queryBuilder: QueryBuilder<Work>, opts: WorkQueryOpts): QueryBuilder<Work> {
-    if (opts.articleType) {
-      queryBuilder.andWhere('git c')
+    if (opts.licensedTo || opts.relatedTo) {
+      queryBuilder.leftJoin('item.publishers', 'item.publishers', 'publishers')
+    }
+    if (opts.owner) {
+      queryBuilder.andWhere('item.owner=:owner', { owner: opts.owner })
+    }
+    if (opts.author) {
+      queryBuilder.andWhere('item.author=:author', { author: opts.author })
+    }
+    if (opts.licensedTo) {
+      queryBuilder.andWhere('publishers.id=:licensedTo', { licensedTo: opts.licensedTo })
+    }
+    if (opts.relatedTo) {
+      queryBuilder.andWhere(`(publishers.id=:licensedTo)
+                          OR (item.owner   =:owner)
+                          OR (item.author  =:author)`, {
+      licensedTo: opts.licensedTo,
+      owner     : opts.owner,
+      author    : opts.author })
     }
     return queryBuilder
   }
@@ -70,13 +87,10 @@ export default class WorkRoute extends Route<Work> {
   getParamOpts(ctx: Context): WorkQueryOpts {
     const result = super.getParamOpts(ctx)
     return Object.assign(result, {
-      owner: ctx.params[OWNER],
-      author: ctx.params[AUTHOR],
-      licensedTo: ctx.params[LICENSED_TO],
-      relatedTo: ctx.params[RELATED_TO],
-      articleType: ctx.params[ARTICLE_TYPE],
-      startCreationDate: ctx.params[START_CREATION_DATE],
-      endCreationDate: ctx.params[END_CREATION_DATE],
+      owner: ctx.request.query[OWNER],
+      author: ctx.request.query[AUTHOR],
+      licensedTo: ctx.request.query[LICENSED_TO],
+      relatedTo: ctx.request.query[RELATED_TO],
     }) as WorkQueryOpts
   }
 

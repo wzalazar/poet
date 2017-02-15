@@ -77,7 +77,7 @@ export default {
       return
     }
      */
-    return service.licenseRepository.persist(service.licenseRepository.create({
+    const license = await service.licenseRepository.persist(service.licenseRepository.create({
       id: claim.id,
       reference: work,
       licenseHolder: holder,
@@ -85,5 +85,9 @@ export default {
       proofType: proofType,
       proofValue: proofValue
     }))
+    work.publishers = work.publishers || []
+    work.publishers.push(holder)
+    await service.workRepository.persist(work)
+    return license
   }
 }
