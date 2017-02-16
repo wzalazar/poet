@@ -18,4 +18,7 @@ export default class Fields {
 
   // Certificate
   static CERTIFICATION_TIME = 'certificationTime'
+
+  // Profile
+  static DISPLAY_NAME = 'displayName'
 }

@@ -11,6 +11,9 @@ export default class Profile {
   @Column()
   claim: string
 
+  @Column({ nullable: true })
+  displayName: string
+
   @OneToMany(type => License, license => license.licenseHolder)
   @JoinTable()
   licenses: Work[]

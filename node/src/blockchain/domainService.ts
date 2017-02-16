@@ -167,6 +167,13 @@ export default class DomainService extends ClaimService {
     return { ...claim, ...offering }
   }
 
+  async findSimilarProfiles(name: string) {
+    return await this.profileRepository.createQueryBuilder('profile')
+      .where('profile.displayName LIKE :name')
+      .setParameters({ name: '%' + name + '%' })
+      .getMany()
+  }
+
   get workRepository(): Repository<Work> {
     return this.db.getRepository(Work)
   }

@@ -25,17 +25,29 @@ export default class ProfileRoute extends Route<Profile> {
     ))
   }
 
+  async prepareItem(profile: Profile) {
+    return await this.service.getProfileFull(profile.id)
+  }
+
   addRoutes(router: Router): any {
     super.addRoutes(router);
 
     router.get(`/ownerOf/:id`, async (ctx) => {
       try {
-        var workId = ctx.params['id'];
-        console.log(workId)
+        const workId = ctx.params['id']
         const profileId = await this.service.getOwnerPublicKey(workId)
         const profile = await this.service.getProfileFull(profileId)
-        console.log(profileId)
         ctx.body = await this.renderItem(profile)
+      } catch (e) {
+        console.log(e, e.stack)
+      }
+    })
+
+    router.get(`/autocomplete/:name`, async (ctx) => {
+      try {
+        const name = ctx.params['name']
+        const suggestions = await this.service.findSimilarProfiles(name)
+        ctx.body = await this.renderCollection(suggestions)
       } catch (e) {
         console.log(e, e.stack)
       }
