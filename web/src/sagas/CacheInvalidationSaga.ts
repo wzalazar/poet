@@ -6,6 +6,7 @@ import Actions from '../actions/index'
 import { FetchType } from '../reducers/FetchReducer';
 import { currentPublicKey } from '../selectors/session';
 import { select } from 'redux-saga/effects';
+import { publicKeyToAddress } from '../bitcoin/addressHelpers';
 
 function* claimsSubmittedSuccess(claimSubmittedAction: any) {
   for (let claim of claimSubmittedAction.claims) {
@@ -21,8 +22,23 @@ function* claimsSubmittedSuccess(claimSubmittedAction: any) {
   }
 }
 
+function* invalidateBalance() {
+  const address = publicKeyToAddress(yield select(currentPublicKey))
+  yield put({
+    type: 'clear balance',
+    fetchType: FetchType.CLEAR,
+    url: Config.api.insight + '/addr/' + address + '/utxo'
+  });
+  yield put({
+    type: 'clear tx history',
+    fetchType: FetchType.CLEAR,
+    url: `${Config.api.insight}/txs`
+  });
+}
+
 export function CacheInvalidationSaga(): Saga {
   return function*() {
     yield takeEvery(Actions.claimsSubmitedSuccess, claimsSubmittedSuccess);
+    yield takeEvery(Actions.txSubmittedSuccess, invalidateBalance);
   }
 }

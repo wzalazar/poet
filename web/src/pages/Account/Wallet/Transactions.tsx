@@ -28,11 +28,11 @@ function renderTransaction(address: string, transaction: Transaction) {
 
   if (transaction.vin.find(vin => vin.addr == address)) {
     type = 'deposit';
-  }
-
-  if (transaction.vout.find(vout => vout.scriptPubKey.addresses.includes(address))) {
+  } else {
     type = 'withdrawal';
   }
+
+  // transaction.vout.find(vout => vout.scriptPubKey.addresses.includes(address))) {
 
   const valuesIn = transaction.vin.map(vin => vin.value).reduce((a, b) => a + b, 0);
   const valuesOut = transaction.vout.map(vout => parseFloat(vout.value)).reduce((a, b) => a + b, 0);
