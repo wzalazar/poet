@@ -27,7 +27,7 @@ export class StepRegister extends React.Component<StepRegisterProps, undefined> 
         <MediaType ref={mediaType => this.mediaType = mediaType} />
         <Attributes ref={attributes => this.attributes = attributes} />
         <Content ref={content => this.content = content} />
-        <button className="btn btn-primary" onClick={this.submit.bind(this)}>Next</button>
+        <button className="button-primary" onClick={this.submit.bind(this)}>Next</button>
       </section>
     );
   }

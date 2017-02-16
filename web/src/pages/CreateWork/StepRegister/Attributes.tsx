@@ -1,4 +1,5 @@
 import * as React from 'react';
+const classNames = require('classnames');
 
 import { ClassNameProps } from '../../../common';
 
@@ -35,7 +36,7 @@ export class Attributes extends React.Component<ClassNameProps, AttributesState>
 
   render() {
     return (
-      <section className={'attributes ' + this.props.className}>
+      <section className={classNames('attributes', this.props.className)}>
         <h2>Attributes</h2>
         <form>
           { this.state.attributes.map(this.renderField.bind(this)) }
@@ -70,7 +71,7 @@ export class Attributes extends React.Component<ClassNameProps, AttributesState>
         <div className="col-sm-1">
           <button
             onClick={this.onRemoveAttribute.bind(this, index)}
-            className="btn btn-secondary">X</button>
+            className="remove button-secondary">—</button>
         </div>
       </div>
     );

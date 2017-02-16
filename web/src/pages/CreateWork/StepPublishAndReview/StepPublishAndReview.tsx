@@ -22,7 +22,7 @@ export default class StepPublishAndReview extends React.Component<StepPublishAnd
         <div className="row">
           <div className="col-sm-7">
             <TermsOfUse />
-            <button onClick={this.props.onSubmit} className="btn btn-primary">Timestamp to the blockchain</button>
+            <button onClick={this.props.onSubmit} className="button-primary">Timestamp to the blockchain</button>
           </div>
           <Preview
             className="col-sm-5"

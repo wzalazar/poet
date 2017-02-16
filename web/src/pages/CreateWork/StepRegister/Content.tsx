@@ -25,7 +25,7 @@ export class Content extends React.Component<undefined, ContentState> {
         <form>
           <TextUpload
             className="text-upload"
-            buttonClassName="btn btn-secondary"
+            buttonClassName="button-secondary"
             onChange={this.onChange.bind(this)}
             placeholder="Content" />
         </form>

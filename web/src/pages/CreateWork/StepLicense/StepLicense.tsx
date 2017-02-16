@@ -15,38 +15,36 @@ export interface StepLicenseProps {
 }
 
 export class StepLicense extends React.Component<StepLicenseProps, StepLicenseData> {
-  private readonly controls: {
-    licenseType?: LicenseTypeComponent,
-    pricing?: Pricing;
-    licensePreview?: LicensePreview;
-  } = {};
+  private licenseType: LicenseTypeComponent;
+  private pricing: Pricing;
+  private licensePreview?: LicensePreview;
 
   render() {
     return (
       <section className="step-2-license">
         <div className="row">
           <div className="col-sm-6">
-            <h3>License</h3>
+            <h2>License</h2>
             <LicenseTypeComponent
-              ref={ licenseType => this.controls.licenseType = licenseType }
+              ref={ licenseType => this.licenseType = licenseType }
               onSelectionChange={this.onLicenseTypeSelectionChange.bind(this)} />
-            <Pricing ref={ pricing => this.controls.pricing = pricing } />
+            <Pricing ref={ pricing => this.pricing = pricing } />
           </div>
-          <LicensePreview ref={ licensePreview => this.controls.licensePreview = licensePreview } className="col-sm-6"/>
+          <LicensePreview ref={ licensePreview => this.licensePreview = licensePreview } className="col-sm-6"/>
         </div>
-        <button className="btn btn-primary" onClick={this.submit.bind(this)}>Next</button>
+        <button className="button-primary" onClick={this.submit.bind(this)}>Next</button>
       </section>
     )
   }
 
   private submit(): void {
     this.props.onSubmit({
-      licenseType: this.controls.licenseType.getSelectedLicenseType(),
-      pricing: this.controls.pricing.state
+      licenseType: this.licenseType.getSelectedLicenseType(),
+      pricing: this.pricing.state
     });
   }
 
   private onLicenseTypeSelectionChange(licenseType: LicenseType) {
-    this.controls.licensePreview.setLicenseType(licenseType);
+    this.licensePreview.setLicenseType(licenseType);
   }
 }

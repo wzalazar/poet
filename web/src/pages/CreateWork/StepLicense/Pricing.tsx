@@ -3,6 +3,8 @@ import * as React from 'react';
 import { Price } from '../../../common';
 import { RadioButton, RadioButtonGroup } from '../../../components/RadioButtonGroup';
 
+import './Pricing.scss';
+
 export type PricingFrequency = 'oneTime' | 'perPageView';
 
 export interface PricingState {
@@ -29,16 +31,16 @@ export class Pricing extends React.Component<undefined, PricingState> {
 
   render() {
     return (
-      <section>
-        <h3>Pricing</h3>
+      <section className="pricing">
+        <h2>Pricing</h2>
         <div className="row">
-          <div className="col-sm-4">Frequency</div>
+          <div className="col-sm-4 label"><label>Frequency</label></div>
           <div className="col-sm-8">
             <RadioButtonGroup radioButtons={this.pricingFrequencyOptions} onSelectionChange={this.onFrequencyChange.bind(this)} />
           </div>
         </div>
-        <div className="row mb-2">
-          <div className="col-sm-4">Price</div>
+        <div className="row">
+          <div className="col-sm-4 label"><label>Price</label></div>
           <div className="col-sm-8">
             <div className="input-group">
               <input onChange={this.onAmountChange.bind(this)} type="number" className="form-control" aria-label="Amount (to the nearest dollar)" />
