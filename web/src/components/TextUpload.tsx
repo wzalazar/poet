@@ -17,7 +17,7 @@ export class TextUpload extends React.Component<TextUploadProps, TextUploadState
   public static defaultProps: TextUploadProps = {
     useDefaultStyles: true
   };
-  private components: {
+  components: {
     fileInput?: HTMLInputElement;
     textArea?: HTMLTextAreaElement;
   } = {};

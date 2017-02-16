@@ -9,7 +9,12 @@ interface ContentState {
   readonly content: string;
 }
 
-export class Content extends React.Component<undefined, ContentState> {
+export interface ChangeEmitter {
+  readonly onChange?: (newValue: string) => void
+}
+
+export class Content extends React.Component<ChangeEmitter, ContentState> {
+  upload: TextUpload;
 
   constructor() {
     super(...arguments);
@@ -24,6 +29,7 @@ export class Content extends React.Component<undefined, ContentState> {
         <h2>Content</h2>
         <form>
           <TextUpload
+            ref={upload => this.upload = upload}
             className="text-upload"
             buttonClassName="button-secondary"
             onChange={this.onChange.bind(this)}
@@ -34,6 +40,9 @@ export class Content extends React.Component<undefined, ContentState> {
   }
 
   private onChange(value: string) {
+    if (this.props.onChange) {
+      this.props.onChange(value)
+    }
     this.setState({
       content: value
     })

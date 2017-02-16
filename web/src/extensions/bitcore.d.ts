@@ -115,6 +115,7 @@ interface CryptoInterface {
 interface ECDSAInterface {
 }
 interface HashInterface {
+  sha256(buffer: Buffer): Uint8Array
 }
 interface RandomInterface {
 }
