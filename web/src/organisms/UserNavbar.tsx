@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { Link } from 'react-router';
+const classNames = require('classnames');
+
+import { LogoutButton } from "../components/LogoutButton";
 
 import './UserNavbar.scss'
 
@@ -15,6 +18,7 @@ export class UserNavbar extends React.Component<UserNavbarProps, undefined> {
           <ul>
             { this.renderNavLink('account/settings', 'Settings') }
             { this.renderNavLink('account/wallet', 'Wallet') }
+            <li key="logout" className="logout"><LogoutButton>LOGOUT</LogoutButton></li>
           </ul>
         </div>
       </nav>
@@ -22,7 +26,12 @@ export class UserNavbar extends React.Component<UserNavbarProps, undefined> {
   }
 
   private renderNavLink(key: string, text: string): JSX.Element {
-    return <li key={key} className={ this.props.location === '/' + key && 'selected' }><Link to={'/' + key}>{text}</Link></li>
+    return (
+      <li key={key}
+          className={ classNames({'selected': this.props.location === '/' + key}) }>
+        <Link to={'/' + key}>{text}</Link>
+      </li>
+    )
   }
 
 }

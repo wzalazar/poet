@@ -8,7 +8,6 @@ import './Navbar.scss';
 import Actions from '../actions';
 import Constants from '../constants';
 import { LoginButton } from "../components/LoginButton";
-import { LogoutButton } from "../components/LogoutButton";
 import { Images } from '../images/Images';
 
 interface NavbarActions {
@@ -86,7 +85,6 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
       this.renderNavLink('portfolio', 'Portfolio'),
       this.renderNavLink('licenses', 'Licenses'),
       <li key="avatar" className="nav-item avatar">{ this.renderAvatar() }</li>,
-      <li key="logout"><LogoutButton>Logout</LogoutButton></li>,
       <li key="create-work" className="nav-item"><Link to={'/create-work'} className="button-primary">New Work</Link></li>
     ];
   }
