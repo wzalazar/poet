@@ -45,9 +45,12 @@ export default class ProfileRoute extends Route<Profile> {
 
     router.get(`/profiles/autocomplete/:name`, async (ctx) => {
       try {
-        const name = ctx.params['name']
+        const name = ctx.params['name'] || ''
         const suggestions = await this.service.findSimilarProfiles(name)
-        ctx.body = await this.renderCollection(suggestions)
+        ctx.body = JSON.stringify(suggestions.map(item => ({
+          id: item.id,
+          displayName: item.displayName
+        })))
       } catch (e) {
         console.log(e, e.stack)
       }
