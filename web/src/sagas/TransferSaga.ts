@@ -10,6 +10,7 @@ import { currentPublicKey } from '../selectors/session'
 import { getMockPrivateKey } from '../mockKey'
 import { Claim } from '../Claim';
 import { TransferRequestedAction } from '../actions/requests';
+import { race } from 'redux-saga/effects';
 
 const jsonClaims = require('../claim.json');
 
@@ -72,17 +73,28 @@ async function submitClaims(data: any) {
 
 const builder = new ClaimBuilder();
 
+function* watchDismiss() {
+  yield take(Actions.transferModalDismissRequested)
+  yield put({ type: Actions.transferModalHide })
+}
+
 function* modalFlow(action: any) {
+  yield race([
+    call(transferFlow, action),
+    call(watchDismiss)
+  ])
+}
+function* transferFlow(action: any) {
   yield put({ type: Actions.transferModalShow });
 
   const publicKey = yield select(currentPublicKey);
 
   const setTransferAction = yield take(Actions.setTransferTarget)
-  const selectedOwner = setTransferAction.publicKey
+  const selectedOwner = setTransferAction.payload
 
   const payload: TransferAttributes = {
     currentOwner: publicKey,
-    reference: action.payload.workId,
+    reference: action.workId,
     owner: selectedOwner
   }
   const serializedToSign = [ builder.getEncodedForSigning(payload, publicKey) ];

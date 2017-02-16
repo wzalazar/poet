@@ -20,7 +20,6 @@ abstract class Modal<T extends ModalProps, Q> extends React.Component<T, Q> {
     return (
       <Overlays.Modal
         aria-labelledby='modal-label'
-        ClassName="modal"
         backdropClassName="backdrop"
         show={this.props.visible}
         onHide={this.props.cancelAction}

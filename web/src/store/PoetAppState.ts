@@ -29,7 +29,7 @@ export interface PoetAppState {
 }
 
 export interface ModalStore {
-  transferProps: any
+  transfer: any
 }
 
 export interface TransferStore {

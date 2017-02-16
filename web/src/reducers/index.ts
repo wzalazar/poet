@@ -5,6 +5,7 @@ import ProfileReducer from './ProfileReducer';
 import ClaimSign from './ClaimSignReducer';
 import BlockReducer from './BlockReducer';
 import SignTxReducer from './SignTxReducer';
+import TransferReducer from './TransferReducer';
 
 export default {
   fetch: fetchReducer,
@@ -12,6 +13,7 @@ export default {
   session: SessionReducer,
   profile: ProfileReducer,
   signTx: SignTxReducer,
+  transfer: TransferReducer,
   claimSign: ClaimSign,
   blocks: BlockReducer
 };

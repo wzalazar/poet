@@ -6,11 +6,12 @@ import Actions from "../actions/index";
 import Loading from "../components/Loading";
 import { PoetAppState } from '../store/PoetAppState';
 
+
 import "./Modal.scss";
 import "./Login.scss";
 import { Config } from '../config';
 
-const Autosuggest = require('react-autocomplete');
+const Autocomplete = require('react-autocomplete');
 const QR = require('react-qr');
 
 interface TransferProps {
@@ -26,7 +27,16 @@ interface TransferActions {
 }
 
 function DisplayName(profile: any) {
-  return <span>{ profile.displayName }</span>
+  return <div
+    key={profile.id}
+    id={profile.id}
+    style={{
+      display: 'block',
+      position: 'relative',
+      color: 'black',
+      background: 'white'
+    }}
+  >{ profile.displayName }</div>
 }
 
 function Value(profile: any) {
@@ -37,12 +47,14 @@ interface TransferState {
   loading?: boolean
   suggestions?: ReadonlyArray<any>
   value?: string
+  selected?: any
 }
 
-class SignWorkModal extends Modal<TransferProps & TransferActions & ModalProps, TransferState> {
+class TransferModal extends Modal<TransferProps & TransferActions & ModalProps, TransferState> {
   constructor() {
     super(...arguments)
     this.state = {
+      selected: null,
       loading: false,
       suggestions: [],
       value: ''
@@ -50,10 +62,11 @@ class SignWorkModal extends Modal<TransferProps & TransferActions & ModalProps, 
   }
 
   reactToUserInput(input: any) {
-    this.setState({ loading: true })
+    this.setState({ loading: true, value: input })
     return fetch(Config.api.explorer + '/profiles/autocomplete/' + input)
-      .then((result) => {
-        this.setState({ loading: false, suggestions: result.body })
+      .then(result => result.json())
+      .then((result: any) => {
+        this.setState({ loading: false, suggestions: result })
       })
   }
 
@@ -62,15 +75,17 @@ class SignWorkModal extends Modal<TransferProps & TransferActions & ModalProps, 
   }
 
   formSubmit() {
-    const publicKey = (this.refs.autosuggest as any).value;
+    const publicKey = Value(this.state.selected)
     this.props.selectPublicKey(publicKey)
+    this.setState({ loading: false, suggestions: [], value: '' })
   }
 
   draw() {
     if (!this.props.targetPublicKey) {
-      const { suggestions } = this.state
+      const { suggestions, value } = this.state
       const inputProps = {
-        value: this.state.value
+        value: value,
+        style: { "border": "1px solid black" }
       }
       return (
         <div className="modal">
@@ -78,13 +93,24 @@ class SignWorkModal extends Modal<TransferProps & TransferActions & ModalProps, 
           <form onSubmit={this.formSubmit.bind(this)}>
           <div>
             {
-              <Autosuggest
-                ref="autosuggest"
-                suggestions={suggestions}
-                onSuggestionsFetchRequested={this.reactToUserInput.bind(this)}
-                onSuggestionsClearRequested={this.clearValue.bind(this)}
-                getSuggestionValue={Value}
-                renderSuggestion={DisplayName}
+              <Autocomplete
+                ref="autocomplete"
+                items={suggestions}
+                value={value}
+                onSelect={(value: string, item: any) => {
+                  this.setState({ selected: item, value }, () => this.formSubmit())
+                }}
+                onChange={(event: any, value: string) => {
+                  this.reactToUserInput(value)
+                }}
+                getItemValue={Value}
+                renderMenu={(children: any) =>
+                  <div style={{ position: 'absolute', width: '100%' }}>
+                    {children}
+                  </div>
+                }
+                wrapperStyle={{ position: 'relative', display: 'inline-block' }}
+                renderItem={DisplayName}
                 inputProps={inputProps} />
             }
           </div></form>
@@ -123,7 +149,7 @@ class SignWorkModal extends Modal<TransferProps & TransferActions & ModalProps, 
 
 function mapStateToProps(state: PoetAppState): TransferProps {
   return {
-    visible: state.modals.transferProps,
+    visible: state.modals.transfer,
     requestId: state.transfer.id,
     success: state.transfer.success,
     targetPublicKey: state.transfer.targetPublicKey,
@@ -131,9 +157,9 @@ function mapStateToProps(state: PoetAppState): TransferProps {
 }
 
 const mapDispatch = {
-  cancelAction: () => ({ type: Actions.transferDismissed }),
+  cancelAction: () => ({ type: Actions.transferModalDismissRequested }),
   mockSign: (id: string) => ({ type: Actions.fakeTransferSign, payload: id }),
   selectPublicKey: (id: string) => ({ type: Actions.setTransferTarget, payload: id })
 };
 
-export default connect(mapStateToProps, mapDispatch)(SignWorkModal);
+export default connect(mapStateToProps, mapDispatch)(TransferModal);

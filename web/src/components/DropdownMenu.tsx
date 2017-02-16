@@ -23,6 +23,15 @@ export class DropdownMenu extends React.Component<DropdownMenuProps, DropdownSta
     this.setState({ open: !this.state.open })
   }
 
+  hide() {
+    this.setState({ open: false })
+  }
+
+  selected(option: string) {
+    this.hide()
+    this.props.optionSelected(option)
+  }
+
   render() {
     return (
       <div className={ 'dropdown ' + (this.state.open ? 'show' : '') }>
@@ -38,7 +47,7 @@ export class DropdownMenu extends React.Component<DropdownMenuProps, DropdownSta
         <div className="dropdown-menu">
           { this.props.options.map(option =>
               <a key={option}
-                onClick={this.props.optionSelected.bind(null, option)}
+                onClick={this.selected.bind(this, option)}
                 className="dropdown-item"
                 href="#">
                 {option}
