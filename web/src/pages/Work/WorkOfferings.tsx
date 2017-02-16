@@ -70,7 +70,7 @@ const RenderOffering = connect((e: any) => e, {
 function render(props: Work): JSX.Element {
   return (
     <section className="offerings">
-      { props.offerings.map((offering: any, index: number) => <RenderOffering {...offering} key={index} />) }
+      { props.offerings && props.offerings.map((offering: any, index: number) => <RenderOffering {...offering} key={index} />) }
     </section>
   )
 }

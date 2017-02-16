@@ -33,7 +33,14 @@ function render(props: Work) {
         <tbody>
           <tr key="author">
             <td>Author</td>
-            <td><ProfileLink id={props.attributes.authorPublicKey} /></td>
+            <td>{
+              props.attributes.author
+              ? props.attributes.author
+              : props.attributes.authorPublicKey
+                ? <ProfileLink id={props.attributes.authorPublicKey} />
+                : 'Unknown author'
+            }
+            </td>
           </tr>
             { tableData.toKeyValueArray().map(renderRow) }
         </tbody>
