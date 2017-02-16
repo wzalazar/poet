@@ -11,7 +11,7 @@ async function startListening() {
   const queue = new Queue()
 
   try {
-    await blockchain.start(() => getConnection(false), getBuilder)
+    await blockchain.start(() => getConnection('claimsToDb'), getBuilder)
 
     queue.blockDownloaded().subscribeOnNext(async (block: Block) => {
       console.log('Storing block', JSON.stringify(block, null, 2))
