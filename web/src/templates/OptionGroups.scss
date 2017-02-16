@@ -1,0 +1,60 @@
+
+.tab-option-group {
+  list-style: none;
+  display: flex;
+
+  li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px;
+    width: 90px;
+    height: 45px;
+
+    font-family: "Roboto Slab";
+    font-size: 12px;
+    color: #413D3B;
+    border-bottom: 3px solid #EFEFEF;
+    background-color: transparent;
+    opacity: 0.75;
+    cursor: default;
+
+    &:hover {
+      border-color: lighten(#BEAF7E, 15%);
+    }
+
+    &.selected {
+      border-color: #BEAF7E;
+      font-weight: bold;
+    }
+  }
+}
+
+.panel-option-group {
+  list-style: none;
+  display: flex;
+
+  li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 81px;
+    height: 47px;
+    margin-right: 10px;
+
+    font-size: 12px;
+    border: 1px solid #E6E4E1;
+    border-radius: 3px;
+    background-color: white;
+    box-shadow: 0 2px 4px #EDEDED;
+    cursor: default;
+
+    &:hover {
+      border-color: #43B980;
+    }
+
+    &.selected {
+      border-color: darken(#43B980, 15%);
+    }
+  }
+}

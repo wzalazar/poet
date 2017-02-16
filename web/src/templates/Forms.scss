@@ -1,0 +1,17 @@
+input[type="text"], textarea {
+  font-family: "Source Sans Pro";
+  font-size: 12px;
+  line-height: 18px;
+  border: 1px solid #E6E4E1;
+  border-radius: 4px;
+  color: #4A4A4A;
+  background-color: #FFFFFF;
+
+  &::placeholder {
+    color: lighten(#4A4A4A, 20%);
+  }
+}
+
+textarea {
+  padding: 12px;
+}

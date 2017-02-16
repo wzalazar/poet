@@ -80,6 +80,7 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
         type: 'Work',
         attributes: [
           ...this.state.workData.attributes,
+          { key: 'mediaType', value: this.state.workData.mediaType },
           { key: 'articleType', value: this.state.workData.articleType },
           { key: 'content', value: this.state.workData.content },
           { key: 'authorPublicKey', value: this.props.userPublicKey }

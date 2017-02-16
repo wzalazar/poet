@@ -1,3 +1,7 @@
+/**
+ * Deprecated! Use OptionGroup instead.
+ */
+
 import * as React from 'react';
 
 import { ClassNameProps } from '../common';
