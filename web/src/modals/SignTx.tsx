@@ -21,7 +21,7 @@ interface SignActions {
   mockSign: (id: string) => any
 }
 
-class SignWorkModal extends Modal<SignProps & SignActions & ModalProps> {
+class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefined> {
   draw() {
     if (this.props.noBalance) {
       return <div className="modal">

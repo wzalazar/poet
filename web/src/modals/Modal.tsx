@@ -12,7 +12,7 @@ export interface ModalAction {
 
 export interface ModalProps extends ModalVisible, ModalAction {}
 
-abstract class Modal<T extends ModalProps> extends React.Component<T, undefined> {
+abstract class Modal<T extends ModalProps, Q> extends React.Component<T, Q> {
   render() {
     if (!this.props.visible) {
       return <div/>

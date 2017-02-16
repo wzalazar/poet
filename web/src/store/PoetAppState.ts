@@ -24,6 +24,19 @@ export interface FetchStore {
 export interface PoetAppState {
   session: PoetSession
   fetch: FetchStore
+  modals: ModalStore
+  transfer: TransferStore
+}
+
+export interface ModalStore {
+  transferProps: any
+}
+
+export interface TransferStore {
+  id: string
+  success: boolean
+  targetPublicKey: string
+
 }
 
 export default PoetAppState;

@@ -58,4 +58,15 @@ export default class Actions {
 
   public static readonly noBalanceAvailable = 'no balance available';
   public static readonly transferRequested = 'transfer work requested';
+
+  public static readonly fakeTransferSign = 'fake transfer sign requested';
+  public static readonly setTransferTarget = 'transfer work target set';
+  public static readonly transferIdReceived = 'transfer id to sign received';
+
+  public static readonly transferSuccess = 'transfer success';
+
+  public static readonly transferModalShow = 'transfer modal show';
+  public static readonly transferModalHide = 'transfer modal hide';
+  public static readonly transferModalDismissRequested = 'transfer modal dismiss requested';
+  public static readonly transferDismissed = 'transfer work modal dismissed';
 }

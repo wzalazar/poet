@@ -20,7 +20,7 @@ interface LoginProps {
   requestId: string;
 }
 
-class LoginModal extends Modal<LoginActions & LoginProps> {
+class LoginModal extends Modal<LoginActions & LoginProps, undefined> {
   modalName = 'login'
   draw() {
     return (

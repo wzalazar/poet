@@ -14,6 +14,10 @@ export default function modalsReducer(state: any, action: any) {
       return { ...state, signTx: true };
     case Actions.signTxModalHide:
       return { ...state, signTx: false };
+    case Actions.transferModalShow:
+      return { ...state, transfer: true };
+    case Actions.transferModalHide:
+      return { ...state, transfer: false };
   }
   return state || {};
 }

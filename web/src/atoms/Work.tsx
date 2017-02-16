@@ -15,7 +15,7 @@ interface WorkProps {
 
 abstract class ProfileByWorkOwner<State> extends PoetAPIResourceProvider<Profile, SelectWorkById, State> {
   poetURL() {
-    return `/ownerOf/${this.props.workId}`
+    return `/profiles/ownerOf/${this.props.workId}`
   }
 }
 
