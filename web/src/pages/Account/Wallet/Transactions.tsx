@@ -27,15 +27,16 @@ function renderTransaction(address: string, transaction: Transaction) {
   let type;
 
   if (transaction.vin.find(vin => vin.addr == address)) {
-    type = 'deposit';
-  } else {
     type = 'withdrawal';
+  } else {
+    type = 'deposit';
   }
 
   // transaction.vout.find(vout => vout.scriptPubKey.addresses.includes(address))) {
 
   const valuesIn = transaction.vin.map(vin => vin.value).reduce((a, b) => a + b, 0);
   const valuesOut = transaction.vout.map(vout => parseFloat(vout.value)).reduce((a, b) => a + b, 0);
+  const valuesOutForMe = transaction.vout.filter(vout => vout.scriptPubKey.addresses[0] === address).map(vout => parseFloat(vout.value)).reduce((a, b) => a + b, 0);
 
   const values = valuesOut;
 
@@ -43,7 +44,7 @@ function renderTransaction(address: string, transaction: Transaction) {
     <tr key={transaction.txid}>
       <td>{moment().format()}</td>
       <td>{type}</td>
-      <td>{valuesIn} {valuesOut}</td>
+      <td>{ type === 'deposit' ? valuesOutForMe : valuesIn - valuesOutForMe } </td>
     </tr>
   )
 }
