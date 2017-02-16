@@ -48,7 +48,6 @@ class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefine
     }
     return (<div className="modal">
       <h1>Claim successfully submited!</h1>
-      <div className="mb-2">You will be redirected to an unconfirmed block containing your claim</div>
     </div>
     )
   }
