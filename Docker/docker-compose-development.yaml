@@ -39,11 +39,6 @@ services:
     build:
       context: ..
       dockerfile: ./Docker/explorer.dockerfile
-    command: [
-      "/poet/node_modules/.bin/nodemon",
-      "--exec", "/poet/node_modules/.bin/ts-node",
-      "--watch", "/poet/src/**/*"
-    ]
     volumes:
       - ../node/src:/poet/src
     networks:
