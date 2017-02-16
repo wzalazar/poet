@@ -13,6 +13,8 @@ interface WorkQueryOpts extends QueryOptions {
   author?: string
   licensedTo?: string
 
+  attribute?: string
+
   relatedTo?: string
 
   articleType?: string
@@ -26,10 +28,13 @@ const AUTHOR = 'author'
 const RELATED_TO = 'related_to'
 const LICENSED_TO = 'licensed_to'
 
+const ATTRIBUTE = 'attribute'
 const ARTICLE_TYPE = 'type'
 
 const START_CREATION_DATE = 'from'
 const END_CREATION_DATE = 'until'
+
+const ONLY_LETTERS = '^[a-zA-Z]+$'
 
 export default class WorkRoute extends Route<Work> {
   service: BlockchainService
@@ -67,6 +72,14 @@ export default class WorkRoute extends Route<Work> {
     if (opts.owner) {
       queryBuilder.andWhere('item.owner=:owner', { owner: opts.owner })
     }
+    if (opts.attribute) {
+      const [key, value] = opts.attribute.split('<>')
+      console.log('received', key, value)
+      if (new RegExp(ONLY_LETTERS, 'gi').test(key)) {
+        queryBuilder.leftJoin('attribute', 'attr', 'attr.claim=item.id')
+        queryBuilder.andWhere(`attr.key=:key AND attr.value=:value`, {key, value})
+      }
+    }
     if (opts.author) {
       queryBuilder.andWhere('item.author=:author', { author: opts.author })
     }
@@ -91,6 +104,7 @@ export default class WorkRoute extends Route<Work> {
       author: ctx.request.query[AUTHOR],
       licensedTo: ctx.request.query[LICENSED_TO],
       relatedTo: ctx.request.query[RELATED_TO],
+      attribute: ctx.request.query[ATTRIBUTE],
     }) as WorkQueryOpts
   }
 
