@@ -1,4 +1,4 @@
-import Actions from '../actions';
+import Actions from '../actions/index';
 
 export default function modalsReducer(state: any, action: any) {
   switch (action.type) {

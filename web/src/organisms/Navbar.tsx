@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 import './Navbar.scss';
 
-import Actions from '../actions';
+import Actions from '../actions/index';
 import Constants from '../constants';
 import { LoginButton } from "../components/LoginButton";
 import { Images } from '../images/Images';

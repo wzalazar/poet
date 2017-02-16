@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 const QR = require('react-qr');
 
 import Modal, { ModalProps } from './Modal'
-import Actions from '../actions'
+import Actions from '../actions/index'
 import Loading from '../components/Loading'
 
 import './Modal.scss'

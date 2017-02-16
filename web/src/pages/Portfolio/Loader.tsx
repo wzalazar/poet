@@ -6,6 +6,7 @@ import PageLoader, { ReducerDescription } from '../../components/PageLoader';
 import { PortfolioLayout } from './Layout';
 import { currentPublicKey } from '../../selectors/session';
 import { SelectProfileById } from '../../atoms/Arguments';
+import Actions from '../../actions/index';
 
 export class Portfolio extends PageLoader<null, SelectProfileById> {
 
@@ -29,5 +30,13 @@ export class Portfolio extends PageLoader<null, SelectProfileById> {
 
   select(state: any, ownProps: any) {
     return { profileId: currentPublicKey(state) }
+  }
+
+  mapDispatchToProps(): Object {
+    return {
+      transferRequested: (workId: string) => ({
+        type: Actions.transferRequested, workId
+      })
+    };
   }
 }

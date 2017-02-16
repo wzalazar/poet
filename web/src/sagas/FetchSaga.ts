@@ -1,7 +1,7 @@
 import { Saga, takeEvery } from 'redux-saga'
 import { call, put, select } from 'redux-saga/effects'
 
-import Actions from '../actions';
+import Actions from '../actions/index';
 import { PoetAppState } from '../store/PoetAppState'
 import { FetchStatus } from '../enums/FetchStatus'
 import { getResourceState } from '../selectors/fetch'

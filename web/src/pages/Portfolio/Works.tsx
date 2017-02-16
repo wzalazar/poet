@@ -3,9 +3,15 @@ import { WorkNameWithLink, WorkType, WorkPublishedDate, OwnerNameWithLink } from
 import { Work } from '../../atoms/Interfaces';
 import { PoetAPIResourceProvider } from '../../atoms/base/PoetApiResource';
 import { SelectWorksByOwner } from '../../atoms/Arguments';
+import { DropdownMenu } from '../../components/DropdownMenu';
+import { browserHistory } from 'react-router';
+import { DispatchesTransferRequested } from '../../actions/requests';
 
-export class OwnedWorks extends PoetAPIResourceProvider<Work[], SelectWorksByOwner, undefined> {
+const EDIT = 'Edit'
+const TRANSFER = 'Transfer'
 
+export class OwnedWorks extends PoetAPIResourceProvider<Work[],
+  SelectWorksByOwner & DispatchesTransferRequested, undefined> {
   poetURL(): string {
     return `/works?owner=${this.props.owner}`
   }
@@ -42,13 +48,24 @@ export class OwnedWorks extends PoetAPIResourceProvider<Work[], SelectWorksByOwn
         <td><WorkPublishedDate work={props}/></td>
         <td>Poet</td>
         <td>
-          <select>
-            <option>Edit</option>
-            <option>Transfer</option>
-            <option>Delete</option>
-          </select>
+          <div className="menu">
+            <DropdownMenu options={[EDIT, TRANSFER]}
+              optionSelected={this.optionSelected.bind(this, props)}>
+              Select one...
+            </DropdownMenu>
+          </div>
         </td>
       </tr>
     )
+  }
+
+  optionSelected(work: Work, action: string) {
+    switch (action) {
+      case EDIT:
+        browserHistory.push('/works/' + work.id + '/edit')
+        return
+      case TRANSFER:
+        this.props.transferRequested(work.id)
+    }
   }
 }

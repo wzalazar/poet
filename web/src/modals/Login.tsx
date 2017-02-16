@@ -7,7 +7,7 @@ const QR = require('react-qr');
 
 import Modal, { ModalVisible, ModalProps } from './Modal'
 import Loading from '../components/Loading'
-import Actions from '../actions'
+import Actions from '../actions/index'
 
 import './Modal.scss'
 import './Login.scss'

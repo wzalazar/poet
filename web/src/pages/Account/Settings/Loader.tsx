@@ -4,7 +4,7 @@ import { Saga, delay, takeEvery } from 'redux-saga';
 import { put } from 'redux-saga/effects';
 
 import { Claim } from '../../../Claim';
-import Actions from '../../../actions'
+import Actions from '../../../actions/index'
 import PageLoader, { ReducerDescription } from '../../../components/PageLoader';
 
 import { ProfileLayout, UserProfileProps } from './Layout';

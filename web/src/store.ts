@@ -10,7 +10,7 @@ import authSocket from './auth';
 import pageCreators from "./pages";
 import sagaList from './sagas'
 import reducers from './reducers';
-import Actions from './actions'
+import Actions from './actions/index'
 
 function bindSagas(pages: PageLoader<any, any>[]): Saga {
   const sagas: Saga[] = pages

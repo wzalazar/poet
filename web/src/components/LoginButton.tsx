@@ -2,7 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Action } from "redux";
 
-import Actions from '../actions';
+import Actions from '../actions/index';
 
 interface LoginProps {
   login: () => Action

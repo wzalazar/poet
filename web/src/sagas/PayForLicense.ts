@@ -1,7 +1,7 @@
 import { takeEvery } from 'redux-saga'
 import { put, select, take, call } from 'redux-saga/effects'
 
-import Actions from '../actions'
+import Actions from '../actions/index'
 import { currentPublicKey } from '../selectors/session'
 import config from '../config'
 import {race} from "redux-saga/effects";

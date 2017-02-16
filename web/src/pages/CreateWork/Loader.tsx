@@ -4,7 +4,7 @@ import { Saga } from 'redux-saga';
 
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
 import { CreateWorkLayout } from './Layout';
-import Actions from '../../actions'
+import Actions from '../../actions/index'
 import { currentPublicKey } from '../../selectors/session'
 
 interface CreateWorkState {
