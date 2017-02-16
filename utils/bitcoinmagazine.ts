@@ -2,7 +2,13 @@ import * as fetch from 'isomorphic-fetch'
 import * as moment from 'moment'
 import * as xml2js from 'xml2js'
 
+const bitcore = require('bitcore')
+
 const targetURL = 'https://bitcoinmagazine.com/feed/'
+const explorerURL = 'http://localhost:10000/api/explorer'
+
+const btcmediaPrivkey = bitcore.PrivateKey('4cbfeb0cbfa891148988a50b549c42309e088a7839dd14ab480f542286725d3a')
+const btcmediaPubkey = btcmediaPrivkey.publicKey.toString()
 
 interface Article {
   id: string
@@ -71,6 +77,12 @@ async function process(xmlResponse: any): Promise<Article[]> {
 
 function scanBTCMagazine(): any {
   fetch(targetURL).then(process).then(res => console.log(res))
+}
+
+function exists(article: Article): Promise<boolean> {
+  return fetch(`${explorerURL}/works?attribute=id<>${article.id}&owner=${btcmediaPubkey}`)
+    .then(res => res.json())
+    .then(res => res.length !== 0)
 }
 
 scanBTCMagazine()
