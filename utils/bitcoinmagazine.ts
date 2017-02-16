@@ -2,12 +2,16 @@ import * as fetch from 'isomorphic-fetch'
 import * as moment from 'moment'
 import * as xml2js from 'xml2js'
 
-import { ClaimBuilder } from '../node/src/serialization/builder'
+import { getBuilder } from './poetlib/serialization/builder'
+import * as common from './poetlib/common'
 
-const bitcore = require('bitcore')
+declare var require: any
+
+const bitcore = require('bitcore-lib')
 
 const targetURL = 'https://bitcoinmagazine.com/feed/'
 const explorerURL = 'http://localhost:10000/api/explorer'
+const publisherURL = 'http://localhost:10000/api/user'
 
 const rawKey = '4cbfeb0cbfa891148988a50b549c42309e088a7839dd14ab480f542286725d3a'
 
@@ -20,7 +24,7 @@ interface Article {
   content: string
   author: string
   tags: string
-  title: string
+  displayName: string
   publicationDate: string
 }
 
@@ -60,7 +64,7 @@ function processItem(article: any): Article {
     content: getContent(article),
     author: getAuthor(article),
     tags: getTags(article),
-    title: getTitle(article),
+    displayName: getTitle(article),
     publicationDate: getPublicationDate(article)
   }
 }
@@ -79,11 +83,14 @@ async function process(xmlResponse: any): Promise<Article[]> {
   return (items as any[]).map(processItem)
 }
 
-function scanBTCMagazine(): any {
-  fetch(targetURL).then(process).then(results => {
-    const newArticles = results.filter(async (article) => {
-      return !(await exists(article))
-    })
+async function scanBTCMagazine(): Promise<any> {
+  fetch(targetURL).then(process).then(async (results) => {
+    const newArticles = []
+    for (let article of results) {
+      if (!(await exists(article))) {
+        newArticles.push(article)
+      }
+    }
     await submitArticles(newArticles)
   })
 }
@@ -91,29 +98,35 @@ function scanBTCMagazine(): any {
 function exists(article: Article): Promise<boolean> {
   return fetch(`${explorerURL}/works?attribute=id<>${article.id}&owner=${btcmediaPubkey}`)
     .then(res => res.json())
-    .then(res => res.length !== 0)
+    .then(res => (res as any).length !== 0)
 }
 
 async function submitArticles(articles: Article[]) {
   const builder = await getBuilder()
   const signedClaims = articles.map(article => {
-    const message = builder.getEncodedForSigning({
+    const data = {
       type: 'Work',
       attributes: article
-    }, btcmediaPrivkey)
-    const signature = common.sign(message, rawKey)
-    return {
-      message: message.toString('hex'),
-      signature: signature.toString('hex')
     }
-  }
+    const message = builder.getEncodedForSigning(data, btcmediaPrivkey)
+    const id = builder.getId(data, btcmediaPrivkey)
+    const signature = common.sign(btcmediaPrivkey, id)
+    return {
+      message: new Buffer(new Buffer(message).toString('hex')).toString('hex'),
+      signature: new Buffer(signature).toString('hex')
+    }
+  })
   return await postClaims(signedClaims)
 }
 
-async function postClaims(claims) {
+async function postClaims(claims: any) {
+  console.log(JSON.stringify({ signatures: claims }))
   return fetch(`${publisherURL}/claims`, {
     method: 'POST',
-    body: JSON.stringify(claims)
+    headers: {
+      'content-type': 'text/plain'
+    },
+    body: JSON.stringify({ signatures: claims })
   }).then(body => {
     return body.text()
   }).then(body => {
