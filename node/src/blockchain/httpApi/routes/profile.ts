@@ -32,7 +32,7 @@ export default class ProfileRoute extends Route<Profile> {
   addRoutes(router: Router): any {
     super.addRoutes(router);
 
-    router.get(`/ownerOf/:id`, async (ctx) => {
+    router.get(`/profiles/ownerOf/:id`, async (ctx) => {
       try {
         const workId = ctx.params['id']
         const profileId = await this.service.getOwnerPublicKey(workId)
@@ -43,7 +43,7 @@ export default class ProfileRoute extends Route<Profile> {
       }
     })
 
-    router.get(`/autocomplete/:name`, async (ctx) => {
+    router.get(`/profiles/autocomplete/:name`, async (ctx) => {
       try {
         const name = ctx.params['name']
         const suggestions = await this.service.findSimilarProfiles(name)

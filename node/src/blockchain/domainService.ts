@@ -169,7 +169,8 @@ export default class DomainService extends ClaimService {
 
   async findSimilarProfiles(name: string) {
     return await this.profileRepository.createQueryBuilder('profile')
-      .where('profile.displayName LIKE :name')
+      .where(`(profile.displayName LIKE :name)
+         OR (profile.id LIKE :name)`)
       .setParameters({ name: '%' + name + '%' })
       .getMany()
   }
