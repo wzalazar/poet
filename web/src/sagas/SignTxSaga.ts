@@ -53,6 +53,7 @@ export function* signTx(action: { payload: SignTransactionParameters }) {
   const requestId = yield call(requestIdFromAuth, sighash, true);
   yield put({ type: Actions.signTxIdReceived, payload: requestId.id });
   const response = yield call(bindAuthResponse, requestId);
+  yield put({ type: Actions.submittingTx })
 
   applyHexSignaturesInOrder(tx, response.signatures, publicKey);
   const txId = yield call(submitTx, tx.toString());

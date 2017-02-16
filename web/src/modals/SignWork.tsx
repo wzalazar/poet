@@ -11,6 +11,7 @@ const QR = require('react-qr');
 interface SignProps {
   requestId: string;
   visible: boolean;
+  submitting: boolean;
   success: boolean;
 }
 interface SignActions {
@@ -24,7 +25,9 @@ class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefine
         <div className="modal">
           <h1>Signing requested</h1>
           <div>
-            { this.props.requestId
+            { this.props.submitting
+              ? <Loading />
+              : this.props.requestId
               ? <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
                 <QR text={this.props.requestId || ''} />
               </a>
@@ -56,6 +59,7 @@ function mapStateToProps(state: any): SignProps {
     visible: state.modals.signWork,
     requestId: state.claimSign.id,
     success: state.claimSign.success,
+    submitting: state.claimSign.submitting,
   }
 }
 

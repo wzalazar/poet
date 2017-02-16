@@ -14,6 +14,7 @@ import './Login.scss'
 interface SignProps {
   requestId: string;
   visible: boolean;
+  submitting: boolean;
   noBalance: boolean;
   success: boolean;
 }
@@ -42,7 +43,9 @@ class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefine
         <div className="modal">
           <h1>Authorize transaction</h1>
           <div>
-            { this.props.requestId
+            { this.props.submitting
+              ? <Loading />
+              : this.props.requestId
               ? <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
                 <QR text={this.props.requestId || ''} />
               </a>
@@ -73,6 +76,7 @@ function mapStateToProps(state: any): SignProps {
   return {
     visible: state.modals.signTx,
     requestId: state.signTx.id,
+    submitting: state.signTx.submitting,
     success: state.signTx.success,
     noBalance: state.signTx.noBalance
   }
