@@ -1,3 +1,5 @@
+import * as fs from 'fs'
+
 import * as fetch from 'isomorphic-fetch'
 import * as moment from 'moment'
 import * as xml2js from 'xml2js'
@@ -120,7 +122,6 @@ async function submitArticles(articles: Article[]) {
 }
 
 async function postClaims(claims: any) {
-  console.log(JSON.stringify({ signatures: claims }))
   return fetch(`${publisherURL}/claims`, {
     method: 'POST',
     headers: {
@@ -130,8 +131,31 @@ async function postClaims(claims: any) {
   }).then(body => {
     return body.text()
   }).then(body => {
-    console.log(body)
+    console.log(body.substr(0, 100) + '...')
   })
 }
+
+async function postProfile() {
+  const profile = {
+    displayName: "BTCMedia",
+    firstName: "BTC",
+    imageData: fs.readFileSync('./avatar.urlimage').toString(),
+    lastName: "Media"
+  }
+  const data = {
+    type: 'Profile',
+    attributes: profile
+  }
+  const builder = await getBuilder()
+  const message = builder.getEncodedForSigning(data, btcmediaPrivkey)
+  const id = builder.getId(data, btcmediaPrivkey)
+  const signature = common.sign(btcmediaPrivkey, id)
+  return await postClaims([{
+    message: new Buffer(new Buffer(message).toString('hex')).toString('hex'),
+    signature: new Buffer(signature).toString('hex')
+  }])
+}
+
+postProfile()
 
 scanBTCMagazine()
