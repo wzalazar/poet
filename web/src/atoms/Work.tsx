@@ -86,6 +86,17 @@ export function WorkPublishedDate(props: WorkProps) {
   }</span>)
 }
 
+export function WorkStampedDate(props: WorkProps) {
+  const timestamp = props.work
+    && props.work.claimInfo
+    && props.work.claimInfo.timestamp
+  return (<span>{
+    timestamp
+      ? moment(timestamp).fromNow()
+      : '(unknown creation date)'
+  }</span>)
+}
+
 export function WorkCreationDateFromNow(props: WorkProps) {
   const createdAt = props.work
     && props.work.attributes

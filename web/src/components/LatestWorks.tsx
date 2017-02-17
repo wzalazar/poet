@@ -7,7 +7,7 @@ import Config from '../config';
 import { ClassNameProps } from '../common';
 import { ResourceProvider } from './ResourceProvider';
 import { Work } from '../atoms/Interfaces';
-import { WorkNameWithLink, WorkCreationDateFromNow } from '../atoms/Work';
+import { WorkNameWithLink, WorkCreationDateFromNow, WorkStampedDate } from '../atoms/Work';
 
 type LatestWorksResource = ReadonlyArray<Work>;
 
@@ -55,7 +55,7 @@ export default class LatestBlocks extends ResourceProvider<LatestWorksResource, 
           {props.id && props.id.firstAndLastCharacters(6)}
         </td>
         <td className="date">
-          <WorkCreationDateFromNow work={props}/>
+          <WorkStampedDate work={props}/>
         </td>
       </tr>
     )
