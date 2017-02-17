@@ -6,8 +6,10 @@ import config from '../config'
 
 function* fetchProfileData(action: any) {
   const profileResponse = yield call(fetch, config.api.explorer + '/profiles/' + action.profilePublicKey);
-  const profile = yield profileResponse.json();
-  yield put({ type: Actions.profileDataFetched, profile });
+  if (profileResponse.status === 200) {
+    const profile = yield profileResponse.json();
+    yield put({ type: Actions.profileDataFetched, profile });
+  }
 }
 
 function profileSaga(): Saga {
