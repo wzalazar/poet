@@ -6,7 +6,7 @@ export default class Actions {
   public static readonly navbarSearchClick = 'navbar search click';
   public static readonly fetchRequest = 'fetch requested';
   public static readonly loginResponse = 'login response'; // TODO: this one should be dispatched by a saga
-  public static readonly claimsSubmitRequested = 'create work requested';
+  public static readonly claimsSubmitRequested = 'claims submit requested';
   public static readonly claimsModalDismissRequested = 'dismiss work modal';
 
   // SagaActions: dispatched by a saga, listened by a reducer — these are Actions command changes imperatively

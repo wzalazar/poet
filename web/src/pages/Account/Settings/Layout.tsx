@@ -84,7 +84,7 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
               <ImageUpload
                 className="image-upload"
                 classNames={[this.state.avatarImageData && 'loaded']}
-                buttonClassName="btn btn-primary"
+                buttonClassName="button-secondary"
                 imageWidthLimit={Config.imageUpload.maxWidth}
                 imageHeightLimit={Config.imageUpload.maxHeight}
                 imageData={this.state.avatarImageData || Images.Anon}
@@ -108,7 +108,7 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
             </ProfileLayoutRow>
           </div>
         </form>
-        <button onClick={this.onSubmit.bind(this)} className="btn btn-primary outlined">Save</button>
+        <button onClick={this.onSubmit.bind(this)} className="button-primary">Save Changes</button>
       </section>
     );
   }

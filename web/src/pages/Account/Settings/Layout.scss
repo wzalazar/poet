@@ -1,4 +1,6 @@
 .user-edit {
+  margin-bottom: 48px;
+
   h2 {
     font-size: 24px;
     margin-left: 12px;
@@ -20,7 +22,9 @@
     }
 
   }
-    .image-upload.loaded img {
-      border-color: black;
-    }
+
+  .image-upload.loaded img {
+    border-color: black;
+  }
+
 }
