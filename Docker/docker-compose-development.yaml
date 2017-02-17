@@ -9,10 +9,6 @@ services:
       - ../node/src:/poet/src
     networks:
       - http
-    log_driver: "json-file"
-    log_opt:
-      max-size: "100k"
-      max-file: "20"
   mock-signer:
     build:
       context: ..
@@ -21,10 +17,6 @@ services:
       - ../node/src:/poet/src
     networks:
       - http
-    log_driver: "json-file"
-    log_opt:
-      max-size: "100k"
-      max-file: "20"
   bitcoin-scanner:
     build:
       context: ..
@@ -34,10 +26,6 @@ services:
     networks:
       - queue
       - outside
-    log_driver: "json-file"
-    log_opt:
-      max-size: "100k"
-      max-file: "20"
   claims-to-db:
     build:
       context: ..
@@ -47,10 +35,6 @@ services:
     networks:
       - queue
       - db
-    log_driver: "json-file"
-    log_opt:
-      max-size: "100k"
-      max-file: "20"
   explorer:
     build:
       context: ..
@@ -60,10 +44,6 @@ services:
     networks:
       - db
       - http
-    log_driver: "json-file"
-    log_opt:
-      max-size: "100k"
-      max-file: "20"
   torrent-system:
     build:
       context: ..
@@ -75,10 +55,6 @@ services:
       - queue
       - http
       - outside
-    log_driver: "json-file"
-    log_opt:
-      max-size: "100k"
-      max-file: "20"
   trusted-publisher:
     build:
       context: ..
@@ -91,10 +67,6 @@ services:
       - outside
     depends_on:
       - explorer
-    log_driver: "json-file"
-    log_opt:
-      max-size: "100k"
-      max-file: "20"
   rabbitmq:
     build:
       context: ..
@@ -102,10 +74,6 @@ services:
     networks:
       - queue
     hostname: rabbitmq
-    log_driver: "json-file"
-    log_opt:
-      max-size: "100k"
-      max-file: "20"
   db:
     build:
       context: ..
@@ -126,10 +94,6 @@ services:
     ports:
       - "10000:10000"
       - "5000:5000"
-    log_driver: "json-file"
-    log_opt:
-      max-size: "100k"
-      max-file: "20"
   web:
     build:
       context: ..
@@ -138,10 +102,6 @@ services:
       - ../web/src:/web/src
     networks:
       - http
-    log_driver: "json-file"
-    log_opt:
-      max-size: "100k"
-      max-file: "20"
 
 networks:
   db:
