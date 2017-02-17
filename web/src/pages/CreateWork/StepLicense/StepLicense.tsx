@@ -1,13 +1,14 @@
 import * as React from 'react';
 
-import { Pricing, PricingState } from './Pricing';
+import * as Common from '../../../common';
+
+import { Pricing } from './Pricing';
 import { LicensePreview } from './LicensePreview';
 import { LicenseTypeComponent } from './LicenseType';
-import { LicenseType } from '../../../common';
 
 export interface StepLicenseData {
-  readonly licenseType: LicenseType;
-  readonly pricing: PricingState;
+  readonly licenseType?: Common.LicenseType;
+  readonly pricing?: Common.Pricing;
 }
 
 export interface StepLicenseProps {
@@ -15,9 +16,20 @@ export interface StepLicenseProps {
 }
 
 export class StepLicense extends React.Component<StepLicenseProps, StepLicenseData> {
-  private licenseType: LicenseTypeComponent;
-  private pricing: Pricing;
-  private licensePreview?: LicensePreview;
+
+  constructor() {
+    super(...arguments);
+    this.state = {
+      licenseType: Common.LicenseTypes[0],
+      pricing: {
+        price: {
+          amount: 0,
+          currency: 'BTC'
+        },
+        frequency: 'oneTime'
+      }
+    };
+  }
 
   render() {
     return (
@@ -26,25 +38,30 @@ export class StepLicense extends React.Component<StepLicenseProps, StepLicenseDa
           <div className="col-sm-6">
             <h2>License</h2>
             <LicenseTypeComponent
-              ref={ licenseType => this.licenseType = licenseType }
-              onSelectionChange={this.onLicenseTypeSelectionChange.bind(this)} />
-            <Pricing ref={ pricing => this.pricing = pricing } />
+              onSelectionChange={licenseType => this.setState({ licenseType })}
+              selectedLicenseTypeId={this.state.licenseType.id} />
+            <Pricing
+              pricing={this.state.pricing}
+              onChange={this.onPricingChange.bind(this)}
+            />
           </div>
-          <LicensePreview ref={ licensePreview => this.licensePreview = licensePreview } className="col-sm-6"/>
+          <LicensePreview licenseType={this.state.licenseType} className="col-sm-6"/>
         </div>
         <button className="button-primary" onClick={this.submit.bind(this)}>Next</button>
       </section>
     )
   }
 
-  private submit(): void {
-    this.props.onSubmit({
-      licenseType: this.licenseType.getSelectedLicenseType(),
-      pricing: this.pricing.state
-    });
+  private onPricingChange(pricing: Common.Pricing) {
+    this.setState({
+      pricing
+    })
   }
 
-  private onLicenseTypeSelectionChange(licenseType: LicenseType) {
-    this.licensePreview.setLicenseType(licenseType);
+  private submit(): void {
+    this.props.onSubmit({
+      licenseType: this.state.licenseType,
+      pricing: this.state.pricing
+    });
   }
 }

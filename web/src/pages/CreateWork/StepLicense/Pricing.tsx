@@ -1,33 +1,16 @@
 import * as React from 'react';
 
-import { Price } from '../../../common';
-import { RadioButton, RadioButtonGroup } from '../../../components/RadioButtonGroup';
+import * as Common from '../../../common';
+import { OptionGroup, Option } from '../../../components/OptionGroup';
 
 import './Pricing.scss';
 
-export type PricingFrequency = 'oneTime' | 'perPageView';
-
-export interface PricingState {
-  readonly price?: Price;
-  readonly frequency?: PricingFrequency;
+export interface PricingProps {
+  readonly pricing: Common.Pricing;
+  readonly onChange: (pricing: Common.Pricing) => void;
 }
 
-export class Pricing extends React.Component<undefined, PricingState> {
-  public readonly pricingFrequencyOptions: ReadonlyArray<RadioButton> = [
-    new RadioButton('oneTime', 'One Time'),
-    new RadioButton('per-page-view', 'Per Page View')
-  ];
-
-  constructor() {
-    super(...arguments);
-    this.state = {
-      price: {
-        amount: 0,
-        currency: 'BTC',
-      },
-      frequency: 'oneTime'
-    }
-  }
+export class Pricing extends React.Component<PricingProps, undefined> {
 
   render() {
     return (
@@ -36,7 +19,14 @@ export class Pricing extends React.Component<undefined, PricingState> {
         <div className="row">
           <div className="col-sm-4 label"><label>Frequency</label></div>
           <div className="col-sm-8">
-            <RadioButtonGroup radioButtons={this.pricingFrequencyOptions} onSelectionChange={this.onFrequencyChange.bind(this)} />
+            <OptionGroup
+              className="panel-option-group"
+              selectedId={this.props.pricing.frequency}
+              onOptionSelected={this.onFrequencyChange.bind(this)}
+            >
+              <Option id="oneTime">One Time</Option>
+              <Option id="per-page-view">Per Page View</Option>
+            </OptionGroup>
           </div>
         </div>
         <div className="row">
@@ -44,7 +34,7 @@ export class Pricing extends React.Component<undefined, PricingState> {
           <div className="col-sm-8">
             <div className="input-group">
               <input onChange={this.onAmountChange.bind(this)} type="number" className="form-control" aria-label="Amount (to the nearest dollar)" />
-              <span className="input-group-addon">{ this.state.price.currency }</span>
+              <span className="input-group-addon">{ this.props.pricing.price.currency }</span>
             </div>
           </div>
         </div>
@@ -53,17 +43,19 @@ export class Pricing extends React.Component<undefined, PricingState> {
   }
 
   private onAmountChange(event: any) {
-    this.setState({
+    this.props.onChange({
+      ...this.props.pricing,
       price: {
-        ...this.state.price,
+        ...this.props.pricing.price,
         amount: event.target.value
-      }
-    })
+      },
+    });
   }
 
-  private onFrequencyChange(id: string, text: string) {
-    this.setState({
-      frequency: id as PricingFrequency
+  private onFrequencyChange(frequency: Common.PricingFrequency) {
+    this.props.onChange({
+      ...this.props.pricing,
+      frequency
     });
   }
 }

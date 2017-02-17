@@ -89,7 +89,7 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
       {
         type: 'Offering',
         attributes: {
-          'licenseType': this.state.licenseData.licenseType.name,
+          'licenseType': this.state.licenseData.licenseType.id,
           'licenseDescription': this.state.licenseData.licenseType.description,
           'pricingFrequency': this.state.licenseData.pricing.frequency,
           'pricingPriceAmount': this.state.licenseData.pricing.price.amount,

@@ -2,7 +2,6 @@ import * as React from 'react';
 const classNames = require('classnames');
 
 import { ClassNameProps } from '../common';
-import ReactElement = React.ReactElement;
 
 export interface OptionsProps extends ClassNameProps {
   readonly selectedId: string;

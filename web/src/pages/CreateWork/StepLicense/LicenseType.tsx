@@ -1,32 +1,31 @@
 import * as React from 'react';
 
-import { RadioButton, RadioButtonGroup } from '../../../components/RadioButtonGroup';
 import { LicenseType, LicenseTypes } from '../../../common';
+import { OptionGroup, Option } from '../../../components/OptionGroup';
+
+import './LicenseType.scss';
 
 export interface LicenseTypeProps {
   readonly onSelectionChange?: (licenseType: LicenseType) => void;
+  readonly selectedLicenseTypeId: string;
 }
 
 export class LicenseTypeComponent extends React.Component<LicenseTypeProps, undefined> {
-  private radioButtonGroup: RadioButtonGroup;
-  public readonly radioButtons: ReadonlyArray<RadioButton> =
-    LicenseTypes.map(licenseType => new RadioButton(licenseType.id, licenseType.name));
 
   render() {
     return (
-      <RadioButtonGroup
-        ref={radioButtonGroup => this.radioButtonGroup = radioButtonGroup}
-        radioButtons={this.radioButtons}
-        onSelectionChange={this.onSelectionChange.bind(this)}
-        className="mb-3" />
+      <OptionGroup
+        className="license-type panel-option-group"
+        onOptionSelected={this.onLicenseTypeSelected.bind(this)}
+        selectedId={this.props.selectedLicenseTypeId}
+      >
+        { LicenseTypes.map(licenseType => <Option key={licenseType.id} id={licenseType.id}>{licenseType.name}</Option>) }
+      </OptionGroup>
     )
   }
 
-  public getSelectedLicenseType(): LicenseType {
-    return LicenseTypes.find(licenseType => licenseType.id === this.radioButtonGroup.getSelectedItem().id);
+  private onLicenseTypeSelected(licenseTypeId: string) {
+    this.props.onSelectionChange(LicenseTypes.find(licenseType => licenseType.id === licenseTypeId));
   }
 
-  private onSelectionChange(id: string) {
-    this.props.onSelectionChange(this.getSelectedLicenseType());
-  }
 }
