@@ -1,18 +1,15 @@
 .works-results {
   font-family: 'Roboto Slab';
 
-  * {
-    font-family: inherit;
-  }
-
-  .showing-results {
+  .work-count {
     font-size: 18px;
     font-weight: 300;
     font-family: inherit;
     margin-bottom: 48px;
   }
 
-  ul {
+  ul.works {
+    list-style: none;
 
     li {
       font-size: 10px;
@@ -38,4 +35,46 @@
       }
     }
   }
+
+  .pagination {
+    ul {
+      display: flex;
+      flex-direction: row;
+      list-style: none;
+
+      li {
+        $size: 27px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: $size;
+        height: $size;
+        margin-right: 8px;
+
+        background-color: white;
+        border: 1px solid #D9D9D9;
+        border-radius: 4px;
+        cursor: pointer;
+
+        font-size: 12px;
+        color: #666666;
+        text-decoration: none;
+
+        user-select: none;
+
+        &.selected {
+          background-color: #43B980;
+          color: white;
+          border-color: transparent;
+        }
+
+        &.disabled {
+          color: #aaa;
+          cursor: default;
+        }
+
+      }
+    }
+  }
+
 }

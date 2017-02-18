@@ -14,7 +14,7 @@ ReactDOM.render((
     <Provider store={store}>
       <Router history={browserHistory}>
         <Route component={Layout}>
-        { routes }
+          { routes }
         </Route>
       </Router>
     </Provider>

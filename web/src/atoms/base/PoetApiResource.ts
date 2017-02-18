@@ -1,10 +1,19 @@
 import Config from '../../config';
+import { UrlObject, isUrlObject, urlObjectToUrl } from '../../common';
 import { ResourceProvider } from '../../components/ResourceProvider';
 
-export abstract class PoetAPIResourceProvider<Resource, PropTypes, State> extends  ResourceProvider<Resource, PropTypes, State> {
-  abstract poetURL(): string
+export abstract class PoetAPIResourceProvider<Resource, PropTypes, State> extends ResourceProvider<Resource, PropTypes, State> {
+  abstract poetURL(): string | UrlObject
 
   resourceLocator() {
-    return { url: `${Config.api.explorer}${this.poetURL()}` }
+    const poetUrl = this.poetURL();
+
+    if (!isUrlObject(poetUrl) && typeof poetUrl === 'string') {
+      return { url: `${Config.api.explorer}${poetUrl}` }
+    } else if (isUrlObject(poetUrl)) {
+      return { url: `${Config.api.explorer}${urlObjectToUrl(poetUrl)}` }
+    } else {
+      throw new Error('poetURL must return a string | UrlObject.');
+    }
   }
 }
