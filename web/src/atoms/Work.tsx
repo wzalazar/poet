@@ -93,7 +93,7 @@ export function WorkStampedDate(props: WorkProps) {
   return (<span>{
     timestamp
       ? moment(timestamp).fromNow()
-      : '(unknown creation date)'
+      : '(unknown certification date)'
   }</span>)
 }
 
