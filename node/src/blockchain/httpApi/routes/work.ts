@@ -34,8 +34,8 @@ const LICENSED_TO = 'licensed_to'
 const ATTRIBUTE = 'attribute'
 const ARTICLE_TYPE = 'type'
 
-const START_CREATION_DATE = 'from'
-const END_CREATION_DATE = 'until'
+const START_CREATION_DATE = 'dateFrom'
+const END_CREATION_DATE = 'dateUntil'
 
 const ONLY_LETTERS = '^[a-zA-Z]+$'
 
@@ -69,8 +69,10 @@ export default class WorkRoute extends Route<Work> {
   }
 
   ownFilter(queryBuilder: QueryBuilder<Work>, opts: WorkQueryOpts): QueryBuilder<Work> {
-    if (opts.attribute || opts.query) {
-      queryBuilder.leftJoin('attribute', 'attr', 'attr.claim=item.id')
+    const countAttrs = (opts.attribute ? 1 : 0) + (opts.query ? 1 : 0) + (opts.startCreationDate ? 1 : 0) + (opts.endCreationDate ? 1 : 0)
+    let iterAttrs = 0
+    for (let i = 0; i < countAttrs; i++) {
+      queryBuilder.leftJoin('attribute', 'attr' + i, `attr${i}.claim=item.id`)
     }
     if (opts.licensedTo || opts.relatedTo) {
       queryBuilder.leftJoin('item.publishers', 'item.publishers', 'publishers')
@@ -82,15 +84,31 @@ export default class WorkRoute extends Route<Work> {
       const [key, value] = opts.attribute.split('<>')
       console.log('received', key, value)
       if (new RegExp(ONLY_LETTERS, 'gi').test(key)) {
-        queryBuilder.andWhere(`attr.key=:key AND attr.value=:value`, {key, value})
+        queryBuilder.andWhere(`attr${iterAttrs}.key=:key AND attr${iterAttrs}.value=:value`, {key, value})
+        iterAttrs++
       }
     }
     if (opts.query) {
-      queryBuilder.andWhere(`(attr.key=:content AND attr.value LIKE :value)
-        OR (attr.key=:title AND attr.value LIKE :value)`,
+      queryBuilder.andWhere(`(attr${iterAttrs}.key=:content AND attr${iterAttrs}.value LIKE :value)
+        OR (attr${iterAttrs}.key=:title AND attr${iterAttrs}.value LIKE :value)`,
       {
         content: 'content', value: '%' + opts.query + '%', title: 'name'
       })
+      iterAttrs++
+    }
+    if (opts.startCreationDate) {
+      queryBuilder.andWhere(`(attr${iterAttrs}.key=:startDate AND attr${iterAttrs}.value >= :value)`,
+        {
+          startDate: 'createdAt', value: opts.startCreationDate
+        })
+      iterAttrs++
+    }
+    if (opts.endCreationDate) {
+      queryBuilder.andWhere(`(attr${iterAttrs}.key=:endDate AND attr${iterAttrs}.value <= :value)`,
+        {
+          endDate: 'createdAt', value: opts.endCreationDate
+        })
+      iterAttrs++
     }
     if (opts.author) {
       queryBuilder.andWhere('item.author=:author', { author: opts.author })

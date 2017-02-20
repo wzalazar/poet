@@ -75,11 +75,12 @@ export class ClaimService {
     const existent = await this.getBlockInfoByTorrentHash(blockInfo.torrentHash)
 
     if (existent) {
+
       if (!existent.bitcoinHeight) {
         await this.updateBlockInfo(existent, blockInfo)
       }
 
-      const block = await this.getBlock(blockInfo.hash)
+      const block = await this.getBlock(existent.hash)
 
       if (block) {
 
@@ -147,7 +148,6 @@ export class ClaimService {
 
     if (existent) {
 
-      console.log('Claim already exists')
       return await this.claimInfoRepository.persist(Object.assign(existent, txInfo))
 
     } else {
@@ -233,7 +233,12 @@ export class ClaimService {
 
     if (existent) {
 
-      return await this.updateBlockInfo(existent, blockMetadata)
+      const result = await this.updateBlockInfo(existent, blockMetadata)
+      if (result.hash) {
+        const blockData = await this.getBlock(result.hash)
+        await this.updateClaimInfoForBlock(blockMetadata, blockData)
+      }
+      return result
 
     } else {
 
