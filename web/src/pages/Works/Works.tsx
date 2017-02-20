@@ -2,7 +2,7 @@ import * as React from 'react';
 import { browserHistory } from 'react-router'
 
 import { Work } from '../../atoms/Interfaces';
-import { PoetAPIResourceProvider } from '../../atoms/base/PoetApiResource';
+import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../../atoms/base/PoetApiResource';
 import { WorkNameWithLink, AuthorWithLink } from '../../atoms/Work';
 import { TimeElapsedSinceTimestamp } from '../../atoms/Claim';
 import { Pagination } from '../../components/Pagination';
@@ -32,8 +32,8 @@ export class WorksComponent extends PoetAPIResourceProvider<WorksResource, Works
     }
   }
 
-  renderElement(works: WorksResource) {
-    const count = 88; // TODO: api doesn't return count yet
+  renderElement(works: WorksResource, headers: Headers) {
+    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT)) || 88; // TODO: api doesn't return count yet
     return (
       <section className="works-results container">
         <h4 className="work-count">Showing {works.length} of {count} Results</h4>

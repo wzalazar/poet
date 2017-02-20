@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import Actions from '../actions/index';
 import { FetchStatus } from '../enums/FetchStatus';
+import { FetchStoreEntry, FetchStore } from '../store/PoetAppState';
 
 export interface ResourceLocator {
   readonly url: string;
@@ -11,19 +12,12 @@ export interface ResourceLocator {
 export interface ResourceProviderProps<T> {
   readonly resourceLocator: ResourceLocator;
   readonly dispatchRequest?: (payload: ResourceLocator) => void;
-  readonly request?: Request<T>;
+  readonly request?: FetchStoreEntry<T>;
   readonly provider: ResourceProvider<T, any, any>;
 }
 
-export interface Request<T> {
-  readonly status: FetchStatus;
-  readonly body: T; // TODO: rename to resource?
-}
-
 export interface ResourceProviderReduxState<T> {
-  readonly fetch: {
-    readonly [key: string]: Request<T>;
-  }
+  readonly fetch: FetchStore
 }
 
 class ResourceProviderBase<T> extends React.Component<ResourceProviderProps<T>, undefined> {
@@ -50,7 +44,7 @@ class ResourceProviderBase<T> extends React.Component<ResourceProviderProps<T>, 
       return this.props.provider.renderError(this.props.request.body);
     }
     return this.props.request && this.props.request.body
-      && this.props.provider.renderElement(this.props.request.body)
+      && this.props.provider.renderElement(this.props.request.body, this.props.request.headers)
       || <span/>
   }
 
@@ -72,14 +66,13 @@ const mapDispatch = {
 
 const ConnectedResourceProvider = connect(mapStateToProps, mapDispatch)(ResourceProviderBase);
 
-
 interface Holder<T> {
   readonly resource?: T;
 }
 
 export abstract class ResourceProvider<Resource, PropTypes, State> extends React.Component<Holder<Resource> & PropTypes, State> {
 
-  abstract renderElement(resource: Resource): JSX.Element;
+  abstract renderElement(resource: Resource, headers: Headers): JSX.Element;
 
   abstract resourceLocator(): ResourceLocator;
 

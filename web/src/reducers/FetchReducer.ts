@@ -17,9 +17,6 @@ export function fetchReducer(store: FetchStore, action: any): FetchStore {
 
   const newFetchStoreEntry = actionToFetchStoreEntry(action);
 
-  if (!newFetchStoreEntry)
-    return store || {};
-
   if (action.fetchType === FetchType.CLEAR) {
     return clearCache(store, action.url, newFetchStoreEntry);
   } else {
@@ -33,34 +30,35 @@ function actionIsFetchAction(action: any): action is FetchAction {
   return action.fetchType && FetchType.Types.includes(action.fetchType);
 }
 
-interface FetchAction {
+export interface FetchAction {
   readonly type: string;
-  readonly fetchType: string;
+  readonly fetchType: FetchType;
   readonly url: string;
-  readonly payload: any;
+  readonly body?: any;
+  readonly headers?: Headers;
 }
 
-function actionToFetchStoreEntry(action: FetchAction): FetchStoreEntry {
+function actionToFetchStoreEntry(action: FetchAction): FetchStoreEntry<any> {
   switch (action.fetchType) {
     case FetchType.CLEAR:
       return { status: FetchStatus.Uninitialized, body: null };
     case FetchType.MARK_LOADING:
       return { status: FetchStatus.Loading };
     case FetchType.SET_RESULT:
-      return { status: FetchStatus.Loaded, body: action.payload };
+      return { status: FetchStatus.Loaded, body: action.body, headers: action.headers };
     case FetchType.NOT_FOUND:
-      return { status: FetchStatus.NotFound, error: action.payload };
+      return { status: FetchStatus.NotFound, error: action.body };
     case FetchType.ERROR:
-      return { status: FetchStatus.Error, error: action.payload };
+      return { status: FetchStatus.Error, error: action.body };
     default:
-      return null;
+      throw new Error(`FetchReducer: Invalid FetchType '${action.fetchType}'.`);
   }
 }
 
 /**
  * Clears cache for all entries that without the query params match the baseUrl
  */
-function clearCache(store: FetchStore, baseUrl: string, newValue: FetchStoreEntry) {
+function clearCache(store: FetchStore, baseUrl: string, newValue: FetchStoreEntry<any>) {
   const matchingUrls = getMatchingUrls(store, baseUrl);
   const newFetchStoreEntries: FetchStore = {};
 
