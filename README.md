@@ -1,6 +1,6 @@
 # poet
 
-[Current Target: Milestone #1 (Feb 17th)](https://github.com/poetapp/poet/milestone/1)
+[Current Target: Alpha Release (March 3rd)](https://github.com/poetapp/poet/milestone/2)
 
 ## About
 
