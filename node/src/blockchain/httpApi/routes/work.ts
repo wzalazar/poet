@@ -106,6 +106,11 @@ export default class WorkRoute extends Route<Work> {
       owner     : opts.owner,
       author    : opts.author })
     }
+    // Temporary fix: Sort by id, descending.
+    // Should be: JOIN with claimInfo, sort by BlockHeight:ClaimOrder,
+    //            or id if this doesn't exist
+    queryBuilder.leftJoin('claim_info', 'claim_info', 'claim_info.hash=item.id')
+    queryBuilder.orderBy('claim_info.id', 'DESC')
     return queryBuilder
   }
 
