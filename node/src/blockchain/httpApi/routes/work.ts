@@ -19,10 +19,13 @@ interface WorkQueryOpts extends QueryOptions {
 
   articleType?: string
 
+  query?: string
+
   startCreationDate?: number
   endCreationDate?: number
 }
 
+const QUERY = 'query'
 const OWNER = 'owner'
 const AUTHOR = 'author'
 const RELATED_TO = 'related_to'
@@ -66,6 +69,9 @@ export default class WorkRoute extends Route<Work> {
   }
 
   ownFilter(queryBuilder: QueryBuilder<Work>, opts: WorkQueryOpts): QueryBuilder<Work> {
+    if (opts.attribute || opts.query) {
+      queryBuilder.leftJoin('attribute', 'attr', 'attr.claim=item.id')
+    }
     if (opts.licensedTo || opts.relatedTo) {
       queryBuilder.leftJoin('item.publishers', 'item.publishers', 'publishers')
     }
@@ -76,9 +82,15 @@ export default class WorkRoute extends Route<Work> {
       const [key, value] = opts.attribute.split('<>')
       console.log('received', key, value)
       if (new RegExp(ONLY_LETTERS, 'gi').test(key)) {
-        queryBuilder.leftJoin('attribute', 'attr', 'attr.claim=item.id')
         queryBuilder.andWhere(`attr.key=:key AND attr.value=:value`, {key, value})
       }
+    }
+    if (opts.query) {
+      queryBuilder.andWhere(`(attr.key=:content AND attr.value LIKE :value)
+        OR (attr.key=:title AND attr.value LIKE :value)`,
+      {
+        content: 'content', value: '%' + opts.query + '%', title: 'name'
+      })
     }
     if (opts.author) {
       queryBuilder.andWhere('item.author=:author', { author: opts.author })
@@ -101,6 +113,7 @@ export default class WorkRoute extends Route<Work> {
     const result = super.getParamOpts(ctx)
     return Object.assign(result, {
       owner: ctx.request.query[OWNER],
+      query: ctx.request.query[QUERY],
       author: ctx.request.query[AUTHOR],
       licensedTo: ctx.request.query[LICENSED_TO],
       relatedTo: ctx.request.query[RELATED_TO],
