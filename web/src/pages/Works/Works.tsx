@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { browserHistory } from 'react-router'
+import * as moment from 'moment';
 
+import { LicenseType } from '../../common';
 import { Work } from '../../atoms/Interfaces';
 import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../../atoms/base/PoetApiResource';
 import { WorkNameWithLink, AuthorWithLink } from '../../atoms/Work';
@@ -14,6 +16,11 @@ type WorksResource = ReadonlyArray<Work>;
 export interface WorksProps {
   readonly offset?: number;
   readonly limit?: number;
+  readonly dateFrom?: moment.Moment;
+  readonly dateTo?: moment.Moment;
+  readonly query?: string;
+  readonly sortBy?: string;
+  readonly licenseType?: LicenseType;
 }
 
 export class WorksComponent extends PoetAPIResourceProvider<WorksResource, WorksProps, undefined> {
@@ -27,7 +34,12 @@ export class WorksComponent extends PoetAPIResourceProvider<WorksResource, Works
       url: '/works',
       query: {
         offset: this.props.offset,
-        limit: this.props.limit
+        limit: this.props.limit,
+        dateFrom: this.props.dateFrom && this.props.dateFrom.toDate().getTime(),
+        dateTo: this.props.dateFrom && this.props.dateTo.toDate().getTime(),
+        query: this.props.query,
+        sortBy: this.props.sortBy,
+        licenseType: this.props.licenseType && this.props.licenseType.id
       }
     }
   }
@@ -49,6 +61,14 @@ export class WorksComponent extends PoetAPIResourceProvider<WorksResource, Works
           onClick={ offset => browserHistory.push({pathname: 'works', query: { offset }})}
           disabledClassName="disabled"
         /> }
+      </section>
+    )
+  }
+
+  renderLoading() {
+    return (
+      <section className="works-results container loading">
+        <p>Loading, please wait...</p>
       </section>
     )
   }

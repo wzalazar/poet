@@ -12,6 +12,7 @@ import { Images } from '../images/Images';
 
 interface NavbarActions {
   dispatchSearchClick: () => Action;
+  dispatchSearchChange: (searchQuery: string) => Action
 }
 
 export interface NavbarProps {
@@ -46,7 +47,13 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
       <nav className={ navClasses.filterTruthy().join(' ') }>
         { this.props.displayLogo && <a className="navbar-brand" href="/"><img src={Images.Logo} /></a> }
         { this.props.displaySearch && <div className={ searchClasses.filterTruthy().join(' ') }  >
-          <img src={Images.Glass} /><input type="text" placeholder="Search" onClick={this.props.dispatchSearchClick} />
+          <img src={Images.Glass} />
+          <input
+            type="text"
+            placeholder="Search"
+            onClick={this.props.dispatchSearchClick}
+            onChange={(event: any) => this.props.dispatchSearchChange(event.target.value) }
+          />
         </div> }
         <ul className="navbar-nav">
           { this.props.loggedIn ? this.loggedInActions() : this.notLoggedActions() }
@@ -99,7 +106,8 @@ function mapStateToProps(state: any, ownProps: NavbarProps): NavbarProps {
 }
 
 const mapDispatch = {
-  dispatchSearchClick: () => ({ type: Actions.navbarSearchClick })
+  dispatchSearchClick: () => ({ type: Actions.navbarSearchClick }),
+  dispatchSearchChange: (searchQuery: string) => ({ type: Actions.navbarSearchChange, searchQuery })
 };
 
 export const Navbar = connect(mapStateToProps, mapDispatch)(NavbarComponent);

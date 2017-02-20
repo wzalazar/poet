@@ -29,6 +29,8 @@ export class Works extends PageLoader<WorkState, Object> {
   }
 
   select(state: any, ownProps: any): Object {
-    return {};
+    return {
+      query: state.navbar && state.navbar.searchQuery
+    };
   }
 }

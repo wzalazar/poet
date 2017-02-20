@@ -6,6 +6,7 @@ import ClaimSign from './ClaimSignReducer';
 import BlockReducer from './BlockReducer';
 import SignTxReducer from './SignTxReducer';
 import TransferReducer from './TransferReducer';
+import { navbarReducer } from './NavbarReducer';
 
 export default {
   fetch: fetchReducer,
@@ -15,5 +16,6 @@ export default {
   signTx: SignTxReducer,
   transfer: TransferReducer,
   claimSign: ClaimSign,
-  blocks: BlockReducer
+  blocks: BlockReducer,
+  navbar: navbarReducer
 };

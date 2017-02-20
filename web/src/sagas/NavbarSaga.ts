@@ -7,10 +7,8 @@ function* navbarSearchClickAction(): any {
   browserHistory.push('/works');
 }
 
-function navbarSaga(): Saga {
+export function navbarSaga(): Saga {
   return function*() {
     yield takeEvery(Actions.navbarSearchClick, navbarSearchClickAction);
   }
 }
-
-export default navbarSaga;

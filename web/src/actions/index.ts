@@ -4,6 +4,7 @@ export default class Actions {
   public static readonly logoutButtonClicked = 'logout button clicked';
   public static readonly loginModalDisposeRequested = 'login modal dispose requested';
   public static readonly navbarSearchClick = 'navbar search click';
+  public static readonly navbarSearchChange = 'navbar search change';
   public static readonly fetchRequest = 'fetch requested';
   public static readonly loginResponse = 'login response'; // TODO: this one should be dispatched by a saga
   public static readonly claimsSubmitRequested = 'claims submit requested';
