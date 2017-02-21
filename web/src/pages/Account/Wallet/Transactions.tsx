@@ -44,7 +44,7 @@ function renderTransaction(address: string, transaction: Transaction) {
     <tr key={transaction.txid}>
       <td>{moment().format()}</td>
       <td>{type}</td>
-      <td>{ type === 'deposit' ? valuesOutForMe : valuesIn - valuesOutForMe } </td>
+      <td>{ (type === 'deposit' ? valuesOutForMe : valuesIn - valuesOutForMe).toFixed(8) } </td>
     </tr>
   )
 }
