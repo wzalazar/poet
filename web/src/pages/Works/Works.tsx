@@ -45,7 +45,7 @@ export class WorksComponent extends PoetAPIResourceProvider<WorksResource, Works
   }
 
   renderElement(works: WorksResource, headers: Headers) {
-    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT)) || 88; // TODO: api doesn't return count yet
+    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
     return (
       <section className="works container">
         <h4 className="work-count">Showing {works.length} of {count} Results</h4>

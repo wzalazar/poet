@@ -95,10 +95,9 @@ export default class WorkRoute extends Route<Work> {
       }
     }
     if (opts.query) {
-      queryBuilder.andWhere(`(attr${iterAttrs}.key=:content AND attr${iterAttrs}.value LIKE :value2)
-        OR (attr${iterAttrs}.key=:title AND attr${iterAttrs}.value LIKE :value2)`,
+      queryBuilder.andWhere(`(attr${iterAttrs}.key=:content OR attr${iterAttrs}.key=:title) AND lower(attr${iterAttrs}.value) LIKE :value2`,
       {
-        content: 'content', value2: '%' + opts.query + '%', title: 'name'
+        content: 'content', value2: '%' + opts.query.toLowerCase() + '%', title: 'name'
       })
       iterAttrs++
     }
