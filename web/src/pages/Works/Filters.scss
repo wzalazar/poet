@@ -1,4 +1,4 @@
-.works header {
+.page-works > header {
   display: flex;
   font-size: 10px;
   align-items: center;
@@ -12,40 +12,61 @@
     display: flex;
     align-items: center;
 
-    select, input[type="text"] {
-      border: 1px solid lightgray;
-    }
-
-    button {
-      font-size: 10px;
-    }
-  }
-
-  .date-picker {
-
-    .calendar-button {
-      border-radius: 3px;
-      font-size: 10px;
-      text-align: center;
-      //line-height: 25px;
+    select {
+      padding: 5px;
       border: 1px solid #E6E4E1;
-      padding: 5px 7px;
+      border-radius: 3px;
+      font-family: 'Roboto';
+      font-size: 10px;
+      font-weight: normal;
+      color: #4A4A4A;
+      background-color: #FFFFFF;
+    }
+
+    section.sort {
+      margin-right: 14px;
 
       span {
-        font-family: 'Roboto';
-        font-weight: 300;
-      }
-
-      img {
-        position: relative;
-        top: -1px;
-        margin-left: 6px;
+        margin-right: 8px;
       }
     }
 
-    .date-picker-separator {
-      margin: 0 8px;
+    section.license-types {
+      margin-right: 14px;
+
+      span {
+        margin-right: 8px;
+      }
     }
+
+    .date-picker {
+
+      .calendar-button {
+        border-radius: 3px;
+        font-size: 10px;
+        text-align: center;
+        border: 1px solid #E6E4E1;
+        padding: 5px 7px;
+
+        span {
+          font-family: 'Roboto';
+          font-weight: 300;
+        }
+
+        img {
+          position: relative;
+          top: -1px;
+          margin-left: 6px;
+        }
+      }
+
+      .date-picker-separator {
+        margin: 0 8px;
+      }
+    }
+
   }
+
+
 
 }

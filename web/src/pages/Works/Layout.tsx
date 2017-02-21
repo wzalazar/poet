@@ -29,13 +29,14 @@ export class WorksLayout extends React.Component<WorksLayoutProps, WorksLayoutSt
     this.state = {
       dateFrom: moment().subtract(7, 'days'),
       dateTo: moment(),
-      licenseType: LicenseTypes[0]
+      licenseType: LicenseTypes[0],
+      sortBy: 'datePublished'
     };
   }
 
   render() {
     return (
-      <section className="works">
+      <section className="page-works">
         <FiltersComponent
           dateFrom={this.state.dateFrom}
           dateTo={this.state.dateTo}

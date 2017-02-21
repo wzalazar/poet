@@ -48,7 +48,7 @@ export class FiltersComponent extends React.Component<FilterComponentProps, unde
 
   private renderSortByDropdown() {
     return (
-      <section onChange={(event: any) => this.props.onSortChange(event.target.value)} value={this.props.sortBy}>
+      <section className="sort" onChange={(event: any) => this.props.onSortChange(event.target.value)} value={this.props.sortBy}>
         <span>Sort by</span>
         <select>
           <option value="datePublished">Date Published</option>
@@ -61,7 +61,7 @@ export class FiltersComponent extends React.Component<FilterComponentProps, unde
 
   private renderLicenseTypes() {
     return (
-      <div>
+      <section className="license-types">
         <span>License</span>
         <select
           value={this.props.licenseType.id}
@@ -69,13 +69,13 @@ export class FiltersComponent extends React.Component<FilterComponentProps, unde
         >
           { LicenseTypes.map((licenseType, index) => <option key={index} value={licenseType.id} >{licenseType.name}</option>)}
         </select>
-      </div>
+      </section>
     );
   }
 
   private renderDateSelector() {
     return (
-      <div className="date-picker pr-1">
+      <section className="date-picker">
         <strong>Created&nbsp;</strong>
         <span className="mr-1">between</span>
         <ReactDatePicker
@@ -87,7 +87,7 @@ export class FiltersComponent extends React.Component<FilterComponentProps, unde
           onChange={this.props.onDateToChanged}
           selected={this.props.dateTo}
           customInput={<CustomInput/>} />
-      </div>
+      </section>
     );
   }
 
