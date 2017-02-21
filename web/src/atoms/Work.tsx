@@ -75,13 +75,21 @@ export function WorkType(props: WorkProps) {
   return <span> { props.work.attributes.type || '' } </span>
 }
 
+function normalizeToMillis(timestamp: number) {
+  return timestamp < 5000000000 ? timestamp * 1000 : timestamp
+}
+
+function timeFrom(timestamp: number) {
+  return moment(normalizeToMillis(timestamp)).fromNow()
+}
+
 export function WorkPublishedDate(props: WorkProps) {
   const publishDate = props.work
     && props.work.attributes
     && props.work.attributes.publishedAt
   return (<span>{
     publishDate
-      ? moment(publishDate).format(Config.dateFormat)
+      ? timeFrom(-(-publishDate))
       : '(unknown publication date)'
   }</span>)
 }
@@ -92,7 +100,7 @@ export function WorkStampedDate(props: WorkProps) {
     && props.work.claimInfo.timestamp
   return (<span>{
     timestamp
-      ? moment(timestamp < 5000000000 ? timestamp * 1000 : timestamp).fromNow()
+      ? timeFrom(timestamp)
       : '(unknown certification date)'
   }</span>)
 }
@@ -103,7 +111,7 @@ export function WorkCreationDateFromNow(props: WorkProps) {
     && props.work.attributes.createdAt
   return (<span>{
     createdAt
-      ? moment(createdAt).fromNow()
+      ? timeFrom(-(-createdAt))
       : '(unknown creation date)'
   }</span>)
 }
