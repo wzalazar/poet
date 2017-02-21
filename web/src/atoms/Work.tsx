@@ -92,7 +92,7 @@ export function WorkStampedDate(props: WorkProps) {
     && props.work.claimInfo.timestamp
   return (<span>{
     timestamp
-      ? moment(timestamp).fromNow()
+      ? moment(timestamp < 5000000000 ? timestamp * 1000 : timestamp).fromNow()
       : '(unknown certification date)'
   }</span>)
 }
