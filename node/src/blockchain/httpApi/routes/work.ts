@@ -21,8 +21,8 @@ interface WorkQueryOpts extends QueryOptions {
 
   query?: string
 
-  startCreationDate?: number
-  endCreationDate?: number
+  startPublicationDate?: number
+  endPublicationDate?: number
 }
 
 const QUERY = 'query'
@@ -34,8 +34,8 @@ const LICENSED_TO = 'licensed_to'
 const ATTRIBUTE = 'attribute'
 const ARTICLE_TYPE = 'type'
 
-const START_CREATION_DATE = 'dateFrom'
-const END_CREATION_DATE = 'dateUntil'
+const START_PUBLICATION_DATE = 'dateFrom'
+const END_PUBLICATION_DATE = 'dateTo'
 
 const ONLY_LETTERS = '^[a-zA-Z]+$'
 
@@ -69,7 +69,11 @@ export default class WorkRoute extends Route<Work> {
   }
 
   ownFilter(queryBuilder: QueryBuilder<Work>, opts: WorkQueryOpts): QueryBuilder<Work> {
-    const countAttrs = (opts.attribute ? 1 : 0) + (opts.query ? 1 : 0) + (opts.startCreationDate ? 1 : 0) + (opts.endCreationDate ? 1 : 0)
+    const countAttrs = (opts.attribute ? 1 : 0)
+      + (opts.query ? 1 : 0)
+      + (opts.startPublicationDate ? 1 : 0)
+      + (opts.endPublicationDate ? 1 : 0)
+    console.log('Ownfilter', opts, countAttrs)
     let iterAttrs = 0
     for (let i = 0; i < countAttrs; i++) {
       queryBuilder.leftJoin('attribute', 'attr' + i, `attr${i}.claim=item.id`)
@@ -81,32 +85,34 @@ export default class WorkRoute extends Route<Work> {
       queryBuilder.andWhere('item.owner=:owner', { owner: opts.owner })
     }
     if (opts.attribute) {
-      const [key, value] = opts.attribute.split('<>')
-      console.log('received', key, value)
-      if (new RegExp(ONLY_LETTERS, 'gi').test(key)) {
-        queryBuilder.andWhere(`attr${iterAttrs}.key=:key AND attr${iterAttrs}.value=:value`, {key, value})
+      const [key1, value1] = opts.attribute.split('<>')
+      if (new RegExp(ONLY_LETTERS, 'gi').test(key1)) {
+        queryBuilder.andWhere(
+          `attr${iterAttrs}.key=:key1 AND attr${iterAttrs}.value=:value1`,
+          { key1, value1 }
+        )
         iterAttrs++
       }
     }
     if (opts.query) {
-      queryBuilder.andWhere(`(attr${iterAttrs}.key=:content AND attr${iterAttrs}.value LIKE :value)
-        OR (attr${iterAttrs}.key=:title AND attr${iterAttrs}.value LIKE :value)`,
+      queryBuilder.andWhere(`(attr${iterAttrs}.key=:content AND attr${iterAttrs}.value LIKE :value2)
+        OR (attr${iterAttrs}.key=:title AND attr${iterAttrs}.value LIKE :value2)`,
       {
-        content: 'content', value: '%' + opts.query + '%', title: 'name'
+        content: 'content', value2: '%' + opts.query + '%', title: 'name'
       })
       iterAttrs++
     }
-    if (opts.startCreationDate) {
-      queryBuilder.andWhere(`(attr${iterAttrs}.key=:startDate AND attr${iterAttrs}.value >= :value)`,
+    if (opts.startPublicationDate) {
+      queryBuilder.andWhere(`(attr${iterAttrs}.key=:startDate AND attr${iterAttrs}.value >= :value3)`,
         {
-          startDate: 'createdAt', value: opts.startCreationDate
+          startDate: 'publicationDate', value3: opts.startPublicationDate
         })
       iterAttrs++
     }
-    if (opts.endCreationDate) {
-      queryBuilder.andWhere(`(attr${iterAttrs}.key=:endDate AND attr${iterAttrs}.value <= :value)`,
+    if (opts.endPublicationDate) {
+      queryBuilder.andWhere(`(attr${iterAttrs}.key=:endDate AND attr${iterAttrs}.value <= :value4)`,
         {
-          endDate: 'createdAt', value: opts.endCreationDate
+          endDate: 'publicationDate', value4: opts.endPublicationDate
         })
       iterAttrs++
     }
@@ -141,6 +147,8 @@ export default class WorkRoute extends Route<Work> {
       licensedTo: ctx.request.query[LICENSED_TO],
       relatedTo: ctx.request.query[RELATED_TO],
       attribute: ctx.request.query[ATTRIBUTE],
+      startPublicationDate: ctx.request.query[START_PUBLICATION_DATE],
+      endPublicationDate: ctx.request.query[END_PUBLICATION_DATE],
     }) as WorkQueryOpts
   }
 

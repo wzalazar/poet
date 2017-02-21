@@ -43,8 +43,14 @@ export default class Route<T> {
   async getCollection(opts: QueryOptions) {
     let queryBuilder = this.repository
       .createQueryBuilder('item') // first argument is an alias. Alias is what you are selecting - photos. You must specify it.
-      .setOffset(opts.offset || 0)
-      .setLimit(opts.limit || 10)
+
+    if (opts.limit) {
+      queryBuilder.setLimit(opts.limit)
+    }
+
+    if (opts.offset) {
+      queryBuilder.setOffset(opts.offset)
+    }
 
     queryBuilder = this.ownFilter(queryBuilder, opts)
 
@@ -62,16 +68,31 @@ export default class Route<T> {
     }
   }
 
+  async getTotalCount(opts: QueryOptions): Promise<number> {
+    let queryBuilder = this.repository
+      .createQueryBuilder('item')
+
+    queryBuilder = this.ownFilter(queryBuilder, opts)
+
+    return queryBuilder.getCount()
+  }
+
   addRoutes(router: Router) {
     router.get('/' + this.resourcePath, async (ctx) => {
       const opts = this.getParamOpts(ctx)
+
+      const items = await this.getTotalCount(opts)
+      console.log('items: ', items)
+      ctx.response.set('X-Total-Count', '' + items)
+
+      opts.limit = opts.limit || 10
+      opts.offset = opts.offset || 0
+
       const col = await this.getCollection(opts)
-      console.log('Collection for', this.resourcePath, await this.renderCollection(col))
       ctx.body = await this.renderCollection(col)
     })
     router.get('/' + this.resourcePath + '/:id', async (ctx) => {
       const item = await this.getItem(ctx.params.id)
-      console.log('Item for', this.resourcePath + '/' + ctx.params.id, item)
       ctx.body = await this.renderItem(item)
     })
   }
