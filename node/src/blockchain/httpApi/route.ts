@@ -74,7 +74,7 @@ export default class Route<T> {
 
     queryBuilder = this.ownFilter(queryBuilder, opts)
 
-    return queryBuilder.getCount()
+    return queryBuilder.select('UNIQUE("item"."id")').getCount()
   }
 
   addRoutes(router: Router) {
