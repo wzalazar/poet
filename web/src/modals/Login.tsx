@@ -21,34 +21,39 @@ interface LoginProps {
 }
 
 class LoginModal extends Modal<LoginActions & LoginProps, undefined> {
-  modalName = 'login'
+  modalName = 'login';
+
   draw() {
     return (
       <div className="modal modal-login">
-        <h1>Login to Poet</h1>
-        <div>
-          { this.props.requestId
-            ? <a href="#" onClick={() => this.props.mockLoginRequest(this.props.requestId)}>
-               <QR text={this.props.requestId || ''} />
-              </a>
-            : <Loading />
-          }
-        </div>
-        <div className="mb-2">Scan the QR code to login</div>
-        <div className="onboard mb-2">
-          <div className="placeholder-box" />
-          <div className="ml-2">
-            <div><Link to="http://www.po.et/" >Download</Link> the Poet: Authorizer App</div>
-            <div className="text-muted">Average onboard takes &lt; 5 minutes</div>
+        <header>
+          <h1>You must login to register</h1>
+        </header>
+        <section>
+          <div className="qr">
+            { this.props.requestId
+              ? <a href="#" onClick={() => this.props.mockLoginRequest(this.props.requestId)}>
+              <QR text={this.props.requestId || ''} />
+            </a>
+              : <Loading />
+            }
           </div>
-        </div>
-        <div className="scan">
-          <div className="placeholder-box" />
-          <div className="ml-2">
-            <div>Scan the QR code</div>
-            <div className="text-muted">Login to the app &gt; scan QR code</div>
+          <h2>Scan the QR code to login</h2>
+          <div className="onboard">
+            <div className="placeholder-box" />
+            <div className="">
+              <h3><Link to="http://www.po.et/" >Download</Link> the Poet: Authorizer App</h3>
+              <div className="text-muted">Average onboard takes &lt; 5 minutes</div>
+            </div>
           </div>
-        </div>
+          <div className="scan">
+            <div className="placeholder-box" />
+            <div className="">
+              <h3>Scan the QR code</h3>
+              <div className="text-muted">Login to the app &gt; scan QR code</div>
+            </div>
+          </div>
+        </section>
       </div>
     )
   }
