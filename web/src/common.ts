@@ -49,7 +49,7 @@ export function isUrlObject(a: any): a is UrlObject {
 
 export function urlObjectQueryParams(urlObject: UrlObject): string {
   return urlObject.query ?
-    Object.keys(urlObject.query).map(key => `${key}=${urlObject.query[key]}`).join('&') : '';
+    Object.keys(urlObject.query).filter(key => urlObject.query[key]).map(key => `${key}=${urlObject.query[key]}`).join('&') : '';
 }
 
 export function urlObjectToUrl(urlObject: UrlObject): string {
