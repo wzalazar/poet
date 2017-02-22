@@ -5,7 +5,7 @@ export interface DispatchesTransferRequested {
 }
 
 export interface TransferRequestedAction {
-  type: keyof Actions,
+  type: string,
   payload: {
     workId: string
   }

@@ -1,76 +1,76 @@
-export class Actions {
-  public static readonly loginButtonClicked = 'login button clicked';
-  public static readonly logoutButtonClicked = 'logout button clicked';
-  public static readonly loginModalDisposeRequested = 'login modal dispose requested';
-  public static readonly navbarSearchClick = 'navbar search click';
-  public static readonly navbarSearchChange = 'navbar search change';
-  public static readonly fetchRequest = 'fetch requested';
-  public static readonly loginResponse = 'login response'; // TODO: this one should be dispatched by a saga
-  public static readonly claimsSubmitRequested = 'claims submit requested';
-  public static readonly claimsModalDismissRequested = 'dismiss work modal';
+export namespace Actions {
+  export const loginButtonClicked = 'login button clicked';
+  export const logoutButtonClicked = 'logout button clicked';
+  export const loginModalDisposeRequested = 'login modal dispose requested';
+  export const navbarSearchClick = 'navbar search click';
+  export const navbarSearchChange = 'navbar search change';
+  export const fetchRequest = 'fetch requested';
+  export const loginResponse = 'login response'; // TODO: this one should be dispatched by a saga
+  export const claimsSubmitRequested = 'claims submit requested';
+  export const claimsModalDismissRequested = 'dismiss work modal';
 
-  public static readonly loginSuccess = 'login success';
-  public static readonly loginModalShow = 'login modal open';
-  public static readonly loginModalHide = 'login modal close';
-  public static readonly logoutRequested = 'logout requested';
+  export const loginSuccess = 'login success';
+  export const loginModalShow = 'login modal open';
+  export const loginModalHide = 'login modal close';
+  export const logoutRequested = 'logout requested';
 
-  public static readonly fetchResponseSuccess = 'fetch response success';
-  public static readonly fetchResponseError = 'fetch response error';
+  export const fetchResponseSuccess = 'fetch response success';
+  export const fetchResponseError = 'fetch response error';
 
-  public static readonly claimsSigned = 'claim signed';
-  public static readonly claimsSubmitedSuccess = 'create claim success';
-  public static readonly claimsSubmitting = 'submitting claims';
+  export const claimsSigned = 'claim signed';
+  export const claimsSubmitedSuccess = 'create claim success';
+  export const claimsSubmitting = 'submitting claims';
 
-  public static readonly signClaimsModalShow = 'show sign claims modal';
-  public static readonly signClaimsModalHide = 'hide sign claims modal';
+  export const signClaimsModalShow = 'show sign claims modal';
+  export const signClaimsModalHide = 'hide sign claims modal';
 
-  public static readonly updatingProfile = 'updating profile';
-  public static readonly profileUpdated = 'profile updated successfully';
-  public static readonly updateProfileRequested = 'profile update requested';
+  export const updatingProfile = 'updating profile';
+  export const profileUpdated = 'profile updated successfully';
+  export const updateProfileRequested = 'profile update requested';
 
-  public static readonly loginIdReceived = 'login ID received';
-  public static readonly unrecognizedSocketMessage = 'unrecognized socket message';
-  public static readonly mockLoginRequest = 'mock login server requested';
+  export const loginIdReceived = 'login ID received';
+  export const unrecognizedSocketMessage = 'unrecognized socket message';
+  export const mockLoginRequest = 'mock login server requested';
 
-  public static readonly claimsResponse = 'claim response for signature';
-  public static readonly claimIdReceived = 'request id for authorizing claim received';
-  public static readonly fakeClaimSign = 'fake sign claim requested';
+  export const claimsResponse = 'claim response for signature';
+  export const claimIdReceived = 'request id for authorizing claim received';
+  export const fakeClaimSign = 'fake sign claim requested';
 
-  public static readonly blockInfoReceived = 'block info received';
+  export const blockInfoReceived = 'block info received';
 
-  public static readonly signTxSubmitRequested = 'sign tx submit requested';
-  public static readonly signTxModalDismissRequested = 'sign tx dismiss modal received';
-  public static readonly fakeTxSign = 'fake sign requested';
-  public static readonly txSubmittedSuccess = 'tx submitted';
-  public static readonly signTxIdReceived = 'sign tx id received';
-  public static readonly signTxModalHide = 'sign tx modal hide';
-  public static readonly signTxModalShow = 'sign tx modal show';
-  public static readonly submittingTx = 'submitting tx';
+  export const signTxSubmitRequested = 'sign tx submit requested';
+  export const signTxModalDismissRequested = 'sign tx dismiss modal received';
+  export const fakeTxSign = 'fake sign requested';
+  export const txSubmittedSuccess = 'tx submitted';
+  export const signTxIdReceived = 'sign tx id received';
+  export const signTxModalHide = 'sign tx modal hide';
+  export const signTxModalShow = 'sign tx modal show';
+  export const submittingTx = 'submitting tx';
 
-  public static readonly fetchProfileData = 'fetch profile data';
-  public static readonly profileDataFetched = 'profile data fetched';
+  export const fetchProfileData = 'fetch profile data';
+  export const profileDataFetched = 'profile data fetched';
 
-  public static readonly payForLicenseRequested = 'pay for license';
-  public static readonly licensePaid = 'license paid';
+  export const payForLicenseRequested = 'pay for license';
+  export const licensePaid = 'license paid';
 
-  public static readonly withdrawalRequested = 'withdrawal started';
-  public static readonly withdrawalDone = 'withdrawal done';
+  export const withdrawalRequested = 'withdrawal started';
+  export const withdrawalDone = 'withdrawal done';
 
-  public static readonly noBalanceAvailable = 'no balance available';
-  public static readonly transferRequested = 'transfer work requested';
+  export const noBalanceAvailable = 'no balance available';
+  export const transferRequested = 'transfer work requested';
 
-  public static readonly fakeTransferSign = 'fake transfer sign requested';
-  public static readonly setTransferTarget = 'transfer work target set';
-  public static readonly transferIdReceived = 'transfer id to sign received';
+  export const fakeTransferSign = 'fake transfer sign requested';
+  export const setTransferTarget = 'transfer work target set';
+  export const transferIdReceived = 'transfer id to sign received';
 
-  public static readonly transferSuccess = 'transfer success';
+  export const transferSuccess = 'transfer success';
 
-  public static readonly transferModalShow = 'transfer modal show';
-  public static readonly transferModalHide = 'transfer modal hide';
-  public static readonly transferModalDismissRequested = 'transfer modal dismiss requested';
-  public static readonly transferDismissed = 'transfer work modal dismissed';
+  export const transferModalShow = 'transfer modal show';
+  export const transferModalHide = 'transfer modal hide';
+  export const transferModalDismissRequested = 'transfer modal dismiss requested';
+  export const transferDismissed = 'transfer work modal dismissed';
 
-  public static readonly purchaseLicenseModalShow = 'purchase license modal show';
-  public static readonly purchaseLicenseModalAccept = 'purchase license modal accept';
-  public static readonly purchaseLicenseModalCancel = 'purchase license modal cancel';
+  export const purchaseLicenseModalShow = 'purchase license modal show';
+  export const purchaseLicenseModalAccept = 'purchase license modal accept';
+  export const purchaseLicenseModalCancel = 'purchase license modal cancel';
 }

@@ -11,7 +11,6 @@ import {getSighash, applyHexSignaturesInOrder} from "../bitcoin/txHelpers";
 import {race} from "redux-saga/effects";
 import { currentPublicKey } from '../selectors/session';
 
-
 async function requestIdFromAuth(dataToSign: Buffer[], bitcoin: boolean) {
   return await auth.getRequestIdForMultipleSigningBuffers(dataToSign, bitcoin)
 }
@@ -24,7 +23,7 @@ export interface SignTransactionParameters {
   paymentAddress: string
   amountInSatoshis: number
   conceptOf: string
-  resultAction: Actions
+  resultAction: string
   resultPayload: any
 }
 
