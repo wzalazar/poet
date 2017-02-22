@@ -74,8 +74,8 @@ async function submitClaims(data: any) {
 const builder = new ClaimBuilder();
 
 function* watchDismiss() {
-  yield take(Actions.transferModalDismissRequested)
-  yield put({ type: Actions.transferModalHide })
+  yield take(Actions.Modals.Transfer.DismissRequested)
+  yield put({ type: Actions.Modals.Transfer.Hide })
 }
 
 function* modalFlow(action: any) {
@@ -84,13 +84,14 @@ function* modalFlow(action: any) {
     call(watchDismiss)
   ])
 }
+
 function* transferFlow(action: any) {
-  yield put({ type: Actions.transferModalShow });
+  yield put({ type: Actions.Modals.Transfer.Hide });
 
   const publicKey = yield select(currentPublicKey);
 
-  const setTransferAction = yield take(Actions.setTransferTarget)
-  const selectedOwner = setTransferAction.payload
+  const setTransferAction = yield take(Actions.Transfer.SetTransferTarget);
+  const selectedOwner = setTransferAction.payload;
 
   const payload: TransferAttributes = {
     currentOwner: publicKey,
@@ -100,14 +101,14 @@ function* transferFlow(action: any) {
   const serializedToSign = [ builder.getEncodedForSigning(payload, publicKey) ];
 
   const requestId = yield call(requestIdFromAuth, serializedToSign);
-  yield put({ type: Actions.transferIdReceived, payload: requestId.id });
+  yield put({ type: Actions.Transfer.TransferIdReceived, payload: requestId.id });
   const response = yield call(bindAuthResponse, requestId);
 
   const result = yield call(submitClaims, response);
 
-  yield put({ type: Actions.transferSuccess });
-  yield take(Actions.transferModalDismissRequested);
-  yield put({ type: Actions.transferModalHide });
+  yield put({ type: Actions.Transfer.Success});
+  yield take(Actions.Modals.Transfer.DismissRequested);
+  yield put({ type: Actions.Modals.Transfer.Hide });
 
   browserHistory.push(`/`);
 }
@@ -118,8 +119,8 @@ function* mockLoginHit(action: any) {
 
 function transferSaga(): Saga {
   return function*() {
-    yield takeEvery(Actions.transferRequested, modalFlow);
-    yield takeEvery(Actions.fakeTransferSign, mockLoginHit);
+    yield takeEvery(Actions.Transfer.TransferRequested, modalFlow);
+    yield takeEvery(Actions.Transfer.FakeTransferSign, mockLoginHit);
   }
 }
 

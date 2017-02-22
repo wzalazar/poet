@@ -14,9 +14,9 @@ export default function modalsReducer(state: any, action: any) {
       return { ...state, signTx: true };
     case Actions.signTxModalHide:
       return { ...state, signTx: false };
-    case Actions.transferModalShow:
+    case Actions.Modals.Transfer.Show:
       return { ...state, transfer: true };
-    case Actions.transferModalHide:
+    case Actions.Modals.Transfer.Hide:
       return { ...state, transfer: false };
     case Actions.Modals.PurchaseLicense.Show:
       return { ...state, purchaseLicense: true };

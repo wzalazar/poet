@@ -46,18 +46,6 @@ export namespace Actions {
   export const withdrawalDone = 'withdrawal done';
 
   export const noBalanceAvailable = 'no balance available';
-  export const transferRequested = 'transfer work requested';
-
-  export const fakeTransferSign = 'fake transfer sign requested';
-  export const setTransferTarget = 'transfer work target set';
-  export const transferIdReceived = 'transfer id to sign received';
-
-  export const transferSuccess = 'transfer success';
-
-  export const transferModalShow = 'transfer modal show';
-  export const transferModalHide = 'transfer modal hide';
-  export const transferModalDismissRequested = 'transfer modal dismiss requested';
-  export const transferDismissed = 'transfer work modal dismissed';
 
   export namespace Session {
     export const MockLoginRequest = 'mock login server requested';
@@ -69,6 +57,14 @@ export namespace Actions {
     export const LoginIdReceived = 'login ID received';
   }
 
+  export namespace Transfer {
+    export const TransferRequested = 'transfer work requested';
+    export const TransferIdReceived = 'transfer id to sign received';
+    export const FakeTransferSign = 'fake transfer sign requested';
+    export const SetTransferTarget = 'transfer work target set';
+    export const Success = 'transfer success';
+  }
+
   export namespace Modals {
     export namespace Login {
       export const Show = 'login modal open';
@@ -78,6 +74,12 @@ export namespace Actions {
       export const Show = 'purchase license modal show';
       export const Accept = 'purchase license modal accept';
       export const Cancel = 'purchase license modal cancel';
+    }
+    export namespace Transfer {
+      export const Show = 'transfer modal show';
+      export const Hide = 'transfer modal hide';
+      export const DismissRequested = 'transfer modal dismiss requested';
+      export const Dismissed = 'transfer work modal dismissed';
     }
   }
 }

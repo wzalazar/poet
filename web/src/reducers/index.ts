@@ -5,7 +5,7 @@ import ProfileReducer from './ProfileReducer';
 import ClaimSign from './ClaimSignReducer';
 import BlockReducer from './BlockReducer';
 import SignTxReducer from './SignTxReducer';
-import TransferReducer from './TransferReducer';
+import { transferReducer } from './TransferReducer';
 import { navbarReducer } from './NavbarReducer';
 
 export default {
@@ -14,7 +14,7 @@ export default {
   session: SessionReducer,
   profile: ProfileReducer,
   signTx: SignTxReducer,
-  transfer: TransferReducer,
+  transfer: transferReducer,
   claimSign: ClaimSign,
   blocks: BlockReducer,
   navbar: navbarReducer

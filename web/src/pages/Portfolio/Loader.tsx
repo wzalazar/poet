@@ -35,7 +35,7 @@ export class Portfolio extends PageLoader<null, SelectProfileById> {
   mapDispatchToProps(): Object {
     return {
       transferRequested: (workId: string) => ({
-        type: Actions.transferRequested, workId
+        type: Actions.Transfer.TransferRequested, workId
       })
     };
   }

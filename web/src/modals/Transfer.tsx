@@ -52,7 +52,7 @@ interface TransferState {
 
 class TransferModal extends Modal<TransferProps & TransferActions & ModalProps, TransferState> {
   constructor() {
-    super(...arguments)
+    super(...arguments);
     this.state = {
       selected: null,
       loading: false,
@@ -62,7 +62,7 @@ class TransferModal extends Modal<TransferProps & TransferActions & ModalProps, 
   }
 
   reactToUserInput(input: any) {
-    this.setState({ loading: true, value: input })
+    this.setState({ loading: true, value: input });
     return fetch(Config.api.explorer + '/profiles/autocomplete/' + input)
       .then(result => result.json())
       .then((result: any) => {
@@ -75,18 +75,18 @@ class TransferModal extends Modal<TransferProps & TransferActions & ModalProps, 
   }
 
   formSubmit() {
-    const publicKey = Value(this.state.selected)
-    this.props.selectPublicKey(publicKey)
+    const publicKey = Value(this.state.selected);
+    this.props.selectPublicKey(publicKey);
     this.setState({ loading: false, suggestions: [], value: '' })
   }
 
   draw() {
     if (!this.props.targetPublicKey) {
-      const { suggestions, value } = this.state
+      const { suggestions, value } = this.state;
       const inputProps = {
         value: value,
         style: { "border": "1px solid black" }
-      }
+      };
       return (
         <div className="modal">
           <h1>Who should the transference be made to?</h1>
@@ -157,9 +157,9 @@ function mapStateToProps(state: PoetAppState): TransferProps {
 }
 
 const mapDispatch = {
-  cancelAction: () => ({ type: Actions.transferModalDismissRequested }),
-  mockSign: (id: string) => ({ type: Actions.fakeTransferSign, payload: id }),
-  selectPublicKey: (id: string) => ({ type: Actions.setTransferTarget, payload: id })
+  cancelAction: () => ({ type: Actions.Modals.Transfer.DismissRequested }),
+  mockSign: (id: string) => ({ type: Actions.Transfer.FakeTransferSign, payload: id }),
+  selectPublicKey: (id: string) => ({ type: Actions.Transfer.SetTransferTarget, payload: id })
 };
 
 export default connect(mapStateToProps, mapDispatch)(TransferModal);
