@@ -7,7 +7,6 @@ import Actions from '../actions/index'
 
 import './Modal.scss'
 import './PurchaseLicense.scss'
-import { ActionsTwo } from '../actions/index';
 
 const successMarkUrl = 'https://cdn3.iconfinder.com/data/icons/stroke/53/Button-Check-512.png';
 
@@ -56,7 +55,7 @@ function mapStateToProps(state: any): PurchaseLicenseProps {
 }
 
 const mapDispatch = {
-  cancelAction: () => ({ type: ActionsTwo.Modals.purchaseLicenseModalCancel }),
+  cancelAction: () => ({ type: Actions.purchaseLicenseModalCancel }),
   acceptAction: () => ({ type: Actions.purchaseLicenseModalAccept })
 };
 
