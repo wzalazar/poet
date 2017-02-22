@@ -16,14 +16,14 @@ function* claimsSubmittedSuccess(claimSubmittedAction: any) {
       yield put({ type: `clear ${shortUrl}`, fetchType: FetchType.CLEAR, url });
     }
     if (claim.type === 'Profile') {
-      const publicKey = yield select(currentPublicKey)
+      const publicKey = yield select(currentPublicKey);
       yield put({ type: Actions.fetchProfileData, profilePublicKey: publicKey });
     }
   }
 }
 
 function* invalidateBalance() {
-  const address = publicKeyToAddress(yield select(currentPublicKey))
+  const address = publicKeyToAddress(yield select(currentPublicKey));
   yield put({
     type: 'clear balance',
     fetchType: FetchType.CLEAR,
@@ -38,7 +38,7 @@ function* invalidateBalance() {
 
 export function CacheInvalidationSaga(): Saga {
   return function*() {
-    yield takeEvery(Actions.claimsSubmitedSuccess, claimsSubmittedSuccess);
+    yield takeEvery(Actions.Claims.SubmittedSuccess, claimsSubmittedSuccess);
     yield takeEvery(Actions.txSubmittedSuccess, invalidateBalance);
   }
 }

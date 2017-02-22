@@ -53,7 +53,7 @@ export class UserProfile extends PageLoader<UserProfileProps, Object> {
   mapDispatchToProps(): Object {
     return {
       submitProfileRequested: (payload: Claim) => ({
-        type: Actions.claimsSubmitRequested, payload: [payload]
+        type: Actions.Claims.SubmitRequested, payload: [payload]
       })
     };
   }

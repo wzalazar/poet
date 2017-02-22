@@ -6,9 +6,9 @@ export default function modalsReducer(state: any, action: any) {
       return { ...state, login: true };
     case Actions.Modals.Login.Hide:
       return { ...state, login: false };
-    case Actions.signClaimsModalShow:
+    case Actions.Modals.SignClaims.Show:
       return { ...state, signWork: true };
-    case Actions.signClaimsModalHide:
+    case Actions.Modals.SignClaims.Hide:
       return { ...state, signWork: false };
     case Actions.signTxModalShow:
       return { ...state, signTx: true };

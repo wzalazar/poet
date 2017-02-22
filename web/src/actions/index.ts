@@ -2,28 +2,15 @@ export namespace Actions {
   export const navbarSearchClick = 'navbar search click';
   export const navbarSearchChange = 'navbar search change';
   export const fetchRequest = 'fetch requested';
-  export const claimsSubmitRequested = 'claims submit requested';
-  export const claimsModalDismissRequested = 'dismiss work modal';
 
   export const fetchResponseSuccess = 'fetch response success';
   export const fetchResponseError = 'fetch response error';
-
-  export const claimsSigned = 'claim signed';
-  export const claimsSubmitedSuccess = 'create claim success';
-  export const claimsSubmitting = 'submitting claims';
-
-  export const signClaimsModalShow = 'show sign claims modal';
-  export const signClaimsModalHide = 'hide sign claims modal';
 
   export const updatingProfile = 'updating profile';
   export const profileUpdated = 'profile updated successfully';
   export const updateProfileRequested = 'profile update requested';
 
   export const unrecognizedSocketMessage = 'unrecognized socket message';
-
-  export const claimsResponse = 'claim response for signature';
-  export const claimIdReceived = 'request id for authorizing claim received';
-  export const fakeClaimSign = 'fake sign claim requested';
 
   export const blockInfoReceived = 'block info received';
 
@@ -65,6 +52,16 @@ export namespace Actions {
     export const Success = 'transfer success';
   }
 
+  export namespace Claims {
+    export const FakeSign = 'fake sign claim requested';
+    export const Response = 'claim response for signature';
+    export const IdReceived = 'request id for authorizing claim received';
+    export const Signed = 'claim signed';
+    export const SubmitRequested = 'claims submit requested';
+    export const Submitting = 'submitting claims';
+    export const SubmittedSuccess = 'create claim success';
+  }
+
   export namespace Modals {
     export namespace Login {
       export const Show = 'login modal open';
@@ -80,6 +77,11 @@ export namespace Actions {
       export const Hide = 'transfer modal hide';
       export const DismissRequested = 'transfer modal dismiss requested';
       export const Dismissed = 'transfer work modal dismissed';
+    }
+    export namespace SignClaims {
+      export const Show = 'show sign claims modal';
+      export const Hide = 'hide sign claims modal';
+      export const DismissRequested = 'dismiss work modal';
     }
   }
 }

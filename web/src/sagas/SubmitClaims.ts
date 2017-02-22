@@ -21,8 +21,8 @@ async function bindAuthResponse(request: any) {
 }
 
 class ClaimBuilder {
-  attribute: any
-  claim: any
+  attribute: any;
+  claim: any;
 
   constructor() {
     const root = protobuf.Root.fromJSON(jsonClaims);
@@ -66,7 +66,7 @@ async function submitClaims(data: any) {
 const builder = new ClaimBuilder();
 
 function* signClaims(claimTemplates: any) {
-  yield put({ type: Actions.signClaimsModalShow });
+  yield put({ type: Actions.Modals.SignClaims.Show });
 
   const publicKey = yield select(currentPublicKey);
 
@@ -75,15 +75,15 @@ function* signClaims(claimTemplates: any) {
   });
 
   const requestId = yield call(requestIdFromAuth, serializedToSign);
-  yield put({ type: Actions.claimIdReceived, payload: requestId.id });
+  yield put({ type: Actions.Claims.IdReceived, payload: requestId.id });
   const response = yield call(bindAuthResponse, requestId);
-  yield put({ type: Actions.claimsResponse, payload: response });
+  yield put({ type: Actions.Claims.Response, payload: response });
 
   const result = yield call(submitClaims, response);
 
-  yield put({ type: Actions.claimsSubmitedSuccess, claims: claimTemplates.payload });
-  yield take(Actions.claimsModalDismissRequested);
-  yield put({ type: Actions.signClaimsModalHide });
+  yield put({ type: Actions.Claims.SubmittedSuccess, claims: claimTemplates.payload });
+
+  yield put({ type: Actions.Modals.SignClaims.Hide });
 
   browserHistory.push(`/`);
 }
@@ -94,8 +94,8 @@ function* mockLoginHit(action: any) {
 
 function claimSubmitSaga(): Saga {
   return function*() {
-    yield takeEvery(Actions.claimsSubmitRequested, signClaims);
-    yield takeEvery(Actions.fakeClaimSign, mockLoginHit);
+    yield takeEvery(Actions.Claims.SubmitRequested, signClaims);
+    yield takeEvery(Actions.Claims.FakeSign, mockLoginHit);
   }
 }
 

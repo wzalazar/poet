@@ -1,14 +1,14 @@
 import { Actions } from '../actions/index';
 
-export default function modalsReducer(state: any, action: any) {
+export function claimSignReducer(state: any, action: any) {
   switch (action.type) {
-    case Actions.claimIdReceived:
+    case Actions.Claims.IdReceived:
       return { ...state, id: action.payload, submitting: false };
-    case Actions.claimsResponse:
+    case Actions.Claims.Response:
       return { ...state, submitting: true };
-    case Actions.claimsSubmitedSuccess:
+    case Actions.Claims.SubmittedSuccess:
       return { ...state, success: true };
-    case Actions.signClaimsModalHide:
+    case Actions.Modals.SignClaims.Hide:
       return { ...state, success: null, id: null };
   }
   return state || {};

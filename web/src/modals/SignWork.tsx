@@ -69,8 +69,8 @@ function mapStateToProps(state: any): SignProps {
 }
 
 const mapDispatch = {
-  cancelAction: () => ({ type: Actions.claimsModalDismissRequested }),
-  mockSign: (id: string) => ({ type: Actions.fakeClaimSign, payload: id })
+  cancelAction: () => ({ type: Actions.Modals.SignClaims.Hide }),
+  mockSign: (id: string) => ({ type: Actions.Claims.FakeSign, payload: id })
 };
 
 export default connect(mapStateToProps, mapDispatch)(SignWorkModal);
