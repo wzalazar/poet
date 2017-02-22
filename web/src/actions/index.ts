@@ -5,9 +5,6 @@ export namespace Actions {
 
   export const blockInfoReceived = 'block info received';
 
-  export const payForLicenseRequested = 'pay for license';
-  export const licensePaid = 'license paid';
-
   export const withdrawalRequested = 'withdrawal started';
   export const withdrawalDone = 'withdrawal done';
 
@@ -60,6 +57,11 @@ export namespace Actions {
     export const Submitting = 'submitting tx';
     export const SubmittedSuccess = 'tx submitted';
     export const SignIdReceived = 'sign tx id received';
+  }
+
+  export namespace Licenses {
+    export const PurchaseRequested = 'license purchase requested';
+    export const Paid = 'license paid';
   }
 
   export namespace Modals {

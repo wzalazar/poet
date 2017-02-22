@@ -62,7 +62,7 @@ function renderOfferingFunc(workOffering: WorkOffering & SubmitOffering): JSX.El
 
 const RenderOffering = connect((e: any) => e, {
   purchase: (offering: any) => ({
-    type: Actions.payForLicenseRequested,
+    type: Actions.Licenses.PurchaseRequested,
     payload: offering
   })
 })(renderOfferingFunc) as any;

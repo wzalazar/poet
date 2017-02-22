@@ -5,9 +5,8 @@ import ProfileSaga from './ProfileSaga';
 import SignTxSaga from './SignTxSaga';
 import SubmitClaims from './SubmitClaims';
 import TransferSaga from './TransferSaga';
-
 import Withdrawal from './Withdrawal';
-import PayForLicense from './PayForLicense';
+import { purchaseLicenseSaga } from './PurchaseLicense';
 import { CacheInvalidationSaga } from './CacheInvalidationSaga';
 
 export default [
@@ -19,6 +18,6 @@ export default [
   SubmitClaims,
   SignTxSaga,
   Withdrawal,
-  PayForLicense,
+  purchaseLicenseSaga,
   CacheInvalidationSaga
 ];

@@ -19,7 +19,7 @@ async function submitLicense(reference: string, txId: string, outputIndex: numbe
   }).then((res: any) => res.text())
 }
 
-function* payForLicense(action: any) {
+function* purchaseLicense(action: any) {
   const offering = action.payload;
   const reference = offering.reference;
 
@@ -39,14 +39,14 @@ function* payForLicense(action: any) {
       paymentAddress: offering.paymentAddress,
       amountInSatoshis: parseFloat(offering.pricingPriceAmount) * (offering.pricingPriceCurrency === "BTC" ? 1e8 : 1),
       conceptOf: 'License',
-      resultAction: Actions.licensePaid,
+      resultAction: Actions.Licenses.Paid,
       resultPayload: offering
     }
   });
 
   while (true) {
     const result = yield race([
-      take(Actions.licensePaid),
+      take(Actions.Licenses.Paid),
       call(function* () {
         yield take(Actions.noBalanceAvailable);
         return false
@@ -67,8 +67,8 @@ function* payForLicense(action: any) {
   }
 }
 
-export default function() {
+export function purchaseLicenseSaga() {
   return function*() {
-    yield takeEvery(Actions.payForLicenseRequested, payForLicense)
+    yield takeEvery(Actions.Licenses.PurchaseRequested, purchaseLicense)
   }
 }
