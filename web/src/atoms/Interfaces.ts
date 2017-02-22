@@ -6,12 +6,13 @@ export interface Profile {
   }
 }
 
+// TODO: lacks a "type" field, duplicated declaration! See Claim.ts
 export interface Claim {
   readonly id: HexString
   readonly publicKey: HexString
   readonly signature: HexString
 
-  readonly attributes: {
+  readonly attributes: { // TODO: should be ReadonlyArray<Attribute>
     readonly [key: string]: string
   }
 }

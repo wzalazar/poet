@@ -7,16 +7,17 @@ import Loading from "../components/Loading";
 const QR = require('react-qr');
 
 import "./Modal.scss";
-import "./SignWork.scss";
+import "./SignClaims.scss";
 
 interface SignProps {
-  requestId: string;
-  visible: boolean;
-  submitting: boolean;
-  success: boolean;
+  readonly requestId: string;
+  readonly visible: boolean;
+  readonly submitting: boolean;
+  readonly success: boolean;
+  readonly claimDetails: ReadonlyArray<string>;
 }
 interface SignActions {
-  mockSign: (id: string) => any
+  readonly mockSign: (id: string) => any
 }
 
 class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefined> {
@@ -26,7 +27,7 @@ class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefine
 
   renderRegister() {
     return (
-      <section className="modal modal-sign-work">
+      <section className="modal-sign-work">
         <header>
           <h1>Scan the code from your <br/>
               Poet: Authenticator App to <br/>
@@ -45,10 +46,9 @@ class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefine
             }
           </div>
           <h2>This will authorize the following transaction</h2>
-          <div className="work">
-            <div className="name" >Name: {'Title of the Creative Work'}</div>
-            <div className="timestamp">Timestamp: {(new Date()).toISOString()}</div>
-          </div>
+          <ul className="claim-details">
+            { this.props.claimDetails.map( claimDetail => <li>{claimDetail}</li> )}
+          </ul>
         </main>
         <nav>
           <button onClick={this.props.cancelAction}>Cancel</button>
@@ -60,7 +60,11 @@ class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefine
   renderSuccess() {
     return (
       <div className="modal">
-        <h1>Claim successfully submitted!</h1>
+        <h1>Success!</h1>
+        <div>You have registered the following creative work</div>
+        <ul className="claim-details">
+          { this.props.claimDetails.map((claimDetail, index) => <li key={index}>{claimDetail}</li> )}
+        </ul>
       </div>
     );
   }
@@ -72,6 +76,7 @@ function mapStateToProps(state: any): SignProps {
     requestId: state.claimSign.id,
     success: state.claimSign.success,
     submitting: state.claimSign.submitting,
+    claimDetails: state.claimSign.details || []
   }
 }
 

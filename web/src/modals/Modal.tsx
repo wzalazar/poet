@@ -23,6 +23,7 @@ abstract class Modal<T extends ModalProps, Q> extends React.Component<T, Q> {
         backdropClassName="backdrop"
         show={this.props.visible}
         onHide={this.props.cancelAction}
+        className="modals-container"
       >
         { this.draw() }
       </Overlays.Modal>

@@ -1,6 +1,6 @@
 import Login from './Login';
 import SignTx from './SignTx';
-import SignWork from './SignWork';
+import SignWork from './SignClaims';
 import Transfer from './Transfer';
 import { PurchaseLicense } from './PurchaseLicense';
 

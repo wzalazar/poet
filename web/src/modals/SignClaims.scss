@@ -1,12 +1,13 @@
 .modal-sign-work {
   width: 340px;
-  height: 474px;
+  margin: auto;
   padding: 0;
   background-color: #FFFFFF;
   box-shadow: 0 2px 8px 0 rgba(0,0,0,0.2);
   border-radius: 4px;
   font-family: "Source Sans Pro";
   text-align: center;
+  border: 1px solid #e5e5e5;
 
   header {
     padding: 28px 0 15px 0;
@@ -48,7 +49,10 @@
       color: #666666;
     }
 
-    .work {
+    ul.claim-details {
+      list-style: none;
+      padding: 0;
+      margin: 0;
       font-size: 10px;
       line-height: 18px;
       color: #666666;

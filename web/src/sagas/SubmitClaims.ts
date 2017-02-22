@@ -1,6 +1,6 @@
+import { browserHistory } from 'react-router'
 import { Saga, takeEvery } from 'redux-saga'
 import { call, put, select, take } from 'redux-saga/effects'
-import { browserHistory } from 'react-router'
 import * as protobuf from 'protobufjs'
 
 import { Actions } from '../actions/index'

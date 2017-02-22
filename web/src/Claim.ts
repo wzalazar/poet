@@ -1,6 +1,6 @@
 export interface Attribute {
-  key: string
-  value: string
+  readonly key: string
+  readonly value: string
 }
 
 export type Work = 'Work'
@@ -22,6 +22,7 @@ export const REVOKATION : Revokation = 'Revokation'
 export type ClaimType = Work | Title | License | Offering | Profile | Certificate | Revokation
 export type Judgement = Certificate | Revokation
 
+// TODO: duplicated declaration, see atoms/Interfaces.ts
 export interface Claim {
   id?: string
 
@@ -29,7 +30,7 @@ export interface Claim {
   signature?: string
 
   type: ClaimType
-  attributes: { [key: string]: string }
+  attributes: { [key: string]: string } // TODO: should be ReadonlyArray<Attribute>
 }
 
 export interface Block {
