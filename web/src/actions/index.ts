@@ -1,9 +1,6 @@
 export namespace Actions {
   export const fetchRequest = 'fetch requested';
 
-  export const fetchResponseSuccess = 'fetch response success';
-  export const fetchResponseError = 'fetch response error';
-
   export const updatingProfile = 'updating profile';
   export const profileUpdated = 'profile updated successfully';
   export const updateProfileRequested = 'profile update requested';
