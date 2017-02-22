@@ -17,8 +17,18 @@ development: base-images
 start: prepare
 	cd Docker && docker-compose up
 
+stop:
+	cd Docker && docker-compose down
+
+daemon: prepare
+	cd Docker && docker-compose up -d
+
 psql:
 	cd Docker && docker-compose exec db /usr/bin/psql -U poet
 
 scripting:
 	cd Docker && docker-compose exec explorer /bin/bash
+
+setup-cron:
+	CRONENTRY=
+	{ crontab -l; echo "*/5 * * * * /usr/bin/bash ~/poet/utils/fetch_and_reload.sh >> /dev/null" } | crontab -
