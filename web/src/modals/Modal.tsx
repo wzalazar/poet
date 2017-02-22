@@ -3,11 +3,11 @@ import * as React from 'react'
 const Overlays = require('react-overlays');
 
 export interface ModalVisible {
-  visible: boolean
+  visible?: boolean
 }
 
 export interface ModalAction {
-  cancelAction: () => any
+  cancelAction?: () => any
 }
 
 export interface ModalProps extends ModalVisible, ModalAction {}

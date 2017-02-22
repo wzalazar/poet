@@ -1,5 +1,4 @@
 export default class Actions {
-  // ComponentActions: dispatched by a component, listened by a saga — these are more like Events
   public static readonly loginButtonClicked = 'login button clicked';
   public static readonly logoutButtonClicked = 'logout button clicked';
   public static readonly loginModalDisposeRequested = 'login modal dispose requested';
@@ -10,10 +9,9 @@ export default class Actions {
   public static readonly claimsSubmitRequested = 'claims submit requested';
   public static readonly claimsModalDismissRequested = 'dismiss work modal';
 
-  // SagaActions: dispatched by a saga, listened by a reducer — these are Actions command changes imperatively
   public static readonly loginSuccess = 'login success';
-  public static readonly loginModalOpen = 'login modal open';
-  public static readonly loginModalClose = 'login modal close';
+  public static readonly loginModalShow = 'login modal open';
+  public static readonly loginModalHide = 'login modal close';
   public static readonly logoutRequested = 'logout requested';
 
   public static readonly fetchResponseSuccess = 'fetch response success';
@@ -71,4 +69,8 @@ export default class Actions {
   public static readonly transferModalHide = 'transfer modal hide';
   public static readonly transferModalDismissRequested = 'transfer modal dismiss requested';
   public static readonly transferDismissed = 'transfer work modal dismissed';
+
+  public static readonly purchaseLicenseModalShow = 'purchase license modal show';
+  public static readonly purchaseLicenseModalAccept = 'purchase license modal accept';
+  public static readonly purchaseLicenseModalCancel = 'purchase license modal cancel';
 }

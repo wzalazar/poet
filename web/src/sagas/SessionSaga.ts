@@ -22,7 +22,7 @@ async function bindAuthResponse(request: any) {
 }
 
 function* loginButtonClickedAction(action: any) {
-  yield put({ type: Actions.loginModalOpen });
+  yield put({ type: Actions.loginModalShow });
   const requestId = yield call(requestIdFromAuth);
   yield put({ type: Actions.loginIdReceived, payload: requestId });
   const response = yield call(bindAuthResponse, requestId);
@@ -36,7 +36,7 @@ function* logoutButtonClickedAction(action: any) {
 }
 
 function* loginResponseAction(action: any) {
-  yield put({ type: Actions.loginModalClose });
+  yield put({ type: Actions.loginModalHide });
 
   localStorage.setItem(LOCALSTORAGE_SESSION, JSON.stringify(action.payload));
   yield put({ type: Actions.loginSuccess, token: action.payload });
@@ -50,7 +50,7 @@ function* mockLoginHit(action: any) {
 }
 
 function* loginModalDisposeRequestedAction(action: any) {
-  yield put({ type: Actions.loginModalClose });
+  yield put({ type: Actions.loginModalHide });
 }
 
 function sessionSaga(): Saga {

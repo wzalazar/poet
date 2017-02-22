@@ -23,6 +23,16 @@ function* payForLicense(action: any) {
   const offering = action.payload;
   const reference = offering.reference;
 
+  yield put({ type: Actions.purchaseLicenseModalShow });
+
+  const { purchaseLicenseModalAccept, purchaseLicenseModalCancel } = yield race({
+    purchaseLicenseModalAccept: take(Actions.purchaseLicenseModalAccept),
+    purchaseLicenseModalCancel: take(Actions.purchaseLicenseModalCancel)
+  });
+
+  if (!purchaseLicenseModalAccept)
+    return;
+
   yield put({
     type: Actions.signTxSubmitRequested,
     payload: {

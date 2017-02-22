@@ -20,36 +20,42 @@ interface SignActions {
 
 class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefined> {
   draw() {
-    if (!this.props.success) {
-      return (
-        <div className="modal">
-          <h1>Signing requested</h1>
-          <div>
-            { this.props.submitting
-              ? <Loading />
-              : this.props.requestId
-              ? <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
-                <QR text={this.props.requestId || ''} />
-              </a>
-              : <Loading />
-            }
-          </div>
-          <div className="mb-2">Scan the QR code to approve</div>
-          <div className="onboard mb-2">
-            <div className="scan">
-              <div className="placeholder-box" />
-              <div className="ml-2">
-                <div className="text-muted">Login to the app &gt; scan QR code</div>
-              </div>
+    return this.props.success ? this.renderSuccess() : this.renderModal();
+  }
+
+  renderModal() {
+    return (
+      <div className="modal">
+        <h1>Signing requested</h1>
+        <div>
+          { this.props.submitting
+            ? <Loading />
+            : this.props.requestId
+            ? <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
+            <QR text={this.props.requestId || ''} />
+          </a>
+            : <Loading />
+          }
+        </div>
+        <div className="mb-2">Scan the QR code to approve</div>
+        <div className="onboard mb-2">
+          <div className="scan">
+            <div className="placeholder-box" />
+            <div className="ml-2">
+              <div className="text-muted">Login to the app &gt; scan QR code</div>
             </div>
           </div>
         </div>
-      )
-    }
-    return (<div className="modal">
-      <h1>Claim successfully submited!</h1>
-    </div>
+      </div>
     )
+  }
+
+  renderSuccess() {
+    return (
+      <div className="modal">
+        <h1>Claim successfully submited!</h1>
+      </div>
+    );
   }
 }
 

@@ -9,7 +9,7 @@ import Actions from '../actions/index'
 import Loading from '../components/Loading'
 
 import './Modal.scss'
-import './Login.scss'
+import './SignTx.scss'
 
 interface SignProps {
   requestId: string;
