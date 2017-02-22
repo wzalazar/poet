@@ -1,3 +1,3 @@
 import './extensions/Window'
 import './extensions/Array'
-import './extensions/require'
+import './typings/require'
