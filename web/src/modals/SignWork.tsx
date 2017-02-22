@@ -3,10 +3,11 @@ import {connect} from "react-redux";
 import Modal, {ModalProps} from "./Modal";
 import { Actions } from "../actions/index";
 import Loading from "../components/Loading";
-import "./Modal.scss";
-import "./Login.scss";
 
 const QR = require('react-qr');
+
+import "./Modal.scss";
+import "./SignWork.scss";
 
 interface SignProps {
   requestId: string;
@@ -20,40 +21,46 @@ interface SignActions {
 
 class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefined> {
   draw() {
-    return this.props.success ? this.renderSuccess() : this.renderModal();
+    return this.props.success ? this.renderSuccess() : this.renderRegister();
   }
 
-  renderModal() {
+  renderRegister() {
     return (
-      <div className="modal">
-        <h1>Signing requested</h1>
-        <div>
-          { this.props.submitting
-            ? <Loading />
-            : this.props.requestId
-            ? <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
-            <QR text={this.props.requestId || ''} />
-          </a>
-            : <Loading />
-          }
-        </div>
-        <div className="mb-2">Scan the QR code to approve</div>
-        <div className="onboard mb-2">
-          <div className="scan">
-            <div className="placeholder-box" />
-            <div className="ml-2">
-              <div className="text-muted">Login to the app &gt; scan QR code</div>
-            </div>
+      <section className="modal modal-sign-work">
+        <header>
+          <h1>Scan the code from your <br/>
+              Poet: Authenticator App to <br/>
+              complete the registration</h1>
+          <a href="">Download App</a>
+        </header>
+        <main>
+          <div className="qr">
+            { this.props.submitting
+              ? <Loading />
+              : this.props.requestId
+              ? <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
+              <QR text={this.props.requestId || ''} />
+            </a>
+              : <Loading />
+            }
           </div>
-        </div>
-      </div>
+          <h2>This will authorize the following transaction</h2>
+          <div className="work">
+            <div className="name" >Name: {'Title of the Creative Work'}</div>
+            <div className="timestamp">Timestamp: {(new Date()).toISOString()}</div>
+          </div>
+        </main>
+        <nav>
+          <button onClick={this.props.cancelAction}>Cancel</button>
+        </nav>
+      </section>
     )
   }
 
   renderSuccess() {
     return (
       <div className="modal">
-        <h1>Claim successfully submited!</h1>
+        <h1>Claim successfully submitted!</h1>
       </div>
     );
   }
