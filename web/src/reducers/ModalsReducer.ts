@@ -1,6 +1,6 @@
 import { Actions } from '../actions/index';
 
-export default function modalsReducer(state: any, action: any) {
+export function modalsReducer(state: any, action: any) {
   switch (action.type) {
     case Actions.Modals.Login.Show:
       return { ...state, login: true };
@@ -10,9 +10,9 @@ export default function modalsReducer(state: any, action: any) {
       return { ...state, signWork: true };
     case Actions.Modals.SignClaims.Hide:
       return { ...state, signWork: false };
-    case Actions.signTxModalShow:
+    case Actions.Modals.SignTransaction.Show:
       return { ...state, signTx: true };
-    case Actions.signTxModalHide:
+    case Actions.Modals.SignTransaction.Hide:
       return { ...state, signTx: false };
     case Actions.Modals.Transfer.Show:
       return { ...state, transfer: true };

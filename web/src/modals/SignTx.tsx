@@ -83,7 +83,7 @@ function mapStateToProps(state: any): SignProps {
 }
 
 const mapDispatch = {
-  cancelAction: () => ({ type: Actions.signTxModalDismissRequested }),
+  cancelAction: () => ({ type: Actions.Modals.SignTransaction.Hide }),
   mockSign: (id: string) => ({ type: Actions.fakeTxSign, payload: id })
 };
 

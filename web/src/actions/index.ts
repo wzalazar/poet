@@ -6,12 +6,9 @@ export namespace Actions {
   export const blockInfoReceived = 'block info received';
 
   export const signTxSubmitRequested = 'sign tx submit requested';
-  export const signTxModalDismissRequested = 'sign tx dismiss modal received';
   export const fakeTxSign = 'fake sign requested';
   export const txSubmittedSuccess = 'tx submitted';
   export const signTxIdReceived = 'sign tx id received';
-  export const signTxModalHide = 'sign tx modal hide';
-  export const signTxModalShow = 'sign tx modal show';
   export const submittingTx = 'submitting tx';
 
   export const payForLicenseRequested = 'pay for license';
@@ -83,6 +80,11 @@ export namespace Actions {
       export const Show = 'show sign claims modal';
       export const Hide = 'hide sign claims modal';
       export const DismissRequested = 'dismiss work modal';
+    }
+    export namespace SignTransaction {
+      export const Show = 'sign tx modal show';
+      export const Hide = 'sign tx modal hide';
+      export const DismissRequested = 'sign tx dismiss modal received';
     }
   }
 }
