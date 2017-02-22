@@ -1,6 +1,4 @@
 export namespace Actions {
-  export const navbarSearchClick = 'navbar search click';
-  export const navbarSearchChange = 'navbar search change';
   export const fetchRequest = 'fetch requested';
 
   export const fetchResponseSuccess = 'fetch response success';
@@ -33,6 +31,11 @@ export namespace Actions {
   export const withdrawalDone = 'withdrawal done';
 
   export const noBalanceAvailable = 'no balance available';
+
+  export namespace Navbar {
+    export const SearchClick = 'navbar search click';
+    export const SearchChange = 'navbar search change';
+  }
 
   export namespace Session {
     export const MockLoginRequest = 'mock login server requested';

@@ -106,8 +106,8 @@ function mapStateToProps(state: any, ownProps: NavbarProps): NavbarProps {
 }
 
 const mapDispatch = {
-  dispatchSearchClick: () => ({ type: Actions.navbarSearchClick }),
-  dispatchSearchChange: (searchQuery: string) => ({ type: Actions.navbarSearchChange, searchQuery })
+  dispatchSearchClick: () => ({ type: Actions.Navbar.SearchClick }),
+  dispatchSearchChange: (searchQuery: string) => ({ type: Actions.Navbar.SearchChange, searchQuery })
 };
 
 export const Navbar = connect(mapStateToProps, mapDispatch)(NavbarComponent);
