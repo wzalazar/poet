@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import Actions from '../actions/index';
+import { Actions } from '../actions/index';
 import { FetchStatus } from '../enums/FetchStatus';
 import { FetchStoreEntry, FetchStore } from '../store/PoetAppState';
 

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import WorkComponent from '../../hocs/WorkComponent';
 
 import './WorkOfferings.scss';
-import Actions from '../../actions/index'
+import { Actions } from '../../actions/index'
 import { Work, WorkOffering } from "../../atoms/Interfaces";
 
 function renderLicense(license: any): JSX.Element {

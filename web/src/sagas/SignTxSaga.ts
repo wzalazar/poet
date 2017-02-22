@@ -2,7 +2,7 @@ import * as bitcore from 'bitcore-lib';
 import {Saga, takeEvery} from "redux-saga";
 import {call, put, select, take, fork} from "redux-saga/effects";
 
-import Actions from "../actions/index";
+import { Actions } from "../actions/index";
 import auth from "../auth";
 import {getMockPrivateKey} from "../mockKey";
 import config from "../config";

@@ -6,7 +6,7 @@ import { select, call, put } from 'redux-saga/effects'
 import PageLoader, { ReducerDescription } from '../../components/PageLoader'
 import BlockLayout from './Layout'
 import config from '../../config'
-import Actions from '../../actions/index'
+import { Actions } from '../../actions/index'
 
 async function fetchBlocks() {
   return await (await fetch(config.api.explorer + '/blocks')).json()

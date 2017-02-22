@@ -2,7 +2,7 @@ import * as React from "react";
 import {connect} from "react-redux";
 
 import Modal, {ModalProps} from "./Modal";
-import Actions from "../actions/index";
+import { Actions } from "../actions/index";
 import Loading from "../components/Loading";
 import { PoetAppState } from '../store/PoetAppState';
 

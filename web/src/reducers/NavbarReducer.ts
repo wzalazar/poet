@@ -1,4 +1,4 @@
-import Actions from '../actions/index';
+import { Actions } from '../actions/index';
 
 export interface NavbarAction {
   readonly type: string;

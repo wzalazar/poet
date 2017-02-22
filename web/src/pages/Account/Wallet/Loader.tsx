@@ -10,7 +10,7 @@ import { WalletLayout } from './Layout';
 import { currentPublicKey } from '../../../selectors/session'
 import { publicKeyToAddress } from '../../../bitcoin/addressHelpers'
 import { WithdrawalInfo } from './interfaces'
-import Actions from '../../../actions/index'
+import { Actions } from '../../../actions/index'
 
 export interface UserWalletProps {
   publicKey?: string;

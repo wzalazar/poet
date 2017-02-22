@@ -2,7 +2,7 @@ import { Saga, takeEvery } from 'redux-saga'
 import { put } from 'redux-saga/effects'
 
 import { Config } from '../config';
-import Actions from '../actions/index'
+import { Actions } from '../actions/index'
 import { FetchType } from '../reducers/FetchReducer';
 import { currentPublicKey } from '../selectors/session';
 import { select } from 'redux-saga/effects';

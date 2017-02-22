@@ -1,7 +1,7 @@
 import { Saga, takeEvery } from 'redux-saga'
 import { call, put, select } from 'redux-saga/effects'
 
-import Actions from '../actions/index';
+import { Actions } from '../actions/index';
 import { FetchStatus } from '../enums/FetchStatus'
 import { getResourceState } from '../selectors/fetch'
 import { FetchType, FetchAction } from '../reducers/FetchReducer';

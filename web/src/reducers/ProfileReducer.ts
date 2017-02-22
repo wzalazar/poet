@@ -1,4 +1,4 @@
-import Actions from '../actions/index';
+import { Actions } from '../actions/index';
 
 export default function profileReducer(state: any, action: any) {
   switch (action.type) {

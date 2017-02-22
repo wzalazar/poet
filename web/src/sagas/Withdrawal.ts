@@ -1,5 +1,5 @@
 import { put } from 'redux-saga/effects'
-import Actions from '../actions/index'
+import { Actions } from '../actions/index'
 import { take } from 'redux-saga/effects'
 import { select } from 'redux-saga/effects'
 import { currentPublicKey } from '../selectors/session'

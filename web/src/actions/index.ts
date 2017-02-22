@@ -1,4 +1,4 @@
-export default class Actions {
+export class Actions {
   public static readonly loginButtonClicked = 'login button clicked';
   public static readonly logoutButtonClicked = 'logout button clicked';
   public static readonly loginModalDisposeRequested = 'login modal dispose requested';

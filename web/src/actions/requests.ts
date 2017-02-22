@@ -1,4 +1,4 @@
-import Actions from './index';
+import { Actions } from './index';
 
 export interface DispatchesTransferRequested {
   transferRequested(workId: string): void

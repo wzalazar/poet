@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Action } from 'redux'
 
 import Modal, { ModalProps } from './Modal'
-import Actions from '../actions/index'
+import { Actions } from '../actions/index'
 
 import './Modal.scss'
 import './PurchaseLicense.scss'

@@ -1,7 +1,7 @@
 import { browserHistory } from "react-router";
 import { Saga, takeEvery } from 'redux-saga'
 
-import Actions from '../actions/index';
+import { Actions } from '../actions/index';
 
 function* navbarSearchClickAction(): any {
   browserHistory.push('/works');
