@@ -8,13 +8,13 @@ function* fetchProfileData(action: any) {
   const profileResponse = yield call(fetch, config.api.explorer + '/profiles/' + action.profilePublicKey);
   if (profileResponse.status === 200) {
     const profile = yield profileResponse.json();
-    yield put({ type: Actions.profileDataFetched, profile });
+    yield put({ type: Actions.Profile.ProfileFetched, profile });
   }
 }
 
 function profileSaga(): Saga {
   return function*() {
-    yield takeEvery(Actions.fetchProfileData, fetchProfileData);
+    yield takeEvery(Actions.Profile.FetchProfile, fetchProfileData);
   }
 }
 

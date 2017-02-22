@@ -27,12 +27,12 @@ export class UserProfile extends PageLoader<UserProfileProps, Object> {
 
   sagaHook(): Saga {
     function* updateProfile() {
-      yield put(Actions.updatingProfile);
+      yield put(Actions.Profile.Updating);
       yield delay(2000);
-      yield put(Actions.profileUpdated);
+      yield put(Actions.Profile.Updated);
     }
     return function*() {
-      yield takeEvery(Actions.updateProfileRequested, updateProfile);
+      yield takeEvery(Actions.Profile.UpdateRequested, updateProfile);
     };
   }
 

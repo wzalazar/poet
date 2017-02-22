@@ -17,7 +17,7 @@ function* claimsSubmittedSuccess(claimSubmittedAction: any) {
     }
     if (claim.type === 'Profile') {
       const publicKey = yield select(currentPublicKey);
-      yield put({ type: Actions.fetchProfileData, profilePublicKey: publicKey });
+      yield put({ type: Actions.Profile.FetchProfile, profilePublicKey: publicKey });
     }
   }
 }

@@ -41,7 +41,7 @@ function* loginResponseAction(action: any) {
   localStorage.setItem(LOCALSTORAGE_SESSION, JSON.stringify(action.payload));
   yield put({ type: Actions.Session.LoginSuccess, token: action.payload });
 
-  yield put({ type: Actions.fetchProfileData, profilePublicKey: action.payload.publicKey });
+  yield put({ type: Actions.Profile.FetchProfile, profilePublicKey: action.payload.publicKey });
   browserHistory.push('/'); // TODO: redirect to login_success
 }
 
@@ -56,7 +56,7 @@ export function sessionSaga(): Saga {
     if (session) {
       const token = JSON.parse(session);
       yield put({ type: Actions.Session.LoginSuccess, token });
-      yield put({ type: Actions.fetchProfileData, profilePublicKey: token.publicKey });
+      yield put({ type: Actions.Profile.FetchProfile, profilePublicKey: token.publicKey });
     }
 
     yield takeEvery(Actions.Session.LoginButtonClicked, loginButtonClickedAction);

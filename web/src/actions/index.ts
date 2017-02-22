@@ -1,10 +1,6 @@
 export namespace Actions {
   export const fetchRequest = 'fetch requested';
 
-  export const updatingProfile = 'updating profile';
-  export const profileUpdated = 'profile updated successfully';
-  export const updateProfileRequested = 'profile update requested';
-
   export const unrecognizedSocketMessage = 'unrecognized socket message';
 
   export const blockInfoReceived = 'block info received';
@@ -17,9 +13,6 @@ export namespace Actions {
   export const signTxModalHide = 'sign tx modal hide';
   export const signTxModalShow = 'sign tx modal show';
   export const submittingTx = 'submitting tx';
-
-  export const fetchProfileData = 'fetch profile data';
-  export const profileDataFetched = 'profile data fetched';
 
   export const payForLicenseRequested = 'pay for license';
   export const licensePaid = 'license paid';
@@ -42,6 +35,14 @@ export namespace Actions {
     export const LoginSuccess = 'login success';
     export const LogoutRequested = 'logout requested';
     export const LoginIdReceived = 'login ID received';
+  }
+
+  export namespace Profile {
+    export const Updating= 'updating profile';
+    export const Updated = 'profile updated successfully';
+    export const UpdateRequested = 'profile update requested';
+    export const FetchProfile = 'fetch profile data';
+    export const ProfileFetched = 'profile data fetched';
   }
 
   export namespace Transfer {
