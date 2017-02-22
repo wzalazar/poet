@@ -48,9 +48,9 @@ export function* signTx(action: { payload: SignTransactionParameters }) {
   const sighash = getSighash(tx, myAddress);
 
   const requestId = yield call(requestIdFromAuth, sighash, true);
-  yield put({ type: Actions.signTxIdReceived, payload: requestId.id });
+  yield put({ type: Actions.Transactions.SignIdReceived, payload: requestId.id });
   const response = yield call(bindAuthResponse, requestId);
-  yield put({ type: Actions.submittingTx })
+  yield put({ type: Actions.Transactions.Submitting });
 
   applyHexSignaturesInOrder(tx, response.signatures, publicKey);
   const txId = yield call(submitTx, tx.toString());
@@ -62,7 +62,7 @@ export function* signTx(action: { payload: SignTransactionParameters }) {
     outputIndex: 0 // TODO: Sort inputs according to BIP69 and change this.
   });
 
-  yield put({ type: Actions.txSubmittedSuccess });
+  yield put({ type: Actions.Transactions.SubmittedSuccess });
 }
 
 export function* signTxCancellable(action: { payload: SignTransactionParameters }) {
@@ -80,8 +80,8 @@ export function* mockLoginHit(action: any) {
 
 export function claimSubmitSaga(): Saga {
   return function*() {
-    yield takeEvery(Actions.signTxSubmitRequested, signTxCancellable as any);
-    yield takeEvery(Actions.fakeTxSign, mockLoginHit);
+    yield takeEvery(Actions.Transactions.SignSubmitRequested, signTxCancellable as any);
+    yield takeEvery(Actions.Transactions.FakeSign, mockLoginHit);
   }
 }
 

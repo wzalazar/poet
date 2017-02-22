@@ -5,12 +5,6 @@ export namespace Actions {
 
   export const blockInfoReceived = 'block info received';
 
-  export const signTxSubmitRequested = 'sign tx submit requested';
-  export const fakeTxSign = 'fake sign requested';
-  export const txSubmittedSuccess = 'tx submitted';
-  export const signTxIdReceived = 'sign tx id received';
-  export const submittingTx = 'submitting tx';
-
   export const payForLicenseRequested = 'pay for license';
   export const licensePaid = 'license paid';
 
@@ -58,6 +52,14 @@ export namespace Actions {
     export const SubmitRequested = 'claims submit requested';
     export const Submitting = 'submitting claims';
     export const SubmittedSuccess = 'create claim success';
+  }
+
+  export namespace Transactions {
+    export const SignSubmitRequested = 'sign tx submit requested';
+    export const FakeSign = 'fake sign requested';
+    export const Submitting = 'submitting tx';
+    export const SubmittedSuccess = 'tx submitted';
+    export const SignIdReceived = 'sign tx id received';
   }
 
   export namespace Modals {

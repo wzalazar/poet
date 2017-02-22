@@ -1,20 +1,14 @@
-import { put } from 'redux-saga/effects'
-import { Actions } from '../actions/index'
-import { take } from 'redux-saga/effects'
-import { select } from 'redux-saga/effects'
-import { currentPublicKey } from '../selectors/session'
-import { call } from 'redux-saga/effects'
 import { takeEvery } from 'redux-saga'
-/**
- * Created by jd on 2/3/17.
- */
+import { put, take } from 'redux-saga/effects'
+
+import { Actions } from '../actions/index'
 
 function* withdraw(action: any) {
   const paymentAddress = action.payload.paymentAddress;
   const amountInSatoshis = action.payload.amountInSatoshis;
 
   yield put({
-    type: Actions.signTxSubmitRequested,
+    type: Actions.Transactions.SignSubmitRequested,
     payload: {
       paymentAddress,
       amountInSatoshis,

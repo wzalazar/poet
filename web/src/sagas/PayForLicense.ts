@@ -34,7 +34,7 @@ function* payForLicense(action: any) {
     return;
 
   yield put({
-    type: Actions.signTxSubmitRequested,
+    type: Actions.Transactions.SignSubmitRequested,
     payload: {
       paymentAddress: offering.paymentAddress,
       amountInSatoshis: parseFloat(offering.pricingPriceAmount) * (offering.pricingPriceCurrency === "BTC" ? 1e8 : 1),

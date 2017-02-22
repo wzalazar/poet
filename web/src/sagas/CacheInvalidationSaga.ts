@@ -39,6 +39,6 @@ function* invalidateBalance() {
 export function CacheInvalidationSaga(): Saga {
   return function*() {
     yield takeEvery(Actions.Claims.SubmittedSuccess, claimsSubmittedSuccess);
-    yield takeEvery(Actions.txSubmittedSuccess, invalidateBalance);
+    yield takeEvery(Actions.Transactions.SubmittedSuccess, invalidateBalance);
   }
 }
