@@ -67,8 +67,8 @@ function mapStateToProps(state: any): ModalVisible & LoginProps {
 }
 
 const mapDispatch = {
-  cancelAction: () => ({ type: Actions.loginModalDisposeRequested }),
-  mockLoginRequest: (requestId: string) => ({ type: Actions.mockLoginRequest, payload: requestId })
+  cancelAction: () => ({ type: Actions.Modals.Login.Hide }),
+  mockLoginRequest: (requestId: string) => ({ type: Actions.Session.MockLoginRequest, payload: requestId })
 };
 
 export default connect(mapStateToProps, mapDispatch)(LoginModal);

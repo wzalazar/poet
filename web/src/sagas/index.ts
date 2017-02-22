@@ -1,6 +1,6 @@
 import { fetchSaga } from './FetchSaga';
 import { navbarSaga } from './NavbarSaga';
-import SessionSaga from './SessionSaga';
+import { sessionSaga } from './SessionSaga';
 import ProfileSaga from './ProfileSaga';
 import SignTxSaga from './SignTxSaga';
 import SubmitClaims from './SubmitClaims';
@@ -13,7 +13,7 @@ import { CacheInvalidationSaga } from './CacheInvalidationSaga';
 export default [
   fetchSaga,
   navbarSaga,
-  SessionSaga,
+  sessionSaga,
   TransferSaga,
   ProfileSaga,
   SubmitClaims,

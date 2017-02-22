@@ -15,5 +15,5 @@ class Component extends React.Component<LoginProps, undefined> {
 }
 
 export const LogoutButton = connect(() => ({}), {
-  logout: () => ({ type: Actions.logoutButtonClicked })
+  logout: () => ({ type: Actions.Session.LogoutButtonClicked })
 })(Component);

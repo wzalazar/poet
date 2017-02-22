@@ -22,24 +22,24 @@ async function bindAuthResponse(request: any) {
 }
 
 function* loginButtonClickedAction(action: any) {
-  yield put({ type: Actions.loginModalShow });
+  yield put({ type: Actions.Modals.Login.Show });
   const requestId = yield call(requestIdFromAuth);
-  yield put({ type: Actions.loginIdReceived, payload: requestId });
+  yield put({ type: Actions.Session.LoginIdReceived, payload: requestId });
   const response = yield call(bindAuthResponse, requestId);
-  yield put({ type: Actions.loginResponse, payload: response })
+  yield put({ type: Actions.Session.LoginResponse, payload: response })
 }
 
 function* logoutButtonClickedAction(action: any) {
-  yield put({ type: Actions.logoutRequested });
+  yield put({ type: Actions.Session.LogoutRequested });
   localStorage.removeItem(LOCALSTORAGE_SESSION);
   browserHistory.push('/');
 }
 
 function* loginResponseAction(action: any) {
-  yield put({ type: Actions.loginModalHide });
+  yield put({ type: Actions.Modals.Login.Hide });
 
   localStorage.setItem(LOCALSTORAGE_SESSION, JSON.stringify(action.payload));
-  yield put({ type: Actions.loginSuccess, token: action.payload });
+  yield put({ type: Actions.Session.LoginSuccess, token: action.payload });
 
   yield put({ type: Actions.fetchProfileData, profilePublicKey: action.payload.publicKey });
   browserHistory.push('/'); // TODO: redirect to login_success
@@ -49,26 +49,19 @@ function* mockLoginHit(action: any) {
   yield call(fetch, config.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
 }
 
-function* loginModalDisposeRequestedAction(action: any) {
-  yield put({ type: Actions.loginModalHide });
-}
-
-function sessionSaga(): Saga {
+export function sessionSaga(): Saga {
   return function*() {
     const session = localStorage.getItem(LOCALSTORAGE_SESSION);
 
     if (session) {
       const token = JSON.parse(session);
-      yield put({ type: Actions.loginSuccess, token });
+      yield put({ type: Actions.Session.LoginSuccess, token });
       yield put({ type: Actions.fetchProfileData, profilePublicKey: token.publicKey });
     }
 
-    yield takeEvery(Actions.loginButtonClicked, loginButtonClickedAction);
-    yield takeEvery(Actions.logoutButtonClicked, logoutButtonClickedAction);
-    yield takeEvery(Actions.loginModalDisposeRequested, loginModalDisposeRequestedAction);
-    yield takeEvery(Actions.loginResponse, loginResponseAction);
-    yield takeEvery(Actions.mockLoginRequest, mockLoginHit);
+    yield takeEvery(Actions.Session.LoginButtonClicked, loginButtonClickedAction);
+    yield takeEvery(Actions.Session.LogoutButtonClicked, logoutButtonClickedAction);
+    yield takeEvery(Actions.Session.LoginResponse, loginResponseAction);
+    yield takeEvery(Actions.Session.MockLoginRequest, mockLoginHit);
   }
 }
-
-export default sessionSaga;

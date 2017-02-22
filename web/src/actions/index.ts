@@ -1,18 +1,9 @@
 export namespace Actions {
-  export const loginButtonClicked = 'login button clicked';
-  export const logoutButtonClicked = 'logout button clicked';
-  export const loginModalDisposeRequested = 'login modal dispose requested';
   export const navbarSearchClick = 'navbar search click';
   export const navbarSearchChange = 'navbar search change';
   export const fetchRequest = 'fetch requested';
-  export const loginResponse = 'login response'; // TODO: this one should be dispatched by a saga
   export const claimsSubmitRequested = 'claims submit requested';
   export const claimsModalDismissRequested = 'dismiss work modal';
-
-  export const loginSuccess = 'login success';
-  export const loginModalShow = 'login modal open';
-  export const loginModalHide = 'login modal close';
-  export const logoutRequested = 'logout requested';
 
   export const fetchResponseSuccess = 'fetch response success';
   export const fetchResponseError = 'fetch response error';
@@ -28,9 +19,7 @@ export namespace Actions {
   export const profileUpdated = 'profile updated successfully';
   export const updateProfileRequested = 'profile update requested';
 
-  export const loginIdReceived = 'login ID received';
   export const unrecognizedSocketMessage = 'unrecognized socket message';
-  export const mockLoginRequest = 'mock login server requested';
 
   export const claimsResponse = 'claim response for signature';
   export const claimIdReceived = 'request id for authorizing claim received';
@@ -70,7 +59,21 @@ export namespace Actions {
   export const transferModalDismissRequested = 'transfer modal dismiss requested';
   export const transferDismissed = 'transfer work modal dismissed';
 
+  export namespace Session {
+    export const MockLoginRequest = 'mock login server requested';
+    export const LoginButtonClicked = 'login button clicked';
+    export const LogoutButtonClicked = 'logout button clicked';
+    export const LoginResponse = 'login response';
+    export const LoginSuccess = 'login success';
+    export const LogoutRequested = 'logout requested';
+    export const LoginIdReceived = 'login ID received';
+  }
+
   export namespace Modals {
+    export namespace Login {
+      export const Show = 'login modal open';
+      export const Hide = 'login modal close';
+    }
     export namespace PurchaseLicense {
       export const Show = 'purchase license modal show';
       export const Accept = 'purchase license modal accept';

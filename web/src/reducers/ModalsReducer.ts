@@ -2,9 +2,9 @@ import { Actions } from '../actions/index';
 
 export default function modalsReducer(state: any, action: any) {
   switch (action.type) {
-    case Actions.loginModalShow:
+    case Actions.Modals.Login.Show:
       return { ...state, login: true };
-    case Actions.loginModalHide:
+    case Actions.Modals.Login.Hide:
       return { ...state, login: false };
     case Actions.signClaimsModalShow:
       return { ...state, signWork: true };
