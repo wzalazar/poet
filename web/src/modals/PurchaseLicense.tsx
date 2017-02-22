@@ -55,8 +55,8 @@ function mapStateToProps(state: any): PurchaseLicenseProps {
 }
 
 const mapDispatch = {
-  cancelAction: () => ({ type: Actions.purchaseLicenseModalCancel }),
-  acceptAction: () => ({ type: Actions.purchaseLicenseModalAccept })
+  cancelAction: () => ({ type: Actions.Modals.PurchaseLicense.Cancel }),
+  acceptAction: () => ({ type: Actions.Modals.PurchaseLicense.Accept })
 };
 
 export const PurchaseLicense = connect(mapStateToProps, mapDispatch)(PurchaseLicenseComponent);

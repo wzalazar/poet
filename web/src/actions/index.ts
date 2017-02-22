@@ -70,7 +70,11 @@ export namespace Actions {
   export const transferModalDismissRequested = 'transfer modal dismiss requested';
   export const transferDismissed = 'transfer work modal dismissed';
 
-  export const purchaseLicenseModalShow = 'purchase license modal show';
-  export const purchaseLicenseModalAccept = 'purchase license modal accept';
-  export const purchaseLicenseModalCancel = 'purchase license modal cancel';
+  export namespace Modals {
+    export namespace PurchaseLicense {
+      export const Show = 'purchase license modal show';
+      export const Accept = 'purchase license modal accept';
+      export const Cancel = 'purchase license modal cancel';
+    }
+  }
 }

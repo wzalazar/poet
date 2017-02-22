@@ -18,10 +18,10 @@ export default function modalsReducer(state: any, action: any) {
       return { ...state, transfer: true };
     case Actions.transferModalHide:
       return { ...state, transfer: false };
-    case Actions.purchaseLicenseModalShow:
+    case Actions.Modals.PurchaseLicense.Show:
       return { ...state, purchaseLicense: true };
-    case Actions.purchaseLicenseModalAccept:
-    case Actions.purchaseLicenseModalCancel:
+    case Actions.Modals.PurchaseLicense.Accept:
+    case Actions.Modals.PurchaseLicense.Cancel:
       return { ...state, purchaseLicense: false };
   }
   return state || {};
