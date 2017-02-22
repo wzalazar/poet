@@ -28,7 +28,7 @@ export interface SignTransactionParameters {
 }
 
 export function* signTx(action: { payload: SignTransactionParameters }) {
-  yield put({ type: Actions.signTxModalShow, payload: action.payload });
+  yield put({ type: Actions.Modals.SignTransaction.Show, payload: action.payload });
 
   const publicKey = bitcore.PublicKey(yield select(currentPublicKey))
 
@@ -40,8 +40,6 @@ export function* signTx(action: { payload: SignTransactionParameters }) {
   const amount = parseInt('' + action.payload.amountInSatoshis, 10);
   if (!utxos.reduce((prev: number, next: any) => prev + next.satoshis, 0)) {
     yield put({ type: Actions.noBalanceAvailable });
-    yield take(Actions.signTxModalDismissRequested);
-    yield put({ type: Actions.signTxModalHide });
     return
   }
   const tx = new bitcore.Transaction().from(utxos)
@@ -71,8 +69,7 @@ export function* signTxCancellable(action: { payload: SignTransactionParameters 
   yield race([
     call(signTx, action),
     call(function* () {
-      yield take(Actions.signTxModalDismissRequested);
-      yield put({ type: Actions.signTxModalHide })
+      yield take(Actions.Modals.SignTransaction.Hide);
     })
   ]);
 }
