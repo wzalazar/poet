@@ -78,8 +78,9 @@ function processItem(article: any): Article {
 async function process(xmlResponse: any): Promise<Article[]> {
   const items = await new Promise(function(resolve, reject) {
     xmlResponse.text().then((body: any) =>
-      xml2js.parseString(body, function(err, res) {
+      xml2js.parseString(body, { strict: false }, function(err, res) {
         if (err) {
+          console.log(err)
           return reject(err)
         }
         return resolve(res.rss.channel[0].item)
@@ -91,13 +92,17 @@ async function process(xmlResponse: any): Promise<Article[]> {
 
 async function scanBTCMagazine(): Promise<any> {
   fetch(targetURL).then(process).then(async (results) => {
-    const newArticles = []
-    for (let article of results) {
-      if (!(await exists(article))) {
-        newArticles.push(article)
+    try {
+      const newArticles = []
+      for (let article of results) {
+        if (!(await exists(article))) {
+          newArticles.push(article)
+        }
       }
+      await submitArticles(newArticles)
+    } catch (err) {
+      console.log(err, err.stack)
     }
-    await submitArticles(newArticles)
   })
 }
 
@@ -136,6 +141,8 @@ async function postClaims(claims: any) {
     return body.text()
   }).then(body => {
     console.log(body.substr(0, 100) + '...')
+  }).catch(err => {
+    console.log(err, err.stack)
   })
 }
 
