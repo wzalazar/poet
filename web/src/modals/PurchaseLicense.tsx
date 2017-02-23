@@ -4,11 +4,10 @@ import { Action } from 'redux'
 
 import Modal, { ModalProps } from './Modal'
 import { Actions } from '../actions/index'
+import { Images } from '../images/Images';
 
 import './Modal.scss'
 import './PurchaseLicense.scss'
-
-const successMarkUrl = 'https://cdn3.iconfinder.com/data/icons/stroke/53/Button-Check-512.png';
 
 interface PurchaseLicenseProps extends ModalProps {
   acceptAction?: () => Action;
@@ -23,7 +22,7 @@ class PurchaseLicenseComponent extends Modal<PurchaseLicenseProps, undefined> {
         <div className="wrapper">
           <section className="balance">
             <div className="funds">
-              <img src={successMarkUrl} />
+              <img src={Images.SuccessMark} />
               <div className="message">
                 <div>You have enough funds to pay.</div>
                 <a href="#">Add more</a>

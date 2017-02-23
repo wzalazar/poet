@@ -7,6 +7,7 @@ import BlockReducer from './BlockReducer';
 import { signTransactionReducer } from './SignTxReducer';
 import { transferReducer } from './TransferReducer';
 import { navbarReducer } from './NavbarReducer';
+import { createWorkReducer } from './CreateWorkReducer';
 
 export default {
   fetch: fetchReducer,
@@ -17,5 +18,6 @@ export default {
   transfer: transferReducer,
   claimSign: claimSignReducer,
   blocks: BlockReducer,
-  navbar: navbarReducer
+  navbar: navbarReducer,
+  createWork: createWorkReducer
 };

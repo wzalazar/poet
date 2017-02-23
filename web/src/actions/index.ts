@@ -90,5 +90,9 @@ export namespace Actions {
       export const Hide = 'sign tx modal hide';
       export const DismissRequested = 'sign tx dismiss modal received';
     }
+    export namespace CreateWorkResult {
+      export const Show = 'create work result modal show';
+      export const Hide = 'create work result modal hide';
+    }
   }
 }

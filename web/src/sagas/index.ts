@@ -8,6 +8,7 @@ import TransferSaga from './TransferSaga';
 import Withdrawal from './Withdrawal';
 import { purchaseLicenseSaga } from './PurchaseLicense';
 import { CacheInvalidationSaga } from './CacheInvalidationSaga';
+import { createWorkSaga } from './CreateWorkSaga';
 
 export default [
   fetchSaga,
@@ -19,5 +20,6 @@ export default [
   SignTxSaga,
   Withdrawal,
   purchaseLicenseSaga,
-  CacheInvalidationSaga
+  CacheInvalidationSaga,
+  createWorkSaga
 ];

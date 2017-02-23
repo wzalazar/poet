@@ -1,7 +1,10 @@
 import * as React from "react";
 import {connect} from "react-redux";
+
+import { Claim, WORK, PROFILE } from '../Claim';
 import Modal, {ModalProps} from "./Modal";
 import { Actions } from "../actions/index";
+import { WorkDetails } from '../atoms/WorkDetails';
 import Loading from "../components/Loading";
 
 const QR = require('react-qr');
@@ -14,7 +17,7 @@ interface SignProps {
   readonly visible: boolean;
   readonly submitting: boolean;
   readonly success: boolean;
-  readonly claimDetails: ReadonlyArray<string>;
+  readonly claims: ReadonlyArray<Claim>;
 }
 interface SignActions {
   readonly mockSign: (id: string) => any
@@ -22,10 +25,9 @@ interface SignActions {
 
 class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefined> {
   draw() {
-    return this.props.success ? this.renderSuccess() : this.renderRegister();
-  }
+    const workClaim = this.props.claims.find(claim => claim.type === WORK);
+    const profileClaim = this.props.claims.find(claim => claim.type === PROFILE);
 
-  renderRegister() {
     return (
       <section className="modal-sign-work">
         <header>
@@ -46,9 +48,17 @@ class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefine
             }
           </div>
           <h2>This will authorize the following transaction</h2>
-          <ul className="claim-details">
-            { this.props.claimDetails.map( claimDetail => <li>{claimDetail}</li> )}
-          </ul>
+
+          { workClaim && <WorkDetails
+            work={workClaim}
+            className="claim-details"
+            name timestamp
+          /> }
+
+          { profileClaim && <ul className="claim-details">
+            <li>Profile Update</li>
+          </ul> }
+
         </main>
         <nav>
           <button onClick={this.props.cancelAction}>Cancel</button>
@@ -57,17 +67,6 @@ class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefine
     )
   }
 
-  renderSuccess() {
-    return (
-      <div className="modal">
-        <h1>Success!</h1>
-        <div>You have registered the following creative work</div>
-        <ul className="claim-details">
-          { this.props.claimDetails.map((claimDetail, index) => <li key={index}>{claimDetail}</li> )}
-        </ul>
-      </div>
-    );
-  }
 }
 
 function mapStateToProps(state: any): SignProps {
@@ -76,7 +75,7 @@ function mapStateToProps(state: any): SignProps {
     requestId: state.claimSign.id,
     success: state.claimSign.success,
     submitting: state.claimSign.submitting,
-    claimDetails: state.claimSign.details || []
+    claims: state.claimSign.claims || []
   }
 }
 
