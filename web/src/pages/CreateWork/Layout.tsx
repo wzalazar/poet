@@ -64,14 +64,18 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
       selectedStep: 1,
       workData,
       workTitle: workTitleAttribute && workTitleAttribute.value
-    })
+    });
+
+    window.scrollTo(0, 0);
   }
 
   private onStepLicenseSubmit(licenseData: StepLicenseData) {
     this.setState({
       selectedStep: 2,
       licenseData: licenseData
-    })
+    });
+
+    window.scrollTo(0, 0);
   }
 
   private submitWork() {
