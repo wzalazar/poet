@@ -15,6 +15,7 @@ export default class Fields {
   static OWNER_KEY = 'owner'
   static AUTHOR = 'authorPublicKey'
   static PAYMENT_ADDRESS = 'paymentAddress'
+  static WORK_NAME = 'name'
 
   // Certificate
   static CERTIFICATION_TIME = 'certificationTime'

@@ -18,7 +18,8 @@ export default async function getConnection(purpose: string) {
         },
         entities: [
           path.join(__dirname, 'orm', '*.ts'),
-          path.join(__dirname, 'orm', 'domain', '*.ts')
+          path.join(__dirname, 'orm', 'domain', '*.ts'),
+          path.join(__dirname, 'orm', 'events', '*.ts')
         ],
         autoSchemaSync: purpose === 'claimsToDb'
       })

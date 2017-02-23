@@ -2,6 +2,7 @@ import BlockchainService from '../../domainService'
 import { BlockMetadata } from '../../../events'
 import { Claim, TITLE } from '../../../claim'
 import Fields from '../../fields'
+import { EventType } from '../../orm/events/events';
 
 const Reference = Fields.REFERENCE
 const Owner = Fields.OWNER_KEY
@@ -28,9 +29,11 @@ export default {
         owner: owner
       })
     )
+
     if (work) {
       work.title = title
       if (owner) {
+        await service.saveEvent(claim.id, EventType.TITLE_ASSIGNED, work, owner)
         work.owner = owner
       }
       await service.workRepository.persist(work)

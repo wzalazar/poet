@@ -2,6 +2,7 @@ import BlockchainService from '../../domainService'
 import { BlockMetadata } from '../../../events'
 import { Claim, OFFERING } from '../../../claim'
 import Fields from '../../fields'
+import { EventType } from '../../orm/events/events';
 
 const Reference = Fields.REFERENCE
 const OfferingType = Fields.OFFERING_TYPE
@@ -21,6 +22,9 @@ export default {
       console.log('User does not control work, can not extend license', claim)
       return
     }
+
+    await service.saveEvent(claim.id, EventType.LICENSE_OFFERED, reference, await service.profileRepository.findOneById(owner))
+
     return await service.offeringRepository.persist(
       service.offeringRepository.create({
         id: claim.id,

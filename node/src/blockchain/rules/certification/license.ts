@@ -2,6 +2,7 @@ import BlockchainService from "../../domainService";
 import {BlockMetadata} from "../../../events";
 import {Claim, LICENSE} from "../../../claim";
 import Fields from "../../fields";
+import { EventType } from '../../orm/events/events';
 
 const Reference = Fields.REFERENCE
 const ReferenceOffering = Fields.REFERENCE_OFFERING
@@ -85,6 +86,9 @@ export default {
       return
     }
      */
+    await service.saveEvent(claim.id, EventType.LICENSE_BOUGHT, work, holder)
+    await service.saveEvent(claim.id, EventType.LICENSE_SOLD, work, await service.profileRepository.findOneById(ownerOnRecord))
+
     const license = await service.licenseRepository.persist(service.licenseRepository.create({
       id: claim.id,
       reference: work,

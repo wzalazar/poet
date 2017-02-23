@@ -12,14 +12,19 @@ import {ClaimService} from "./claimService";
 import CertificationService from "./certificatonService";
 import {default as listenRules} from "./rules/listen";
 import {BlockMetadata} from "../events";
+import { EventService } from './eventService';
+import Event from './orm/events/events';
+import { EventType } from './orm/events/events';
 
 export default class DomainService extends ClaimService {
 
   public certificationService: CertificationService;
+  private eventService: EventService;
 
   constructor() {
     super()
     this.certificationService = new CertificationService(this)
+    this.eventService = new EventService(this.db)
   }
 
   async createOrUpdateClaimInfo(claim: PureClaim, txInfo: BlockMetadata) {
@@ -197,5 +202,44 @@ export default class DomainService extends ClaimService {
 
   get attributeRepository(): Repository<Attribute> {
     return this.db.getRepository(Attribute)
+  }
+
+  get eventRepository(): Repository<Event> {
+    return this.db.getRepository(Event)
+  }
+
+  storeWork(work: {id: string; author?: Profile, displayName?: string}) {
+    return this.workRepository.persist(this.workRepository.create(work))
+  }
+
+  async saveEvent(id: string, type: EventType, work: Work, actor: Profile, payload?: string) {
+    try {
+      const query: any = {
+        type,
+        claimReference: id
+      }
+      if (work) {
+        query.workId = work.id
+      }
+      if (actor) {
+        query.actorId = actor.id
+      }
+      const existent = await this.eventRepository.findOne(query)
+      if (existent) {
+        return
+      }
+      return await this.eventRepository.persist(this.eventRepository.create({
+        type,
+        timestamp: new Date().getTime(),
+        claimReference: id,
+        workId: work && work.id,
+        workDisplayName: work && work.displayName,
+        actorId: actor && actor.id,
+        actorDisplayName: actor && actor.displayName,
+        payload
+      }))
+    } catch (error) {
+      console.log('Could not save event', error)
+    }
   }
 }
