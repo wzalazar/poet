@@ -2,7 +2,6 @@ import 'reflect-metadata';
 import * as Koa from 'koa';
 import BlockchainService from '../../domainService';
 import Route, { QueryOptions } from '../route';
-import OfferingRoute from './offerings';
 import { QueryBuilder } from 'typeorm';
 import Event from '../../orm/events/events';
 import Router = require('koa-router')
@@ -18,17 +17,21 @@ const WORK = 'work'
 
 export default class EventRoute extends Route<Event> {
   service: BlockchainService
-  offerings: OfferingRoute
+
+  constructor(service: BlockchainService) {
+    super(service.eventRepository, 'events')
+    this.service = service
+  }
 
   ownFilter(queryBuilder: QueryBuilder<Event>, opts: EventQueryOpts): QueryBuilder<Event> {
     if (opts.profile) {
-      queryBuilder.andWhere('actorId=:profile', opts)
+      queryBuilder.andWhere('item.actorId=:profile', opts)
     } else if (opts.work) {
-      queryBuilder.andWhere('workId=:work', opts)
+      queryBuilder.andWhere('item.workId=:work', opts)
     } else {
       throw new Error('Invalid parameter: must supply actor or work id')
     }
-    queryBuilder.orderBy('timestamp', 'DESC')
+    queryBuilder.orderBy('item.timestamp', 'DESC')
     return queryBuilder
   }
 
