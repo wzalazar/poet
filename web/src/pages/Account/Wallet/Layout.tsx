@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 
 const QR = require('react-qr');
 
@@ -28,21 +29,30 @@ export class WalletLayout extends React.Component<WalletLayoutProps, undefined> 
                 <div className="primary">$40.00 USD</div>
                 <div className="secondary">.0445 BTC</div>
               </section>
-              {/*<WithdrawBox address={this.props.address} requestWithdrawal={this.props.requestWithdrawal}/>*/}
-              <div className="qr">
-                <QR text={this.props.address}/>
-              </div>
-              <CopyableText text={this.props.address} className="address"/>
-              <nav>
-                <button className="button-secondary">Open in Desktop Wallet</button>
-                <div className="separator">
-                  <hr/>
-                  <span>or</span>
-                  <hr/>
-                </div>
-                <button className="button-secondary">Deposit with Card</button>
-              </nav>
-
+              <Tabs selectedIndex={0} className="wallet-tabs" >
+                <TabList className="wallet-tab-list" activeTabClassName="selected">
+                  <Tab>Deposit</Tab>
+                  <Tab>Withdraw</Tab>
+                </TabList>
+                <TabPanel>
+                    <div className="qr">
+                      <QR text={this.props.address}/>
+                    </div>
+                    <CopyableText text={this.props.address} className="address"/>
+                    <nav>
+                      <button className="button-secondary">Open in Desktop Wallet</button>
+                      <div className="separator">
+                        <hr/>
+                        <span>or</span>
+                        <hr/>
+                      </div>
+                      <button className="button-secondary">Deposit with Card</button>
+                    </nav>
+                </TabPanel>
+                <TabPanel>
+                  <WithdrawBox address={this.props.address} requestWithdrawal={this.props.requestWithdrawal}/>
+                </TabPanel>
+              </Tabs>
             </section>
           </div>
           <div className="col-md-8">
