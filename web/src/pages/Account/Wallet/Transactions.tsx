@@ -1,13 +1,17 @@
 import * as React from 'react';
 import * as moment from 'moment';
 
+const classNames = require('classnames');
+
 import '../../../extensions/Array';
 
 import { AddressTransactions, AddressTransactionsProps, Transaction } from '../../../hocs/AddressTransactions';
 
+import './Transactions.scss';
+
 function render(props: AddressTransactionsProps) {
   return (
-    <table className="table table-highlight">
+    <table className="transactions">
       <thead>
         <tr>
           <td>Date</td>
@@ -40,11 +44,13 @@ function renderTransaction(address: string, transaction: Transaction) {
 
   const values = valuesOut;
 
+  const value = type === 'deposit' ? valuesOutForMe : valuesIn - valuesOutForMe;
+
   return (
     <tr key={transaction.txid}>
-      <td>{moment().format()}</td>
+      <td>{moment().format('DD-MM-YY [at] HH:mm:ss')}</td>
       <td>{type}</td>
-      <td>{ (type === 'deposit' ? valuesOutForMe : valuesIn - valuesOutForMe).toFixed(8) } </td>
+      <td className={classNames('amount', value > 0 ? 'positive' : 'negative')}>{value > 0 && '+'}{ value.toFixed(8) } BTC</td>
     </tr>
   )
 }
