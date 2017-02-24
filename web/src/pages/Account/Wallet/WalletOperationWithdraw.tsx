@@ -8,46 +8,40 @@ import './WalletOperationWithdraw.scss';
 
 export class WalletOperationWithdraw extends ResourceProvider<UnspentTransactionOutputs, WithdrawBoxProps, WithdrawalInfo> {
 
-  private changeAmount: (ev: any) => any;
-  private changeAddress: (ev: any) => any;
-
   constructor() {
     super(...arguments);
     this.state = {
-      amountInSatoshis: 0,
+      amountInSatoshis: 1,
       paymentAddress: ''
-    };
-    this.changeAmount = (ev: any) => {
-      this.setState({ amountInSatoshis: ev.target.value });
-    };
-    this.changeAddress = (ev: any) => {
-      this.setState({ paymentAddress: ev.target.value });
     };
   }
 
   renderElement(resource: UnspentTransactionOutputs): JSX.Element {
     return (
       <section className="wallet-operation-withdraw">
-        <div>
-          <label htmlFor="amountInSatoshis">
-            <span>Amount to withdraw (fees will be subtracted from this amount)</span>
-            <input name="amountInSatoshis"
-              defaultValue={'' + this.state.amountInSatoshis}
-              onChange={this.changeAmount}>
+        <main>
+          <div className="input">
+            <label>Amount to withdraw</label>
+            <input
+              type="number"
+              name="amountInSatoshis"
+              value={this.state.amountInSatoshis}
+              onChange={(event: any) => this.setState({ amountInSatoshis: event.target.value })}
+              min={1}>
             </input>
-          </label>
-        </div>
-        <div>
-          <label htmlFor="paymentAddress">
-            <span>Payment Address</span>
-            <input name="paymentAddress"
-              defaultValue={this.state.paymentAddress}
-              onChange={this.changeAddress}
-              placeholder="Payment Address"
-            >
+            <small>Fees will be subtracted from this amount</small>
+          </div>
+          <div className="input">
+            <label>Payment Address</label>
+            <input
+              type="text"
+              name="paymentAddress"
+              value={this.state.paymentAddress}
+              onChange={(event: any) => this.setState({ paymentAddress: event.target.value })}
+              placeholder="Payment Address">
             </input>
-          </label>
-        </div>
+          </div>
+        </main>
         <nav>
           <button className="button-secondary" onClick={() => this.props.requestWithdrawal(this.state)}>Withdraw</button>
         </nav>
