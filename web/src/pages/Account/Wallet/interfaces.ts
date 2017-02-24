@@ -9,11 +9,12 @@ export interface WithdrawBoxProps {
 }
 
 export interface UnspentTransactionOutput {
-  txid: string,
-  vout: number,
-  satoshis: number,
-  confirmations: number,
-  ts: number
+  readonly txid: string;
+  readonly vout: number;
+  readonly satoshis: number;
+  readonly confirmations: number;
+  readonly ts: number;
+  readonly amount: number;
 }
 
 export type UnspentTransactionOutputs = UnspentTransactionOutput[];
