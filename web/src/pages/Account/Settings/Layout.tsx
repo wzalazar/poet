@@ -30,6 +30,18 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
   }
 
   componentWillReceiveProps(props: UserProfileProps) {
+    const propsChanged = () => {
+      return !(
+        this.props.displayName === props.displayName &&
+          this.props.firstName === props.firstName &&
+          this.props.lastName === props.lastName &&
+          this.props.email === props.email &&
+          this.props.avatarImageData === props.avatarImageData &&
+          this.props.currency === props.currency
+      )
+    };
+    if (!propsChanged())
+      return;
     this.setState(ProfileLayout.propsToState(props))
   }
 
