@@ -21,7 +21,7 @@ export class BlocksLayout extends React.Component<BlocksLayoutProps, undefined> 
           <div className="row">
             <Blocks className="col-sm-6 col-md-4" blocks={this.props.blocks} />
             <div className="col-sm-6 col-md-8">
-              <LatestWorks />
+              <LatestWorks limit={20} />
             </div>
           </div>
         </section>
