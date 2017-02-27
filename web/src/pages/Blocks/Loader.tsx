@@ -4,7 +4,7 @@ import { Saga } from 'redux-saga'
 import { select, call, put } from 'redux-saga/effects'
 
 import PageLoader, { ReducerDescription } from '../../components/PageLoader'
-import BlockLayout from './Layout'
+import { BlocksLayout } from './Layout'
 import config from '../../config'
 import { Actions } from '../../actions/index'
 
@@ -14,7 +14,7 @@ async function fetchBlocks() {
 
 export class Blocks extends PageLoader<Object, Object> {
 
-  component = BlockLayout;
+  component = BlocksLayout;
 
   initialState() {
     return {};

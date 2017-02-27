@@ -100,3 +100,21 @@ export interface License {
   }
 }
 
+export interface BlockInfo {
+  readonly torrentHash: string
+
+  readonly transactionHash?: string
+  readonly outputIndex?: number
+
+  // Only available if confirmed
+  readonly bitcoinHash?: string
+  readonly bitcoinHeight?: number
+  readonly transactionOrder?: number
+  readonly timestamp?: number
+
+  // Only available if downloaded
+  readonly hash?: string
+
+  // Only available if indexed
+  readonly height?: number
+}
