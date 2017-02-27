@@ -22,10 +22,11 @@ export interface StepRegisterProps {
 interface StepRegisterState {
   readonly mediaType?: string;
   readonly articleType?: string;
+  readonly content?: string;
 }
 
 // http://stackoverflow.com/questions/18679576/counting-words-in-string
-function countWords(s: string){
+function countWords(s: string) {
   s = s.replace(/(^\s*)|(\s*$)/gi,"");//exclude  start and end white-space
   s = s.replace(/[ ]{2,}/gi," ");//2 or more space to 1
   s = s.replace(/\n /,"\n"); // exclude newline with a start spacing
@@ -34,13 +35,13 @@ function countWords(s: string){
 
 export class StepRegister extends React.Component<StepRegisterProps, StepRegisterState> {
   private attributes: Attributes;
-  private content: Content;
 
   constructor() {
     super(...arguments);
     this.state = {
       mediaType: 'article',
-      articleType: 'news-article'
+      articleType: 'news-article',
+      content: ''
     }
   }
 
@@ -54,29 +55,44 @@ export class StepRegister extends React.Component<StepRegisterProps, StepRegiste
           onArticleTypeSelected={articleType => this.setState({ articleType })}
         />
         <Attributes ref={attributes => this.attributes = attributes} />
-        <Content ref={content => this.content = content} onChange={this.listenChanges.bind(this)}/>
+        <Content
+          content={this.state.content}
+          onChange={this.onContentChange.bind(this)}
+          onFileNameChange={this.onContentFileNameChange.bind(this)} />
         <button className="button-primary" onClick={this.submit.bind(this)}>Next</button>
       </section>
     );
   }
 
-  private listenChanges(value: string) {
-    const newAttributes = [].concat(this.attributes.state.attributes)
-    const hasAttribute = (attributeName: string) => this.attributes.state.attributes.filter(attribute => attribute.key === attributeName).length > 0
-    const currentValue = (attributeName: string) => this.attributes.state.attributes.filter(attribute => attribute.key === attributeName)[0]
-    const updateAttribute = (key: string, value: string) => newAttributes.filter(attribute => attribute.key === key)[0].value = value
-    const addAttribute = (key: string, value: string) => newAttributes.push({ key, value })
-    const upsertAttribute = (key: string, value: string) => hasAttribute(key) ? updateAttribute(key, value) : addAttribute(key, value)
+  private onContentChange(content: string) {
+    this.setState({ content });
+    this.contentToAttributes(content);
+  }
 
-    if (!hasAttribute('name') || !currentValue('name').value) {
-      upsertAttribute('name',  this.content.upload.components.fileInput.files[0].name)
+  private onContentFileNameChange(fileName: string) {
+    this.contentToAttributes(null, fileName);
+  }
+
+  private contentToAttributes(content?: string, fileName?: string) {
+    const attributes = [...this.attributes.state.attributes];
+
+    const attributeByKey = (key: string) => this.attributes.state.attributes.find(attribute => attribute.key === key);
+    const updateAttribute = (key: string, value: string) => attributeByKey(key).value = value;
+    const addAttribute = (key: string, value: string) => attributes.push({ key, value });
+    const upsertAttribute = (key: string, value: string) => attributeByKey(key) ? updateAttribute(key, value) : addAttribute(key, value);
+
+    if (fileName && !attributeByKey('name') || !attributeByKey('name').value) {
+      upsertAttribute('name',  fileName)
     }
-    upsertAttribute('contentHash', new Buffer(bitcore.crypto.Hash.sha256(new Buffer(value))).toString('hex'))
-    upsertAttribute('fileSize', '' + value.length)
-    upsertAttribute('wordCount', '' + countWords(value))
-    upsertAttribute('createdAt', '' + new Date().getTime())
 
-    this.attributes.setState({ attributes: newAttributes })
+    if (content) {
+      upsertAttribute('contentHash', new Buffer(bitcore.crypto.Hash.sha256(new Buffer(content))).toString('hex'));
+      upsertAttribute('fileSize', '' + content.length);
+      upsertAttribute('wordCount', '' + countWords(content));
+      upsertAttribute('createdAt', '' + new Date().getTime());
+    }
+
+    this.attributes.setState({ attributes })
   }
 
   private submit(): void {
@@ -84,7 +100,7 @@ export class StepRegister extends React.Component<StepRegisterProps, StepRegiste
       attributes: this.attributes.state.attributes,
       mediaType: this.state.mediaType,
       articleType: this.state.articleType,
-      content: this.content.state.content
+      content: this.state.content
     });
   }
 }

@@ -5,23 +5,13 @@ import './Content.scss';
 
 import { TextUpload } from '../../../components/TextUpload';
 
-interface ContentState {
+export interface ContentProps {
   readonly content: string;
+  readonly onChange?: (content: string) => void;
+  readonly onFileNameChange?: (fileName: string) => void;
 }
 
-export interface ChangeEmitter {
-  readonly onChange?: (newValue: string) => void
-}
-
-export class Content extends React.Component<ChangeEmitter, ContentState> {
-  upload: TextUpload;
-
-  constructor() {
-    super(...arguments);
-    this.state = {
-      content: ''
-    }
-  }
+export class Content extends React.Component<ContentProps, undefined> {
 
   render() {
     return (
@@ -29,22 +19,15 @@ export class Content extends React.Component<ChangeEmitter, ContentState> {
         <h2>Content</h2>
         <form>
           <TextUpload
-            ref={upload => this.upload = upload}
             className="text-upload"
             buttonClassName="button-secondary"
-            onChange={this.onChange.bind(this)}
-            placeholder="Content" />
+            placeholder="Content"
+            text={this.props.content}
+            onChange={this.props.onChange}
+            onFileNameChange={this.props.onFileNameChange} />
         </form>
       </section>
     )
   }
 
-  private onChange(value: string) {
-    if (this.props.onChange) {
-      this.props.onChange(value)
-    }
-    this.setState({
-      content: value
-    })
-  }
 }
