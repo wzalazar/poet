@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 import * as moment from 'moment';
+const classNames = require('classnames');
 
 import { ClassNameProps } from '../../common';
 import { BlockInfo } from '../../atoms/Interfaces';
@@ -13,7 +14,7 @@ interface BlocksProps extends ClassNameProps {
 
 export function Blocks(props: BlocksProps) {
   return (
-    <div className="blocks col-sm-6 col-md-4">
+    <div className={classNames('blocks', props.className)}>
       <div className="headHeight">
         <div className="number">
           {props.blocks[0] && props.blocks[0].height}
