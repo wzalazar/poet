@@ -9,6 +9,7 @@ import './Attributes.scss';
 export interface Attribute {
   name: string;
   value: string;
+  readonly optional?: boolean;
 }
 
 interface AttributesState {
@@ -20,7 +21,23 @@ export class Attributes extends React.Component<ClassNameProps, AttributesState>
   private readonly defaultAttributes: ReadonlyArray<Attribute> = [
     {
       name: 'name',
-      value: ''
+      value: '',
+      optional: false
+    },
+    {
+      name: 'author',
+      value: '',
+      optional: false
+    },
+    {
+      name: 'dateCreated',
+      value: '',
+      optional: false
+    },
+    {
+      name: 'datePublished',
+      value: '',
+      optional: false
     }
   ];
 
@@ -45,34 +62,29 @@ export class Attributes extends React.Component<ClassNameProps, AttributesState>
     )
   }
 
-  private renderField({name, value}: Attribute, index: number): JSX.Element {
+  private renderField(attribute: Attribute, index: number): JSX.Element {
     return (
       <div key={index} className="row">
         <div className="col-sm-4">
             <AttributeNameAutocomplete
               onChange={this.onKeyChange.bind(this, index)}
-              attributeName={name}
+              attributeName={attribute.name}
             />
-
         </div>
         <div className="col-sm-7">
           <input
             onChange={this.onValueChange.bind(this, index)}
             type="text"
             placeholder="Attribute Value"
-            value={value} />
+            value={attribute.value} />
         </div>
         <div className="col-sm-1">
-          <button
+          { attribute.optional && <button
             onClick={this.onRemoveAttribute.bind(this, index)}
-            className="remove button-secondary">—</button>
+            className="remove button-secondary">—</button> }
         </div>
       </div>
     );
-  }
-
-  private setAttributeInputRef(index: number, attributeKeyInput: HTMLInputElement) {
-    this.attributeKeyInputs[index] = attributeKeyInput;
   }
 
   private onValueChange(index: number, event: any) {
@@ -100,7 +112,8 @@ export class Attributes extends React.Component<ClassNameProps, AttributesState>
     this.setState({
       attributes: [ ...this.state.attributes, {
         name: '',
-        value: ''
+        value: '',
+        optional: true
       } ]
     })
   }

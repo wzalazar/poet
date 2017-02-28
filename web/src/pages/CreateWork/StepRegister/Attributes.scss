@@ -12,6 +12,10 @@
     .row {
       margin-bottom: 12px;
 
+      >div {
+        display: flex;
+        align-items: center;
+      }
     }
   }
 }
