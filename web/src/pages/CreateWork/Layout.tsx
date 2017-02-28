@@ -58,7 +58,7 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
   }
 
   private onStepRegisterSubmit(workData: StepRegisterData) {
-    const workTitleAttribute = workData.attributes.find(attribute => attribute.key == 'title');
+    const workTitleAttribute = workData.attributes.find(attribute => attribute.name == 'title');
 
     this.setState({
       selectedStep: 1,

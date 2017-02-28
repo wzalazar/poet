@@ -76,10 +76,10 @@ export class StepRegister extends React.Component<StepRegisterProps, StepRegiste
   private contentToAttributes(content?: string, fileName?: string) {
     const attributes = [...this.attributes.state.attributes];
 
-    const attributeByKey = (key: string) => this.attributes.state.attributes.find(attribute => attribute.key === key);
-    const updateAttribute = (key: string, value: string) => attributeByKey(key).value = value;
-    const addAttribute = (key: string, value: string) => attributes.push({ key, value });
-    const upsertAttribute = (key: string, value: string) => attributeByKey(key) ? updateAttribute(key, value) : addAttribute(key, value);
+    const attributeByKey = (name: string) => this.attributes.state.attributes.find(attribute => attribute.name === name);
+    const updateAttribute = (name: string, value: string) => attributeByKey(name).value = value;
+    const addAttribute = (name: string, value: string) => attributes.push({ name, value });
+    const upsertAttribute = (name: string, value: string) => attributeByKey(name) ? updateAttribute(name, value) : addAttribute(name, value);
 
     if (fileName && !attributeByKey('name') || !attributeByKey('name').value) {
       upsertAttribute('name',  fileName)

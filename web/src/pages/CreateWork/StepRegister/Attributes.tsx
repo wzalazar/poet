@@ -1,12 +1,13 @@
 import * as React from 'react';
 const classNames = require('classnames');
 
+import { AttributeNameAutocomplete } from './AttributeAutocomplete';
 import { ClassNameProps } from '../../../common';
 
 import './Attributes.scss';
 
 export interface Attribute {
-  key: string;
+  name: string;
   value: string;
 }
 
@@ -15,14 +16,10 @@ interface AttributesState {
 }
 
 export class Attributes extends React.Component<ClassNameProps, AttributesState> {
-  private readonly controls: {
-    attributeKeyInputs?: HTMLInputElement[];
-  } = {
-    attributeKeyInputs: []
-  };
+  private attributeKeyInputs?: HTMLInputElement[] = [];
   private readonly defaultAttributes: ReadonlyArray<Attribute> = [
     {
-      key: 'name',
+      name: 'name',
       value: ''
     }
   ];
@@ -48,23 +45,20 @@ export class Attributes extends React.Component<ClassNameProps, AttributesState>
     )
   }
 
-  private renderField({key, value}: Attribute, index: number): JSX.Element {
+  private renderField({name, value}: Attribute, index: number): JSX.Element {
     return (
-      <div key={index} className="form-group row">
+      <div key={index} className="row">
         <div className="col-sm-4">
-          <input
-            ref={this.setAttributeInputRef.bind(this, index)}
-            onChange={this.onKeyChange.bind(this, index)}
-            type="text"
-            className="form-control"
-            placeholder="Attribute Name"
-            value={key} />
+            <AttributeNameAutocomplete
+              onChange={this.onKeyChange.bind(this, index)}
+              attributeName={name}
+            />
+
         </div>
         <div className="col-sm-7">
           <input
-            onChange={this.onChange.bind(this, index)}
+            onChange={this.onValueChange.bind(this, index)}
             type="text"
-            className="form-control"
             placeholder="Attribute Value"
             value={value} />
         </div>
@@ -78,10 +72,10 @@ export class Attributes extends React.Component<ClassNameProps, AttributesState>
   }
 
   private setAttributeInputRef(index: number, attributeKeyInput: HTMLInputElement) {
-    this.controls.attributeKeyInputs[index] = attributeKeyInput;
+    this.attributeKeyInputs[index] = attributeKeyInput;
   }
 
-  private onChange(index: number, event: any) {
+  private onValueChange(index: number, event: any) {
     const attributes = [ ...this.state.attributes ];
     attributes[index].value = event.target.value;
     this.setState({
@@ -89,23 +83,23 @@ export class Attributes extends React.Component<ClassNameProps, AttributesState>
     });
   }
 
-  private onKeyChange(index: number, event: any) {
+  private onKeyChange(index: number, name: string) {
     const attributes = [ ...this.state.attributes ];
-    attributes[index].key = event.target.value;
+    attributes[index].name = name;
     this.setState({
       attributes
     });
   }
 
   private onAddAttribute() {
-    if (!this.state.attributes[this.state.attributes.length - 1].key) {
-      this.controls.attributeKeyInputs[this.controls.attributeKeyInputs.length - 1].focus();
+    if (!this.state.attributes[this.state.attributes.length - 1].name) {
+      this.attributeKeyInputs[this.attributeKeyInputs.length - 1].focus();
       return;
     }
 
     this.setState({
       attributes: [ ...this.state.attributes, {
-        key: '',
+        name: '',
         value: ''
       } ]
     })
