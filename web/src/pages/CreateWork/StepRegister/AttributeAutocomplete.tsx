@@ -1,14 +1,9 @@
 import * as React from 'react';
 const Autocomplete = require('react-autocomplete');
 const classNames = require('classnames');
-
-import { ResourceProvider } from '../../../components/ResourceProvider';
+const schemas = require('../../../schema.org.json');
 
 import './AttributeAutocomplete.scss';
-
-interface AttributeNameAutocompleteResource {
-
-}
 
 interface AttributeNameAutocompleteProps {
   readonly attributeName?: string;
@@ -19,7 +14,7 @@ interface AttributeNameAutocompleteState {
   readonly menuIsOpen: boolean;
 }
 
-export class AttributeNameAutocomplete extends ResourceProvider<AttributeNameAutocompleteResource, AttributeNameAutocompleteProps, AttributeNameAutocompleteState> {
+export class AttributeNameAutocomplete extends React.Component<AttributeNameAutocompleteProps, AttributeNameAutocompleteState> {
 
   constructor() {
     super(...arguments);
@@ -28,22 +23,16 @@ export class AttributeNameAutocomplete extends ResourceProvider<AttributeNameAut
     }
   }
 
-  resourceLocator() {
-    return {
-      url: 'http://www.mocky.io/v2/58b49e411000002001ea553f'
-    }
-  }
-
-  renderElement(suggestions: AttributeNameAutocompleteResource) {
-    const mockSuggestions: ReadonlyArray<string> = ['name', 'author', 'size'];
+  render() {
     return <Autocomplete
-      items={mockSuggestions}
+      items={schemas.types.CreativeWork.properties}
       value={this.props.attributeName}
       renderMenu={this.renderMenu.bind(this)}
       renderItem={this.renderMenuItem.bind(this)}
       onSelect={(value: string, item: any) => this.props.onChange(item)}
       onChange={(event: any, value: string) => this.props.onChange(value)}
       getItemValue={(item: any) => item}
+      shouldItemRender={this.shouldItemRender.bind(this)}
       wrapperProps={{className: 'autocomplete'}}
       inputProps={{className: classNames('input-text', this.state.menuIsOpen && 'open'), placeholder: 'Attribute Name'}}
       onMenuVisibilityChange={(menuIsOpen: boolean) => this.setState({menuIsOpen})}
@@ -54,15 +43,18 @@ export class AttributeNameAutocomplete extends ResourceProvider<AttributeNameAut
     return <ul className="menu">{children}</ul>;
   }
 
-  private renderMenuItem(item: any) {
-    const matches = this.props.attributeName && this.props.attributeName.length > 1 && item.includes(this.props.attributeName);
-    const matchedItem = matches &&
-      <span>{item.split(this.props.attributeName)[0]}<b>{this.props.attributeName}</b>{item.split(this.props.attributeName)[1]}</span>;
+  private renderMenuItem(item: string) {
+    const splits = item.split(new RegExp(`(${this.props.attributeName})`, 'i'));
+    const matchedItem = splits.map(s => <span className={classNames(this.shouldItemRender(s, this.props.attributeName) && 'matched')}>{s}</span>);
 
     return (
-      <li key={item} className={classNames(matches && 'highlighted')}>
-        {matches ? matchedItem : item}
+      <li key={item}>
+        { matchedItem }
       </li>
     );
+  }
+
+  private shouldItemRender(item: string, value: string) {
+    return value && item.toLowerCase().includes(value.toLowerCase());
   }
 }
