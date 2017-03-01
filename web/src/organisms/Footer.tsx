@@ -39,9 +39,8 @@ export class Footer extends React.Component<undefined, undefined> {
               </li>
             </ul>
             <address>
-              1234 Address Road <br/>
-              Simcity, World 00000 <br/>
-              +1 (000) 000 -0000
+              209 10th Ave. S <br/>
+              Nashville, TN 37203
             </address>
           </div>
           <div className="logo-and-social">
