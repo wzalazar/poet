@@ -15,6 +15,7 @@ import {BlockMetadata} from "../events";
 import { EventService } from './eventService';
 import Event from './orm/events/events';
 import { EventType } from './orm/events/events';
+import NotificationRead from './orm/events/notification';
 
 export default class DomainService extends ClaimService {
 
@@ -206,6 +207,10 @@ export default class DomainService extends ClaimService {
 
   get eventRepository(): Repository<Event> {
     return this.db.getRepository(Event)
+  }
+
+  get notificationRepository(): Repository<NotificationRead> {
+    return this.db.getRepository(NotificationRead)
   }
 
   storeWork(work: {id: string; author?: Profile, displayName?: string}) {
