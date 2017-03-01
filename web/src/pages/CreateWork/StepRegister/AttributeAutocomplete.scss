@@ -38,12 +38,8 @@
       color: #4A4A4A;
       cursor: pointer;
 
-      &.highlighted {
-        background-color: lighten(#BEAF7E, 25%);
-      }
-
       &:hover {
-        background-color: lighten(#BEAF7E, 20%);
+        background-color: lighten(#BEAF7E, 15%);
       }
 
       span.matched {
