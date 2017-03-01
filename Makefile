@@ -30,5 +30,4 @@ scripting:
 	cd Docker && docker-compose exec explorer /bin/bash
 
 setup-cron:
-	CRONENTRY=
-	{ crontab -l; echo "*/5 * * * * /usr/bin/bash ~/poet/utils/fetch_and_reload.sh >> /dev/null" } | crontab -
+	{ crontab -l; echo "*/5 * * * * export PATH=$PATH:/usr/loval/bin && cd /home/ubuntu/poet && /usr/bin/bash ./utils/fetch_and_reload.sh >> /dev/null" } | crontab -
