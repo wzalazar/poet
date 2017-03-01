@@ -1,0 +1,51 @@
+.page-portfolio .portfolio-works {
+  table {
+    thead {
+      height: 36px;
+      background-color: #F1EFEC;
+      border: 1px solid #E3E1DF;
+      border-radius: 4px 4px 0 0;
+
+      tr {
+        td {
+
+        }
+      }
+    }
+  }
+
+  .dropdown {
+    position: relative;
+    font-family: "Roboto Slab";
+
+    button {
+      font-size: 12px;
+      font-weight: bold;
+      text-align: right;
+      color: #4A9699;
+      cursor: pointer;
+      outline: none;
+
+    }
+
+    ul {
+      position: absolute;
+      z-index: 10;
+      list-style: none;
+      margin: 0;
+      padding: 0 0;
+      background-color: #FFFFFF;
+      box-shadow: 0 2px 24px 0 rgba(0,0,0,0.09);
+      border-radius: 3px;
+
+      li {
+        padding: 0 17px;
+        font-size: 12px;
+        line-height: 30px;
+        color: #737373;
+        cursor: pointer;
+      }
+    }
+  }
+
+}

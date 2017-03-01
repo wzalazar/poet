@@ -1,16 +1,19 @@
 import * as React from 'react';
+const classNames = require('classnames');
 
-export interface DropdownMenuProps {
+import { ClassNameProps } from '../common';
+
+export interface DropdownMenuProps extends ClassNameProps {
   options: string[];
-  optionSelected: (option: string) => void;
+  onOptionSelected: (option: string) => void;
 }
 
 export interface DropdownState {
   open: boolean
-};
+}
 
 export class DropdownMenu extends React.Component<DropdownMenuProps, DropdownState> {
-  private open: boolean;
+  private wrapper: HTMLDivElement;
 
   constructor() {
     super(...arguments);
@@ -19,43 +22,56 @@ export class DropdownMenu extends React.Component<DropdownMenuProps, DropdownSta
     };
   }
 
-  toggle() {
-    this.setState({ open: !this.state.open })
-  }
-
-  hide() {
-    this.setState({ open: false })
-  }
-
-  selected(option: string) {
-    this.hide()
-    this.props.optionSelected(option)
-  }
-
   render() {
     return (
-      <div className={ 'dropdown ' + (this.state.open ? 'show' : '') }>
+      <div className={classNames(this.props.className)} ref={wrapper => this.wrapper = wrapper}>
         <button onClick={this.toggle.bind(this)}
-          className="btn btn-sm btn-secondary dropdown-toggle"
-          type="button"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="true"
+                type="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="true"
         >
           { this.props.children }
         </button>
-        <div className="dropdown-menu">
+        { this.state.open && <ul className="dropdown">
           { this.props.options.map(option =>
-              <a key={option}
-                onClick={this.selected.bind(this, option)}
-                className="dropdown-item"
-                href="#">
+            <li
+              key={option}
+              onClick={this.selected.bind(this, option)}
+              className="dropdown-item" >
                 {option}
-              </a>
-            )
+            </li>
+          )
           }
-        </div>
+        </ul> }
       </div>
     );
+  }
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+
+  private toggle() {
+    this.setState(state => ({ open: !state.open }))
+  }
+
+  private hide() {
+    this.setState({ open: false })
+  }
+
+  private selected(option: string) {
+    this.hide();
+    this.props.onOptionSelected(option)
+  }
+
+  private handleClickOutside(event: any) {
+    if (this.wrapper && !this.wrapper.contains(event.target)) {
+      this.hide();
+    }
   }
 }

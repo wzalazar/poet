@@ -1,0 +1,41 @@
+.page-portfolio {
+  padding-top: 44px;
+
+  header {
+    display: flex;
+
+    h1 {
+      margin-bottom: 21px;
+      font-family: "Roboto Slab";
+      font-size: 32px;
+      font-weight: 300;
+      line-height: 36px;
+      color: #666666;
+    }
+
+    .search {
+      margin-left: auto;
+      width: 401px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      background-color: #FFFFFF;
+      box-shadow: 2px 2px 9px 0 rgba(0,0,0,0.06);
+      border-radius: 3px;
+
+      img {
+        margin: 10px;
+      }
+
+      input {
+        background-color: transparent;
+        border: none;
+        font-family: "Roboto Slab";
+        font-size: 10px;
+        font-weight: bold;
+        line-height: 14px;
+        color: #6B6B6B;
+      }
+    }
+  }
+}

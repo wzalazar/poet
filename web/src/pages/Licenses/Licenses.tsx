@@ -62,7 +62,7 @@ export default class Licenses extends ResourceProvider<LicensesResource, License
           <div className="card-title " >
             <h5><ReferencedWorkName license={license} /></h5>
             { this.props.showActions && <div className="menu">
-              <DropdownMenu options={['Revoke']} optionSelected={this.optionSelected.bind(this, license)}>
+              <DropdownMenu options={['Revoke']} onOptionSelected={this.optionSelected.bind(this, license)}>
                 Actions
               </DropdownMenu>
             </div> }

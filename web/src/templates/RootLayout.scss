@@ -1,3 +1,7 @@
+@import "./Fonts";
+@import "./Forms";
+@import "./OptionGroups";
+
 * {
   padding: 0;
   margin: 0;
@@ -31,9 +35,7 @@ html, body, #app, .root-layout {
   }
 }
 
+// TODO: remove this definition!
 .text-center {
   text-align: center;
 }
-
-@import "./Forms";
-@import "./OptionGroups";
