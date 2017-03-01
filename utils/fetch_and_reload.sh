@@ -15,7 +15,7 @@ elif [ $REMOTE = $BASE ]; then
     exit;
 else
     STATE=$(git pull --rebase)
-    if [[ STATE ]]; then
+    if [ $STATE -ne 0 ]; then
         ./send_error_git_mail.sh
         git rebase --abort
     else
