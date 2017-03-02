@@ -1,4 +1,4 @@
-import { Saga, takeEvery } from 'redux-saga'
+import { takeEvery } from 'redux-saga'
 import { call, put, select } from 'redux-saga/effects'
 
 import { Actions } from '../actions/index';
@@ -9,7 +9,7 @@ import { FetchType, FetchAction } from '../reducers/FetchReducer';
 const NOT_FOUND = 'not found';
 
 
-export function fetchSaga(): Saga {
+export function fetchSaga() {
   return function*() {
     yield takeEvery(Actions.fetchRequest, fetchData);
   }

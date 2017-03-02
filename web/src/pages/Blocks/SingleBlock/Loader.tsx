@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { Route } from 'react-router'
-import { Saga } from 'redux-saga'
 
 import PageLoader, { ReducerDescription } from '../../../components/PageLoader'
 import BlockLayout from './Layout'
@@ -26,7 +25,7 @@ export class SingleBlock extends PageLoader<Object, Object> {
     return null;
   }
 
-  sagaHook(): Saga {
+  sagaHook(): any {
     return null;
   }
 

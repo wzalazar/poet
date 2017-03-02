@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Route } from 'react-router';
-import { Saga } from 'redux-saga';
 
 const Bitcore = require('bitcore-lib');
 
@@ -33,7 +32,7 @@ export class UserWallet extends PageLoader<UserWalletProps, Object> {
     return null;
   }
 
-  sagaHook(): Saga {
+  sagaHook(): any {
     return null;
   }
 

@@ -1,4 +1,4 @@
-import { Saga, takeEvery } from 'redux-saga'
+import { takeEvery } from 'redux-saga'
 import { call, put } from 'redux-saga/effects'
 
 import { Actions } from '../actions/index'
@@ -12,7 +12,7 @@ function* fetchProfileData(action: any) {
   }
 }
 
-function profileSaga(): Saga {
+function profileSaga() {
   return function*() {
     yield takeEvery(Actions.Profile.FetchProfile, fetchProfileData);
   }

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Route } from 'react-router';
-import { Saga } from 'redux-saga';
 
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
 import { WorksLayout } from './Layout';
@@ -24,7 +23,7 @@ export class Works extends PageLoader<WorkState, Object> {
     return null;
   }
 
-  sagaHook(): Saga {
+  sagaHook(): any {
     return null;
   }
 

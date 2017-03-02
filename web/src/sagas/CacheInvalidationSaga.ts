@@ -1,4 +1,4 @@
-import { Saga, takeEvery } from 'redux-saga'
+import { takeEvery } from 'redux-saga'
 import { put } from 'redux-saga/effects'
 
 import { Config } from '../config';
@@ -36,7 +36,7 @@ function* invalidateBalance() {
   });
 }
 
-export function CacheInvalidationSaga(): Saga {
+export function CacheInvalidationSaga() {
   return function*() {
     yield takeEvery(Actions.Claims.SubmittedSuccess, claimsSubmittedSuccess);
     yield takeEvery(Actions.Transactions.SubmittedSuccess, invalidateBalance);

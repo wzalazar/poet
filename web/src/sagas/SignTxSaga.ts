@@ -1,14 +1,14 @@
 import * as bitcore from 'bitcore-lib';
-import {Saga, takeEvery} from "redux-saga";
-import {call, put, select, take, fork} from "redux-saga/effects";
 
-import { Actions } from "../actions/index";
-import auth from "../auth";
-import {getMockPrivateKey} from "../mockKey";
-import config from "../config";
-import {getUtxos, submitTx} from "../bitcoin/insight";
-import {getSighash, applyHexSignaturesInOrder} from "../bitcoin/txHelpers";
-import {race} from "redux-saga/effects";
+import { takeEvery } from 'redux-saga';
+import { call, put, select, take, race } from 'redux-saga/effects';
+
+import { Actions } from '../actions/index';
+import auth from '../auth';
+import { getMockPrivateKey } from '../mockKey';
+import config from '../config';
+import { getUtxos, submitTx } from '../bitcoin/insight';
+import { getSighash, applyHexSignaturesInOrder } from '../bitcoin/txHelpers';
 import { currentPublicKey } from '../selectors/session';
 
 async function requestIdFromAuth(dataToSign: Buffer[], bitcoin: boolean) {
@@ -66,19 +66,19 @@ export function* signTx(action: { payload: SignTransactionParameters }) {
 }
 
 export function* signTxCancellable(action: { payload: SignTransactionParameters }) {
-  yield race([
-    call(signTx, action),
-    call(function* () {
+  yield race({
+    signTx: call(signTx, action),
+    hideModal: call(function*() {
       yield take(Actions.Modals.SignTransaction.Hide);
     })
-  ]);
+  })
 }
 
 export function* mockLoginHit(action: any) {
   yield call(fetch, config.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
 }
 
-export function claimSubmitSaga(): Saga {
+export function claimSubmitSaga() {
   return function*() {
     yield takeEvery(Actions.Transactions.SignSubmitRequested, signTxCancellable as any);
     yield takeEvery(Actions.Transactions.FakeSign, mockLoginHit);

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Route } from 'react-router';
-import { Saga } from 'redux-saga';
 
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
 import { ProfileLayout } from './Layout';
@@ -24,7 +23,7 @@ export class Profile extends PageLoader<ProfileState, Object> {
     return null;
   }
 
-  sagaHook(): Saga {
+  sagaHook(): any {
     return null;
   }
 

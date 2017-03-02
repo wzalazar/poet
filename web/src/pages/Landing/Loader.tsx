@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Route } from 'react-router';
 import { Action } from 'redux';
-import { Saga } from 'redux-saga';
 
 import Constants from '../../constants';
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
@@ -28,7 +27,7 @@ export class LandingLoader extends PageLoader<Object, Object> {
     }
   }
 
-  sagaHook(): Saga {
+  sagaHook(): any {
     return null;
   }
 

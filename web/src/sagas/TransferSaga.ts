@@ -1,4 +1,4 @@
-import { Saga, takeEvery } from 'redux-saga'
+import { takeEvery } from 'redux-saga'
 import { call, put, select, take } from 'redux-saga/effects'
 import { browserHistory } from 'react-router'
 import * as protobuf from 'protobufjs'
@@ -79,10 +79,10 @@ function* watchDismiss() {
 }
 
 function* modalFlow(action: any) {
-  yield race([
-    call(transferFlow, action),
-    call(watchDismiss)
-  ])
+  yield race({
+    transferFlow: call(transferFlow, action),
+    dismiss: call(watchDismiss)
+  })
 }
 
 function* transferFlow(action: any) {
@@ -117,7 +117,7 @@ function* mockLoginHit(action: any) {
   yield call(fetch, config.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
 }
 
-function transferSaga(): Saga {
+function transferSaga() {
   return function*() {
     yield takeEvery(Actions.Transfer.TransferRequested, modalFlow);
     yield takeEvery(Actions.Transfer.FakeTransferSign, mockLoginHit);

@@ -1,5 +1,5 @@
 import { browserHistory } from 'react-router'
-import { Saga, takeEvery } from 'redux-saga'
+import { takeEvery } from 'redux-saga'
 import { call, put, select, take } from 'redux-saga/effects'
 import * as protobuf from 'protobufjs'
 
@@ -92,7 +92,7 @@ function* mockLoginHit(action: any) {
   yield call(fetch, config.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
 }
 
-function claimSubmitSaga(): Saga {
+function claimSubmitSaga() {
   return function*() {
     yield takeEvery(Actions.Claims.SubmitRequested, signClaims);
     yield takeEvery(Actions.Claims.FakeSign, mockLoginHit);

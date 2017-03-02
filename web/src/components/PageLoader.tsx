@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Reducer} from "redux";
-import {Saga} from "redux-saga";
 import {connect, StatelessComponent, ComponentClass} from "react-redux";
 
 export interface ReducerDescription<T> {
@@ -15,7 +14,7 @@ abstract class PageLoader<State, Properties> {
   abstract initialState(): State
   abstract routeHook(key: string): JSX.Element[]
   abstract reducerHook<State>(): ReducerDescription<State>
-  abstract sagaHook(): Saga
+  abstract sagaHook(): any
   abstract select(state: any, ownProps: any): Properties
   mapDispatchToProps(): any {
     return {}

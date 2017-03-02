@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { Saga } from 'redux-saga'
 
 import PageLoader from './PageLoader'
 import { ReducerDescription } from './PageLoader'
@@ -14,7 +13,7 @@ abstract class SimpleLoader extends PageLoader<Object, Object>{
     return null;
   }
 
-  sagaHook(): Saga {
+  sagaHook(): any {
     return null;
   }
 

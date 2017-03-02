@@ -1,5 +1,5 @@
 import { browserHistory } from 'react-router'
-import { Saga, takeEvery } from 'redux-saga'
+import { takeEvery } from 'redux-saga'
 import { call, put } from 'redux-saga/effects'
 
 import { Actions } from '../actions/index'
@@ -49,7 +49,7 @@ function* mockLoginHit(action: any) {
   yield call(fetch, config.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
 }
 
-export function sessionSaga(): Saga {
+export function sessionSaga() {
   return function*() {
     const session = localStorage.getItem(LOCALSTORAGE_SESSION);
 

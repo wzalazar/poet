@@ -45,21 +45,21 @@ function* purchaseLicense(action: any) {
   });
 
   while (true) {
-    const result = yield race([
-      take(Actions.Licenses.Paid),
-      call(function* () {
+    const result = yield race({
+      paidLicense: take(Actions.Licenses.Paid),
+      noBalance: call(function* () {
         yield take(Actions.noBalanceAvailable);
-        return false
+        return true
       })
-    ]);
-    if (!result[0]) {
+    });
+    if (result.noBalance) {
       return;
     }
-    if (result[0].payload.id !== offering.id) {
+    if (result.paidLicense.payload.id !== offering.id) {
       continue;
     }
-    const transaction = result[0].transaction;
-    const outputIndex = result[0].outputIndex;
+    const transaction = result.paidLicense.transaction;
+    const outputIndex = result.paidLicense.outputIndex;
     const publicKey = yield select(currentPublicKey);
 
     const licenseTx = yield call(submitLicense, reference, transaction, outputIndex, publicKey, offering.id);

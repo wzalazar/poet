@@ -5,12 +5,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const vendor = [
+  'history',
   'bitcore-lib',
   'moment',
   'protobufjs',
   'react',
   'react-datepicker',
   'react-dom',
+  'react-router',
   'react-overlays',
   'react-qr',
   'react-redux',
@@ -22,9 +24,17 @@ const vendor = [
 
 const production = !!process.env['PRODUCTION'];
 
+const extractor = new ExtractTextPlugin("styles.css")
+
+
 module.exports = {
   entry: {
-    'app': [
+    'app': production
+    ? [
+      './src/bootstrap.ts',
+      './src/index.tsx'
+    ]
+    : [
       'webpack-hot-middleware/client',
       './src/bootstrap.ts',
       './src/index.tsx'
@@ -38,7 +48,7 @@ module.exports = {
   },
 
   // Enable sourcemaps for debugging webpack's output.
-  devtool: 'source-map',
+  devtool: production ? 'cheap-module-source-map' : 'eval',
 
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
@@ -48,10 +58,15 @@ module.exports = {
   module: {
     loaders: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-      { test: /\.tsx?$/, loaders: ['react-hot', 'babel', 'awesome-typescript-loader'] },
+      { test: /\.tsx?$/, loaders: production
+        ? ['babel', 'awesome-typescript-loader']
+        : ['react-hot', 'babel', 'awesome-typescript-loader'] },
       {
         test: /\.s?css$/, loader: production
-        ? ExtractTextPlugin.extract('css!sass')
+        ? extractor.extract(
+          'style-loader',
+          ['css-loader?-autoprefixer', 'postcss-loader', 'sass-loader']
+        )
         : 'style!css?sourceMap&importLoaders=1!postcss!sass?sourceMap'
       },
       { test: /\.json$/, loader: 'json-loader' },
@@ -70,11 +85,26 @@ module.exports = {
     ];
   },
 
-  plugins: [
+  plugins: production
+  ? [
     new webpack.optimize.CommonsChunkPlugin({ name: "vendor", filename: "vendor.js" }),
     new webpack.optimize.CommonsChunkPlugin({ name: 'meta', chunks: ['vendor'], filename: "meta.js" }),
     new HtmlWebpackPlugin({ title: 'Poet App', template: 'src/index.html' }),
-    new ExtractTextPlugin("styles.css"),
+    extractor,
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.DedupePlugin(),
+    new webpack.NoErrorsPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+  ]
+  : [
+    new webpack.optimize.CommonsChunkPlugin({ name: "vendor", filename: "vendor.js" }),
+    new webpack.optimize.CommonsChunkPlugin({ name: 'meta', chunks: ['vendor'], filename: "meta.js" }),
+    new HtmlWebpackPlugin({ title: 'Poet App', template: 'src/index.html' }),
+    extractor,
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
   ]

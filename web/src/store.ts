@@ -1,5 +1,5 @@
 import { createStore, compose, applyMiddleware, combineReducers } from "redux";
-import createSagaMiddleware, { Saga } from "redux-saga";
+import createSagaMiddleware from "redux-saga";
 import { fork } from "redux-saga/effects";
 
 import './extensions/Array';
@@ -12,8 +12,8 @@ import sagaList from './sagas'
 import reducers from './reducers';
 import { Actions } from './actions/index'
 
-function bindSagas(pages: PageLoader<any, any>[]): Saga {
-  const sagas: Saga[] = pages
+function bindSagas(pages: PageLoader<any, any>[]) {
+  const sagas = pages
     .map(page => page.sagaHook)
     .concat(sagaList)
     .map(saga => saga())

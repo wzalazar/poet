@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Route } from 'react-router';
-import { Saga, delay, takeEvery } from 'redux-saga';
+import { delay, takeEvery } from 'redux-saga';
 import { put } from 'redux-saga/effects';
 
 import { Claim } from '../../../Claim';
@@ -25,11 +25,11 @@ export class UserProfile extends PageLoader<UserProfileProps, Object> {
     return null;
   }
 
-  sagaHook(): Saga {
+  sagaHook() {
     function* updateProfile() {
-      yield put(Actions.Profile.Updating);
+      yield put({ type: Actions.Profile.Updating });
       yield delay(2000);
-      yield put(Actions.Profile.Updated);
+      yield put({ type: Actions.Profile.Updated });
     }
     return function*() {
       yield takeEvery(Actions.Profile.UpdateRequested, updateProfile);

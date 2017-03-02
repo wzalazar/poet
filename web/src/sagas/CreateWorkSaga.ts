@@ -1,4 +1,4 @@
-import { Saga, takeEvery } from 'redux-saga'
+import { takeEvery } from 'redux-saga'
 import { put } from 'redux-saga/effects'
 
 import { Actions } from '../actions/index'
@@ -14,7 +14,7 @@ function* claimSubmittedSuccess(action: any) {
 
 }
 
-export function createWorkSaga(): Saga {
+export function createWorkSaga() {
   return function*() {
     yield takeEvery(Actions.Claims.SubmittedSuccess, claimSubmittedSuccess)
   }
