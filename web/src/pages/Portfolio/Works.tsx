@@ -1,24 +1,47 @@
 import * as React from 'react';
-import { WorkNameWithLink, WorkType, WorkPublishedDate, OwnerNameWithLink } from '../../atoms/Work';
+import { browserHistory } from 'react-router';
+
+import { WorkNameWithLink, WorkType, WorkPublishedDate } from '../../atoms/Work';
 import { Work } from '../../atoms/Interfaces';
-import { PoetAPIResourceProvider } from '../../atoms/base/PoetApiResource';
+import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../../atoms/base/PoetApiResource';
 import { SelectWorksByOwner } from '../../atoms/Arguments';
 import { DropdownMenu } from '../../components/DropdownMenu';
-import { browserHistory } from 'react-router';
+import { Pagination } from '../../components/Pagination';
 import { DispatchesTransferRequested } from '../../actions/requests';
 
 import './Works.scss';
+import { UrlObject } from '../../common';
 
 const EDIT = 'Edit'
 const TRANSFER = 'Transfer'
 
-export class OwnedWorks extends PoetAPIResourceProvider<Work[], SelectWorksByOwner & DispatchesTransferRequested, undefined> {
+interface OwnedWorksState {
+  readonly offset?: number;
+}
 
-  poetURL(): string {
-    return `/works?owner=${this.props.owner}`
+export class OwnedWorks extends PoetAPIResourceProvider<Work[], SelectWorksByOwner & DispatchesTransferRequested, OwnedWorksState> {
+
+  constructor() {
+    super(...arguments);
+    this.state = {
+      offset: 0
+    }
   }
 
-  renderElement(works: Work[]): JSX.Element {
+  poetURL(): UrlObject {
+    return {
+      url: `/works`,
+      query: {
+        owner: this.props.owner,
+        limit: 10,
+        offset: this.state.offset
+      }
+    }
+  }
+
+  renderElement(works: Work[], headers: Headers): JSX.Element {
+    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+
     return (
       <div className="portfolio-works">
         <table>
@@ -34,6 +57,15 @@ export class OwnedWorks extends PoetAPIResourceProvider<Work[], SelectWorksByOwn
             { works.map(this.renderRow.bind(this)) }
           </tbody>
         </table>
+
+        <Pagination
+          offset={this.state.offset}
+          limit={10}
+          count={count}
+          visiblePageCount={6}
+          onClick={offset => this.setState({offset})}
+          className="pagination"
+          disabledClassName="disabled"/>
       </div>
     )
   }

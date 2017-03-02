@@ -7,7 +7,6 @@ import { PortfolioWorksFilters } from './Filters';
 
 import './Layout.scss';
 import { SearchInput } from '../../atoms/SearchInput';
-import { Pagination } from '../../components/Pagination';
 
 interface PortfolioLayoutState {
   readonly selectedFilter?: string;
@@ -40,15 +39,8 @@ export class PortfolioLayout extends React.Component<SelectProfileById & Dispatc
             onOptionSelected={selectedFilter => this.setState({selectedFilter})}/>
           <OwnedWorks
             owner={this.props.profileId}
-            transferRequested={this.props.transferRequested}/>
-          <Pagination
-            offset={0}
-            limit={10}
-            count={30}
-            visiblePageCount={6}
-            onClick={console.log}
-            className="pagination"
-            disabledClassName=""/>
+            transferRequested={this.props.transferRequested}
+          />
         </main>
       </section>
     )
