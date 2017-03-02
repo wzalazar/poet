@@ -1,13 +1,19 @@
-import { Table, PrimaryGeneratedColumn, Column, OneToOne, ManyToOne, JoinTable } from 'typeorm';
+import { Table, PrimaryGeneratedColumn, Column, OneToOne, ManyToOne, JoinTable, JoinColumn } from 'typeorm';
 import Event from './events';
 
 @Table()
-export default class NotificationRead {
+export default class Notification {
 
   @PrimaryGeneratedColumn()
   id: string
 
   @ManyToOne(type => Event)
-  @JoinTable()
+  @JoinColumn()
   event: Event
+
+  @Column()
+  user: string
+
+  @Column()
+  read: Boolean
 }

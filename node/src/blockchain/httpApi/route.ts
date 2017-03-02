@@ -82,7 +82,6 @@ export default class Route<T> {
       const opts = this.getParamOpts(ctx)
 
       const items = await this.getTotalCount(opts)
-      console.log('items: ', items)
       ctx.response.set('X-Total-Count', '' + items)
 
       opts.limit = opts.limit || 10

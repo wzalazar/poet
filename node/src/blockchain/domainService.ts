@@ -233,7 +233,7 @@ export default class DomainService extends ClaimService {
       if (existent) {
         return
       }
-      return await this.eventRepository.persist(this.eventRepository.create({
+      const event = await this.eventRepository.persist(this.eventRepository.create({
         type,
         timestamp: new Date().getTime(),
         claimReference: id,
@@ -243,6 +243,14 @@ export default class DomainService extends ClaimService {
         actorDisplayName: actor && actor.displayName,
         payload
       }))
+      if (event.type === EventType.TITLE_ASSIGNED) {
+        await this.notificationRepository.persist((this.notificationRepository.create({
+          event: event,
+          read: false,
+          user: event.actorId
+        })))
+      }
+      return event
     } catch (error) {
       console.log('Could not save event', error)
     }

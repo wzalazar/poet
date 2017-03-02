@@ -6,6 +6,7 @@ import { QueryBuilder } from 'typeorm';
 import Event from '../../orm/events/events';
 import Router = require('koa-router')
 import Context = Koa.Context
+import NotificationRead from '../../orm/events/notification';
 
 interface EventQueryOpts extends QueryOptions {
   profile?: string
@@ -15,49 +16,58 @@ interface EventQueryOpts extends QueryOptions {
 const PROFILE = 'profile'
 const WORK = 'work'
 
-export default class NotificationsRoute extends Route<Event> {
+export default class NotificationsRoute extends Route<NotificationRead> {
   service: BlockchainService
 
   constructor(service: BlockchainService) {
-    super(service.eventRepository, 'events')
+    super(service.notificationRepository, 'notifications')
     this.service = service
   }
 
-  async prepareItem(item: Event): Promise<any> {
-    this.service.notificationRepository.findOne({ event: item.id })
+  async getUserCount(ctx: any, opts: QueryOptions): Promise<number> {
+    let queryBuilder = this.repository
+      .createQueryBuilder('item')
+      .where('item.user=:userId', { userId: ctx.params.userId })
+
+    queryBuilder = this.ownFilter(queryBuilder, opts)
+
+    return queryBuilder.getCount();
   }
 
   addRoutes(router: Router): any {
     router.get('/notifications/:userId', async (ctx: any) => {
-      const notificationQuery = await this.service.eventRepository.createQueryBuilder('item')
-        .where('item.actorId=:userId', { userId: ctx.params.userId })
-        .orderBy('item.timestamp', 'DESC')
+      const opts = this.getParamOpts(ctx)
+
+      opts.limit = opts.limit || 10
+      opts.offset = opts.offset || 0
+
+      const notificationQuery = await this.repository.createQueryBuilder('item')
+        .leftJoinAndMapOne('item.event', 'item.event', 'event')
+        .where('item.user=:userId', { userId: ctx.params.userId })
+        .orderBy('event.timestamp', 'DESC')
+        .setLimit(opts.limit)
+        .setOffset(opts.offset)
         .getMany()
-      const reads = await this.service.notificationRepository.createQueryBuilder('item')
-        .where('item.event IN :ids', { ids: notificationQuery.map(item => item.id) })
-        .getMany()
-      const notifications = {} as { [id: string]: Event }
-      for (let notification of notificationQuery) {
-        notifications[notification.id] = notification
-      }
-      for (let read of reads) {
-        (notifications[read.event as any] as any).read = true
-      }
-      const result = []
-      for (let notification of notificationQuery) {
-        result.push(notification)
-      }
-      return result
+
+      const unread = await this.repository.createQueryBuilder('item')
+        .andWhere('item.user=:userId', { userId: ctx.params.userId })
+        .andWhere('item.read=FALSE')
+        .leftJoinAndMapOne('item.event', 'item.event', 'event')
+        .getCount()
+
+      const items = await this.getUserCount(ctx, opts)
+      ctx.response.set('X-Total-Count', '' + items)
+      ctx.response.set('X-Unread', '' + unread)
+
+      return ctx.body = JSON.stringify(notificationQuery)
     })
     router.patch('/notifications/:userId', async (ctx: any) => {
-      const ids = JSON.parse(ctx.body) as ReadonlyArray<any>
-      const notifications = ids.map(id => this.service.notificationRepository.create({
-          event: { id: id },
-          read: true
-        })
-      )
-      const query = await this.service.notificationRepository.persist(notifications)
-      return query.length
+      const ids = await ctx.request.body as ReadonlyArray<any>
+      const reads = await this.repository.createQueryBuilder('item')
+        .update({ read: true })
+        .where('item.id IN (:ids)', { ids })
+        .execute()
+      return ctx.body = reads
     })
   }
 }

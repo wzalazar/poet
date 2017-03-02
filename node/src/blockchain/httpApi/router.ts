@@ -11,6 +11,7 @@ import ProfileRoute from './routes/profile'
 import ClaimRoute from "./routes/claim";
 import LicenseRoute from './routes/license'
 import EventRoute from './routes/events';
+import NotificationsRoute from './routes/notifications';
 
 export default class BlockchainRouter {
   service: BlockchainService
@@ -39,6 +40,7 @@ export default class BlockchainRouter {
       new ClaimRoute(this.service).addRoutes(router)
       new LicenseRoute(this.service).addRoutes(router)
       new EventRoute(this.service).addRoutes(router)
+      new NotificationsRoute(this.service).addRoutes(router)
     } catch (error) {
       console.log('Unable to setup route', error, error.stack)
     }

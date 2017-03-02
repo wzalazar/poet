@@ -1,4 +1,5 @@
-import { Table, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Table, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import NotificationRead from './notification';
 
 export enum EventType {
   WORK_CREATED,
@@ -42,4 +43,8 @@ export default class Event {
 
   @Column({ nullable: true })
   payload: string
+
+  @OneToOne(type => NotificationRead)
+  @JoinColumn()
+  read: NotificationRead
 }
