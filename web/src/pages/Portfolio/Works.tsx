@@ -12,8 +12,6 @@ import './Works.scss';
 const EDIT = 'Edit'
 const TRANSFER = 'Transfer'
 
-
-
 export class OwnedWorks extends PoetAPIResourceProvider<Work[], SelectWorksByOwner & DispatchesTransferRequested, undefined> {
 
   poetURL(): string {
@@ -23,7 +21,7 @@ export class OwnedWorks extends PoetAPIResourceProvider<Work[], SelectWorksByOwn
   renderElement(works: Work[]): JSX.Element {
     return (
       <div className="portfolio-works">
-        <table className="table table-hover">
+        <table>
           <thead>
             <tr>
               <td>Name</td>
@@ -43,21 +41,23 @@ export class OwnedWorks extends PoetAPIResourceProvider<Work[], SelectWorksByOwn
   renderRow(work: Work) {
     return (
       <tr key={work.id}>
-        <td>
-          <WorkType work={work} />
+        <td className="name">
           <WorkNameWithLink work={work} />
-        </td>
-        <td>{work.id}</td>
-        <td><WorkPublishedDate work={work}/></td>
-        <td>
-          <div className="menu">
-            <DropdownMenu
-              className="dropdown"
-              options={[EDIT, TRANSFER]}
-              onOptionSelected={this.optionSelected.bind(this, work)}>
-              Actions
-            </DropdownMenu>
+          <div>
+            <span className="media-type">{work.attributes.mediaType} / {work.attributes.articleType}</span>
+            <span className="content-info">{work.attributes.wordCount} words at {work.attributes.fileSize} bytes</span>
           </div>
+          <WorkType work={work} />
+        </td>
+        <td className="hash">{work.id}</td>
+        <td className="timestamp"><WorkPublishedDate work={work}/></td>
+        <td>
+          <DropdownMenu
+            className="dropdown"
+            options={[EDIT, TRANSFER]}
+            onOptionSelected={this.optionSelected.bind(this, work)}>
+            Actions
+          </DropdownMenu>
         </td>
       </tr>
     )
