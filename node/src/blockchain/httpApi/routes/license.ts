@@ -11,6 +11,7 @@ import { QueryBuilder } from 'typeorm'
 interface LicenseQueryOptions extends QueryOptions {
   emitter?: string
   holder?: string
+  relatedTo?: string
 }
 
 export default class LicenseRoute extends Route<License> {
@@ -42,6 +43,7 @@ export default class LicenseRoute extends Route<License> {
     const options = super.getParamOpts(ctx) as LicenseQueryOptions;
     options.emitter = ctx.request.query['emitter']
     options.holder = ctx.request.query['holder']
+    options.relatedTo = ctx.request.query['relatedTo']
     return options
   }
 
@@ -53,6 +55,10 @@ export default class LicenseRoute extends Route<License> {
     if (opts.emitter) {
       return queryBuilder
         .andWhere("item.licenseEmitter=:emitter", { "emitter": opts.emitter })
+    }
+    if (opts.relatedTo) {
+      return queryBuilder
+        .andWhere("item.licenseEmitter=:user OR item.licenseHolder=:user", { "user": opts.relatedTo })
     }
     return queryBuilder
   }
