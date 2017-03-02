@@ -20,7 +20,6 @@
     "@types/react-redux": "^4.4.35",
     "@types/react-router": "^2.0.41",
     "@types/react-tabs": "^0.5.21",
-    "@types/redux-saga": "^0.9.31",
     "@types/socket.io-client": "^1.4.29",
     "@types/uuid": "^2.0.29",
     "bitcore-lib": "eordano/bitcore-lib",
