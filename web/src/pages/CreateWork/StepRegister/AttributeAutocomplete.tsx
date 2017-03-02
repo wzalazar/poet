@@ -1,7 +1,8 @@
 import * as React from 'react';
 const Autocomplete = require('react-autocomplete');
 const classNames = require('classnames');
-const schemas = require('../../../schema.org.json');
+
+import { load } from '../../../schema.org';
 
 import './AttributeAutocomplete.scss';
 
@@ -16,16 +17,22 @@ interface AttributeNameAutocompleteState {
 
 export class AttributeNameAutocomplete extends React.Component<AttributeNameAutocompleteProps, AttributeNameAutocompleteState> {
 
+  schema: any
+
   constructor() {
     super(...arguments);
     this.state = {
       menuIsOpen: false
     }
+    load((data: any) => this.schema = data)
   }
 
   render() {
+    if (!this.schema) {
+      return <div/>
+    }
     return <Autocomplete
-      items={schemas.types.CreativeWork.properties}
+      items={this.schema.types.CreativeWork.properties}
       value={this.props.attributeName}
       renderMenu={this.renderMenu.bind(this)}
       renderItem={this.renderMenuItem.bind(this)}
