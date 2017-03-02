@@ -47,7 +47,7 @@ export class WalletBalance extends ResourceProvider<UnspentTransactionOutputs, W
   }
 
   private renderBtc(btc: number) {
-    return <span>{btc} BTC</span>
+    return <span>{btc.toFixed(8)} BTC</span>
   }
 
   private renderForeign(btc: number) {

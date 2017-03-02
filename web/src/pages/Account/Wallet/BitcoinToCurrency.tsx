@@ -30,7 +30,7 @@ export class BitcoinToCurrency extends ResourceProvider<BlockchainTicker, Bitcoi
     if (!blockchainTicker[this.props.currency])
       return <span>Ticker information not available in currency {this.props.currency}</span>;
 
-    return <span>{blockchainTicker[this.props.currency].last * this.props.amount}</span>
+    return <span>{(blockchainTicker[this.props.currency].last * this.props.amount).toFixed(2)}</span>
 
   }
 }
