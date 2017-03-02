@@ -217,7 +217,7 @@ export default class DomainService extends ClaimService {
     return this.workRepository.persist(this.workRepository.create(work))
   }
 
-  async saveEvent(id: string, type: EventType, work: Work, actor: Profile, payload?: string) {
+  async saveEvent(id: string, type: EventType, work: Work, actor: Profile, payload?: string, extra?: any) {
     try {
       const query: any = {
         type,
@@ -248,6 +248,13 @@ export default class DomainService extends ClaimService {
           event: event,
           read: false,
           user: event.actorId
+        })))
+      }
+      if (event.type === EventType.LICENSE_BOUGHT) {
+        await this.notificationRepository.persist((this.notificationRepository.create({
+          event: event,
+          read: false,
+          user: extra.id
         })))
       }
       return event

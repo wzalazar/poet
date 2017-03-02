@@ -86,8 +86,9 @@ export default {
       return
     }
      */
-    await service.saveEvent(claim.id, EventType.LICENSE_BOUGHT, work, holder)
-    await service.saveEvent(claim.id, EventType.LICENSE_SOLD, work, await service.profileRepository.findOneById(ownerOnRecord))
+    const owner = await service.profileRepository.findOneById(ownerOnRecord)
+    await service.saveEvent(claim.id, EventType.LICENSE_BOUGHT, work, holder, undefined, owner)
+    await service.saveEvent(claim.id, EventType.LICENSE_SOLD, work, owner)
 
     const license = await service.licenseRepository.persist(service.licenseRepository.create({
       id: claim.id,
