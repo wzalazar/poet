@@ -10,6 +10,7 @@ interface PortfolioWorksFiltersProps {
 }
 
 export class PortfolioWorksFilters extends React.Component<PortfolioWorksFiltersProps, undefined> {
+  public static readonly ALL = 'all';
   public static readonly OWNED = 'owned';
   public static readonly AUTHORED = 'authored';
 
@@ -18,6 +19,7 @@ export class PortfolioWorksFilters extends React.Component<PortfolioWorksFilters
       <OptionGroup selectedId={this.props.selectedId} onOptionSelected={this.props.onOptionSelected} className="tab-option-group">
         <Option id={PortfolioWorksFilters.OWNED}>Owned Works</Option>
         <Option id={PortfolioWorksFilters.AUTHORED}>Authored Works</Option>
+        <Option id={PortfolioWorksFilters.ALL}>All Works</Option>
       </OptionGroup>
     )
   }

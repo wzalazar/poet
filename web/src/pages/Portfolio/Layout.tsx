@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { DispatchesTransferRequested } from '../../actions/requests';
 import { SelectProfileById } from '../../atoms/Arguments';
-import { OwnedWorks } from './Works';
+import { OwnedWorks, WorkToProfileRelationship } from './Works';
 import { PortfolioWorksFilters } from './Filters';
 
 import './Layout.scss';
@@ -40,9 +40,22 @@ export class PortfolioLayout extends React.Component<SelectProfileById & Dispatc
           <OwnedWorks
             owner={this.props.profileId}
             transferRequested={this.props.transferRequested}
+            relationship={this.selectedFilterRelationship()}
+            query={this.state.searchQuery}
           />
         </main>
       </section>
     )
+  }
+
+  private selectedFilterRelationship(): WorkToProfileRelationship {
+    switch (this.state.selectedFilter) {
+      case PortfolioWorksFilters.ALL:
+        return 'relatedTo';
+      case PortfolioWorksFilters.OWNED:
+        return 'owner';
+      case PortfolioWorksFilters.AUTHORED:
+        return 'author';
+    }
   }
 }

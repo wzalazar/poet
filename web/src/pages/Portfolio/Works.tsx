@@ -12,14 +12,21 @@ import { DispatchesTransferRequested } from '../../actions/requests';
 import './Works.scss';
 import { UrlObject } from '../../common';
 
-const EDIT = 'Edit'
-const TRANSFER = 'Transfer'
+const EDIT = 'Edit';
+const TRANSFER = 'Transfer';
+
+export type WorkToProfileRelationship = 'author' | 'owner' | 'relatedTo';
+
+interface OwnedWorksProps {
+  readonly relationship: WorkToProfileRelationship;
+  readonly query: string;
+}
 
 interface OwnedWorksState {
   readonly offset?: number;
 }
 
-export class OwnedWorks extends PoetAPIResourceProvider<Work[], SelectWorksByOwner & DispatchesTransferRequested, OwnedWorksState> {
+export class OwnedWorks extends PoetAPIResourceProvider<Work[], OwnedWorksProps & SelectWorksByOwner & DispatchesTransferRequested, OwnedWorksState> {
 
   constructor() {
     super(...arguments);
@@ -32,9 +39,10 @@ export class OwnedWorks extends PoetAPIResourceProvider<Work[], SelectWorksByOwn
     return {
       url: `/works`,
       query: {
-        owner: this.props.owner,
+        [this.props.relationship]: this.props.owner,
         limit: 10,
-        offset: this.state.offset
+        offset: this.state.offset,
+        query: this.props.query
       }
     }
   }
