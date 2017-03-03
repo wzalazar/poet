@@ -1,0 +1,25 @@
+.notifications {
+  h2 {
+    margin-top: 35px;
+    font-family: "Roboto Slab";
+    font-size: 32px;
+    font-weight: 300;
+    line-height: 36px;
+    color: #666666;
+  }
+
+  table {
+    thead {
+      th {
+        padding-left: 15px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
+    }
+    tbody {
+      td:first-child {
+        text-align: center;
+      }
+    }
+  }
+}

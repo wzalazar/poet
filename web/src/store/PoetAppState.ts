@@ -23,8 +23,26 @@ export interface FetchStore {
   [key: string]: FetchStoreEntry<any>
 }
 
+export interface NotificationEvent {
+  id: number,
+  type: number,
+  timestamp: number,
+  claimReference: string,
+  workId: string,
+  workDisplayName?: string,
+  actorId: string,
+  actorDisplayName?: string
+}
+
+export interface Notification {
+  id: number,
+  user: string,
+  read: boolean,
+  event: NotificationEvent
+}
+
 export interface NotificationsStore {
-  notifications: ReadonlyArray<any>
+  notifications: ReadonlyArray<Notification>
   unreadCount: number
   totalCount: number
 }

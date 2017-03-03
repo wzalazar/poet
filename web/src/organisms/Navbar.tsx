@@ -100,7 +100,7 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
   }
 
   private countNotifications(): JSX.Element {
-    return <span> { this.props.notifications ? '' + this.props.notifications : '0' } </span>
+    return <Link to="/account/notifications"> { this.props.notifications ? '' + this.props.notifications : '0' } </Link>
   }
 }
 

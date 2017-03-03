@@ -10,6 +10,7 @@ import { Documentation } from "./Documentation/Loader";
 import { Portfolio } from "./Portfolio/Loader";
 import { Licenses } from "./Licenses/Loader";
 import { CreateWork } from "./CreateWork/Loader";
+import { NotificationsPage } from "./Account/Notifications/Loader";
 import { UserProfile } from "./Account/Settings/Loader";
 import { UserWallet } from "./Account/Wallet/Loader";
 
@@ -18,6 +19,7 @@ export default [
   Work,
   Works,
   Blocks,
+  NotificationsPage,
   Claim,
   SingleBlock,
   Profile,

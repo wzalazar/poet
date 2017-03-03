@@ -32,6 +32,7 @@ export namespace Actions {
     export const FetchProfile = 'fetch profile data';
     export const ProfileFetched = 'profile data fetched';
     export const NotificationsUpdate = 'notifications update';
+    export const MarkNotificationRead = 'mark notification read';
   }
 
   export namespace Transfer {
