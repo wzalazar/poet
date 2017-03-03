@@ -36,21 +36,17 @@ function renderTransaction(address: string, transaction: Transaction) {
     type = 'deposit';
   }
 
-  // transaction.vout.find(vout => vout.scriptPubKey.addresses.includes(address))) {
-
   const valuesIn = transaction.vin.map(vin => vin.value).reduce((a, b) => a + b, 0);
   const valuesOut = transaction.vout.map(vout => parseFloat(vout.value)).reduce((a, b) => a + b, 0);
   const valuesOutForMe = transaction.vout.filter(vout => vout.scriptPubKey.addresses[0] === address).map(vout => parseFloat(vout.value)).reduce((a, b) => a + b, 0);
-
-  const values = valuesOut;
 
   const value = type === 'deposit' ? valuesOutForMe : valuesIn - valuesOutForMe;
 
   return (
     <tr key={transaction.txid}>
-      <td>{moment().format('DD-MM-YY [at] HH:mm:ss')}</td>
+      <td>{moment(transaction.time * 1000).format('DD-MM-YY [at] HH:mm:ss')}</td>
       <td>{type}</td>
-      <td className={classNames('amount', value > 0 ? 'positive' : 'negative')}>{value > 0 && '+'}{ value.toFixed(8) } BTC</td>
+      <td className={classNames('amount', type === 'deposit' ? 'positive' : 'negative')}>{ value.toFixed(8) } BTC</td>
     </tr>
   )
 }
