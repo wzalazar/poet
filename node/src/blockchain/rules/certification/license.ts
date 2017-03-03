@@ -3,6 +3,7 @@ import {BlockMetadata} from "../../../events";
 import {Claim, LICENSE} from "../../../claim";
 import Fields from "../../fields";
 import { EventType } from '../../orm/events/events';
+import * as fetch from 'isomorphic-fetch'
 
 const Reference = Fields.REFERENCE
 const ReferenceOffering = Fields.REFERENCE_OFFERING

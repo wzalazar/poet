@@ -1,3 +1,4 @@
+import * as fetch from "isomorphic-fetch"
 import { default as getCreator, ClaimBuilder } from "../../src/serialization/builder"
 import Fields from '../../src/blockchain/fields'
 import { Claim } from '../../src/claim'
