@@ -86,7 +86,7 @@ function timeFrom(timestamp: number) {
 export function WorkPublishedDate(props: WorkProps) {
   const publishDate = props.work
     && props.work.attributes
-    && props.work.attributes.publishedAt
+    && props.work.attributes.datePublished
   return (<span>{
     publishDate
       ? timeFrom(-(-publishDate))
@@ -108,7 +108,7 @@ export function WorkStampedDate(props: WorkProps) {
 export function WorkCreationDateFromNow(props: WorkProps) {
   const createdAt = props.work
     && props.work.attributes
-    && props.work.attributes.createdAt
+    && props.work.attributes.dateCreated
   return (<span>{
     createdAt
       ? timeFrom(-(-createdAt))

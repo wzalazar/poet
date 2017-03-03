@@ -7,7 +7,7 @@ import { ClassNameProps } from '../../../common';
 import './Attributes.scss';
 
 export interface Attribute {
-  name: string;
+  key: string;
   value: string;
   readonly optional?: boolean;
 }
@@ -20,22 +20,22 @@ export class Attributes extends React.Component<ClassNameProps, AttributesState>
   private attributeKeyInputs?: AttributeNameAutocomplete[] = [];
   private readonly defaultAttributes: ReadonlyArray<Attribute> = [
     {
-      name: 'name',
+      key: 'name',
       value: '',
       optional: false
     },
     {
-      name: 'author',
+      key: 'author',
       value: '',
       optional: false
     },
     {
-      name: 'dateCreated',
+      key: 'dateCreated',
       value: '',
       optional: false
     },
     {
-      name: 'datePublished',
+      key: 'datePublished',
       value: '',
       optional: false
     }
@@ -68,7 +68,7 @@ export class Attributes extends React.Component<ClassNameProps, AttributesState>
         <div className="col-sm-4">
             <AttributeNameAutocomplete
               onChange={this.onKeyChange.bind(this, index)}
-              attributeName={attribute.name}
+              attributeName={attribute.key}
               ref={attributeNameAutocomplete => this.attributeKeyInputs[index] = attributeNameAutocomplete}
             />
         </div>
@@ -96,23 +96,23 @@ export class Attributes extends React.Component<ClassNameProps, AttributesState>
     });
   }
 
-  private onKeyChange(index: number, name: string) {
+  private onKeyChange(index: number, key: string) {
     const attributes = [ ...this.state.attributes ];
-    attributes[index].name = name;
+    attributes[index].key = key;
     this.setState({
       attributes
     });
   }
 
   private onAddAttribute() {
-    if (!this.state.attributes[this.state.attributes.length - 1].name) {
+    if (!this.state.attributes[this.state.attributes.length - 1].key) {
       this.attributeKeyInputs[this.attributeKeyInputs.length - 1].focus();
       return;
     }
 
     this.setState({
       attributes: [ ...this.state.attributes, {
-        name: '',
+        key: '',
         value: '',
         optional: true
       } ]

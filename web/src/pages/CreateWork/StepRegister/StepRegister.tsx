@@ -76,10 +76,10 @@ export class StepRegister extends React.Component<StepRegisterProps, StepRegiste
   private contentToAttributes(content?: string, fileName?: string) {
     const attributes = [...this.attributes.state.attributes];
 
-    const attributeByKey = (name: string) => this.attributes.state.attributes.find(attribute => attribute.name === name);
-    const updateAttribute = (name: string, value: string) => attributeByKey(name).value = value;
-    const addAttribute = (name: string, value: string) => attributes.push({ name, value });
-    const upsertAttribute = (name: string, value: string) => attributeByKey(name) ? updateAttribute(name, value) : addAttribute(name, value);
+    const attributeByKey = (key: string) => this.attributes.state.attributes.find(attribute => attribute.key === key);
+    const updateAttribute = (key: string, value: string) => attributeByKey(key).value = value;
+    const addAttribute = (key: string, value: string) => attributes.push({ key, value });
+    const upsertAttribute = (key: string, value: string) => attributeByKey(key) ? updateAttribute(key, value) : addAttribute(key, value);
 
     if (fileName && !attributeByKey('name') || !attributeByKey('name').value) {
       upsertAttribute('name',  fileName)
@@ -89,7 +89,7 @@ export class StepRegister extends React.Component<StepRegisterProps, StepRegiste
       upsertAttribute('contentHash', new Buffer(bitcore.crypto.Hash.sha256(new Buffer(content))).toString('hex'));
       upsertAttribute('fileSize', '' + content.length);
       upsertAttribute('wordCount', '' + countWords(content));
-      upsertAttribute('createdAt', '' + new Date().getTime());
+      upsertAttribute('dateCreated', '' + new Date().getTime());
     }
 
     this.attributes.setState({ attributes })

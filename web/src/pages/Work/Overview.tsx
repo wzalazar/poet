@@ -21,8 +21,8 @@ function render(props: Work) {
   }
 
   const tableData = new Map<string, any>();
-  tableData.set('Published', props.attributes.publishedAt);
-  tableData.set('Last Modified', props.attributes.lastModified);
+  tableData.set('Published', props.attributes.datePublished);
+  tableData.set('Last Modified', props.attributes.dateModified);
   props.attributes.tags && tableData.set('Tags', props.attributes.tags || []);
   tableData.set('Type', props.attributes.articleType || 'Unknown');
 

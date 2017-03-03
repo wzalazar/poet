@@ -58,7 +58,7 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
   }
 
   private onStepRegisterSubmit(workData: StepRegisterData) {
-    const workTitleAttribute = workData.attributes.find(attribute => attribute.name == 'title');
+    const workTitleAttribute = workData.attributes.find(attribute => attribute.key == 'name');
 
     this.setState({
       selectedStep: 1,
@@ -88,7 +88,7 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
           { key: 'articleType', value: this.state.workData.articleType },
           { key: 'content', value: this.state.workData.content },
           { key: 'authorPublicKey', value: this.props.userPublicKey },
-          { key: 'submitDate', value: new Date() }
+          { key: 'dateSubmitted', value: '' + new Date().getTime() }
         ]
       },
       {

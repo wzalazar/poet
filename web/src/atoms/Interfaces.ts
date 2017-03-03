@@ -62,8 +62,8 @@ export interface Work extends Claim {
   readonly attributes: {
     readonly [key: string]: string
     readonly name: string;
-    readonly publishedAt: string;
-    readonly createdAt: string;
+    readonly datePublished: string;
+    readonly dateCreated: string;
     readonly authorPublicKey: string;
     readonly authorDisplayName: string;
     readonly lastModified: string;
