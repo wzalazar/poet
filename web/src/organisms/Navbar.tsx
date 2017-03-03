@@ -9,6 +9,7 @@ import { Actions } from '../actions/index';
 import Constants from '../constants';
 import { LoginButton } from "../components/LoginButton";
 import { Images } from '../images/Images';
+import { countUnreadNotifications } from '../selectors/session';
 
 interface NavbarActions {
   dispatchSearchClick: () => Action;
@@ -18,6 +19,7 @@ interface NavbarActions {
 export interface NavbarProps {
   readonly loggedIn?: boolean;
   readonly avatar?: string;
+  readonly notifications?: number;
   readonly shadow?: boolean;
   readonly transparent?: boolean;
   readonly displayLogo?: boolean;
@@ -92,8 +94,13 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
       this.renderNavLink('portfolio', 'Portfolio'),
       this.renderNavLink('licenses', 'Licenses'),
       <li key="avatar" className="nav-item avatar">{ this.renderAvatar() }</li>,
+      <li key="notifications" className="nav-item notifications">{ this.countNotifications() }</li>,
       <li key="create-work" className="nav-item"><Link to={'/create-work'} className="button-primary">New Work</Link></li>
     ];
+  }
+
+  private countNotifications(): JSX.Element {
+    return <span> { this.props.notifications ? '' + this.props.notifications : '0' } </span>
   }
 }
 
@@ -101,7 +108,8 @@ function mapStateToProps(state: any, ownProps: NavbarProps): NavbarProps {
   return {
     ...ownProps,
     loggedIn: state.session && (state.session.state === Constants.LOGGED_IN),
-    avatar: state.profile && state.profile.attributes && state.profile.attributes.imageData
+    avatar: state.profile && state.profile.attributes && state.profile.attributes.imageData,
+    notifications: countUnreadNotifications(state)
   }
 }
 

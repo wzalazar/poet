@@ -23,8 +23,19 @@ export interface FetchStore {
   [key: string]: FetchStoreEntry<any>
 }
 
+export interface NotificationsStore {
+  notifications: ReadonlyArray<any>
+  unreadCount: number
+  totalCount: number
+}
+
+export interface ProfileStore {
+  notifications: NotificationsStore
+}
+
 export interface PoetAppState {
   session: PoetSession
+  profile: ProfileStore
   fetch: FetchStore
   modals: ModalStore
   transfer: TransferStore

@@ -26,11 +26,12 @@ export namespace Actions {
   }
 
   export namespace Profile {
-    export const Updating= 'updating profile';
+    export const Updating = 'updating profile';
     export const Updated = 'profile updated successfully';
     export const UpdateRequested = 'profile update requested';
     export const FetchProfile = 'fetch profile data';
     export const ProfileFetched = 'profile data fetched';
+    export const NotificationsUpdate = 'notifications update';
   }
 
   export namespace Transfer {
