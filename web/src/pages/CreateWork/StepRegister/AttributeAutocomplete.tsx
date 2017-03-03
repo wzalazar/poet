@@ -12,11 +12,11 @@ interface AttributeNameAutocompleteProps {
 }
 
 interface AttributeNameAutocompleteState {
-  readonly menuIsOpen: boolean;
+  readonly menuIsOpen?: boolean;
+  readonly schema?: any;
 }
 
 export class AttributeNameAutocomplete extends React.Component<AttributeNameAutocompleteProps, AttributeNameAutocompleteState> {
-  private schema: any;
   private autocomplete: any;
 
   constructor() {
@@ -24,16 +24,19 @@ export class AttributeNameAutocomplete extends React.Component<AttributeNameAuto
     this.state = {
       menuIsOpen: false
     };
-    load((data: any) => this.schema = data)
+  }
+
+  componentDidMount() {
+    load((schema: any) => this.setState({ schema }));
   }
 
   render() {
-    if (!this.schema) {
+    if (!this.state.schema) {
       return <div/>
     }
     return <Autocomplete
       ref={(autocomplete: any) => this.autocomplete = autocomplete}
-      items={this.schema.types.CreativeWork.properties}
+      items={this.state.schema.types.CreativeWork.properties}
       value={this.props.attributeName}
       renderMenu={this.renderMenu.bind(this)}
       renderItem={this.renderMenuItem.bind(this)}
