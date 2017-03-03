@@ -36,7 +36,7 @@ export class WorksComponent extends PoetAPIResourceProvider<WorksResource, Works
         offset: this.props.offset,
         limit: this.props.limit,
         dateFrom: this.props.dateFrom && this.props.dateFrom.toDate().getTime(),
-        dateTo: this.props.dateFrom && this.props.dateTo.toDate().getTime(),
+        dateTo: this.props.dateTo && this.props.dateTo.toDate().getTime(),
         query: this.props.query,
         sortBy: this.props.sortBy,
         licenseType: this.props.licenseType && this.props.licenseType.id

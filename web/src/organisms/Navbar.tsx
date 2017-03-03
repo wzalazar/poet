@@ -45,17 +45,22 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
       'search',
       this.props.searchShadow && 'shadow'
     ];
+    const search = (ev: any) => {
+      ev.preventDefault()
+      this.props.dispatchSearchClick()
+    }
     return (
       <nav className={ navClasses.filterTruthy().join(' ') }>
         { this.props.displayLogo && <a className="navbar-brand" href="/"><img src={Images.Logo} /></a> }
         { this.props.displaySearch && <div className={ searchClasses.filterTruthy().join(' ') }  >
           <img src={Images.Glass} />
-          <input
-            type="text"
-            placeholder="Search"
-            onClick={this.props.dispatchSearchClick}
-            onChange={(event: any) => this.props.dispatchSearchChange(event.target.value) }
-          />
+          <form onSubmit={search}>
+            <input
+              type="text"
+              placeholder="Search"
+              onChange={(event: any) => this.props.dispatchSearchChange(event.target.value) }
+            />
+          </form>
         </div> }
         <ul className="navbar-nav">
           { this.props.loggedIn ? this.loggedInActions() : this.notLoggedActions() }
