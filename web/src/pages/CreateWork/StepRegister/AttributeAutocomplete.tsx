@@ -16,14 +16,14 @@ interface AttributeNameAutocompleteState {
 }
 
 export class AttributeNameAutocomplete extends React.Component<AttributeNameAutocompleteProps, AttributeNameAutocompleteState> {
-
-  schema: any
+  private schema: any;
+  private autocomplete: any;
 
   constructor() {
     super(...arguments);
     this.state = {
       menuIsOpen: false
-    }
+    };
     load((data: any) => this.schema = data)
   }
 
@@ -32,6 +32,7 @@ export class AttributeNameAutocomplete extends React.Component<AttributeNameAuto
       return <div/>
     }
     return <Autocomplete
+      ref={(autocomplete: any) => this.autocomplete = autocomplete}
       items={this.schema.types.CreativeWork.properties}
       value={this.props.attributeName}
       renderMenu={this.renderMenu.bind(this)}
@@ -63,5 +64,9 @@ export class AttributeNameAutocomplete extends React.Component<AttributeNameAuto
 
   private shouldItemRender(item: string, value: string) {
     return value && item.toLowerCase().includes(value.toLowerCase());
+  }
+
+  public focus() {
+    this.autocomplete.refs.input.focus();
   }
 }

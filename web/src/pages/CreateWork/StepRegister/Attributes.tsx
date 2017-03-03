@@ -17,7 +17,7 @@ interface AttributesState {
 }
 
 export class Attributes extends React.Component<ClassNameProps, AttributesState> {
-  private attributeKeyInputs?: HTMLInputElement[] = [];
+  private attributeKeyInputs?: AttributeNameAutocomplete[] = [];
   private readonly defaultAttributes: ReadonlyArray<Attribute> = [
     {
       name: 'name',
@@ -69,6 +69,7 @@ export class Attributes extends React.Component<ClassNameProps, AttributesState>
             <AttributeNameAutocomplete
               onChange={this.onKeyChange.bind(this, index)}
               attributeName={attribute.name}
+              ref={attributeNameAutocomplete => this.attributeKeyInputs[index] = attributeNameAutocomplete}
             />
         </div>
         <div className="col-sm-7">
