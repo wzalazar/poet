@@ -20,6 +20,7 @@ export class DropdownMenu extends React.Component<DropdownMenuProps, DropdownSta
     this.state = {
       open: false
     };
+    this.handleClickOutside = this.handleClickOutside.bind(this);
   }
 
   render() {
