@@ -1,5 +1,6 @@
 import * as React from 'react';
 const QR = require('react-qr');
+import { Link } from 'react-router';
 
 import { CopyableText } from '../../../atoms/CopyableText';
 
@@ -17,13 +18,7 @@ export function WalletOperationDeposit(props: WalletOperationDepositProps) {
       </div>
       <CopyableText text={props.address} className="address"/>
       <nav>
-        <button className="button-secondary">Open in Desktop Wallet</button>
-        <div className="separator">
-          <hr/>
-          <span>or</span>
-          <hr/>
-        </div>
-        <button className="button-secondary">Deposit with Card</button>
+        <Link to={`bitcoin:${props.address}`} className="button-secondary">Open in Desktop Wallet</Link>
       </nav>
     </div>
   )
