@@ -99,12 +99,16 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
       this.renderNavLink('portfolio', 'Portfolio'),
       this.renderNavLink('licenses', 'Licenses'),
       <li key="avatar" className="nav-item avatar">{ this.renderAvatar() }</li>,
-      <li key="notifications" className="nav-item notifications">{ this.countNotifications() }</li>,
+      this.countNotifications() > 0 ? <li key="notifications" className="nav-item notifications">{ this.notifications() }</li> : <span />,
       <li key="create-work" className="nav-item"><Link to={'/create-work'} className="button-primary">New Work</Link></li>
     ];
   }
 
-  private countNotifications(): JSX.Element {
+  private countNotifications(): number {
+    return this.props.notifications
+  }
+
+  private notifications(): JSX.Element {
     return <Link to="/account/notifications"> { this.props.notifications ? '' + this.props.notifications : '0' } </Link>
   }
 }
