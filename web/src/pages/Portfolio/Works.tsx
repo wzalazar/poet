@@ -104,7 +104,6 @@ export class OwnedWorks extends PoetAPIResourceProvider<Work[], OwnedWorksProps 
   }
 
   optionSelected(work: Work, action: string) {
-    console.log('optionSelected', work, action);
     switch (action) {
       case EDIT:
         browserHistory.push('/works/' + work.id + '/edit');

@@ -4,7 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { HexString } from '../../common';
 
 import ProfileWorks from './ProfileWorks';
-import Licenses from '../Licenses/Licenses';
+import { Licenses } from '../Licenses/Licenses';
 
 export interface ProfileTabsProps {
   id: HexString;

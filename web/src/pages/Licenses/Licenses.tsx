@@ -1,17 +1,16 @@
 import * as React from 'react';
 
-import { DropdownMenu } from '../../components/DropdownMenu';
-import { ResourceProvider } from '../../components/ResourceProvider';
-
-import './Layout.scss';
-
-import Config from '../../config';
-
 import '../../extensions/String';
+
 import { OwnerName, WorkNameById } from '../../atoms/Work';
 import { License } from '../../atoms/Interfaces';
 import { TimeSinceIssueDate, ReferencedWorkName } from '../../atoms/License';
 import { OfferingType } from '../../atoms/Offering';
+import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../../atoms/base/PoetApiResource';
+import { DropdownMenu } from '../../components/DropdownMenu';
+import { Pagination } from '../../components/Pagination';
+
+import './Layout.scss';
 
 type LicensesResource = ReadonlyArray<License>;
 
@@ -19,30 +18,58 @@ export interface LicensesProps {
   readonly publicKey?: string;
   readonly limit?: number;
   readonly showActions?: boolean;
+  readonly searchQuery?: string;
+  readonly relation?: 'all' | 'sold' | 'purchased'
 }
 
-export default class Licenses extends ResourceProvider<LicensesResource, LicensesProps, undefined> {
+interface LicensesState {
+  readonly offset?: number;
+}
+
+export class Licenses extends PoetAPIResourceProvider<LicensesResource, LicensesProps, LicensesState> {
   static defaultProps: LicensesProps = {
     limit: 100,
-    showActions: false
+    showActions: false,
+    searchQuery: ''
   };
 
-  renderElement(licenses: LicensesResource) {
-    return licenses ? this.renderLicenses(licenses) : this.renderNoLicenses();
+  constructor() {
+    super(...arguments);
+    this.state = {
+      offset: 0
+    }
   }
 
-  resourceLocator() {
-    const limit = `limit=${this.props.limit}`
-    const holder = `holder=${this.props.publicKey}`
-    return { url: `${Config.api.explorer}/licenses?${limit}&${holder}` }
+  poetURL() {
+    return {
+      url: `/licenses`,
+      query: {
+        limit: this.props.limit,
+        holder: this.props.publicKey,
+        query: this.props.searchQuery
+      }
+    }
   }
 
-  private renderLicenses(licenses: LicensesResource) {
+  renderElement(licenses: LicensesResource, headers: Headers) {
+    return (licenses && licenses.length) ? this.renderLicenses(licenses, headers) : this.renderNoLicenses();
+  }
+
+  private renderLicenses(licenses: LicensesResource, headers: Headers) {
+    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
     return (
       <section className="licenses">
         <ul className="row list-unstyled">
-          { licenses.map(license => this.renderLicense(license)) }
+          { licenses.map(this.renderLicense.bind(this)) }
         </ul>
+        <Pagination
+          offset={this.state.offset}
+          limit={10}
+          count={count}
+          visiblePageCount={6}
+          onClick={offset => this.setState({offset})}
+          className="pagination"
+          disabledClassName="disabled"/>
       </section>
     )
   }
@@ -50,7 +77,7 @@ export default class Licenses extends ResourceProvider<LicensesResource, License
   private renderNoLicenses() {
     return (
       <section className="licenses">
-        <div>This user doesn't have any licenses yet!</div>
+        <div>You don't have any licenses yet!</div>
       </section>
     )
   }
