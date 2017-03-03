@@ -1,5 +1,4 @@
 import * as socketIO from 'socket.io-client'
-import * as fetch from 'isomorphic-fetch'
 
 import { BitcoinBlockMetadata, BlockMetadata } from './events'
 import {BARD} from "./common";

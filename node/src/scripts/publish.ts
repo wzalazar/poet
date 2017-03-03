@@ -1,7 +1,6 @@
-import * as fetch from "isomorphic-fetch"
-import { default as getCreator, ClaimBuilder } from "../src/serialization/builder"
-import Fields from '../src/blockchain/fields'
-import { Claim } from '../src/claim'
+import { default as getCreator, ClaimBuilder } from "../../src/serialization/builder"
+import Fields from '../../src/blockchain/fields'
+import { Claim } from '../../src/claim'
 
 const myPrivateKey = '2461d5dc1bf2c48b73d271375a11f853f92aca53d328f35af5cbaead016ebeb5'
 const myPrivateKey2 = '2111d5dc1bf2c48b73d271375a11f853f92aca53d328f35af5cbaead016ebeb5'

@@ -9,15 +9,18 @@ import './Title.scss';
 import { Work } from '../../atoms/Interfaces';
 
 function render(props: Work): JSX.Element {
+  const owner = props.title && props.title.attributes && props.title.attributes.owner
   return (
     <section className="title">
       <h3>Title</h3>
       <table>
         <tbody>
-          <tr>
-            <td>Owner</td>
-            <td><ProfileLink id={props.title.attributes.owner} /></td>
-          </tr>
+          { owner &&
+            <tr>
+              <td>Owner</td>
+              <td><ProfileLink id={owner} /></td>
+            </tr>
+          }
           <tr>
             <td>Type of Ownership</td>
             <td>{props.title.attributes.typeOfOwnership || 'Single Ownership'}</td>

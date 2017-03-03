@@ -1,7 +1,6 @@
 import * as Koa from 'koa'
 import { sign, sha256 } from '../common'
 import { doubleSha, signMessage } from './helpers'
-import * as fetch from 'isomorphic-fetch'
 
 const bitcore = require('bitcore-lib')
 const uuid = require('uuid')
