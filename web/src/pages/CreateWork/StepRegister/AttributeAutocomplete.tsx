@@ -53,7 +53,7 @@ export class AttributeNameAutocomplete extends React.Component<AttributeNameAuto
 
   private renderMenuItem(item: string) {
     const splits = item.split(new RegExp(`(${this.props.attributeName})`, 'i'));
-    const matchedItem = splits.map(s => <span className={classNames(this.shouldItemRender(s, this.props.attributeName) && 'matched')}>{s}</span>);
+    const matchedItem = splits.map((s, i) => <span key={i} className={classNames(this.shouldItemRender(s, this.props.attributeName) && 'matched')}>{s}</span>);
 
     return (
       <li key={item}>
