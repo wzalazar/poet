@@ -10,9 +10,9 @@ export namespace Actions {
 
   export const noBalanceAvailable = 'no balance available';
 
-  export namespace Navbar {
-    export const SearchClick = 'navbar search click';
-    export const SearchChange = 'navbar search change';
+  export namespace Search {
+    export const Submit = 'search submit';
+    export const Change = 'search change';
   }
 
   export namespace Session {

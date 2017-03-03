@@ -5,6 +5,7 @@ import { Action } from 'redux';
 import Constants from '../../constants';
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
 import { LandingLayout } from './Layout';
+import { Actions } from '../../actions/index';
 
 export class LandingLoader extends PageLoader<Object, Object> {
 
@@ -33,5 +34,12 @@ export class LandingLoader extends PageLoader<Object, Object> {
 
   select(state: any, ownProps: any): Object {
     return { loggedIn: state.session && state.session.state === Constants.LOGGED_IN };
+  }
+
+  mapDispatchToProps(): any {
+    return {
+      dispatchSearch: () => ({ type: Actions.Search.Submit }),
+      dispatchSearchChange: (searchQuery: string) => ({ type: Actions.Search.Change, searchQuery })
+    }
   }
 }

@@ -9,6 +9,6 @@ function* navbarSearchClickAction(): any {
 
 export function navbarSaga() {
   return function*() {
-    yield takeEvery(Actions.Navbar.SearchClick, navbarSearchClickAction);
+    yield takeEvery(Actions.Search.Submit, navbarSearchClickAction);
   }
 }
