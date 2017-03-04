@@ -1,8 +1,9 @@
 import * as React from 'react';
+import * as moment from 'moment';
+
 import { License } from './Interfaces';
-import moment = require('moment');
 import { Config } from '../config';
-import { WorkNameById } from './Work';
+import { WorkNameById, WorkNameWithLinkById } from './Work';
 
 
 export function TimeSinceIssueDate(props: { license: License }) {
@@ -18,4 +19,8 @@ export function TimeSinceIssueDate(props: { license: License }) {
 
 export function ReferencedWorkName(props: { license: License }) {
   return <WorkNameById workId={props.license.attributes.reference} />
+}
+
+export function ReferencedWorkNameWithLink(props: { license: License }) {
+  return <WorkNameWithLinkById workId={props.license.attributes.reference} />
 }

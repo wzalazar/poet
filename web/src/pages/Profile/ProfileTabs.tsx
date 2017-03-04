@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
+import { Configuration } from '../../config';
 import { HexString } from '../../common';
 
 import ProfileWorks from './ProfileWorks';
@@ -23,7 +24,7 @@ export class ProfileTabs extends React.Component<ProfileTabsProps, any> {
             <ProfileWorks author={this.props.id}/>
           </TabPanel>
           <TabPanel>
-            <Licenses publicKey={this.props.id} showActions={false} />
+            <Licenses publicKey={this.props.id} showActions={false} relation="emitter" limit={Configuration.pagination.limit} />
           </TabPanel>
         </Tabs>
       </div>

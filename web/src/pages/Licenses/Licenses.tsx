@@ -4,22 +4,24 @@ import '../../extensions/String';
 
 import { OwnerName, WorkNameById } from '../../atoms/Work';
 import { License } from '../../atoms/Interfaces';
-import { TimeSinceIssueDate, ReferencedWorkName } from '../../atoms/License';
+import { TimeSinceIssueDate, ReferencedWorkName, ReferencedWorkNameWithLink } from '../../atoms/License';
 import { OfferingType } from '../../atoms/Offering';
 import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../../atoms/base/PoetApiResource';
 import { DropdownMenu } from '../../components/DropdownMenu';
 import { Pagination } from '../../components/Pagination';
 
-import './Layout.scss';
+import './Licenses.scss';
 
 type LicensesResource = ReadonlyArray<License>;
 
+export type LicenseToProfileRelationship = 'relatedTo' | 'emitter' | 'holder';
+
 export interface LicensesProps {
   readonly publicKey?: string;
-  readonly limit?: number;
+  readonly limit: number;
   readonly showActions?: boolean;
   readonly searchQuery?: string;
-  readonly relation?: 'all' | 'sold' | 'purchased'
+  readonly relation: LicenseToProfileRelationship
 }
 
 interface LicensesState {
@@ -27,10 +29,10 @@ interface LicensesState {
 }
 
 export class Licenses extends PoetAPIResourceProvider<LicensesResource, LicensesProps, LicensesState> {
-  static defaultProps: LicensesProps = {
-    limit: 100,
+  static defaultProps: Partial<LicensesProps> = {
     showActions: false,
-    searchQuery: ''
+    searchQuery: '',
+    relation: 'relatedTo'
   };
 
   constructor() {
@@ -45,7 +47,8 @@ export class Licenses extends PoetAPIResourceProvider<LicensesResource, Licenses
       url: `/licenses`,
       query: {
         limit: this.props.limit,
-        holder: this.props.publicKey,
+        offset: this.state.offset,
+        [this.props.relation]: this.props.publicKey,
         query: this.props.searchQuery
       }
     }
@@ -59,17 +62,17 @@ export class Licenses extends PoetAPIResourceProvider<LicensesResource, Licenses
     const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
     return (
       <section className="licenses">
-        <ul className="row list-unstyled">
+        <ul className="licenses">
           { licenses.map(this.renderLicense.bind(this)) }
         </ul>
-        <Pagination
+        { count > this.props.limit && <Pagination
           offset={this.state.offset}
-          limit={10}
+          limit={this.props.limit}
           count={count}
           visiblePageCount={6}
           onClick={offset => this.setState({offset})}
           className="pagination"
-          disabledClassName="disabled"/>
+          disabledClassName="disabled"/> }
       </section>
     )
   }
@@ -84,27 +87,28 @@ export class Licenses extends PoetAPIResourceProvider<LicensesResource, Licenses
 
   private renderLicense(license: License) {
     return (
-      <li key={license.id} className="card col-sm-5 col-sm-3 col-lg-3 m-1">
-        <div className="card-block">
-          <div className="card-title " >
-            <h5><ReferencedWorkName license={license} /></h5>
-            { this.props.showActions && <div className="menu">
-              <DropdownMenu options={['Revoke']} onOptionSelected={this.optionSelected.bind(this, license)}>
-                Actions
-              </DropdownMenu>
-            </div> }
-          </div>
-          <div>
-            <div className="box-placeholder" />
-            <div>
-              <div><OfferingType offering={license.referenceOffering} /></div>
-              <div><TimeSinceIssueDate license={license} /></div>
-            </div>
-          </div>
+      <li key={license.id}>
+        <header>
+          <h2><ReferencedWorkNameWithLink license={license} /></h2>
+          { this.props.showActions && this.renderLicenseDropdownMenu(license) }
+        </header>
+        <main>
+          <div>Offering Type: <OfferingType offering={license.referenceOffering} /></div>
+          <div><TimeSinceIssueDate license={license} /></div>
           <div>Owned by: <OwnerName workId={ license.reference.id }/></div>
-        </div>
+        </main>
       </li>
     )
+  }
+
+  private renderLicenseDropdownMenu(license: License) {
+    return (
+      <div className="menu">
+        <DropdownMenu options={['Revoke']} onOptionSelected={this.optionSelected.bind(this, license)}>
+          Actions
+        </DropdownMenu>
+      </div>
+    );
   }
 
   private optionSelected(license: any, option: string) {

@@ -21,7 +21,7 @@ abstract class ProfileByWorkOwner<State> extends PoetAPIResourceProvider<Profile
 
 export class OwnerName extends ProfileByWorkOwner<undefined> {
   renderElement(resource: Profile): JSX.Element {
-    return (<div>{resource.attributes.displayName}</div>);
+    return (<span>{resource.attributes.displayName}</span>);
   }
 }
 
@@ -65,6 +65,12 @@ export function WorkNameWithLink(props: WorkProps) {
     && props.work.attributes.name
     || '(untitled)'
   return <Link to={'/works/' + props.work.id}> { title }</Link>
+}
+
+export class WorkNameWithLinkById extends WorkById<undefined> {
+  renderElement(work: Work): JSX.Element {
+    return <WorkNameWithLink work={work} />
+  }
 }
 
 export function WorkName(props: WorkProps) {

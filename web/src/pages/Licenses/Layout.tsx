@@ -3,10 +3,11 @@ import * as React from 'react';
 import { HexString } from '../../common';
 
 import { SearchInput } from '../../atoms/SearchInput';
-import { Licenses } from './Licenses'
+import { Licenses, LicenseToProfileRelationship } from './Licenses'
 import { Filters } from './Filters';
 
 import './Layout.scss';
+import { Configuration } from '../../config';
 
 interface LicensesProps {
   publicKey: HexString;
@@ -43,8 +44,21 @@ export class LicensesLayout extends React.Component<LicensesProps, LicensesLayou
           onOptionSelected={selectedFilter => this.setState({selectedFilter})} />
         <Licenses
           publicKey={this.props.publicKey}
-          searchQuery={this.state.searchQuery} />
+          searchQuery={this.state.searchQuery}
+          relation={this.selectedFilterRelationship()}
+          limit={Configuration.pagination.visiblePageCount}/>
       </section>
     )
+  }
+
+  private selectedFilterRelationship(): LicenseToProfileRelationship {
+    switch (this.state.selectedFilter) {
+      case Filters.ALL:
+        return 'relatedTo';
+      case Filters.SOLD:
+        return 'emitter';
+      case Filters.PURCHASED:
+        return 'holder';
+    }
   }
 }

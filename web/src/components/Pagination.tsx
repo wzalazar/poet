@@ -1,8 +1,8 @@
-import * as React from 'react';;
-import { Link } from 'react-router';
+import * as React from 'react';
 const classNames = require('classnames');
 
 import { ClassNameProps } from '../common';
+import { Configuration } from '../config';
 
 export interface PaginationProps extends ClassNameProps {
   readonly offset: number;
@@ -14,6 +14,11 @@ export interface PaginationProps extends ClassNameProps {
 }
 
 export class Pagination extends React.Component<PaginationProps, undefined> {
+
+  static defaultProps: Partial<PaginationProps> = {
+    visiblePageCount: Configuration.pagination.visiblePageCount
+  };
+
   render() {
 
     return (
