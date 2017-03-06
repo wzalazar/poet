@@ -2,14 +2,15 @@ import * as React from 'react';
 import { Link } from 'react-router';
 import { Action } from 'redux';
 import { connect } from "react-redux";
-
-import './Navbar.scss';
+const classNames = require('classnames');
 
 import { Actions } from '../actions/index';
 import Constants from '../constants';
 import { LoginButton } from "../components/LoginButton";
 import { Images } from '../images/Images';
 import { countUnreadNotifications } from '../selectors/session';
+
+import './Navbar.scss';
 
 interface NavbarActions {
   dispatchSearchClick: () => Action;
@@ -22,6 +23,7 @@ export interface NavbarProps {
   readonly notifications?: number;
   readonly shadow?: boolean;
   readonly transparent?: boolean;
+  readonly margin?: boolean;
   readonly displayLogo?: boolean;
   readonly displaySearch?: boolean;
   readonly searchShadow?: boolean;
@@ -39,7 +41,8 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
     const navClasses = [
       'navbar',
       this.props.shadow && 'shadow',
-      this.props.transparent && 'transparent'
+      this.props.transparent && 'transparent',
+      this.props.margin && 'margin'
     ];
     const searchClasses = [
       'search',
@@ -50,9 +53,9 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
       this.props.dispatchSearchClick()
     }
     return (
-      <nav className={ navClasses.filterTruthy().join(' ') }>
+      <nav className={ classNames(navClasses) }>
         { this.props.displayLogo && <a className="navbar-brand" href="/"><img src={Images.Logo} /></a> }
-        { this.props.displaySearch && <div className={ searchClasses.filterTruthy().join(' ') }  >
+        { this.props.displaySearch && <div className={ classNames(searchClasses) }  >
           <img src={Images.Glass} />
           <form onSubmit={search}>
             <input

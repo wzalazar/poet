@@ -21,12 +21,16 @@ interface RootLayoutProps {
 
 function render(props: RootLayoutProps) {
   // TODO: a way for pages to provide these so the RootLayout doesn't need to know what urls are mapped to what pages
-  const navbarShadow = !['/works', '/'].includes(props.location.pathname);
+  const accountUrls = ['/account/settings', '/account/wallet', '/account/notifications'];
+  const worksUrl = '/works';
+
+  const navbarShadow = ![worksUrl, '/'].includes(props.location.pathname);
   const navbarTransparent = ['/'].includes(props.location.pathname) && props.loggedIn;
+  const navbarMargin = ![worksUrl, ...accountUrls].includes(props.location.pathname);
   const displayNavbarLogo = !['/'].includes(props.location.pathname) || !props.loggedIn;
   const displayNavbarSearch = !['/'].includes(props.location.pathname) || !props.loggedIn;
-  const displayUserNavbar = ['/account/settings', '/account/wallet'].includes(props.location.pathname);
-  const searchShadow = ['/works'].includes(props.location.pathname);
+  const displayUserNavbar = accountUrls.includes(props.location.pathname);
+  const searchShadow = [worksUrl].includes(props.location.pathname);
 
   return (
     <div className="root-layout">
@@ -37,6 +41,7 @@ function render(props: RootLayoutProps) {
         displaySearch={displayNavbarSearch}
         transparent={navbarTransparent}
         searchShadow={searchShadow}
+        margin={navbarMargin}
       />
       { displayUserNavbar && <UserNavbar location={props.location.pathname}/> }
       { props.children }
