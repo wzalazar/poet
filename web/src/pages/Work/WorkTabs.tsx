@@ -21,7 +21,7 @@ export class WorkTabs extends React.Component<WorkTabProps, undefined> {
     const workId = this.props.id;
     return (
       <Tabs selectedIndex={0} className="work-tabs" >
-        <TabList>
+        <TabList className="tab-option-group">
           <Tab>Content</Tab>
           <Tab>History</Tab>
           <Tab>Stats</Tab>

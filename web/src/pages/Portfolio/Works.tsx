@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { browserHistory } from 'react-router';
 
+import { UrlObject } from '../../common';
+import { DispatchesTransferRequested } from '../../actions/requests';
 import { WorkNameWithLink, WorkType, WorkPublishedDate } from '../../atoms/Work';
 import { Work } from '../../atoms/Interfaces';
 import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../../atoms/base/PoetApiResource';
 import { SelectWorksByOwner } from '../../atoms/Arguments';
 import { DropdownMenu } from '../../components/DropdownMenu';
 import { Pagination } from '../../components/Pagination';
-import { DispatchesTransferRequested } from '../../actions/requests';
 
 import './Works.scss';
-import { UrlObject } from '../../common';
 
 const EDIT = 'Edit';
 const TRANSFER = 'Transfer';
@@ -20,6 +20,7 @@ export type WorkToProfileRelationship = 'author' | 'owner' | 'relatedTo';
 interface OwnedWorksProps {
   readonly relationship: WorkToProfileRelationship;
   readonly query: string;
+  readonly showActions?: boolean;
 }
 
 interface OwnedWorksState {
@@ -58,7 +59,7 @@ export class OwnedWorks extends PoetAPIResourceProvider<Work[], OwnedWorksProps 
               <td>Name</td>
               <td>Hash</td>
               <td>Timestamp</td>
-              <td>Actions</td>
+              { this.props.showActions && <td>Actions</td> }
             </tr>
           </thead>
           <tbody>
@@ -91,14 +92,14 @@ export class OwnedWorks extends PoetAPIResourceProvider<Work[], OwnedWorksProps 
         </td>
         <td className="hash">{work.id}</td>
         <td className="timestamp"><WorkPublishedDate work={work}/></td>
-        <td>
+        { this.props.showActions && <td>
           <DropdownMenu
             className="dropdown"
             options={[EDIT, TRANSFER]}
             onOptionSelected={this.optionSelected.bind(this, work)}>
             Actions
           </DropdownMenu>
-        </td>
+        </td> }
       </tr>
     )
   }

@@ -16,7 +16,7 @@ export class PortfolioWorksFilters extends React.Component<PortfolioWorksFilters
 
   render() {
     return (
-      <OptionGroup selectedId={this.props.selectedId} onOptionSelected={this.props.onOptionSelected} className="tab-option-group">
+      <OptionGroup selectedId={this.props.selectedId} onOptionSelected={this.props.onOptionSelected} className="tab-option-group extended">
         <Option id={PortfolioWorksFilters.OWNED}>Owned Works</Option>
         <Option id={PortfolioWorksFilters.AUTHORED}>Authored Works</Option>
         <Option id={PortfolioWorksFilters.ALL}>All Works</Option>

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { Tabs } from 'react-tabs';
 
 import Constants from '../constants';
 import { Navbar } from "../organisms/Navbar";
@@ -8,6 +9,8 @@ import { Footer } from '../organisms/Footer';
 import Modals from '../modals';
 
 import './RootLayout.scss'
+
+Tabs.setUseDefaultStyles(false);
 
 const modals = Modals.map((Modal, index) => <Modal key={index}/>);
 

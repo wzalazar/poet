@@ -1,0 +1,65 @@
+.page-profile .overview {
+
+  .avatar {
+    margin-bottom: 16px;
+
+    width: 140px;
+    height: 140px;
+    background-color: #FCFCFC;
+    border: 1px solid #ECECEC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 111px;
+      height: 111px;
+      background-color: #F1F1F1;
+      border-radius: 50%;
+    }
+  }
+
+  h2 {
+    margin-bottom: 13px;
+
+    font-family: "Roboto Slab";
+    font-size: 22px;
+    color: #413D3B;
+  }
+
+  .bio {
+    margin-bottom: 30px;
+
+    font-family: "Roboto Slab";
+    font-size: 12px;
+    line-height: 18px;
+    color: #413D3B;
+  }
+
+  ul {
+    list-style: none;
+    font-family: "Source Sans Pro";
+    font-size: 14px;
+    color: #000000;
+
+    li {
+      display: flex;
+      align-items: center;
+
+      // we need to wrap the text with a div for text-overflow to work, see https://bugzilla.mozilla.org/show_bug.cgi?id=972664
+      >div {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    li:before {
+      flex: 0 0 auto;
+      width: 14px;
+      height: 14px;
+      background-color: #D8D8D8;
+      content: ' ';
+      margin-right: 10px;
+    }
+  }
+}

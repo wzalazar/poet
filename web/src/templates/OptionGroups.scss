@@ -1,7 +1,16 @@
 
 .tab-option-group {
+  $border: 3px solid #EFEFEF;
+  $border-color: #BEAF7E;
+
   list-style: none;
   display: flex;
+
+  &.extended::after {
+    content: ' ';
+    flex: 1 1 auto;
+    border-bottom: $border;
+  }
 
   li {
     display: flex;
@@ -14,17 +23,17 @@
     font-family: "Roboto Slab";
     font-size: 12px;
     color: #413D3B;
-    border-bottom: 3px solid #EFEFEF;
+    border-bottom: $border;
     background-color: transparent;
     opacity: 0.75;
     cursor: default;
 
     &:hover {
-      border-color: lighten(#BEAF7E, 15%);
+      border-color: lighten($border-color, 15%);
     }
 
     &.selected {
-      border-color: #BEAF7E;
+      border-color: $border-color;
       font-weight: bold;
     }
   }

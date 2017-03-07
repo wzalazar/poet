@@ -1,0 +1,112 @@
+.page-profile .tabs {
+  .tab-list {
+    li {
+      cursor: pointer;
+    }
+  }
+  table {
+    $border-radius: 4px;
+
+    width: 100%;
+    font-family: "Roboto Slab";
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid #E3E1DF;
+    border-radius: $border-radius $border-radius 0 0;
+
+    thead tr td {
+      height: 36px;
+      padding: 10px 16px;
+      background-color: #F1EFEC;
+      font-size: 10px;
+      font-weight: bold;
+      color: #676767;
+
+      &:first-child {
+        border-top-left-radius: $border-radius;
+      }
+
+      &:last-child {
+        border-top-right-radius: $border-radius;
+      }
+
+    }
+
+    tbody {
+      background-color: #FFFFFF;
+
+      tr {
+        td {
+          border-top: 1px solid #E3E1DF;
+          padding: 10px 16px;
+        }
+        &:hover td {
+          background-color: #FBFBFB;
+        }
+        td.name {
+          a {
+            font-size: 12px;
+            font-weight: bold;
+            color: #43B980;
+          }
+
+          .media-type {
+            font-size: 10px;
+            font-weight: bold;
+            color: #737373;
+            margin-right: 5px;
+          }
+
+          .content-info {
+            opacity: 0.6;
+            font-size: 10px;
+            color: #737373;
+          }
+
+        }
+
+        td.hash, td.timestamp {
+          font-family: "Source Code Pro";
+          font-size: 10px;
+          font-weight: 600;
+          color: #737373;
+        }
+
+      }
+    }
+  }
+
+  ul.licenses {
+    list-style: none;
+    display: flex;
+
+    li {
+      width: 220px;
+      height: 117px;
+      border: 1px solid #E6E4E1;
+      padding: 16px;
+      background-color: #FFFFFF;
+      box-shadow: 0 2px 4px 0 #EDEDED;
+
+      &:hover {
+        border-color: #43B980;
+      }
+
+      header h2, header h2 a {
+        font-weight: bold;
+        font-size: 12px;
+        font-family: 'Roboto Slab';
+        color: #494949
+      }
+
+      main {
+        color: #666666;
+        font-family: 'Roboto Slab';
+        font-size: 10px;
+
+      }
+
+
+    }
+  }
+}

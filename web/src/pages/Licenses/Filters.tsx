@@ -16,7 +16,7 @@ export class Filters extends React.Component<FiltersProps, undefined> {
 
   render() {
     return (
-      <OptionGroup selectedId={this.props.selectedId} onOptionSelected={this.props.onOptionSelected} className="tab-option-group">
+      <OptionGroup selectedId={this.props.selectedId} onOptionSelected={this.props.onOptionSelected} className="tab-option-group extended">
         <Option id={Filters.ALL}>All</Option>
         <Option id={Filters.SOLD}>Sold</Option>
         <Option id={Filters.PURCHASED}>Purchased</Option>

@@ -2,11 +2,11 @@ import * as React from 'react';
 
 import { DispatchesTransferRequested } from '../../actions/requests';
 import { SelectProfileById } from '../../atoms/Arguments';
+import { SearchInput } from '../../atoms/SearchInput';
 import { OwnedWorks, WorkToProfileRelationship } from './Works';
 import { PortfolioWorksFilters } from './Filters';
 
 import './Layout.scss';
-import { SearchInput } from '../../atoms/SearchInput';
 
 interface PortfolioLayoutState {
   readonly selectedFilter?: string;
@@ -42,6 +42,7 @@ export class PortfolioLayout extends React.Component<SelectProfileById & Dispatc
             transferRequested={this.props.transferRequested}
             relationship={this.selectedFilterRelationship()}
             query={this.state.searchQuery}
+            showActions
           />
         </main>
       </section>
