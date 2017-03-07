@@ -26,6 +26,9 @@ export default class License {
   proofType: string
 
   @Column({ nullable: true })
+  bitcoinTx: string
+
+  @Column({ nullable: true })
   proofValue: string
 
   attributes: { [key: string]: string }

@@ -98,6 +98,7 @@ export default {
       referenceOffering: referenceOffering,
       proofType: proofType,
       proofValue: proofValue,
+      bitcoinTx: proofValue.txId,
       licenseEmitter: ownerOnRecord
     }))
     work.publishers = work.publishers || []

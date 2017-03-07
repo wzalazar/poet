@@ -14,6 +14,8 @@ interface LicenseQueryOptions extends QueryOptions {
   relatedTo?: string
 }
 
+const PROFILE_ID = 'profileId'
+
 export default class LicenseRoute extends Route<License> {
   service: BlockchainService
 
@@ -61,5 +63,20 @@ export default class LicenseRoute extends Route<License> {
         .andWhere("item.licenseEmitter=:user OR item.licenseHolder=:user", { "user": opts.relatedTo })
     }
     return queryBuilder
+  }
+
+
+  addRoutes(router: Router): any {
+    super.addRoutes(router);
+
+    router.get('/licenseTxs', async (ctx) => {
+      const profileId = ctx.request.query[PROFILE_ID]
+
+      ctx.body = (await this.repository.createQueryBuilder('license')
+        .andWhere('license.licenseHolder=:profileId OR license.licenseEmitter=:profileId', { profileId })
+        .getMany())
+        .filter((license: License) => license.bitcoinTx)
+        .map((license: License) => license.bitcoinTx)
+    })
   }
 }
