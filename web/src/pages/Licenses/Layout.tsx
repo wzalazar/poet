@@ -3,7 +3,7 @@ import * as React from 'react';
 import { HexString } from '../../common';
 
 import { SearchInput } from '../../atoms/SearchInput';
-import { Licenses, LicenseToProfileRelationship } from './Licenses'
+import { LicensesByProfile, LicenseToProfileRelationship } from './LicensesByProfile'
 import { Filters } from './Filters';
 
 import './Layout.scss';
@@ -42,7 +42,7 @@ export class LicensesLayout extends React.Component<LicensesProps, LicensesLayou
         <Filters
           selectedId={this.state.selectedFilter}
           onOptionSelected={selectedFilter => this.setState({selectedFilter})} />
-        <Licenses
+        <LicensesByProfile
           publicKey={this.props.publicKey}
           searchQuery={this.state.searchQuery}
           relation={this.selectedFilterRelationship()}

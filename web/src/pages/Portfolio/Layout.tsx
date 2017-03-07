@@ -3,7 +3,7 @@ import * as React from 'react';
 import { DispatchesTransferRequested } from '../../actions/requests';
 import { SelectProfileById } from '../../atoms/Arguments';
 import { SearchInput } from '../../atoms/SearchInput';
-import { OwnedWorks, WorkToProfileRelationship } from './Works';
+import { WorksByProfile, WorkToProfileRelationship } from './WorksByProfile';
 import { PortfolioWorksFilters } from './Filters';
 
 import './Layout.scss';
@@ -37,7 +37,7 @@ export class PortfolioLayout extends React.Component<SelectProfileById & Dispatc
           <PortfolioWorksFilters
             selectedId={this.state.selectedFilter}
             onOptionSelected={selectedFilter => this.setState({selectedFilter})}/>
-          <OwnedWorks
+          <WorksByProfile
             owner={this.props.profileId}
             transferRequested={this.props.transferRequested}
             relationship={this.selectedFilterRelationship()}

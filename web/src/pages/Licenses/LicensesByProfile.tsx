@@ -28,7 +28,7 @@ interface LicensesState {
   readonly offset?: number;
 }
 
-export class Licenses extends PoetAPIResourceProvider<LicensesResource, LicensesProps, LicensesState> {
+export class LicensesByProfile extends PoetAPIResourceProvider<LicensesResource, LicensesProps, LicensesState> {
   static defaultProps: Partial<LicensesProps> = {
     showActions: false,
     searchQuery: '',

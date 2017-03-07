@@ -4,8 +4,8 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Configuration } from '../../config';
 import { HexString } from '../../common';
 
-import { Licenses } from '../Licenses/Licenses';
-import { OwnedWorks } from '../Portfolio/Works';
+import { LicensesByProfile } from '../Licenses/LicensesByProfile';
+import { WorksByProfile } from '../Portfolio/WorksByProfile';
 
 import './Tabs.scss';
 
@@ -23,14 +23,14 @@ export class ProfileTabs extends React.Component<ProfileTabsProps, any> {
           <Tab>Licenses</Tab>
         </TabList>
         <TabPanel>
-          <OwnedWorks
+          <WorksByProfile
             owner={this.props.id}
             transferRequested={() => null}
             relationship="author"
             query="" />
         </TabPanel>
         <TabPanel>
-          <Licenses
+          <LicensesByProfile
             publicKey={this.props.id}
             relation="relatedTo"
             limit={Configuration.pagination.limit} />

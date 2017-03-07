@@ -27,7 +27,7 @@ interface OwnedWorksState {
   readonly offset?: number;
 }
 
-export class OwnedWorks extends PoetAPIResourceProvider<Work[], OwnedWorksProps & SelectWorksByOwner & DispatchesTransferRequested, OwnedWorksState> {
+export class WorksByProfile extends PoetAPIResourceProvider<Work[], OwnedWorksProps & SelectWorksByOwner & DispatchesTransferRequested, OwnedWorksState> {
 
   constructor() {
     super(...arguments);
@@ -52,7 +52,7 @@ export class OwnedWorks extends PoetAPIResourceProvider<Work[], OwnedWorksProps 
     const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
 
     return (
-      <div className="portfolio-works">
+      <section className="portfolio-works">
         <table>
           <thead>
             <tr>
@@ -75,7 +75,7 @@ export class OwnedWorks extends PoetAPIResourceProvider<Work[], OwnedWorksProps 
           onClick={offset => this.setState({offset})}
           className="pagination"
           disabledClassName="disabled"/>
-      </div>
+      </section>
     )
   }
 
