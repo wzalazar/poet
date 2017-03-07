@@ -4,16 +4,16 @@ const classNames = require('classnames');
 
 import { LogoutButton } from "../components/LogoutButton";
 
-import './UserNavbar.scss'
+import './AccountNavbar.scss'
 
-interface UserNavbarProps {
+interface AccountNavbarProps {
   location?: string;
 }
 
-export class UserNavbar extends React.Component<UserNavbarProps, undefined> {
+export class AccountNavbar extends React.Component<AccountNavbarProps, undefined> {
   render() {
     return (
-      <nav className="user-nav">
+      <nav className="account-nav">
         <div className="container">
           <ul>
             { this.renderNavLink('account/settings', 'Settings') }

@@ -4,7 +4,7 @@ import { Tabs } from 'react-tabs';
 
 import Constants from '../constants';
 import { Navbar } from "../organisms/Navbar";
-import { UserNavbar } from "../organisms/UserNavbar";
+import { AccountNavbar } from "../organisms/AccountNavbar";
 import { Footer } from '../organisms/Footer';
 import Modals from '../modals';
 
@@ -46,7 +46,7 @@ function render(props: RootLayoutProps) {
         searchShadow={searchShadow}
         margin={navbarMargin}
       />
-      { displayUserNavbar && <UserNavbar location={props.location.pathname}/> }
+      { displayUserNavbar && <AccountNavbar location={props.location.pathname}/> }
       { props.children }
       <Footer/>
     </div>
