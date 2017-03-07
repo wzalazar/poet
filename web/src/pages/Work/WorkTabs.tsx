@@ -10,8 +10,6 @@ import HistoryTab from './HistoryTab';
 import StatsTab from './StatsTab';
 import TechnicalTab from './TechnicalTab';
 
-import './WorkTabs.scss';
-
 interface WorkTabProps {
   id: HexString;
 }

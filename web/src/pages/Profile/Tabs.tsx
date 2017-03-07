@@ -32,7 +32,6 @@ export class ProfileTabs extends React.Component<ProfileTabsProps, any> {
         <TabPanel>
           <Licenses
             publicKey={this.props.id}
-            showActions={false}
             relation="relatedTo"
             limit={Configuration.pagination.limit} />
         </TabPanel>

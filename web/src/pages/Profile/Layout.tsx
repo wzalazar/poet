@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import './Layout.scss';
-
 import { Overview } from './Overview';
 import { ProfileTabs } from './Tabs';
 

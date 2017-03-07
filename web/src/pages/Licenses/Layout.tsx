@@ -46,7 +46,8 @@ export class LicensesLayout extends React.Component<LicensesProps, LicensesLayou
           publicKey={this.props.publicKey}
           searchQuery={this.state.searchQuery}
           relation={this.selectedFilterRelationship()}
-          limit={Configuration.pagination.visiblePageCount}/>
+          limit={Configuration.pagination.visiblePageCount}
+          showActions />
       </section>
     )
   }
