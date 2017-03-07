@@ -1,16 +1,16 @@
 import * as React from 'react';
 
-import '../../extensions/String';
+import '../extensions/String';
 
-import { OwnerName, WorkNameById } from '../../atoms/Work';
-import { License } from '../../atoms/Interfaces';
-import { TimeSinceIssueDate, ReferencedWorkName, ReferencedWorkNameWithLink } from '../../atoms/License';
-import { OfferingType } from '../../atoms/Offering';
-import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../../atoms/base/PoetApiResource';
-import { DropdownMenu } from '../../components/DropdownMenu';
-import { Pagination } from '../../components/Pagination';
+import { OwnerName, WorkNameById } from '../atoms/Work';
+import { License } from '../atoms/Interfaces';
+import { TimeSinceIssueDate, ReferencedWorkName, ReferencedWorkNameWithLink } from '../atoms/License';
+import { OfferingType } from '../atoms/Offering';
+import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../atoms/base/PoetApiResource';
+import { DropdownMenu } from '../components/DropdownMenu';
+import { Pagination } from '../components/Pagination';
 
-import './Licenses.scss';
+import './LicensesByProfile.scss';
 
 type LicensesResource = ReadonlyArray<License>;
 
@@ -61,7 +61,7 @@ export class LicensesByProfile extends PoetAPIResourceProvider<LicensesResource,
   private renderLicenses(licenses: LicensesResource, headers: Headers) {
     const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
     return (
-      <section className="licenses">
+      <section className="licenses-by-profile">
         <ul className="licenses">
           { licenses.map(this.renderLicense.bind(this)) }
         </ul>

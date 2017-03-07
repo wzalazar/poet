@@ -3,7 +3,7 @@ import * as React from 'react';
 import { DispatchesTransferRequested } from '../../actions/requests';
 import { SelectProfileById } from '../../atoms/Arguments';
 import { SearchInput } from '../../atoms/SearchInput';
-import { WorksByProfile, WorkToProfileRelationship } from './WorksByProfile';
+import { WorksByProfile, WorkToProfileRelationship } from '../../organisms/WorksByProfile';
 import { PortfolioWorksFilters } from './Filters';
 
 import './Layout.scss';

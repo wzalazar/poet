@@ -3,7 +3,7 @@ import * as React from 'react';
 import { HexString } from '../../common';
 
 import { SearchInput } from '../../atoms/SearchInput';
-import { LicensesByProfile, LicenseToProfileRelationship } from './LicensesByProfile'
+import { LicensesByProfile, LicenseToProfileRelationship } from '../../organisms/LicensesByProfile'
 import { Filters } from './Filters';
 
 import './Layout.scss';

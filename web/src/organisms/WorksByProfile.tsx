@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { browserHistory } from 'react-router';
 
-import { UrlObject } from '../../common';
-import { DispatchesTransferRequested } from '../../actions/requests';
-import { WorkNameWithLink, WorkType, WorkPublishedDate } from '../../atoms/Work';
-import { Work } from '../../atoms/Interfaces';
-import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../../atoms/base/PoetApiResource';
-import { SelectWorksByOwner } from '../../atoms/Arguments';
-import { DropdownMenu } from '../../components/DropdownMenu';
-import { Pagination } from '../../components/Pagination';
+import { UrlObject } from '../common';
+import { DispatchesTransferRequested } from '../actions/requests';
+import { WorkNameWithLink, WorkType, WorkPublishedDate } from '../atoms/Work';
+import { Work } from '../atoms/Interfaces';
+import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../atoms/base/PoetApiResource';
+import { SelectWorksByOwner } from '../atoms/Arguments';
+import { DropdownMenu } from '../components/DropdownMenu';
+import { Pagination } from '../components/Pagination';
 
-import './Works.scss';
+import './WorksByProfile.scss';
 
 const EDIT = 'Edit';
 const TRANSFER = 'Transfer';
@@ -52,8 +52,8 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], OwnedWorksPr
     const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
 
     return (
-      <section className="portfolio-works">
-        <table>
+      <section className="works-by-profile">
+        <table className="works">
           <thead>
             <tr>
               <td>Name</td>
