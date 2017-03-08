@@ -8,6 +8,7 @@ import { SingleBlock } from "./Blocks/SingleBlock/Loader";
 import { Portfolio } from "./Portfolio/Loader";
 import { Licenses } from "./Licenses/Loader";
 import { CreateWork } from "./CreateWork/Loader";
+import { SingleLicense } from './Licenses/Single/Loader';
 import { Network } from "./Network";
 import { Documentation } from "./Documentation";
 import { Company } from './Company';
@@ -23,6 +24,7 @@ export default [
   Profile,
   Portfolio,
   Licenses,
+  SingleLicense,
   CreateWork,
   ...Network,
   ...Documentation,

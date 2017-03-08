@@ -13,3 +13,7 @@ export interface SelectWorksByOwner {
 export interface SelectProfileById {
   readonly profileId: string
 }
+
+export interface SelectLicenseById {
+  readonly licenseId: string
+}

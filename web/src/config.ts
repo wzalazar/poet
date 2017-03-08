@@ -19,6 +19,7 @@ export const Config = {
     maxHeight: 100
   },
   dateFormat: 'MMMM Do YYYY',
+  dateTimeFormat: 'MMMM Do YYYY, HH:mm:ss',
   pagination: {
     limit: 10,
     visiblePageCount: 6

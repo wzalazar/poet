@@ -40,6 +40,15 @@ export class WorkNameById extends WorkById<undefined> {
   }
 }
 
+export class WorkHashById extends WorkById<undefined> {
+  renderElement(resource: Work): JSX.Element {
+    const hash = resource.attributes
+      && resource.attributes.contentHash
+      || '(unknown)';
+    return <span className="hash-long monospaced">{ hash }</span>;
+  }
+}
+
 export function OwnerNameWithLink(props: WorkProps) {
   const publicKey = props.work && props.work.owner && props.work.owner.publicKey
   const authorName = props.work
@@ -85,7 +94,7 @@ function normalizeToMillis(timestamp: number) {
   return timestamp < 5000000000 ? timestamp * 1000 : timestamp
 }
 
-function timeFrom(timestamp: number) {
+export function timeFrom(timestamp: number) {
   return moment(normalizeToMillis(timestamp)).fromNow()
 }
 

@@ -1,10 +1,13 @@
 type HexString = string;
 
 export interface Profile {
+  readonly id: string
+  readonly displayName: string
   readonly attributes: {
     displayName: string;
   }
 }
+
 
 // TODO: lacks a "type" field, duplicated declaration! See Claim.ts
 export interface Claim {
@@ -67,6 +70,7 @@ export interface Work extends Claim {
     readonly authorPublicKey: string;
     readonly authorDisplayName: string;
     readonly lastModified: string;
+    readonly contentHash: string;
     readonly tags: string;
     readonly type: string;
     readonly articleType: string;
@@ -76,6 +80,7 @@ export interface Work extends Claim {
 
 export interface Offering {
   readonly id: string;
+  readonly owner: string;
   readonly attributes: {
     readonly licenseType: string;
     readonly licenseDescription: string;
@@ -89,7 +94,10 @@ export interface License {
   readonly licenseType: string;
   readonly owner: string;
 
+  readonly licenseHolder: Profile;
+
   readonly reference: Work;
+  readonly claimInfo?: ClaimInfo
 
   readonly referenceOffering: Offering;
 
