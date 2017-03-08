@@ -21,7 +21,7 @@ export class WalletLayout extends React.Component<WalletLayoutProps, undefined> 
             <WalletOperations address={this.props.address} requestWithdrawal={this.props.requestWithdrawal} />
           </div>
           <div className="col-md-8">
-            <Transactions address={this.props.address}/>
+            <Transactions profileId={this.props.publicKey}/>
           </div>
         </main>
       </section>
