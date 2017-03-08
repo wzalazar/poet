@@ -12,6 +12,7 @@ interface LicenseQueryOptions extends QueryOptions {
   emitter?: string
   holder?: string
   relatedTo?: string
+  query?: string
 }
 
 const PROFILE_ID = 'profileId'
@@ -46,21 +47,27 @@ export default class LicenseRoute extends Route<License> {
     options.emitter = ctx.request.query['emitter']
     options.holder = ctx.request.query['holder']
     options.relatedTo = ctx.request.query['relatedTo']
+    options.query = ctx.request.query['query']
     return options
   }
 
   ownFilter(queryBuilder: QueryBuilder<License>, opts: LicenseQueryOptions): QueryBuilder<License> {
     if (opts.holder) {
-      return queryBuilder
-        .andWhere("item.licenseHolder=:holder", { "holder": opts.holder })
+      queryBuilder.andWhere("item.licenseHolder=:holder", { "holder": opts.holder })
     }
     if (opts.emitter) {
-      return queryBuilder
-        .andWhere("item.licenseEmitter=:emitter", { "emitter": opts.emitter })
+      queryBuilder.andWhere("item.licenseEmitter=:emitter", { "emitter": opts.emitter })
     }
     if (opts.relatedTo) {
-      return queryBuilder
-        .andWhere("item.licenseEmitter=:user OR item.licenseHolder=:user", { "user": opts.relatedTo })
+      queryBuilder.andWhere("item.licenseEmitter=:user OR item.licenseHolder=:user", { "user": opts.relatedTo })
+    }
+    if (opts.query) {
+      queryBuilder
+        .leftJoin('attribute', 'attr', 'attr.claim=item.reference')
+        .andWhere(
+          '(attr.key=:key1 OR attr.key=:key2) AND attr.value LIKE :value',
+          { key1: 'name', key2: 'content', value: `%${opts.query}%` }
+        )
     }
     return queryBuilder
   }
