@@ -1,12 +1,5 @@
-.notifications {
-  h2 {
-    margin-top: 35px;
-    font-family: "Roboto Slab";
-    font-size: 32px;
-    font-weight: 300;
-    line-height: 36px;
-    color: #666666;
-  }
+.page-account-notifications {
+  @import '../Account.scss';
 
   table {
     thead {

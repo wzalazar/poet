@@ -1,16 +1,5 @@
 .page-account-wallet {
-  padding-bottom: 150px;
-
-  header {
-    margin-bottom: 38px;
-
-    h1 {
-      font-family: "Merriweather Light";
-      font-size: 32px;
-      font-weight: 300;
-      line-height: 36px;
-      color: #666666;
-    }
-  }
+  @import '../Account.scss';
+  margin-bottom: 48px;
 
 }

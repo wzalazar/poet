@@ -15,9 +15,7 @@ export class WalletLayout extends React.Component<WalletLayoutProps, undefined> 
   render() {
     return (
       <section className="container page-account-wallet">
-        <header>
-          <h1>Wallet</h1>
-        </header>
+        <h1>Wallet</h1>
         <main className="row">
           <div className="col-md-4">
             <WalletOperations address={this.props.address} requestWithdrawal={this.props.requestWithdrawal} />

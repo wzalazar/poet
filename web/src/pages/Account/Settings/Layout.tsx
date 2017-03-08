@@ -58,11 +58,10 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
 
   render() {
     return (
-      <section className="container user-edit">
-        <div className="header">
+      <section className="container page-account-settings">
+        <h1>Settings</h1>
+        <form>
           <h2>Profile</h2>
-        </div>
-        <form className="container">
           <div className="form-group">
             <ProfileLayoutRow label="Display Name">
               <input
@@ -106,10 +105,8 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
             </ProfileLayoutRow>
           </div>
         </form>
-        <div className="header">
-          <h2>Currency</h2>
-        </div>
         <form className="container">
+          <h2>Currency</h2>
           <div className="form-group">
             <ProfileLayoutRow label="Preferred currency">
               <input

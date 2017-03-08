@@ -16,9 +16,9 @@ export class AccountNavbar extends React.Component<AccountNavbarProps, undefined
       <nav className="account-nav">
         <div className="container">
           <ul>
-            { this.renderNavLink('account/settings', 'Settings') }
-            { this.renderNavLink('account/wallet', 'Wallet') }
             { this.renderNavLink('account/notifications', 'Notifications') }
+            { this.renderNavLink('account/wallet', 'Wallet') }
+            { this.renderNavLink('account/settings', 'Settings') }
             <li key="logout" className="logout"><LogoutButton>LOGOUT</LogoutButton></li>
           </ul>
         </div>

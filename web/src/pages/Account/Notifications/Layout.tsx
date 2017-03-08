@@ -10,22 +10,20 @@ export class NotificationsLayout extends React.Component<NotificationsStore & No
 
   render() {
     return (
-      <section className="container notifications">
-        <div className="header">
-          <h2>Notifications</h2>
-          <div className="page-portfolio">
-            <div className="portfolio-works">
-              <table>
-                <thead>
-                  <tr><th></th><th>Time</th><th>Description</th></tr>
-                </thead>
-                <tbody>
-                  { this.props.notifications && this.props.notifications.map(notification => this.drawNotification(notification)) }
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+      <section className="container page-account-notifications">
+        <h1>Notifications</h1>
+        <table>
+          <thead>
+            <tr>
+              <td></td>
+              <td>Time</td>
+              <td>Description</td>
+            </tr>
+          </thead>
+          <tbody>
+            { this.props.notifications && this.props.notifications.map(notification => this.renderNotification(notification)) }
+          </tbody>
+        </table>
       </section>
     );
   }
@@ -36,14 +34,16 @@ export class NotificationsLayout extends React.Component<NotificationsStore & No
     }
   }
 
-  drawNotification(notification: Notification) {
-    return <tr key={notification.id}>
-      <td><input type="checkbox"/></td>
-      <td>{ moment(notification.event.timestamp).fromNow() }</td>
-      <td className={ notification.read ? 'bold' : ''}>
-        { getEventMessage(notification.event) }
-      </td>
-    </tr>
+  renderNotification(notification: Notification) {
+    return (
+      <tr key={notification.id}>
+        <td><input type="checkbox"/></td>
+        <td>{ moment(notification.event.timestamp).fromNow() }</td>
+        <td className={ notification.read ? 'bold' : ''}>
+          { getEventMessage(notification.event) }
+        </td>
+      </tr>
+    )
   }
 }
 

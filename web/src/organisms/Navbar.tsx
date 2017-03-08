@@ -78,7 +78,7 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
 
   private renderAvatar() {
     return (
-      <Link to={'/account/settings'} className="nav-link">
+      <Link to={'/account/notifications'} className="nav-link">
         <img key="avatar" src={this.props.avatar} className="rounded-circle" />
       </Link>
    );
