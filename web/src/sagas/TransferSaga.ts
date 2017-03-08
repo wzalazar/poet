@@ -86,7 +86,7 @@ function* modalFlow(action: any) {
 }
 
 function* transferFlow(action: any) {
-  yield put({ type: Actions.Modals.Transfer.Hide });
+  yield put({ type: Actions.Modals.Transfer.Show });
 
   const publicKey = yield select(currentPublicKey);
 
