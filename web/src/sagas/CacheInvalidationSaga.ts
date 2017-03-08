@@ -11,9 +11,7 @@ import { publicKeyToAddress } from '../bitcoin/addressHelpers';
 function* claimsSubmittedSuccess(claimSubmittedAction: any) {
   for (let claim of claimSubmittedAction.claims) {
     if (claim.type === 'Work') {
-      const shortUrl = '/works';
-      const url = Configuration.api.explorer + shortUrl;
-      yield put({ type: `clear ${shortUrl}`, fetchType: FetchType.CLEAR, url });
+      yield invalidateWorks();
     }
     if (claim.type === 'Profile') {
       const publicKey = yield select(currentPublicKey);
@@ -42,10 +40,17 @@ function* invalidateLicenses() {
   yield put({ type: `clear ${shortUrl}`, fetchType: FetchType.CLEAR, url });
 }
 
+function* invalidateWorks() {
+  const shortUrl = '/works';
+  const url = Configuration.api.explorer + shortUrl;
+  yield put({ type: `clear ${shortUrl}`, fetchType: FetchType.CLEAR, url });
+}
+
 export function CacheInvalidationSaga() {
   return function*() {
     yield takeEvery(Actions.Claims.SubmittedSuccess, claimsSubmittedSuccess);
     yield takeEvery(Actions.Transactions.SubmittedSuccess, invalidateBalance);
     yield takeEvery(Actions.Licenses.Paid, invalidateLicenses);
+    yield takeEvery(Actions.Transfer.Success, invalidateWorks);
   }
 }
