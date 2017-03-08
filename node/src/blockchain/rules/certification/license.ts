@@ -68,25 +68,38 @@ export default {
       console.log('Missing proof information', claim)
       return
     }
-    /**
-     * TODO: Actually validate payment
     if (proofType === 'Bitcoin Transaction') {
-      const tx = await fetchTx(proofValue.txId)
-      if (!tx) {
-        console.log('no tx found')
+
+      try {
+        const tx = await fetchTx(proofValue.txId)
+        if (!tx) {
+          console.log('no tx found')
+          return
+        }
+        const output = tx.vout[proofValue.outputIndex]
+        if (!output) {
+          console.log('no output found')
+          return
+        }
+        const hasPaymentAddress = (address: string) => address === referenceOffering.attributes[Fields.PAYMENT_ADDRESS]
+        const outputsMatching = output.scriptPubKey.addresses.filter(hasPaymentAddress)
+        if (!outputsMatching.length) {
+          console.log('no output with matching address found')
+          return
+        }
+        const value = outputsMatching.reduce((prev: number, next: {value: number}) => prev - (-next.value), 0)
+        if (Math.abs(value - parseFloat(referenceOffering.attributes[Fields.PAYMENT_AMOUNT])) < 1e-8) {
+          console.log('mismatching amount')
+          return
+        }
+      } catch (error) {
+        console.log('unexpected error', error, error.stack)
         return
-      }
-      const output = tx.vout[proofValue.outputNumber]
-      if (!output) {
-        console.log('no output found')
-      }
-      if (output.addresses.filter((address: string) => address === referenceOffering.attributes[Fields.PAYMENT_ADDRESS])) {
       }
     } else {
       console.log("Unknown proof type", proofType)
       return
     }
-     */
     const owner = await service.profileRepository.findOneById(ownerOnRecord)
     await service.saveEvent(claim.id, EventType.LICENSE_BOUGHT, work, holder, undefined, owner)
     await service.saveEvent(claim.id, EventType.LICENSE_SOLD, work, owner)

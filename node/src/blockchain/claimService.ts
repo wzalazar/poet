@@ -34,7 +34,13 @@ export class ClaimService {
 
   async blockSeen(block: PureBlock) {
 
-    await this.saveBlockIfNotExists(block)
+    const exists = await this.getBlock(block.id)
+
+    if (exists) {
+      return
+    }
+
+    await this.saveBlock(block)
 
     const id = await getHash(this.creator.serializeBlockForSave(block), block.id)
 
@@ -95,14 +101,7 @@ export class ClaimService {
     }
   }
 
-  private async saveBlockIfNotExists(block: PureBlock) {
-
-    const exists = await this.getBlock(block.id)
-
-    if (exists) {
-      return
-    }
-
+  private async saveBlock(block: PureBlock) {
     const claimSet: Claim[] = []
     for (let claim of block.claims) {
       claimSet.push(await this.storeClaim(claim))

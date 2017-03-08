@@ -34,6 +34,7 @@ services:
       - ../node/src:/poet/src
     networks:
       - queue
+      - outside
       - db
   explorer:
     build:

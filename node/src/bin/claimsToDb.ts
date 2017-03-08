@@ -14,7 +14,7 @@ async function startListening() {
     await blockchain.start(() => getConnection('claimsToDb'), getBuilder)
 
     queue.blockDownloaded().subscribeOnNext(async (block: Block) => {
-      console.log('Storing block', JSON.stringify(block, null, 2))
+      console.log('Storing block', block.id)
       try {
         await blockchain.blockSeen(block)
       } catch (error) {
@@ -23,7 +23,7 @@ async function startListening() {
     })
 
     queue.blocksToSend().subscribeOnNext(async (block: Block) => {
-      console.log('Storing block', JSON.stringify(block, null, 2))
+      console.log('Storing block', block.id)
       try {
         await blockchain.blockSeen(block)
       } catch (error) {
@@ -32,12 +32,15 @@ async function startListening() {
     })
 
     queue.bitcoinBlock().subscribeOnNext(async (block: BitcoinBlockMetadata) => {
-      console.log('Confirming block', JSON.stringify(block, null, 2))
       try {
         for (let poetTx of block.poet) {
           poetTx.bitcoinHash = block.blockHash
           poetTx.bitcoinHeight = block.blockHeight
           poetTx.timestamp = block.timestamp
+          if ((await blockchain.getBlockInfoByTorrentHash(poetTx.torrentHash)).timestamp) {
+            continue
+          }
+          console.log('Confirming block with torrent hash', poetTx.torrentHash)
           await blockchain.blockConfirmed(poetTx)
         }
       } catch (error) {
