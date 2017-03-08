@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router';
 
 import { Images } from '../images/Images';
 
@@ -14,27 +15,27 @@ export class Footer extends React.Component<undefined, undefined> {
               <li>
                 <h1>Network</h1>
                 <ul>
-                  <li>About</li>
-                  <li>Features</li>
-                  <li>Integrations</li>
-                  <li>Use Cases</li>
+                  <li><Link to="/network/about/" >About</Link></li>
+                  <li><Link to="/network/features" >Features</Link></li>
+                  <li><Link to="/network/integrations" >Integrations</Link></li>
+                  <li><Link to="/network/use-cases" >Use Cases</Link></li>
                 </ul>
               </li>
               <li>
                 <h1>Documentation</h1>
                 <ul>
-                  <li>Overview</li>
-                  <li>Developer</li>
-                  <li>Integrations</li>
+                  <li><Link to="/documentation/overview" >Overview</Link></li>
+                  <li><Link to="/documentation/developer" >Developer</Link></li>
+                  <li><Link to="/documentation/integrations" >Integrations</Link></li>
                 </ul>
               </li>
               <li>
                 <h1>Company</h1>
                 <ul>
-                  <li>Blog</li>
-                  <li>Team</li>
-                  <li>Roadmap</li>
-                  <li>Contact</li>
+                  <li><Link to="/company/blog" >Blog</Link></li>
+                  <li><Link to="/company/team" >Team</Link></li>
+                  <li><Link to="/company/roadmap" >Roadmap</Link></li>
+                  <li><Link to="/company/contact" >Contact</Link></li>
                 </ul>
               </li>
             </ul>

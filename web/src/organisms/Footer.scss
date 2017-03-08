@@ -1,12 +1,18 @@
 .root-layout > footer {
+  $font-color: white;
+
   margin-top: auto;
   padding-top: 53px;
   padding-bottom: 33px;
-  color: #FFFFFF;
+  color: $font-color;
   background-color: #413D3B;
 
   ul {
     list-style: none;
+  }
+
+  a {
+    color: $font-color;
   }
 
   .container {

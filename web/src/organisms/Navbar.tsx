@@ -86,8 +86,8 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
 
   private notLoggedActions(): JSX.Element[] {
     return [
-      this.renderNavLink('about', 'About'),
-      this.renderNavLink('documentation', 'Documentation'),
+      this.renderNavLink('network/about', 'About'),
+      this.renderNavLink('documentation/overview', 'Documetation'),
       <li key="login"><LoginButton>Login</LoginButton></li>,
       <li key='try-it-out'>
         <Link to={'/try-it-out'} className="try-it-out">
