@@ -1,7 +1,7 @@
 import { takeEvery } from 'redux-saga'
 import { put } from 'redux-saga/effects'
 
-import { Config } from '../config';
+import { Configuration } from '../config';
 import { Actions } from '../actions/index'
 import { FetchType } from '../reducers/FetchReducer';
 import { currentPublicKey } from '../selectors/session';
@@ -12,7 +12,7 @@ function* claimsSubmittedSuccess(claimSubmittedAction: any) {
   for (let claim of claimSubmittedAction.claims) {
     if (claim.type === 'Work') {
       const shortUrl = '/works';
-      const url = Config.api.explorer + shortUrl;
+      const url = Configuration.api.explorer + shortUrl;
       yield put({ type: `clear ${shortUrl}`, fetchType: FetchType.CLEAR, url });
     }
     if (claim.type === 'Profile') {
@@ -27,18 +27,25 @@ function* invalidateBalance() {
   yield put({
     type: 'clear balance',
     fetchType: FetchType.CLEAR,
-    url: Config.api.insight + '/addr/' + address + '/utxo'
+    url: Configuration.api.insight + '/addr/' + address + '/utxo'
   });
   yield put({
     type: 'clear tx history',
     fetchType: FetchType.CLEAR,
-    url: `${Config.api.insight}/txs`
+    url: `${Configuration.api.insight}/txs`
   });
+}
+
+function* invalidateLicenses() {
+  const shortUrl = '/licenses';
+  const url = Configuration.api.explorer + shortUrl;
+  yield put({ type: `clear ${shortUrl}`, fetchType: FetchType.CLEAR, url });
 }
 
 export function CacheInvalidationSaga() {
   return function*() {
     yield takeEvery(Actions.Claims.SubmittedSuccess, claimsSubmittedSuccess);
     yield takeEvery(Actions.Transactions.SubmittedSuccess, invalidateBalance);
+    yield takeEvery(Actions.Licenses.Paid, invalidateLicenses);
   }
 }
