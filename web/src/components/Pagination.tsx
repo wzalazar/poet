@@ -20,6 +20,8 @@ export class Pagination extends React.Component<PaginationProps, undefined> {
   };
 
   render() {
+    if (this.props.count <= this.props.limit)
+      return null;
 
     return (
       <nav className={classNames(this.props.className)}>

@@ -2,9 +2,10 @@ import * as React from 'react';
 
 import '../extensions/String';
 
-import { OwnerName, WorkNameById } from '../atoms/Work';
+import { Configuration } from '../config';
+import { OwnerName } from '../atoms/Work';
 import { License } from '../atoms/Interfaces';
-import { TimeSinceIssueDate, ReferencedWorkName, ReferencedWorkNameWithLink } from '../atoms/License';
+import { TimeSinceIssueDate, ReferencedWorkNameWithLink } from '../atoms/License';
 import { OfferingType } from '../atoms/Offering';
 import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../atoms/base/PoetApiResource';
 import { DropdownMenu } from '../components/DropdownMenu';
@@ -65,14 +66,14 @@ export class LicensesByProfile extends PoetAPIResourceProvider<LicensesResource,
         <ul className="licenses">
           { licenses.map(this.renderLicense.bind(this)) }
         </ul>
-        { count > this.props.limit && <Pagination
+        <Pagination
           offset={this.state.offset}
           limit={this.props.limit}
           count={count}
-          visiblePageCount={6}
+          visiblePageCount={Configuration.pagination.visiblePageCount}
           onClick={offset => this.setState({offset})}
           className="pagination"
-          disabledClassName="disabled"/> }
+          disabledClassName="disabled"/>
       </section>
     )
   }

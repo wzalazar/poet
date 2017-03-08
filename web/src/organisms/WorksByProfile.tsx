@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { browserHistory } from 'react-router';
 
+import { Configuration } from '../config';
 import { UrlObject } from '../common';
 import { DispatchesTransferRequested } from '../actions/requests';
 import { WorkNameWithLink, WorkType, WorkPublishedDate } from '../atoms/Work';
@@ -17,17 +18,22 @@ const TRANSFER = 'Transfer';
 
 export type WorkToProfileRelationship = 'author' | 'owner' | 'relatedTo';
 
-interface OwnedWorksProps {
+interface WorksByProfileProps {
   readonly relationship: WorkToProfileRelationship;
   readonly query: string;
   readonly showActions?: boolean;
+  readonly limit?: number;
 }
 
-interface OwnedWorksState {
+interface WorksByProfileState {
   readonly offset?: number;
 }
 
-export class WorksByProfile extends PoetAPIResourceProvider<Work[], OwnedWorksProps & SelectWorksByOwner & DispatchesTransferRequested, OwnedWorksState> {
+export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfileProps & SelectWorksByOwner & DispatchesTransferRequested, WorksByProfileState> {
+
+  static defaultProps: Partial<WorksByProfileProps> = {
+    limit: Configuration.pagination.limit
+  };
 
   constructor() {
     super(...arguments);
@@ -41,7 +47,7 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], OwnedWorksPr
       url: `/works`,
       query: {
         [this.props.relationship]: this.props.owner,
-        limit: 10,
+        limit: this.props.limit,
         offset: this.state.offset,
         query: this.props.query
       }
@@ -69,9 +75,9 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], OwnedWorksPr
 
         <Pagination
           offset={this.state.offset}
-          limit={10}
+          limit={this.props.limit}
           count={count}
-          visiblePageCount={6}
+          visiblePageCount={Configuration.pagination.visiblePageCount}
           onClick={offset => this.setState({offset})}
           className="pagination"
           disabledClassName="disabled"/>
