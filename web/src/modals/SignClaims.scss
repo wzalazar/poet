@@ -1,3 +1,5 @@
+@import "../templates/Animations";
+
 .modal-sign-work {
   width: 340px;
   margin: auto;
@@ -8,6 +10,19 @@
   font-family: "Source Sans Pro";
   text-align: center;
   border: 1px solid #e5e5e5;
+
+  &.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 470px; // TODO: magic number! 470px is the calculated height of the modal when showing only one claim. How can we get this value dynamically?
+
+    img {
+      @include animation-loading-quill;
+      width: 100px;
+    }
+  }
+
 
   header {
     padding: 28px 0 15px 0;

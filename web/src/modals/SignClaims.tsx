@@ -1,6 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 
+import { Images } from '../images/Images';
 import { Claim, WORK, PROFILE } from '../Claim';
 import Modal, {ModalProps} from "./Modal";
 import { Actions } from "../actions/index";
@@ -24,7 +25,23 @@ interface SignActions {
 }
 
 class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefined> {
+
   draw() {
+    if (this.props.submitting)
+      return this.renderLoading();
+
+    return this.renderSignRequest();
+  }
+
+  private renderLoading() {
+    return (
+      <section className="modal-sign-work loading">
+        <img src={Images.Quill} />
+      </section>
+    )
+  }
+
+  private renderSignRequest() {
     const workClaim = this.props.claims.find(claim => claim.type === WORK);
     const profileClaim = this.props.claims.find(claim => claim.type === PROFILE);
 
@@ -32,8 +49,8 @@ class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefine
       <section className="modal-sign-work">
         <header>
           <h1>Scan the code from your <br/>
-              Poet: Authenticator App to <br/>
-              complete the registration</h1>
+            Poet: Authenticator App to <br/>
+            complete the registration</h1>
           <a href="">Download App</a>
         </header>
         <main>
@@ -65,6 +82,10 @@ class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefine
         </nav>
       </section>
     )
+  }
+
+  beforeHide() {
+    return !this.props.submitting;
   }
 
 }

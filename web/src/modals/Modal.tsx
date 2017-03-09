@@ -22,7 +22,7 @@ abstract class Modal<T extends ModalProps, Q> extends React.Component<T, Q> {
         aria-labelledby='modal-label'
         backdropClassName="backdrop"
         show={this.props.visible}
-        onHide={this.props.cancelAction}
+        onHide={this.onHide.bind(this)}
         className="modals-container"
       >
         { this.draw() }
@@ -31,6 +31,15 @@ abstract class Modal<T extends ModalProps, Q> extends React.Component<T, Q> {
   }
 
   abstract draw(): any;
+
+  private onHide() {
+    if (this.beforeHide())
+      this.props.cancelAction();
+  }
+
+  beforeHide(): boolean {
+    return true;
+  }
 }
 
 export default Modal;

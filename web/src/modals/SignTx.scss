@@ -1,0 +1,15 @@
+@import "../templates/Animations";
+
+.modal-sign-transaction {
+  &.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 470px; // TODO: magic number!
+
+    img {
+      @include animation-loading-quill;
+      width: 100px;
+    }
+  }
+}

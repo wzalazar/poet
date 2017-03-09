@@ -91,7 +91,7 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
       <li key="login"><LoginButton>Login</LoginButton></li>,
       <li key='try-it-out'>
         <Link to={'/try-it-out'} className="try-it-out">
-          <img src={Images.Quill} /><span>Try It Out</span>
+          <img src={Images.QuillInverted} /><span>Try It Out</span>
         </Link>
       </li>
     ];

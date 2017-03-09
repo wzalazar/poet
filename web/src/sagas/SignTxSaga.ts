@@ -30,7 +30,7 @@ export interface SignTransactionParameters {
 export function* signTx(action: { payload: SignTransactionParameters }) {
   yield put({ type: Actions.Modals.SignTransaction.Show, payload: action.payload });
 
-  const publicKey = bitcore.PublicKey(yield select(currentPublicKey))
+  const publicKey = bitcore.PublicKey(yield select(currentPublicKey));
 
   const myAddress = bitcore.Address(publicKey, bitcore.Networks.testnet);
   const myAddressString = myAddress.toString();

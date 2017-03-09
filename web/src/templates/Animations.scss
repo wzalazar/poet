@@ -1,0 +1,15 @@
+@keyframes loading-quill {
+  from {
+    opacity: .3;
+  }
+
+  to {
+    opacity: 1;
+
+  }
+}
+
+@mixin animation-loading-quill {
+  animation: 2s infinite alternate loading-quill;
+  animation-timing-function: ease-in-out;
+}

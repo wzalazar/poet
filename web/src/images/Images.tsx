@@ -7,6 +7,7 @@ export class Images {
   static readonly Slack = require('./slack.svg');
   static readonly Glass = require('./glass.svg');
   static readonly Quill = require('./quill.svg');
+  static readonly QuillInverted = require('./quill-inverted.svg');
   static readonly Calendar = require('./calendar.svg');
   static readonly Anon = require('./user.svg');
   static readonly SuccessMark = require('./success.svg');
