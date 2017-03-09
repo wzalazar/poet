@@ -62,7 +62,7 @@ export class Attribute extends React.Component<AttributeProps, undefined> {
     const value = moment(parseInt(this.props.value));
     return <ReactDatePicker
       onChange={(moment: moment.Moment) => this.props.onValueChange(moment.toDate().getTime().toString())}
-      selected={value.isValid() ? value : moment()}
+      selected={value.isValid() ? value : null}
       dateFormat="dddd, MMMM Do YYYY"
       customInput={<DatePickerInput/>} />;
   }

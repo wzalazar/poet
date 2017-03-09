@@ -10,7 +10,7 @@ export class DatePickerInput extends React.Component<any, undefined>{
       <button
         className="calendar-button"
         onClick={this.props.onClick}>
-        <span>{this.props.value}</span>
+        <span>{this.props.value || 'Select a Date'}</span>
         <img src={Images.Calendar}/>
       </button>
     )
