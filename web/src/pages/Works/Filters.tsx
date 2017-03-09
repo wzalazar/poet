@@ -1,12 +1,11 @@
 import * as React from 'react';
-import * as moment from 'moment';
 import * as ReactDatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import * as moment from 'moment';
 
-import { Images } from '../../images/Images';
+import { LicenseTypes, LicenseType } from "../../common";
+import { DatePickerInput } from '../../atoms/DatePickerInput';
 
 import './Filters.scss';
-import { LicenseTypes, LicenseType } from "../../common";
 
 export interface FilterComponentProps {
   readonly dateFrom: moment.Moment;
@@ -17,19 +16,6 @@ export interface FilterComponentProps {
   readonly onDateToChanged: (moment: moment.Moment) => void;
   readonly onSortChange: (sortBy: string) => void;
   readonly onLicenseTypeChange: (licenseType: LicenseType) => void;
-}
-
-class CustomInput extends React.Component<any, any>{
-  render() {
-    return (
-      <button
-        className="calendar-button"
-        onClick={this.props.onClick}>
-        <span>{this.props.value}</span>
-        <img src={Images.Calendar}/>
-      </button>
-    )
-  }
 }
 
 export class FiltersComponent extends React.Component<FilterComponentProps, undefined> {
@@ -81,12 +67,12 @@ export class FiltersComponent extends React.Component<FilterComponentProps, unde
         <ReactDatePicker
           onChange={this.props.onDateFromChanged}
           selected={this.props.dateFrom}
-          customInput={<CustomInput/>} />
+          customInput={<DatePickerInput/>} />
         <span className="date-picker-separator">and</span>
         <ReactDatePicker
           onChange={this.props.onDateToChanged}
           selected={this.props.dateTo}
-          customInput={<CustomInput/>} />
+          customInput={<DatePickerInput/>} />
       </section>
     );
   }

@@ -8,6 +8,8 @@ import { AccountNavbar } from "../organisms/AccountNavbar";
 import { Footer } from '../organisms/Footer';
 import Modals from '../modals';
 
+import 'react-datepicker/dist/react-datepicker.css';
+
 import './RootLayout.scss'
 
 Tabs.setUseDefaultStyles(false);

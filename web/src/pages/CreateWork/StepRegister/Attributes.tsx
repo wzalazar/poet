@@ -1,45 +1,21 @@
 import * as React from 'react';
-const classNames = require('classnames');
+import * as classNames from 'classnames';
 
-import { AttributeNameAutocomplete } from './AttributeAutocomplete';
 import { ClassNameProps } from '../../../common';
+import { Attribute, AttributeProps } from './Attribute';
 
 import './Attributes.scss';
 
-export interface Attribute {
-  key: string;
-  value: string;
-  readonly optional?: boolean;
-}
+type PickedAttributeProps = Pick<AttributeProps, 'keyName' | 'value' | 'optional' >;
 
 interface AttributesState {
-  readonly attributes: ReadonlyArray<Attribute>;
+  readonly attributes: ReadonlyArray<PickedAttributeProps>;
 }
 
 export class Attributes extends React.Component<ClassNameProps, AttributesState> {
-  private attributeKeyInputs?: AttributeNameAutocomplete[] = [];
-  private readonly defaultAttributes: ReadonlyArray<Attribute> = [
-    {
-      key: 'name',
-      value: '',
-      optional: false
-    },
-    {
-      key: 'author',
-      value: '',
-      optional: false
-    },
-    {
-      key: 'dateCreated',
-      value: '',
-      optional: false
-    },
-    {
-      key: 'datePublished',
-      value: '',
-      optional: false
-    }
-  ];
+  private attributes?: Attribute[] = [];
+  private readonly defaultAttributes: ReadonlyArray<PickedAttributeProps> =
+    ['name', 'author', 'dateCreated', 'datePublished'].map(keyName => ({keyName, value: ''}));
 
   constructor() {
     super(...arguments);
@@ -52,9 +28,9 @@ export class Attributes extends React.Component<ClassNameProps, AttributesState>
     return (
       <section className={classNames('attributes', this.props.className)}>
         <h2>Attributes</h2>
-        <form>
-          { this.state.attributes.map(this.renderField.bind(this)) }
-        </form>
+        <main>
+          { this.state.attributes.map(this.renderAttribute.bind(this)) }
+        </main>
         <button
           onClick={this.onAddAttribute.bind(this)}
           className="button-secondary">Add Field</button>
@@ -62,67 +38,53 @@ export class Attributes extends React.Component<ClassNameProps, AttributesState>
     )
   }
 
-  private renderField(attribute: Attribute, index: number): JSX.Element {
-    return (
-      <div key={index} className="row">
-        <div className="col-sm-4">
-            <AttributeNameAutocomplete
-              onChange={this.onKeyChange.bind(this, index)}
-              attributeName={attribute.key}
-              ref={attributeNameAutocomplete => this.attributeKeyInputs[index] = attributeNameAutocomplete}
-            />
-        </div>
-        <div className="col-sm-7">
-          <input
-            onChange={this.onValueChange.bind(this, index)}
-            type="text"
-            placeholder="Attribute Value"
-            value={attribute.value} />
-        </div>
-        <div className="col-sm-1">
-          { attribute.optional && <button
-            onClick={this.onRemoveAttribute.bind(this, index)}
-            className="remove button-secondary">—</button> }
-        </div>
-      </div>
-    );
+  private renderAttribute(attribute: PickedAttributeProps, index: number): JSX.Element {
+    return <Attribute
+      key={index}
+      keyName={attribute.keyName}
+      value={attribute.value}
+      optional={attribute.optional}
+      onKeyChange={this.onKeyChange.bind(this, index)}
+      onValueChange={this.onValueChange.bind(this, index)}
+      onRemove={this.onRemoveAttribute.bind(this, index)}
+      ref={attribute => this.attributes[index] = attribute}
+    />
   }
 
-  private onValueChange(index: number, event: any) {
+  private onValueChange(index: number, value: string) {
     const attributes = [ ...this.state.attributes ];
-    attributes[index].value = event.target.value;
+    attributes[index].value = value;
     this.setState({
       attributes
     });
   }
 
-  private onKeyChange(index: number, key: string) {
+  private onKeyChange(index: number, keyName: string) {
     const attributes = [ ...this.state.attributes ];
-    attributes[index].key = key;
+    attributes[index].keyName = keyName;
     this.setState({
       attributes
     });
   }
 
   private onAddAttribute() {
-    if (!this.state.attributes[this.state.attributes.length - 1].key) {
-      this.attributeKeyInputs[this.attributeKeyInputs.length - 1].focus();
+    if (!this.state.attributes[this.state.attributes.length - 1].keyName) {
+      this.attributes[this.attributes.length - 1].focus();
       return;
     }
 
     this.setState({
       attributes: [ ...this.state.attributes, {
-        key: '',
+        keyName: '',
         value: '',
         optional: true
       } ]
     })
   }
 
-  private onRemoveAttribute(index: number, event: any) {
-    event.preventDefault();
+  private onRemoveAttribute(index: number) {
     this.setState({
-      attributes: [ ...this.state.attributes.filter((el, idx) => idx !== index) ]
+      attributes: this.state.attributes.filter((el, idx) => idx !== index)
     });
   }
 }

@@ -1,17 +1,18 @@
 import * as React from 'react';
+const bitcore = require('bitcore-lib');
 
+import { KeyValue } from '../../../common';
 import { MediaType } from './MediaType';
-import { Attributes, Attribute } from './Attributes';
+import { Attributes } from './Attributes';
 import { Content } from './Content';
 
 import './StepRegister.scss';
 
-const bitcore = require('bitcore-lib')
 
 export interface StepRegisterData {
   readonly articleType: string;
   readonly mediaType: string;
-  readonly attributes: ReadonlyArray<Attribute>;
+  readonly attributes: ReadonlyArray<KeyValue>;
   readonly content: string;
 }
 
@@ -76,10 +77,10 @@ export class StepRegister extends React.Component<StepRegisterProps, StepRegiste
   private contentToAttributes(content?: string, fileName?: string) {
     const attributes = [...this.attributes.state.attributes];
 
-    const attributeByKey = (key: string) => this.attributes.state.attributes.find(attribute => attribute.key === key);
-    const updateAttribute = (key: string, value: string) => attributeByKey(key).value = value;
-    const addAttribute = (key: string, value: string) => attributes.push({ key, value });
-    const upsertAttribute = (key: string, value: string) => attributeByKey(key) ? updateAttribute(key, value) : addAttribute(key, value);
+    const attributeByKey = (keyName: string) => this.attributes.state.attributes.find(attribute => attribute.keyName === keyName);
+    const updateAttribute = (keyName: string, value: string) => attributeByKey(keyName).value = value;
+    const addAttribute = (keyName: string, value: string) => attributes.push({ keyName, value });
+    const upsertAttribute = (keyName: string, value: string) => attributeByKey(keyName) ? updateAttribute(keyName, value) : addAttribute(keyName, value);
 
     if (fileName && !attributeByKey('name') || !attributeByKey('name').value) {
       upsertAttribute('name',  fileName)
@@ -97,7 +98,7 @@ export class StepRegister extends React.Component<StepRegisterProps, StepRegiste
 
   private submit(): void {
     this.props.onSubmit({
-      attributes: this.attributes.state.attributes,
+      attributes: this.attributes.state.attributes.map(attribute => ({key: attribute.keyName, value: attribute.value})),
       mediaType: this.state.mediaType,
       articleType: this.state.articleType,
       content: this.state.content

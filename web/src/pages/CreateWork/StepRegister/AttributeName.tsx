@@ -1,22 +1,22 @@
 import * as React from 'react';
 const Autocomplete = require('react-autocomplete');
-const classNames = require('classnames');
+import * as classNames from 'classnames';
 
 import { load } from '../../../schema.org';
 
-import './AttributeAutocomplete.scss';
+import './AttributeName.scss';
 
-interface AttributeNameAutocompleteProps {
+interface AttributeNameProps {
   readonly attributeName?: string;
   readonly onChange?: (name: string) => void;
 }
 
-interface AttributeNameAutocompleteState {
+interface AttributeNameState {
   readonly menuIsOpen?: boolean;
   readonly schema?: any;
 }
 
-export class AttributeNameAutocomplete extends React.Component<AttributeNameAutocompleteProps, AttributeNameAutocompleteState> {
+export class AttributeName extends React.Component<AttributeNameProps, AttributeNameState> {
   private autocomplete: any;
 
   constructor() {
@@ -31,12 +31,9 @@ export class AttributeNameAutocomplete extends React.Component<AttributeNameAuto
   }
 
   render() {
-    if (!this.state.schema) {
-      return <div/>
-    }
     return <Autocomplete
       ref={(autocomplete: any) => this.autocomplete = autocomplete}
-      items={this.state.schema.types.CreativeWork.properties}
+      items={this.state.schema ? this.state.schema.types.CreativeWork.properties : []}
       value={this.props.attributeName}
       renderMenu={this.renderMenu.bind(this)}
       renderItem={this.renderMenuItem.bind(this)}
@@ -44,7 +41,7 @@ export class AttributeNameAutocomplete extends React.Component<AttributeNameAuto
       onChange={(event: any, value: string) => this.props.onChange(value)}
       getItemValue={(item: any) => item}
       shouldItemRender={this.shouldItemRender.bind(this)}
-      wrapperProps={{className: 'autocomplete'}}
+      wrapperProps={{className: 'attribute-name'}}
       inputProps={{className: classNames('input-text', this.state.menuIsOpen && 'open'), placeholder: 'Attribute Name'}}
       onMenuVisibilityChange={(menuIsOpen: boolean) => this.setState({menuIsOpen})}
     />;
