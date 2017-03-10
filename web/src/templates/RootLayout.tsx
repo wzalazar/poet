@@ -26,7 +26,7 @@ interface RootLayoutProps {
 
 function render(props: RootLayoutProps) {
   // TODO: a way for pages to provide these so the RootLayout doesn't need to know what urls are mapped to what pages
-  const accountUrls = ['/account/settings', '/account/wallet', '/account/notifications'];
+  const accountUrls = ['/account/profile', '/account/wallet', '/account/notifications'];
   const worksUrl = '/works';
 
   const navbarShadow = ![worksUrl, '/'].includes(props.location.pathname);

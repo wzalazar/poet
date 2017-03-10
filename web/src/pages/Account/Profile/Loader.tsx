@@ -9,7 +9,7 @@ import PageLoader, { ReducerDescription } from '../../../components/PageLoader';
 
 import { ProfileLayout, UserProfileProps } from './Layout';
 
-export class UserProfile extends PageLoader<UserProfileProps, Object> {
+export class Profile extends PageLoader<UserProfileProps, Object> {
 
   component = ProfileLayout;
 
@@ -18,7 +18,7 @@ export class UserProfile extends PageLoader<UserProfileProps, Object> {
   }
 
   routeHook(key: string) {
-    return [<Route path="/account/settings" key={key} component={this.container()} />]
+    return [<Route path="/account/profile" key={key} component={this.container()} />]
   }
 
   reducerHook<State>(): ReducerDescription<null> {
@@ -37,16 +37,17 @@ export class UserProfile extends PageLoader<UserProfileProps, Object> {
   }
 
   select(state: any, ownProps: any): Object {
-    const { displayName = '', firstName = '', lastName = '', imageData = '', email = '', currency = '' } = state.profile && state.profile.attributes || {};
+    const { displayName = '', name = '', bio = '', url = '', email = '', location = '', imageData = '' } = state.profile && state.profile.attributes || {};
 
     return {
       id: ownProps.params.id,
       displayName,
-      firstName,
-      lastName,
-      avatarImageData: imageData,
+      name,
+      bio,
+      url,
       email,
-      currency
+      location,
+      avatarImageData: imageData
     };
   }
 

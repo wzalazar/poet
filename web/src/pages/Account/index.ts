@@ -1,9 +1,9 @@
 import { NotificationsPage } from "./Notifications/Loader";
-import { UserProfile } from "./Settings/Loader";
+import { Profile } from "./Profile/Loader";
 import { UserWallet } from "./Wallet/Loader";
 
 export const Account = [
   NotificationsPage,
-  UserProfile,
+  Profile,
   UserWallet
 ];

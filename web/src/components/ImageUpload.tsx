@@ -1,4 +1,6 @@
 import * as React from 'react';
+import * as classNames from 'classnames';
+
 import { ClassNameProps } from '../common';
 
 export interface ImageUploadProps extends ClassNameProps {
@@ -8,7 +10,6 @@ export interface ImageUploadProps extends ClassNameProps {
   readonly imageWidthLimit?: number;
   readonly imageHeightLimit?: number;
   readonly imageData?: string;
-  readonly useDefaultStyles?: boolean;
   readonly spinnerUrl?: string;
 }
 
@@ -18,7 +19,6 @@ export interface ImageUploadState {
 
 export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadState> {
   public static defaultProps: ImageUploadProps = {
-    useDefaultStyles: true,
     imageWidthLimit: 128,
     imageHeightLimit: 128,
     spinnerUrl: 'https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif',
@@ -31,14 +31,9 @@ export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadSt
 
   private fileInput: HTMLInputElement;
 
-  private readonly styleDisplayFlex = {
-    display: 'flex',
-    alignItems: 'center'
-  };
-
   render() {
     return (
-      <section className={[this.props.className, ...this.props.classNames].filterTruthy().join(' ')} >
+      <section className={classNames(this.props.className, ...this.props.classNames)} >
         <input
           type="file"
           ref={fileInput => this.fileInput = fileInput}
@@ -46,21 +41,12 @@ export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadSt
           accept="image/*"
           style={{'display': 'none'}}
         />
-        <div style={this.props.useDefaultStyles && this.styleDisplayFlex}>
-          <div>
-            <img
-              src={this.state.isLoading ? this.props.spinnerUrl : this.props.imageData}
-              className="rounded-circle"
-              onClick={this.onImageClick.bind(this)}
-            />
-          </div>
-          <div>
-            <div>
-              <button onClick={this.onImageClick.bind(this)} className={this.props.buttonClassName}>Upload Image</button>
-            </div>
-            <div>File Formats: .jpg, .png, .tiff</div>
-          </div>
-        </div>
+        <img
+          src={this.state.isLoading ? this.props.spinnerUrl : this.props.imageData}
+          className="rounded-circle"
+          onClick={this.onImageClick.bind(this)}
+        />
+        <button onClick={this.onImageClick.bind(this)} className={this.props.buttonClassName}>Upload Image</button>
       </section>
     )
   }
