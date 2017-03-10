@@ -54,6 +54,11 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
     }
   }
 
+  componentWillReceiveProps(props: WorksByProfileProps) {
+    if (this.props.relationship !== props.relationship)
+      this.setState({ offset: 0 })
+  }
+
   renderElement(works: Work[], headers: Headers): JSX.Element {
     const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
 
