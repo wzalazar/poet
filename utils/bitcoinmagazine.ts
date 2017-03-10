@@ -12,8 +12,8 @@ declare var require: any
 const bitcore = require('bitcore-lib')
 
 const targetURL = 'https://bitcoinmagazine.com/feed/'
-const explorerURL = 'http://localhost:10000/api/explorer'
-const publisherURL = 'http://localhost:10000/api/user'
+const explorerURL = 'https://poet.host/api/explorer'
+const publisherURL = 'https://poet.host/api/user'
 
 const rawKey = '4cbfeb0cbfa891148988a50b549c42309e088a7839dd14ab480f542286725d3a'
 
@@ -34,31 +34,31 @@ interface Article {
 
 function getContent(article: any): string {
   const builder = new xml2js.Builder({ rootName: 'article' })
-  return builder.buildObject(article.content[0])
+  return builder.buildObject(article.CONTENT[0])
 }
 
 function getAuthor(article: any): string {
-  return article.author.length > 1 ? article.author.join(', ') : article.author[0]
+  return article.AUTHOR.length > 1 ? article.AUTHOR.join(', ') : article.AUTHOR[0]
 }
 
 function getTags(article: any): string {
-  return article.category.join(',')
+  return article.CATEGORY.join(',')
 }
 
 function getTitle(article: any): string {
-  return article.title[0]
+  return article.TITLE[0]
 }
 
 function getPublicationDate(article: any): string {
-  return '' + moment(article.pubDate[0]).toDate().getTime()
+  return '' + moment(article.PUBDATE[0]).toDate().getTime()
 }
 
 function getId(article: any): string {
-  return article.guid[0]
+  return article.GUID[0]
 }
 
 function getLink(article: any): string {
-  return article.link[0]
+  return article.LINK[0]
 }
 
 function processItem(article: any): Article {
@@ -83,7 +83,8 @@ async function process(xmlResponse: any): Promise<Article[]> {
           console.log(err)
           return reject(err)
         }
-        return resolve(res.rss.channel[0].item)
+        console.log(res.RSS.CHANNEL)
+        return resolve(res.RSS.CHANNEL[0].ITEM)
       })
     )
   })
