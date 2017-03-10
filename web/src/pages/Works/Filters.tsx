@@ -67,11 +67,17 @@ export class FiltersComponent extends React.Component<FilterComponentProps, unde
         <ReactDatePicker
           onChange={this.props.onDateFromChanged}
           selected={this.props.dateFrom}
+          selectsStart
+          startDate={this.props.dateFrom}
+          endDate={this.props.dateTo}
           customInput={<DatePickerInput/>} />
         <span className="date-picker-separator">and</span>
         <ReactDatePicker
           onChange={this.props.onDateToChanged}
           selected={this.props.dateTo}
+          selectsEnd
+          startDate={this.props.dateFrom}
+          endDate={this.props.dateTo}
           customInput={<DatePickerInput/>} />
       </section>
     );

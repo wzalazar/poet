@@ -28,7 +28,9 @@ export class WorksLayout extends React.Component<WorksLayoutProps, WorksLayoutSt
     super(...arguments);
     this.state = {
       licenseType: LicenseTypes[0],
-      sortBy: 'datePublished'
+      sortBy: 'datePublished',
+      dateFrom: moment().subtract(1, 'month'),
+      dateTo: moment()
     };
   }
 
