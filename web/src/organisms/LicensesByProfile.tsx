@@ -81,7 +81,7 @@ export class LicensesByProfile extends PoetAPIResourceProvider<LicensesResource,
   private renderNoLicenses() {
     return (
       <section className="licenses">
-        <div>You don't have any licenses yet!</div>
+        <div>{ !this.props.searchQuery ? 'No licenses to show' : 'No licenses match the given criteria' }</div>
       </section>
     )
   }
