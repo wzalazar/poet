@@ -1,6 +1,7 @@
 import { Action } from 'redux';
 import { takeEvery } from 'redux-saga'
 import { put, select, take, call, race } from 'redux-saga/effects'
+import { browserHistory } from 'react-router';
 
 import { Configuration } from '../config';
 import { Actions } from '../actions'
@@ -41,7 +42,7 @@ function* purchaseLicense(action: Action & { offering: WorkOffering }) {
       amountInSatoshis: parseFloat(offeringAttributes.pricingPriceAmount) * (offeringAttributes.pricingPriceCurrency === "BTC" ? 1e8 : 1),
       conceptOf: 'License',
       resultAction: Actions.Licenses.Paid,
-      resultPayload: offeringAttributes
+      resultPayload: action.offering
     }
   });
 
@@ -65,7 +66,11 @@ function* purchaseLicense(action: Action & { offering: WorkOffering }) {
 
     const licenseTx = yield call(submitLicense, reference, transaction, outputIndex, publicKey, offeringAttributes.id);
 
-    console.log('Purchased License');
+    yield put({ type: Actions.Modals.SignTransaction.Hide });
+
+    browserHistory.push('/licenses/');
+
+    return;
   }
 }
 
