@@ -7,7 +7,6 @@ import { HexString } from '../../common';
 
 import ContentTab from './ContentTab';
 import HistoryTab from './HistoryTab';
-import StatsTab from './StatsTab';
 import TechnicalTab from './TechnicalTab';
 
 interface WorkTabProps {
@@ -22,7 +21,6 @@ export class WorkTabs extends React.Component<WorkTabProps, undefined> {
         <TabList className="tab-option-group">
           <Tab>Content</Tab>
           <Tab>History</Tab>
-          <Tab>Stats</Tab>
           <Tab>Technical</Tab>
         </TabList>
         <TabPanel>
@@ -30,9 +28,6 @@ export class WorkTabs extends React.Component<WorkTabProps, undefined> {
         </TabPanel>
         <TabPanel>
           <HistoryTab id={workId} />
-        </TabPanel>
-        <TabPanel>
-          <StatsTab id={workId} />
         </TabPanel>
         <TabPanel>
           <TechnicalTab id={workId} />
