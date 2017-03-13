@@ -62,6 +62,9 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
   renderElement(works: Work[], headers: Headers): JSX.Element {
     const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
 
+    if (!count)
+      return this.renderNoWorks();
+
     return (
       <section className="works-by-profile">
         <table className="works">
@@ -74,7 +77,7 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
             </tr>
           </thead>
           <tbody>
-            { works.map(this.renderRow.bind(this)) }
+            { works.map(this.renderWork.bind(this)) }
           </tbody>
         </table>
 
@@ -90,7 +93,7 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
     )
   }
 
-  renderRow(work: Work) {
+  private renderWork(work: Work) {
     return (
       <tr key={work.id}>
         <td className="name">
@@ -115,7 +118,13 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
     )
   }
 
-  optionSelected(work: Work, action: string) {
+  private renderNoWorks() {
+    return (
+      <section>{ !this.props.query ? 'No works to show' : 'No works match the given criteria' }</section>
+    )
+  }
+
+  private optionSelected(work: Work, action: string) {
     switch (action) {
       case EDIT:
         browserHistory.push('/works/' + work.id + '/edit');
