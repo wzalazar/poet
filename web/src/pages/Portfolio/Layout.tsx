@@ -18,7 +18,7 @@ export class PortfolioLayout extends React.Component<SelectProfileById & Dispatc
   constructor() {
     super(...arguments);
     this.state = {
-      selectedFilter: PortfolioWorksFilters.OWNED
+      selectedFilter: PortfolioWorksFilters.ALL
     }
   }
 
