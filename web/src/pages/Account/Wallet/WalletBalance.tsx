@@ -1,14 +1,16 @@
 import * as React from 'react';
 
 import config from '../../../config';
+import { ClassNameProps } from '../../../common';
 import { ResourceProvider, ResourceLocator } from '../../../components/ResourceProvider';
 import { UnspentTransactionOutputs } from './interfaces';
 import { BitcoinToCurrency } from './BitcoinToCurrency';
 
 import './WalletBalance.scss';
 
-export interface WalletBalanceProps {
+export interface WalletBalanceProps extends ClassNameProps {
   readonly address: string;
+  readonly dual?: boolean;
 }
 
 export interface WalletBalanceState {
@@ -35,15 +37,25 @@ export class WalletBalance extends ResourceProvider<UnspentTransactionOutputs, W
     const btc = satoshis / 100000000;
 
     return (
-      <section className="balance" onClick={() => this.setState({ btcFirst: !this.state.btcFirst })}>
-        <div className="primary">
-          { this.state.btcFirst ? this.renderBtc(btc) : this.renderForeign(btc) }
-        </div>
-        <div className="secondary">
-          { !this.state.btcFirst ? this.renderBtc(btc) : this.renderForeign(btc) }
-        </div>
+      <section className="balance" onClick={() => this.props.dual && this.setState({ btcFirst: !this.state.btcFirst })}>
+        { this.props.dual ? this.renderDual(btc) : this.renderSimple(btc) }
       </section>
     )
+  }
+
+  private renderSimple(btc: number) {
+    return this.renderBtc(btc)
+  }
+
+  private renderDual(btc: number) {
+    return [
+      <div className="primary">
+        { this.state.btcFirst ? this.renderBtc(btc) : this.renderForeign(btc) }
+      </div>,
+      <div className="secondary">
+        { !this.state.btcFirst ? this.renderBtc(btc) : this.renderForeign(btc) }
+      </div>
+    ];
   }
 
   private renderBtc(btc: number) {

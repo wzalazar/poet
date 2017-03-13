@@ -16,7 +16,7 @@ export class WalletOperations extends React.Component<WalletOperationsProps, und
   render() {
     return (
       <section className="wallet-operations">
-        <WalletBalance address={this.props.address} />
+        <WalletBalance address={this.props.address} dual />
         <Tabs selectedIndex={0} className="wallet-tabs" >
           <TabList className="wallet-tab-list" activeTabClassName="selected">
             <Tab>Deposit</Tab>
