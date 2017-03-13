@@ -1,13 +1,14 @@
+import { Action } from 'redux';
 import { takeEvery } from 'redux-saga'
-import { put, select, take, call } from 'redux-saga/effects'
+import { put, select, take, call, race } from 'redux-saga/effects'
 
-import { Actions } from '../actions/index'
+import { Configuration } from '../config';
+import { Actions } from '../actions'
 import { currentPublicKey } from '../selectors/session'
-import config from '../config'
-import {race} from "redux-saga/effects";
+import { WorkOffering } from '../atoms/Interfaces';
 
 async function submitLicense(reference: string, txId: string, outputIndex: number, publicKey: string, referenceOffering: string) {
-  return await fetch(config.api.user + '/licenses', {
+  return await fetch(Configuration.api.user + '/licenses', {
     method: 'POST',
     body: JSON.stringify({
       txId,
@@ -19,11 +20,11 @@ async function submitLicense(reference: string, txId: string, outputIndex: numbe
   }).then((res: any) => res.text())
 }
 
-function* purchaseLicense(action: any) {
-  const offering = action.payload;
-  const reference = offering.reference;
+function* purchaseLicense(action: Action & { offering: WorkOffering }) {
+  const offeringAttributes = action.offering.attributes;
+  const reference = offeringAttributes.reference;
 
-  yield put({ type: Actions.Modals.PurchaseLicense.Show });
+  yield put({ type: Actions.Modals.PurchaseLicense.Show, offering: action.offering });
 
   const { purchaseLicenseModalAccept, purchaseLicenseModalCancel } = yield race({
     purchaseLicenseModalAccept: take(Actions.Modals.PurchaseLicense.Accept),
@@ -36,11 +37,11 @@ function* purchaseLicense(action: any) {
   yield put({
     type: Actions.Transactions.SignSubmitRequested,
     payload: {
-      paymentAddress: offering.paymentAddress,
-      amountInSatoshis: parseFloat(offering.pricingPriceAmount) * (offering.pricingPriceCurrency === "BTC" ? 1e8 : 1),
+      paymentAddress: offeringAttributes.paymentAddress,
+      amountInSatoshis: parseFloat(offeringAttributes.pricingPriceAmount) * (offeringAttributes.pricingPriceCurrency === "BTC" ? 1e8 : 1),
       conceptOf: 'License',
       resultAction: Actions.Licenses.Paid,
-      resultPayload: offering
+      resultPayload: offeringAttributes
     }
   });
 
@@ -55,15 +56,16 @@ function* purchaseLicense(action: any) {
     if (result.noBalance) {
       return;
     }
-    if (result.paidLicense.payload.id !== offering.id) {
+    if (result.paidLicense.payload.id !== action.offering.id) {
       continue;
     }
     const transaction = result.paidLicense.transaction;
     const outputIndex = result.paidLicense.outputIndex;
     const publicKey = yield select(currentPublicKey);
 
-    const licenseTx = yield call(submitLicense, reference, transaction, outputIndex, publicKey, offering.id);
+    const licenseTx = yield call(submitLicense, reference, transaction, outputIndex, publicKey, offeringAttributes.id);
 
+    console.log('Purchased License');
   }
 }
 

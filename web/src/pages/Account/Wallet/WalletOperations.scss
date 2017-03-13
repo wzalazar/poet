@@ -31,4 +31,24 @@
 
   }
 
+  .balance {
+    padding: 15px 0;
+    margin-bottom: 6px;
+    font-family: "Roboto Slab";
+    font-weight: bold;
+    text-align: center;
+    color: #413D3B;
+    cursor: pointer;
+
+    .primary {
+      font-size: 32px;
+      line-height: 43px;
+    }
+
+    .secondary {
+      font-size: 12px;
+      line-height: 16px;
+    }
+  }
+
 }

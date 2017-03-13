@@ -2,14 +2,17 @@
   font-size: 12px;
 
   .offering {
-    padding: 8px;
     margin-bottom: 10px;
-    border: 1px solid #bbb;
+    border: 1px solid #E6E4E1;
+    padding: 16px;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 4px 0 #EDEDED;
+    font-family: 'Roboto Slab';
 
     h3 {
-      font-size: 12px;
       font-weight: bold;
-      margin-bottom: 8px;
+      font-size: 12px;
+      color: #494949
     }
 
     .info {
@@ -25,9 +28,10 @@
         text-align: right;
       }
 
-      .purchase-button {
-        width: 100%;
-      }
+    }
+
+    button {
+      width: 100%;
     }
   }
 }

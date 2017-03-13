@@ -1,12 +1,18 @@
 import * as React from 'react';
 
-import { ResourceProvider, ResourceLocator } from '../../../components/ResourceProvider';
-import config from '../../../config';
-import { WithdrawalInfo, WithdrawBoxProps, UnspentTransactionOutputs } from './interfaces'
-
 import './WalletOperationWithdraw.scss';
 
-export class WalletOperationWithdraw extends ResourceProvider<UnspentTransactionOutputs, WithdrawBoxProps, WithdrawalInfo> {
+interface WalletOperationWithdrawProps {
+  address: string
+  requestWithdrawal: (_: WalletOperationWithdrawState) => void
+}
+
+export interface WalletOperationWithdrawState {
+  amountInSatoshis?: number
+  paymentAddress?: string
+}
+
+export class WalletOperationWithdraw extends React.Component<WalletOperationWithdrawProps, WalletOperationWithdrawState> {
 
   constructor() {
     super(...arguments);
@@ -16,7 +22,7 @@ export class WalletOperationWithdraw extends ResourceProvider<UnspentTransaction
     };
   }
 
-  renderElement(resource: UnspentTransactionOutputs): JSX.Element {
+  render() {
     return (
       <section className="wallet-operation-withdraw">
         <main>
@@ -49,9 +55,4 @@ export class WalletOperationWithdraw extends ResourceProvider<UnspentTransaction
     )
   }
 
-  resourceLocator(): ResourceLocator {
-    return {
-      url: config.api.insight + '/addr/' + this.props.address + '/utxo'
-    }
-  }
 }

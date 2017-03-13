@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Route } from 'react-router';
 
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
+import { WorkOffering } from '../../atoms/Interfaces';
+import { Actions } from '../../actions/index';
 import { WorkLayout } from './Layout';
 
 interface WorkState {
@@ -14,7 +16,6 @@ export class Work extends PageLoader<WorkState, Object> {
   initialState() {
     return {};
   }
-
 
   routeHook(key: string) {
     return [<Route path="/works/:id" key={key} component={this.container()} />]
@@ -30,5 +31,14 @@ export class Work extends PageLoader<WorkState, Object> {
 
   select(state: any, ownProps: any): Object {
     return { id: ownProps.params.id };
+  }
+
+  mapDispatchToProps() {
+    return {
+      purchase: (offering: WorkOffering) => ({
+        type: Actions.Licenses.PurchaseRequested,
+        offering
+      })
+    }
   }
 }

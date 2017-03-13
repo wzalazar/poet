@@ -1,5 +1,6 @@
 import { FetchStatus } from '../enums/FetchStatus'
 import { Claim } from '../Claim';
+import { WorkOffering } from '../atoms/Interfaces';
 
 export interface PoetSessionToken {
   publicKey: string
@@ -65,7 +66,7 @@ export interface ModalStore {
   signWork?: boolean;
   signTx?: boolean;
   transfer?: boolean;
-  purchaseLicense?: boolean;
+  purchaseLicense?: WorkOffering;
   createWorkResult?: boolean;
 }
 

@@ -1,16 +1,18 @@
 import * as React from 'react';
 
-import './Layout.scss';
-
 import { HexString } from '../../common';
 
+import { WorkOffering } from '../../atoms/Interfaces';
 import Overview from './Overview';
-import WorkOfferings from './WorkOfferings';
+import { WorkOfferings } from './WorkOfferings';
 import Title from './Title';
 import { WorkTabs } from './WorkTabs';
 
+import './Layout.scss';
+
 export interface WorkProps {
-  id: HexString
+  id: HexString,
+  purchase: (offering: WorkOffering) => void;
 }
 
 export class WorkLayout extends React.Component<WorkProps, undefined> {
@@ -26,7 +28,7 @@ export class WorkLayout extends React.Component<WorkProps, undefined> {
           </div>
           <div className="col-xs-1"/>
           <div className="col-xs-4">
-            <WorkOfferings id={workId}/>
+            <WorkOfferings workId={workId} onPurchaseRequest={this.props.purchase}/>
             <Title id={workId}/>
           </div>
         </div>

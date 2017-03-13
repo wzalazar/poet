@@ -5,12 +5,18 @@ import { Action } from 'redux'
 import Modal, { ModalProps } from './Modal'
 import { Actions } from '../actions/index'
 import { Images } from '../images/Images';
+import { currentPublicKey } from '../selectors/session';
+import { publicKeyToAddress } from '../bitcoin/addressHelpers';
+import { WalletBalance } from '../atoms/WalletBalance';
+import { WorkOffering } from '../atoms/Interfaces';
 
 import './Modal.scss'
 import './PurchaseLicense.scss'
 
 interface PurchaseLicenseProps extends ModalProps {
-  acceptAction?: () => Action;
+  readonly acceptAction?: () => Action;
+  readonly address: string;
+  readonly offering: WorkOffering;
 }
 
 class PurchaseLicenseComponent extends Modal<PurchaseLicenseProps, undefined> {
@@ -30,13 +36,13 @@ class PurchaseLicenseComponent extends Modal<PurchaseLicenseProps, undefined> {
             </div>
             <div className="current-balance">
               <label>Current Balance</label>
-              <span>$20.00</span>
+              <span><WalletBalance address={this.props.address} /></span>
             </div>
           </section>
           <section className="items">
             <div className="item">
               <label>1x license for cw#00000</label>
-              <span>$10.00</span>
+              <span>{this.props.offering.attributes.pricingPriceAmount} {this.props.offering.attributes.pricingPriceCurrency}</span>
             </div>
           </section>
           <button className="button-primary" onClick={this.props.acceptAction}>Purchase</button>
@@ -48,8 +54,13 @@ class PurchaseLicenseComponent extends Modal<PurchaseLicenseProps, undefined> {
 }
 
 function mapStateToProps(state: any): PurchaseLicenseProps {
+  const publicKey = currentPublicKey(state);
+  const address = publicKey && publicKeyToAddress(publicKey);
+
   return {
-    visible: !!state.modals.purchaseLicense
+    visible: !!state.modals.purchaseLicense,
+    address,
+    offering: state.modals.purchaseLicense
   }
 }
 

@@ -1,12 +1,9 @@
 import * as React from 'react';
 
-import config from '../../../config';
-import { ClassNameProps } from '../../../common';
-import { ResourceProvider, ResourceLocator } from '../../../components/ResourceProvider';
-import { UnspentTransactionOutputs } from './interfaces';
-import { BitcoinToCurrency } from './BitcoinToCurrency';
-
-import './WalletBalance.scss';
+import { Configuration } from '../config';
+import { ClassNameProps } from '../common';
+import { ResourceProvider, ResourceLocator } from '../components/ResourceProvider';
+import { BitcoinToCurrency } from '../pages/Account/Wallet/BitcoinToCurrency';
 
 export interface WalletBalanceProps extends ClassNameProps {
   readonly address: string;
@@ -16,6 +13,17 @@ export interface WalletBalanceProps extends ClassNameProps {
 export interface WalletBalanceState {
   readonly btcFirst: boolean;
 }
+
+interface UnspentTransactionOutput {
+  readonly txid: string;
+  readonly vout: number;
+  readonly satoshis: number;
+  readonly confirmations: number;
+  readonly ts: number;
+  readonly amount: number;
+}
+
+type UnspentTransactionOutputs = ReadonlyArray<UnspentTransactionOutput>;
 
 export class WalletBalance extends ResourceProvider<UnspentTransactionOutputs, WalletBalanceProps, WalletBalanceState> {
 
@@ -28,7 +36,7 @@ export class WalletBalance extends ResourceProvider<UnspentTransactionOutputs, W
 
   resourceLocator(): ResourceLocator {
     return {
-      url: config.api.insight + '/addr/' + this.props.address + '/utxo'
+      url: Configuration.api.insight + '/addr/' + this.props.address + '/utxo'
     }
   }
 
@@ -37,7 +45,7 @@ export class WalletBalance extends ResourceProvider<UnspentTransactionOutputs, W
     const btc = satoshis / 100000000;
 
     return (
-      <section className="balance" onClick={() => this.props.dual && this.setState({ btcFirst: !this.state.btcFirst })}>
+      <section className={this.props.className} onClick={() => this.props.dual && this.setState({ btcFirst: !this.state.btcFirst })}>
         { this.props.dual ? this.renderDual(btc) : this.renderSimple(btc) }
       </section>
     )

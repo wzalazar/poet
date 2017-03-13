@@ -4,12 +4,11 @@ import { Route } from 'react-router';
 const Bitcore = require('bitcore-lib');
 
 import PageLoader, { ReducerDescription } from '../../../components/PageLoader';
-
-import { WalletLayout } from './Layout';
 import { currentPublicKey } from '../../../selectors/session'
 import { publicKeyToAddress } from '../../../bitcoin/addressHelpers'
-import { WithdrawalInfo } from './interfaces'
 import { Actions } from '../../../actions/index'
+import { WalletLayout } from './Layout';
+import { WalletOperationWithdrawState } from './WalletOperationWithdraw';
 
 export interface UserWalletProps {
   publicKey?: string;
@@ -45,7 +44,7 @@ export class UserWallet extends PageLoader<UserWalletProps, Object> {
 
   mapDispatchToProps(): Object {
     return {
-      requestWithdrawal: (info: WithdrawalInfo) => ({
+      requestWithdrawal: (info: WalletOperationWithdrawState) => ({
         type: Actions.withdrawalRequested,
         payload: info
       })
