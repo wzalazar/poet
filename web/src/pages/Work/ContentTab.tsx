@@ -28,7 +28,7 @@ function render(props: Work): JSX.Element {
       <section className="attributes">
         { renderAttributes(props) }
       </section>
-      <section className="content">{ props.attributes.content }</section>
+      <pre className="content">{ props.attributes.content }</pre>
     </section>
   )
 }
