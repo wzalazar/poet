@@ -1,7 +1,7 @@
 import { takeEvery } from 'redux-saga'
 import { call, put } from 'redux-saga/effects'
 
-import { Configuration } from '../config';
+import { Configuration } from '../configuration';
 import { Actions } from '../actions/index'
 
 function* fetchProfileData(action: any) {

@@ -1,4 +1,4 @@
-import { Configuration } from '../config';
+import { Configuration } from '../configuration';
 import FetchComponent from './FetchComponent';
 import { Work } from '../atoms/Interfaces';
 

@@ -3,7 +3,7 @@ import { takeEvery } from 'redux-saga'
 import { put, select, take, call, race } from 'redux-saga/effects'
 import { browserHistory } from 'react-router';
 
-import { Configuration } from '../config';
+import { Configuration } from '../configuration';
 import { Actions } from '../actions'
 import { currentPublicKey } from '../selectors/session'
 import { WorkOffering } from '../atoms/Interfaces';

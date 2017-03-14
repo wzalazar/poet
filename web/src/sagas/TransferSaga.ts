@@ -3,7 +3,7 @@ import { takeEvery } from 'redux-saga'
 import { call, put, select, take, race } from 'redux-saga/effects'
 import * as protobuf from 'protobufjs'
 
-import { Configuration } from '../config';
+import { Configuration } from '../configuration';
 import { Actions } from '../actions/index'
 import auth from '../auth'
 import { currentPublicKey } from '../selectors/session'

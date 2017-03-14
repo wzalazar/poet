@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
-import { Configuration } from '../../config';
+import { Configuration } from '../../configuration';
 import { HexString } from '../../common';
 
 import { LicensesByProfile } from '../../organisms/LicensesByProfile';

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Route } from 'react-router'
 
-import { Configuration } from '../../../config';
+import { Configuration } from '../../../configuration';
 import PageLoader, { ReducerDescription } from '../../../components/PageLoader'
 import BlockLayout from './Layout'
 

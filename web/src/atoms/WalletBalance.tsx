@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Configuration } from '../config';
+import { Configuration } from '../configuration';
 import { ClassNameProps } from '../common';
 import { ResourceProvider, ResourceLocator } from '../components/ResourceProvider';
 import { BitcoinToCurrency } from '../pages/Account/Wallet/BitcoinToCurrency';

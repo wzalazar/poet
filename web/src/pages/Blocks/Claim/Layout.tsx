@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { Configuration } from '../../../config';
+import { Configuration } from '../../../configuration';
 import FetchComponent from '../../../hocs/FetchComponent'
 import BlockHeader from '../components/Header'
 

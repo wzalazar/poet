@@ -1,4 +1,4 @@
-import { Configuration } from '../../config';
+import { Configuration } from '../../configuration';
 import { UrlObject, isUrlObject, urlObjectToUrl } from '../../common';
 import { ResourceProvider } from '../../components/ResourceProvider';
 

@@ -4,7 +4,7 @@ import * as moment from 'moment';
 
 import '../extensions/String';
 
-import { Configuration } from '../config';
+import { Configuration } from '../configuration';
 import { ClassNameProps } from '../common';
 
 import { ResourceProvider } from './ResourceProvider';

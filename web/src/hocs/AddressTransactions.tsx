@@ -1,4 +1,4 @@
-import { Configuration } from '../config';
+import { Configuration } from '../configuration';
 import FetchComponent, { FetchComponentProps } from './FetchComponent'
 
 export interface Transaction {

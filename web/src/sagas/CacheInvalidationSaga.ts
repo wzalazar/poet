@@ -1,7 +1,7 @@
 import { takeEvery } from 'redux-saga'
 import { put } from 'redux-saga/effects'
 
-import { Configuration } from '../config';
+import { Configuration } from '../configuration';
 import { Actions } from '../actions/index'
 import { FetchType } from '../reducers/FetchReducer';
 import { currentPublicKey } from '../selectors/session';

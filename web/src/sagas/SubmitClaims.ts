@@ -8,7 +8,7 @@ import auth from '../auth'
 import { currentPublicKey } from '../selectors/session'
 import { getMockPrivateKey } from '../mockKey'
 import { Claim } from '../Claim';
-import { Configuration } from '../config';
+import { Configuration } from '../configuration';
 
 const jsonClaims = require('../claim.json');
 

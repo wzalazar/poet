@@ -2,7 +2,7 @@ import * as React from 'react';
 const classNames = require('classnames');
 
 import { ClassNameProps } from '../common';
-import { Configuration } from '../config';
+import { Configuration } from '../configuration';
 
 export interface PaginationProps extends ClassNameProps {
   readonly offset: number;

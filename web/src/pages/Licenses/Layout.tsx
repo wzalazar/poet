@@ -7,7 +7,7 @@ import { LicensesByProfile, LicenseToProfileRelationship } from '../../organisms
 import { Filters } from './Filters';
 
 import './Layout.scss';
-import { Configuration } from '../../config';
+import { Configuration } from '../../configuration';
 
 interface LicensesProps {
   publicKey: HexString;

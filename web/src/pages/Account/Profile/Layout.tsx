@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Action } from 'redux';
 import * as classNames from 'classnames';
 
-import { Configuration } from '../../../config';
+import { Configuration } from '../../../configuration';
 
 import { PROFILE, Claim } from '../../../Claim';
 import { ImageUpload } from '../../../components/ImageUpload';

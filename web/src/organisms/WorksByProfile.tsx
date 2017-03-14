@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { browserHistory } from 'react-router';
 
-import { Configuration } from '../config';
+import { Configuration } from '../configuration';
 import { UrlObject } from '../common';
 import { DispatchesTransferRequested } from '../actions/requests';
 import { WorkNameWithLink, WorkType, WorkPublishedDate } from '../atoms/Work';

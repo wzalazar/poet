@@ -1,7 +1,7 @@
 import * as SocketIO from 'socket.io-client'
 import { v4 } from 'uuid'
 
-import { Configuration } from './config';
+import { Configuration } from './configuration';
 
 const bitcore = require('bitcore-lib');
 

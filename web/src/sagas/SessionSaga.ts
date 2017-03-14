@@ -2,7 +2,7 @@ import { browserHistory } from 'react-router'
 import { takeEvery } from 'redux-saga'
 import { call, put } from 'redux-saga/effects'
 
-import { Configuration } from '../config';
+import { Configuration } from '../configuration';
 import { Actions } from '../actions/index'
 import auth from '../auth'
 import { getMockPrivateKey } from '../mockKey'

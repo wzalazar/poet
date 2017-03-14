@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 const Autocomplete = require('react-autocomplete');
 const QR = require('react-qr');
 
-import { Configuration } from '../config';
+import { Configuration } from '../configuration';
 import Modal, {ModalProps} from "./Modal";
 import { Actions } from "../actions/index";
 import Loading from "../components/Loading";

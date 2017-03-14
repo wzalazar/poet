@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import '../extensions/String';
 
-import { Configuration } from '../config';
+import { Configuration } from '../configuration';
 import { OwnerName } from '../atoms/Work';
 import { License } from '../atoms/Interfaces';
 import { TimeSinceIssueDate, ReferencedWorkNameWithLink } from '../atoms/License';
