@@ -37,7 +37,8 @@ async function startListening() {
           poetTx.bitcoinHash = block.blockHash
           poetTx.bitcoinHeight = block.blockHeight
           poetTx.timestamp = block.timestamp
-          if ((await blockchain.getBlockInfoByTorrentHash(poetTx.torrentHash)).timestamp) {
+          const blockInfo = (await blockchain.getBlockInfoByTorrentHash(poetTx.torrentHash))
+          if (blockInfo && blockInfo.timestamp) {
             continue
           }
           console.log('Confirming block with torrent hash', poetTx.torrentHash)
