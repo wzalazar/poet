@@ -32,7 +32,7 @@ class Step extends React.Component<StepProps, undefined> {
 
 interface CurrentStepProps extends ClassNameProps {
   readonly selectedStep: number;
-  readonly onClick: (index: number) => void;
+  readonly onClick?: (index: number) => void;
 }
 
 export class CurrentStep extends React.Component<CurrentStepProps, undefined> {
@@ -46,7 +46,7 @@ export class CurrentStep extends React.Component<CurrentStepProps, undefined> {
             stepNumber={index + 1}
             stepName={step}
             state={this.stepState(index)}
-            onClick={ () => this.props.onClick(index)}
+            onClick={ () => this.props.onClick && this.props.onClick(index)}
           />, index < this.steps.length - 1 && <hr/>]) }
 
       </section>

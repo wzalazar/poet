@@ -40,7 +40,6 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
           <CurrentStep
             selectedStep={this.state.selectedStep}
             className="current-step"
-            onClick={(index: number) => this.setState({ selectedStep: index })}
           />
         </header>
         { this.state.selectedStep === 0 && <StepRegister onSubmit={this.onStepRegisterSubmit.bind(this)} /> }

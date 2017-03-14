@@ -37,19 +37,11 @@
         &.selected div {
           color: #5295E4;
           border-color: #5295E4;
-
-          &:hover {
-            color: lighten(#5295E4, 20%);
-          }
         }
 
         &.done div {
           color: #33AD35;;
           border-color: #33AD35;
-
-          &:hover {
-            color: lighten(#33AD35, 20%);
-          }
         }
 
         .number {
@@ -72,11 +64,6 @@
           font-size: 14px;
           line-height: 21px;
           color: #666;
-          cursor: pointer;
-
-          &:hover {
-            color: lighten(#666, 20%);
-          }
         }
 
       }
