@@ -15,14 +15,30 @@ export interface StepPublishAndReviewProps {
   readonly licenseType: LicenseType;
 }
 
-export default class StepPublishAndReview extends React.Component<StepPublishAndReviewProps, any> {
+export interface EnableButton {
+  enabled: boolean;
+}
+
+export default class StepPublishAndReview extends React.Component<StepPublishAndReviewProps, EnableButton> {
+
+  changeEnabled: (newState: boolean) => void;
+
+  constructor() {
+    super(...arguments);
+    this.state = {
+      enabled: false
+    }
+    this.changeEnabled = (newState: boolean) => {
+      this.setState({ enabled: newState })
+    }
+  }
   render() {
     return (
       <section className="step-3-publish">
         <div className="row">
           <div className="col-sm-7">
-            <TermsOfUse />
-            <button onClick={this.props.onSubmit} className="button-primary">Timestamp to the blockchain</button>
+            <TermsOfUse onChange={this.changeEnabled} />
+            <button disabled={!this.state.enabled} onClick={this.props.onSubmit} className="button-primary">Timestamp to the blockchain</button>
           </div>
           <Preview
             className="col-sm-5"

@@ -4,7 +4,11 @@ import { Checkbox } from '../../../components/Checkbox';
 
 import './TermsOfUse.scss';
 
-export class TermsOfUse extends React.Component<undefined, undefined> {
+export interface OnEnabledChange {
+  onChange: (newState: boolean) => void;
+}
+
+export class TermsOfUse extends React.Component<OnEnabledChange, undefined> {
   render() {
     return (
       <section className="terms-of-use">
@@ -13,7 +17,7 @@ export class TermsOfUse extends React.Component<undefined, undefined> {
         By agreeing to this terms I assert that I am the proper owner of this work and I understand that if this is proven wrong
           I wll be penalized by losing 1514 Poet Tokens.
         </p>
-        <Checkbox text="I agree to the terms above"/>
+        <Checkbox text="I agree to the terms above" onChange={this.props.onChange}/>
       </section>
     );
   }
