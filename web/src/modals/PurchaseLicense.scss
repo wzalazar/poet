@@ -48,7 +48,8 @@
 
       .funds {
         display: flex;
-        margin-bottom: 10px;
+        align-items: center;
+        margin-bottom: 18px;
 
         img {
           width: 24px;
@@ -58,20 +59,11 @@
 
         .message {
           text-align: left;
-
-          div {
-            font-size: 10px;
-            line-height: 18px;
-            color: #666666;
-          }
-
-          a {
-            display: block;
-            font-size: 7px;
-            line-height: 18px;
-            color: #5295E4;
-          }
+          font-size: 10px;
+          line-height: 18px;
+          color: #666666;
         }
+
       }
 
       .current-balance {

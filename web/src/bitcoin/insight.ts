@@ -1,8 +1,8 @@
-import auth from '../auth'
+import { Configuration } from '../configuration';
 
 export async function submitTx(tx: string) {
   return await fetch(
-    'https://test-insight.bitpay.com/api/tx/send',
+    Configuration.api.insight + '/tx/send',
     {
       method: 'POST',
       body: JSON.stringify({ rawtx: tx }),
@@ -14,7 +14,7 @@ export async function submitTx(tx: string) {
 }
 
 export async function getUtxos(address: string) {
-  return await fetch(`https://test-insight.bitpay.com/api/addr/${address}/utxo`)
+  return await fetch(`${Configuration.api.insight}/addr/${address}/utxo`)
     .then((res: any) => res.json())
 }
 

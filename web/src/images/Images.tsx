@@ -11,4 +11,6 @@ export class Images {
   static readonly Calendar = require('./calendar.svg');
   static readonly Anon = require('./user.svg');
   static readonly SuccessMark = require('./success.svg');
+  static readonly SuccessMarkGreen = require('./success-green.svg');
+  static readonly FailureMark = require('./failure.svg');
 }

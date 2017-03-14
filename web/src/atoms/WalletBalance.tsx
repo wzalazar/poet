@@ -14,7 +14,7 @@ export interface WalletBalanceState {
   readonly btcFirst: boolean;
 }
 
-interface UnspentTransactionOutput {
+export interface UnspentTransactionOutput {
   readonly txid: string;
   readonly vout: number;
   readonly satoshis: number;
