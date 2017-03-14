@@ -49,9 +49,13 @@ export class WorksComponent extends PoetAPIResourceProvider<WorksResource, Works
     return (
       <section className="works container">
         <h4 className="work-count">Showing {works.length} of {count} Results</h4>
-        <ul className="works">
-          { works.map(this.renderWork) }
-        </ul>
+        <div className="row">
+          <div className="col-md-8">
+            <ul className="works">
+              { works.map(this.renderWork) }
+            </ul>
+          </div>
+        </div>
         { count > this.props.limit && <Pagination
           className="pagination"
           offset={this.props.offset}
