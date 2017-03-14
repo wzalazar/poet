@@ -11,6 +11,7 @@ interface PortfolioWorksFiltersProps {
 
 export class PortfolioWorksFilters extends React.Component<PortfolioWorksFiltersProps, undefined> {
   public static readonly ALL = 'all';
+  public static readonly LICENSED_TO_ME = 'licensedTo';
   public static readonly OWNED = 'owned';
   public static readonly AUTHORED = 'authored';
 
@@ -18,6 +19,7 @@ export class PortfolioWorksFilters extends React.Component<PortfolioWorksFilters
     return (
       <OptionGroup selectedId={this.props.selectedId} onOptionSelected={this.props.onOptionSelected} className="tab-option-group extended">
         <Option id={PortfolioWorksFilters.ALL}>All</Option>
+        <Option id={PortfolioWorksFilters.LICENSED_TO_ME}>Licensed to me</Option>
         <Option id={PortfolioWorksFilters.OWNED}>Owned</Option>
         <Option id={PortfolioWorksFilters.AUTHORED}>Authored</Option>
       </OptionGroup>

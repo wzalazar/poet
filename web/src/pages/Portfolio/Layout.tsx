@@ -42,7 +42,7 @@ export class PortfolioLayout extends React.Component<SelectProfileById & Dispatc
             transferRequested={this.props.transferRequested}
             relationship={this.selectedFilterRelationship()}
             query={this.state.searchQuery}
-            showActions
+            showActions={this.state.selectedFilter === PortfolioWorksFilters.OWNED}
           />
         </main>
       </section>
@@ -53,6 +53,8 @@ export class PortfolioLayout extends React.Component<SelectProfileById & Dispatc
     switch (this.state.selectedFilter) {
       case PortfolioWorksFilters.ALL:
         return 'relatedTo';
+      case PortfolioWorksFilters.LICENSED_TO_ME:
+        return 'licensedTo';
       case PortfolioWorksFilters.OWNED:
         return 'owner';
       case PortfolioWorksFilters.AUTHORED:

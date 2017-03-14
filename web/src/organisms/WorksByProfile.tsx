@@ -16,7 +16,7 @@ import './WorksByProfile.scss';
 const EDIT = 'Edit';
 const TRANSFER = 'Transfer';
 
-export type WorkToProfileRelationship = 'author' | 'owner' | 'relatedTo';
+export type WorkToProfileRelationship = 'author' | 'owner' | 'relatedTo' | 'licensedTo';
 
 interface WorksByProfileProps {
   readonly relationship: WorkToProfileRelationship;
