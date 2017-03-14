@@ -2,14 +2,14 @@ import * as React from 'react'
 import { Route } from 'react-router'
 import { select, call, put } from 'redux-saga/effects'
 
+import { Configuration } from '../../config';
 import { blocks } from '../../selectors/blocks'
 import PageLoader, { ReducerDescription } from '../../components/PageLoader'
-import { BlocksLayout } from './Layout'
-import config from '../../config'
 import { Actions } from '../../actions/index'
+import { BlocksLayout } from './Layout'
 
 async function fetchBlocks() {
-  return await (await fetch(config.api.explorer + '/blocks')).json()
+  return await (await fetch(Configuration.api.explorer + '/blocks')).json()
 }
 
 export class Blocks extends PageLoader<Object, Object> {

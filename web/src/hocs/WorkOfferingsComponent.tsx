@@ -1,4 +1,4 @@
-import Config from '../config';
+import { Configuration } from '../config';
 
 import { HexString, Price } from '../common'
 import FetchComponent, { FetchComponentProps } from './FetchComponent'
@@ -25,5 +25,5 @@ export interface WorkOfferingsProps extends FetchComponentProps {
 }
 
 export default FetchComponent.bind(null, (props: WorkOfferingsProps) => ({
-  url: `${Config.api.explorer}/works/${props.workId}`
+  url: `${Configuration.api.explorer}/works/${props.workId}`
 }));

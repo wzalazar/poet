@@ -1,9 +1,10 @@
 import * as React from 'react'
 
+import { Configuration } from '../../../config';
 import FetchComponent from '../../../hocs/FetchComponent'
 import BlockHeader from '../components/Header'
+
 import './Layout.scss'
-import config from '../../../config'
 
 const DisplayClaim = (claim: any) => (<div key={claim.id}>
   <div className="monospaced">{claim.publicKey}</div>
@@ -12,7 +13,7 @@ const DisplayClaim = (claim: any) => (<div key={claim.id}>
 </div>)
 
 const Layout = FetchComponent(
-  (props: {id: string}) => ({ url: `${config.api.explorer}/claims/${props.id}`}),
+  (props: {id: string}) => ({ url: `${Configuration.api.explorer}/claims/${props.id}`}),
   (claim =>
     <div className="container">
       <section className="blocks">

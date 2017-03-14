@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as moment from 'moment';
 
+import { Configuration } from '../config';
 import { License } from './Interfaces';
-import { Config } from '../config';
 import { WorkNameById, WorkNameWithLinkById } from './Work';
 
 
@@ -12,7 +12,7 @@ export function TimeSinceIssueDate(props: { license: License }) {
     && props.license.attributes.issueDate
   return (<span>{
     issueDate
-      ? moment(issueDate).format(Config.dateFormat)
+      ? moment(issueDate).format(Configuration.dateFormat)
       : '(unknown publication date)'
   }</span>)
 }

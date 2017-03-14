@@ -5,7 +5,7 @@
  * but in the future it could become one or load info from one.
  */
 
-export const Config = {
+export const Configuration = {
   api: {
     explorer: '/api/explorer',
     user: '/api/user',
@@ -25,7 +25,3 @@ export const Config = {
     visiblePageCount: 6
   }
 };
-
-export const Configuration = Config;
-
-export default Config;

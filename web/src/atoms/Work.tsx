@@ -3,7 +3,6 @@ import { Link } from 'react-router';
 
 import * as moment from 'moment';
 
-import { Config } from '../config';
 import { PoetAPIResourceProvider } from './base/PoetApiResource';
 import { Work, Profile } from './Interfaces';
 import { SelectWorkById } from './Arguments';

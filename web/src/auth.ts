@@ -1,6 +1,7 @@
 import * as SocketIO from 'socket.io-client'
 import { v4 } from 'uuid'
-import config from './config'
+
+import { Configuration } from './config';
 
 const bitcore = require('bitcore-lib');
 
@@ -17,7 +18,7 @@ export class AuthSocket {
   private handler: (data: string) => void;
 
   constructor(handler?: (payload: string) => void) {
-    this.socket = SocketIO(config.api.auth);
+    this.socket = SocketIO(Configuration.api.auth);
     this.currentlyConnected = false;
     this.promises = {};
     this.handler = handler;

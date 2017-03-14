@@ -1,6 +1,4 @@
-import Config from '../config';
-
-import { HexString } from '../common'
+import { Configuration } from '../config';
 import FetchComponent, { FetchComponentProps } from './FetchComponent'
 
 export interface Transaction {
@@ -62,5 +60,5 @@ export interface AddressTransactionsProps extends FetchComponentProps {
 }
 
 export const AddressTransactions = FetchComponent.bind(null, (props: AddressTransactionsProps) => ({
-  url: `${Config.api.insight}/txs?address=${props.address}`
+  url: `${Configuration.api.insight}/txs?address=${props.address}`
 }));

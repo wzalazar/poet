@@ -2,9 +2,9 @@ import { browserHistory } from 'react-router'
 import { takeEvery } from 'redux-saga'
 import { call, put } from 'redux-saga/effects'
 
+import { Configuration } from '../config';
 import { Actions } from '../actions/index'
 import auth from '../auth'
-import config from '../config'
 import { getMockPrivateKey } from '../mockKey'
 
 const LOCALSTORAGE_SESSION = 'session';
@@ -46,7 +46,7 @@ function* loginResponseAction(action: any) {
 }
 
 function* mockLoginHit(action: any) {
-  yield call(fetch, config.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
+  yield call(fetch, Configuration.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
 }
 
 export function sessionSaga() {

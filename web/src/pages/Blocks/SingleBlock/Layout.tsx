@@ -1,12 +1,11 @@
 import * as React from 'react';
-import * as moment from 'moment';
 import { Link } from 'react-router';
 
+import { Configuration } from '../../../config';
 import FetchComponent from '../../../hocs/FetchComponent'
-
 import BlockHeader from '../components/Header'
+
 import './Layout.scss'
-import config from '../../../config'
 
 const Item = (props: { name: string, value: string }) => <div> <span>{props.name}</span> <span>{props.value}</span></div>
 
@@ -56,7 +55,7 @@ const DisplayClaim = (claim: any) => (<div key={claim.id}>
 const ClaimList = (block: any) => <div>{block.claims.map(DisplayClaim)}</div>
 
 const Layout = FetchComponent(
-  (props: {id: string}) => ({ url: `${config.api.explorer}/blocks/${props.id}`}),
+  (props: {id: string}) => ({ url: `${Configuration.api.explorer}/blocks/${props.id}`}),
   (block =>
     <div className="container">
       <section className="blocks">

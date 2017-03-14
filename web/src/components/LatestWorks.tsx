@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { Link } from 'react-router';
-import * as moment from 'moment';
+
 import '../extensions/String';
-import './LatestWorks.scss';
-import Config from '../config';
+
+import { Configuration } from '../config';
 import { ClassNameProps } from '../common';
 import { ResourceProvider } from './ResourceProvider';
 import { Work } from '../atoms/Interfaces';
-import { WorkNameWithLink, WorkCreationDateFromNow, WorkStampedDate } from '../atoms/Work';
+import { WorkNameWithLink, WorkStampedDate } from '../atoms/Work';
+
+import './LatestWorks.scss';
 
 type LatestWorksResource = ReadonlyArray<Work>;
 
@@ -42,7 +44,7 @@ export default class LatestBlocks extends ResourceProvider<LatestWorksResource, 
   }
 
   resourceLocator() {
-    return { url: `${Config.api.explorer}/works?limit=${this.props.limit}` }
+    return { url: `${Configuration.api.explorer}/works?limit=${this.props.limit}` }
   }
 
   private renderWork(props: Work) {

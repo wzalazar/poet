@@ -1,15 +1,15 @@
 import * as React from 'react'
 
+import { Configuration } from '../../../config';
 import FetchComponent from '../../../hocs/FetchComponent'
-import config from '../../../config'
 
 const NumberOfPeers = FetchComponent(
-  () => ({ url: config.api.explorer + '/node '}),
+  () => ({ url: Configuration.api.explorer + '/node '}),
   (props => <span>{props.peers}</span>)
 );
 
 const Status = FetchComponent(
-  () => ({ url: config.api.explorer + '/node '}),
+  () => ({ url: Configuration.api.explorer + '/node '}),
   (props => <span>{props.status}</span>)
 );
 

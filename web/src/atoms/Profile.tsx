@@ -1,12 +1,11 @@
 import * as React from 'react';
-
 import { Link } from 'react-router';
+import * as moment from 'moment';
+
+import { Configuration } from '../config';
 import { Profile, License } from './Interfaces';
 import { PoetAPIResourceProvider } from './base/PoetApiResource';
 import { SelectProfileById } from './Arguments';
-import { timeFrom } from './Work';
-import { Config } from '../config';
-import moment = require('moment');
 
 export class ProfileNameWithLink extends PoetAPIResourceProvider<Profile, SelectProfileById, undefined> {
   poetURL(): string {
@@ -31,7 +30,7 @@ export function LicenseEmittedDate(props: { license: License }) {
     && props.license.claimInfo.timestamp
   return (<span>{
     publishDate
-      ? moment(publishDate * 1000).format(Config.dateTimeFormat)
+      ? moment(publishDate * 1000).format(Configuration.dateTimeFormat)
       : '(pending timestamp on the blockchain)'
   }</span>)
 }

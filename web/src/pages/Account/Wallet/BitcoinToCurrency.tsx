@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import config from '../../../config';
+import { Configuration } from '../../../config';
 import { ResourceProvider, ResourceLocator } from '../../../components/ResourceProvider';
 
 export interface BitcoinToCurrencyProps {
@@ -22,7 +22,7 @@ export class BitcoinToCurrency extends ResourceProvider<BlockchainTicker, Bitcoi
 
   resourceLocator(): ResourceLocator {
     return {
-      url: config.api.blockchain + '/ticker?cors=true'
+      url: Configuration.api.blockchain + '/ticker?cors=true'
     }
   }
 

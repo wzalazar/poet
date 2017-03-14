@@ -3,10 +3,10 @@ import * as bitcore from 'bitcore-lib';
 import { takeEvery } from 'redux-saga';
 import { call, put, select, take, race } from 'redux-saga/effects';
 
+import { Configuration } from '../config';
 import { Actions } from '../actions/index';
 import auth from '../auth';
 import { getMockPrivateKey } from '../mockKey';
-import config from '../config';
 import { getUtxos, submitTx } from '../bitcoin/insight';
 import { getSighash, applyHexSignaturesInOrder } from '../bitcoin/txHelpers';
 import { currentPublicKey } from '../selectors/session';
@@ -75,7 +75,7 @@ export function* signTxCancellable(action: { payload: SignTransactionParameters 
 }
 
 export function* mockLoginHit(action: any) {
-  yield call(fetch, config.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
+  yield call(fetch, Configuration.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
 }
 
 export function claimSubmitSaga() {

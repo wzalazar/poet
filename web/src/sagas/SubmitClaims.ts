@@ -1,14 +1,14 @@
 import { browserHistory } from 'react-router'
 import { takeEvery } from 'redux-saga'
-import { call, put, select, take } from 'redux-saga/effects'
+import { call, put, select } from 'redux-saga/effects'
 import * as protobuf from 'protobufjs'
 
 import { Actions } from '../actions/index'
 import auth from '../auth'
-import config from '../config'
 import { currentPublicKey } from '../selectors/session'
 import { getMockPrivateKey } from '../mockKey'
 import { Claim } from '../Claim';
+import { Configuration } from '../config';
 
 const jsonClaims = require('../claim.json');
 
@@ -57,7 +57,7 @@ class ClaimBuilder {
 }
 
 async function submitClaims(data: any) {
-  return await fetch(config.api.user + '/claims', {
+  return await fetch(Configuration.api.user + '/claims', {
     method: 'POST',
     body: JSON.stringify(data)
   }).then((res: any) => res.text())
@@ -89,7 +89,7 @@ function* signClaims(claimTemplates: any) {
 }
 
 function* mockLoginHit(action: any) {
-  yield call(fetch, config.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
+  yield call(fetch, Configuration.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
 }
 
 function claimSubmitSaga() {

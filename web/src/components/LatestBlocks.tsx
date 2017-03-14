@@ -3,12 +3,13 @@ import { Link } from 'react-router';
 import * as moment from 'moment';
 
 import '../extensions/String';
-import './LatestBlocks.scss';
 
-import Config from '../config';
+import { Configuration } from '../config';
 import { ClassNameProps } from '../common';
 
 import { ResourceProvider } from './ResourceProvider';
+
+import './LatestBlocks.scss';
 
 interface Block {
   readonly torrentHash: string;
@@ -46,7 +47,7 @@ export default class LatestBlocks extends ResourceProvider<LatestBlocksResource,
   }
 
   resourceLocator() {
-    return { url: `${Config.api.explorer}/blocks?limit=${this.props.limit}` }
+    return { url: `${Configuration.api.explorer}/blocks?limit=${this.props.limit}` }
   }
 
   private renderBlock(props: Block) {

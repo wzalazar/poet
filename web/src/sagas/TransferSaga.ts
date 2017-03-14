@@ -1,16 +1,14 @@
-import { takeEvery } from 'redux-saga'
-import { call, put, select, take } from 'redux-saga/effects'
 import { browserHistory } from 'react-router'
+import { takeEvery } from 'redux-saga'
+import { call, put, select, take, race } from 'redux-saga/effects'
 import * as protobuf from 'protobufjs'
 
+import { Configuration } from '../config';
 import { Actions } from '../actions/index'
 import auth from '../auth'
-import config from '../config'
 import { currentPublicKey } from '../selectors/session'
 import { getMockPrivateKey } from '../mockKey'
 import { Claim } from '../Claim';
-import { TransferRequestedAction } from '../actions/requests';
-import { race } from 'redux-saga/effects';
 
 const jsonClaims = require('../claim.json');
 
@@ -65,7 +63,7 @@ class ClaimBuilder {
 }
 
 async function submitClaims(data: any) {
-  return await fetch(config.api.user + '/claims', {
+  return await fetch(Configuration.api.user + '/claims', {
     method: 'POST',
     body: JSON.stringify(data)
   }).then((res: any) => res.text())
@@ -114,7 +112,7 @@ function* transferFlow(action: any) {
 }
 
 function* mockLoginHit(action: any) {
-  yield call(fetch, config.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
+  yield call(fetch, Configuration.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
 }
 
 function transferSaga() {

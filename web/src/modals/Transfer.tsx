@@ -1,18 +1,16 @@
 import * as React from "react";
 import {connect} from "react-redux";
+const Autocomplete = require('react-autocomplete');
+const QR = require('react-qr');
 
+import { Configuration } from '../config';
 import Modal, {ModalProps} from "./Modal";
 import { Actions } from "../actions/index";
 import Loading from "../components/Loading";
 import { PoetAppState } from '../store/PoetAppState';
 
-
 import "./Modal.scss";
 import "./Login.scss";
-import { Config } from '../config';
-
-const Autocomplete = require('react-autocomplete');
-const QR = require('react-qr');
 
 interface TransferProps {
   requestId: string;
@@ -63,7 +61,7 @@ class TransferModal extends Modal<TransferProps & TransferActions & ModalProps, 
 
   reactToUserInput(input: any) {
     this.setState({ loading: true, value: input });
-    return fetch(Config.api.explorer + '/profiles/autocomplete/' + input)
+    return fetch(Configuration.api.explorer + '/profiles/autocomplete/' + input)
       .then(result => result.json())
       .then((result: any) => {
         this.setState({ loading: false, suggestions: result })
