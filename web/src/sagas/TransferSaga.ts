@@ -107,8 +107,6 @@ function* transferFlow(action: any) {
   yield put({ type: Actions.Transfer.Success});
   yield take(Actions.Modals.Transfer.DismissRequested);
   yield put({ type: Actions.Modals.Transfer.Hide });
-
-  browserHistory.push(`/`);
 }
 
 function* mockLoginHit(action: any) {

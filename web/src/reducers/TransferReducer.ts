@@ -8,6 +8,9 @@ export function transferReducer(state: any, action: any) {
       return { ...state, id: action.payload };
     case Actions.Transfer.Success:
       return { ...state, success: true };
+    case Actions.Modals.Transfer.Dismissed:
+    case Actions.Modals.Transfer.Hide:
+      return { ...state, id: null, workId: null, targetPublicKey: null };
     case Actions.Transfer.SetTransferTarget:
       return { ...state, success: null, targetPublicKey: action.payload };
   }
