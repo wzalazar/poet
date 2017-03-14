@@ -57,10 +57,10 @@ export class WalletBalance extends ResourceProvider<UnspentTransactionOutputs, W
 
   private renderDual(btc: number) {
     return [
-      <div className="primary">
+      <div className="primary" key="primary">
         { this.state.btcFirst ? this.renderBtc(btc) : this.renderForeign(btc) }
       </div>,
-      <div className="secondary">
+      <div className="secondary" key="secondary">
         { !this.state.btcFirst ? this.renderBtc(btc) : this.renderForeign(btc) }
       </div>
     ];
