@@ -89,7 +89,7 @@ export function WorkType(props: WorkProps) {
   return <span> { props.work.attributes.type || '' } </span>
 }
 
-function normalizeToMillis(timestamp: number) {
+export function normalizeToMillis(timestamp: number) {
   return timestamp < 5000000000 ? timestamp * 1000 : timestamp
 }
 
