@@ -60,7 +60,7 @@ async function submitClaims(data: any) {
   return await fetch(Configuration.api.user + '/claims', {
     method: 'POST',
     body: JSON.stringify(data)
-  }).then((res: any) => res.text())
+  }).then((res: any) => res.json())
 }
 
 const builder = new ClaimBuilder();
@@ -85,7 +85,14 @@ function* signClaims(claimTemplates: any) {
 
   yield put({ type: Actions.Modals.SignClaims.Hide });
 
-  browserHistory.push(`/`);
+  const createdWorkClaim = result.createdClaims.find((claim: Claim) => claim.type === 'Work');
+
+  if (createdWorkClaim) {
+    browserHistory.push(`/works/` + createdWorkClaim.id);
+  } else {
+    browserHistory.push(`/portfolio`);
+  }
+
 }
 
 function* mockLoginHit(action: any) {
