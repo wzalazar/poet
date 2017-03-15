@@ -262,4 +262,14 @@ export default class DomainService extends ClaimService {
       console.log('Could not save event', error)
     }
   }
+
+  async getOrCreateProfile(id: string) {
+    const profile = await this.profileRepository.findOneById(id)
+    if (profile) {
+      return profile
+    }
+    return await this.profileRepository.persist(
+      this.profileRepository.create({ id })
+    )
+  }
 }

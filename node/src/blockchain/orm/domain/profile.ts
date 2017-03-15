@@ -8,7 +8,7 @@ export default class Profile {
   @PrimaryColumn()
   id: string
 
-  @Column()
+  @Column({ nullable: true })
   claim: string
 
   @Column({ nullable: true })

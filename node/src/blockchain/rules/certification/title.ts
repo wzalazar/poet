@@ -21,7 +21,7 @@ export default {
       return
     }
     const work = await service.workRepository.findOneById(referenceId)
-    const owner = await service.profileRepository.findOneById(ownerId)
+    const owner = await service.getOrCreateProfile(ownerId)
     const title = await service.titleRepository.persist(
       service.titleRepository.create({
         id: claim.id,

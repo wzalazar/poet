@@ -100,7 +100,7 @@ export default {
       console.log("Unknown proof type", proofType)
       return
     }
-    const owner = await service.profileRepository.findOneById(ownerOnRecord)
+    const owner = await service.getOrCreateProfile(ownerOnRecord)
     await service.saveEvent(claim.id, EventType.LICENSE_BOUGHT, work, holder, undefined, owner)
     await service.saveEvent(claim.id, EventType.LICENSE_SOLD, work, owner)
 
