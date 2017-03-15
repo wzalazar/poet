@@ -10,27 +10,33 @@ import { Images } from '../images/Images';
 import { currentPublicKey } from '../selectors/session';
 import { publicKeyToAddress } from '../bitcoin/addressHelpers';
 import { WalletBalance, UnspentTransactionOutput } from '../atoms/WalletBalance';
-import { WorkOffering } from '../atoms/Interfaces';
+import { WorkOffering, Work } from '../atoms/Interfaces';
 
-import './Modal.scss'
 import './PurchaseLicense.scss'
 
 interface PurchaseLicenseProps extends ModalProps {
+  readonly success: boolean;
   readonly acceptAction?: () => Action;
   readonly address: string;
   readonly offering: WorkOffering;
+  readonly work: Work;
   readonly utxos: ReadonlyArray<UnspentTransactionOutput>;
 }
 
 class PurchaseLicenseComponent extends Modal<PurchaseLicenseProps, undefined> {
+  private textarea: HTMLTextAreaElement;
 
   draw() {
+    return !this.props.success ? this.renderBla() : this.renderSuccess();
+  }
+
+  private renderBla() {
     const satoshis = this.props.utxos && this.props.utxos.map(a => a.satoshis).reduce((a, b) => a + b, 0);
     const btc = satoshis / 100000000;
     const enoughBalance = btc >= parseFloat(this.props.offering.attributes.pricingPriceAmount);
 
     return (
-      <section className="modal modal-purchase-license">
+      <section className="modal-purchase-license">
         <h1>Please Pay</h1>
         <div className="wrapper">
           <section className="balance">
@@ -56,10 +62,58 @@ class PurchaseLicenseComponent extends Modal<PurchaseLicenseProps, undefined> {
     )
   }
 
+  private renderSuccess() {
+
+    const mockIframe = '<iframe src=“http://po.et/00fj74hbvv0hdvll0471bn”><div class=“poet-badge” style=“script/poetbadge.css”><img src=“embed”></div></iframe>';
+
+    return (
+      <section className="modal-purchase-license-success">
+        <header>
+          <h1>{ this.props.work && this.props.work.attributes.name }</h1>
+          <h2>Original Author: { this.props.work && this.props.work.attributes.author }</h2>
+        </header>
+        <main>
+          <div className="row">
+            <div className="col-sm-3"><label>Message</label></div>
+            <div className="col-sm-9">
+              <div className="iframe">
+                <textarea value={mockIframe} ref={textarea => this.textarea = textarea} />
+                <button onClick={this.onCopy}>Copy</button>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-3"><label>Preview</label></div>
+            <div className="col-sm-9">
+              <div className="badge">
+                <div className="image-wrapper">
+                  <img src={Images.Badge} />
+                </div>
+                <div className="data">
+                  <h3>Published via po.et</h3>
+                  <time>4.15.16  9:30 AM</time>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+        <nav>
+          <small>This will always be availible from your profile > license</small>
+          <button className="button-primary" onClick={this.props.cancelAction}>Done</button>
+        </nav>
+      </section>
+    )
+  }
+
   private onFundWallet = () => {
     this.props.cancelAction();
     browserHistory.push('/account/wallet');
-  }
+  };
+
+  private onCopy = () => {
+    this.textarea.select();
+    document.execCommand('copy');
+  };
 
 }
 
@@ -69,9 +123,11 @@ function mapStateToProps(state: any): PurchaseLicenseProps {
   const fetchUtxo = state.fetch[`${Configuration.api.insight}/addr/${address}/utxo`];
 
   return {
-    visible: !!state.modals.purchaseLicense,
+    visible: state.modals.purchaseLicense && state.modals.purchaseLicense.visible,
+    success: state.modals.purchaseLicense && state.modals.purchaseLicense.success,
     address,
-    offering: state.modals.purchaseLicense,
+    offering: state.modals.purchaseLicense && state.modals.purchaseLicense.offering,
+    work: state.modals.purchaseLicense && state.modals.purchaseLicense.work,
     utxos: fetchUtxo && fetchUtxo.body
   }
 }

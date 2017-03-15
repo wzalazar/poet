@@ -13,4 +13,5 @@ export class Images {
   static readonly SuccessMark = require('./success.svg');
   static readonly SuccessMarkGreen = require('./success-green.svg');
   static readonly FailureMark = require('./failure.svg');
+  static readonly Badge = require('./badge.svg');
 }

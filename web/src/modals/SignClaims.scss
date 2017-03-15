@@ -1,18 +1,14 @@
 @import "../templates/Animations";
+@import "./Modal";;
 
 .modal-sign-work {
+  @include modal;
   width: 340px;
-  margin: auto;
-  padding: 0;
-  background-color: #FFFFFF;
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.2);
   border-radius: 4px;
   font-family: "Source Sans Pro";
   text-align: center;
-  border: 1px solid #e5e5e5;
 
   &.loading {
-    display: flex;
     justify-content: center;
     align-items: center;
     height: 470px; // TODO: magic number! 470px is the calculated height of the modal when showing only one claim. How can we get this value dynamically?

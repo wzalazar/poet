@@ -1,13 +1,10 @@
+@import "./Modal";
+
 .modal-create-work-result {
+  @include modal;
   width: 340px;
-  margin: auto;
-  padding: 0;
-  background-color: #FFFFFF;
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.2);
-  border-radius: 4px;
   font-family: "Source Sans Pro";
   text-align: center;
-  border: 1px solid #e5e5e5;
 
   main {
     box-sizing: border-box;

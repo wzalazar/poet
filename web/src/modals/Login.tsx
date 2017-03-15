@@ -9,7 +9,6 @@ import Modal, { ModalVisible, ModalProps } from './Modal'
 import Loading from '../components/Loading'
 import { Actions } from '../actions/index'
 
-import './Modal.scss'
 import './Login.scss'
 
 interface LoginActions extends ModalProps {
@@ -25,7 +24,7 @@ class LoginModal extends Modal<LoginActions & LoginProps, undefined> {
 
   draw() {
     return (
-      <div className="modal modal-login">
+      <div className="modal-login">
         <header>
           <h1>You must login to register</h1>
         </header>

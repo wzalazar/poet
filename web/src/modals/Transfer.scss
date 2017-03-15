@@ -1,0 +1,8 @@
+@import "./Modal";
+
+.modal-transfer {
+  @include modal;
+  width: 400px;
+  height: 500px;
+  text-align: center;
+}

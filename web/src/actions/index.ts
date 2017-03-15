@@ -73,6 +73,8 @@ export namespace Actions {
     }
     export namespace PurchaseLicense {
       export const Show = 'purchase license modal show';
+      export const Hide = 'purchase license modal hide';
+      export const ShowSuccess = 'purchase license modal show success';
       export const Accept = 'purchase license modal accept';
       export const Cancel = 'purchase license modal cancel';
     }

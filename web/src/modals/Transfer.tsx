@@ -9,8 +9,7 @@ import { Actions } from "../actions/index";
 import Loading from "../components/Loading";
 import { PoetAppState } from '../store/PoetAppState';
 
-import "./Modal.scss";
-import "./Login.scss";
+import "./Transfer.scss";
 
 interface TransferProps {
   requestId: string;
@@ -86,7 +85,7 @@ class TransferModal extends Modal<TransferProps & TransferActions & ModalProps, 
         style: { "border": "1px solid black" }
       };
       return (
-        <div className="modal">
+        <div className="modal-transfer">
           <h1>Who should the transference be made to?</h1>
           <form onSubmit={this.formSubmit.bind(this)}>
           <div>
@@ -116,7 +115,7 @@ class TransferModal extends Modal<TransferProps & TransferActions & ModalProps, 
       )
     } else if (!this.props.success) {
       return (
-        <div className="modal">
+        <div className="modal-transfer">
           <h1>Signing requested</h1>
           <div>
             { this.props.requestId
@@ -138,7 +137,7 @@ class TransferModal extends Modal<TransferProps & TransferActions & ModalProps, 
         </div>
       )
     }
-    return (<div className="modal">
+    return (<div className="modal-transfer">
       <h1>Transference executed</h1>
     </div>
     )

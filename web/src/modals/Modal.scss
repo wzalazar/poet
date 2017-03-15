@@ -13,24 +13,20 @@
   opacity: 0.75;
 }
 
-.modal {
-  @include full-screen();
+@mixin modal {
   z-index: 1040;
-  text-align: center;
-  position: fixed;
-  display: block;
-  width: 400px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   border: 1px solid #e5e5e5;
+  border-radius: 2px;
   background-color: white;
   box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .modals-container {
   @include full-screen();
   z-index: 1000;
   display: flex;
+  justify-content: center;
+  align-items: center;
 }

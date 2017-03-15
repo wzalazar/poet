@@ -7,7 +7,7 @@ import './WorkOfferings.scss';
 
 interface WorkOfferingsProps {
   readonly workId: string;
-  readonly onPurchaseRequest: (workOffering: WorkOffering) => void;
+  readonly onPurchaseRequest: (work: Work, workOffering: WorkOffering) => void;
 }
 
 export class WorkOfferings extends PoetAPIResourceProvider<Work, WorkOfferingsProps, undefined> {
@@ -22,12 +22,12 @@ export class WorkOfferings extends PoetAPIResourceProvider<Work, WorkOfferingsPr
 
     return (
       <section className="offerings">
-        { work.offerings.map(this.renderOffering.bind(this)) }
+        { work.offerings.map(this.renderOffering.bind(this, work)) }
       </section>
     )
   }
 
-  private renderOffering(workOffering: WorkOffering): JSX.Element {
+  private renderOffering(work: Work, workOffering: WorkOffering): JSX.Element {
     return (
       <section className="offering" key={workOffering.id} >
         <h3>License</h3>
@@ -46,7 +46,7 @@ export class WorkOfferings extends PoetAPIResourceProvider<Work, WorkOfferingsPr
               </div>
             </div>
           </div>
-          <button className="button-primary" onClick={() => this.props.onPurchaseRequest(workOffering)}>Purchase License</button>
+          <button className="button-primary" onClick={() => this.props.onPurchaseRequest(work, workOffering)}>Purchase License</button>
         </main>
         { workOffering.licenses && this.renderLicenses(workOffering.licenses) }
       </section>

@@ -35,9 +35,10 @@ export class Work extends PageLoader<WorkState, Object> {
 
   mapDispatchToProps() {
     return {
-      purchase: (offering: WorkOffering) => ({
+      purchase: (work: Work, offering: WorkOffering) => ({
         type: Actions.Licenses.PurchaseRequested,
-        offering
+        offering,
+        work
       })
     }
   }

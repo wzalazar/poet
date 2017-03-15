@@ -37,7 +37,7 @@ class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefine
   }
 
   private renderNoBalance() {
-    return <div className="modal modal-sign-transaction">
+    return <div className="modal-sign-transaction">
       <h1>Signing requested</h1>
       <div>
         <h2>
@@ -52,7 +52,7 @@ class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefine
 
   private renderScanRequest() {
     return (
-      <div className="modal modal-sign-transaction">
+      <div className="modal-sign-transaction">
         <h1>Authorize transaction</h1>
         <div>
           { this.props.requestId
@@ -78,7 +78,7 @@ class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefine
 
   private renderLoading() {
     return (
-      <div className="modal modal-sign-transaction loading">
+      <div className="modal-sign-transaction loading">
         <img src={Images.Quill} />
       </div>
     )

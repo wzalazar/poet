@@ -6,7 +6,7 @@ import { browserHistory } from 'react-router';
 import { Configuration } from '../configuration';
 import { Actions } from '../actions'
 import { currentPublicKey } from '../selectors/session'
-import { WorkOffering } from '../atoms/Interfaces';
+import { WorkOffering, Work } from '../atoms/Interfaces';
 
 async function submitLicense(reference: string, txId: string, outputIndex: number, publicKey: string, referenceOffering: string) {
   return await fetch(Configuration.api.user + '/licenses', {
@@ -21,11 +21,11 @@ async function submitLicense(reference: string, txId: string, outputIndex: numbe
   }).then((res: any) => res.text())
 }
 
-function* purchaseLicense(action: Action & { offering: WorkOffering }) {
+function* purchaseLicense(action: Action & { work: Work, offering: WorkOffering }) {
   const offeringAttributes = action.offering.attributes;
   const reference = offeringAttributes.reference;
 
-  yield put({ type: Actions.Modals.PurchaseLicense.Show, offering: action.offering });
+  yield put({ type: Actions.Modals.PurchaseLicense.Show, work: action.work, offering: action.offering });
 
   const { purchaseLicenseModalAccept, purchaseLicenseModalCancel } = yield race({
     purchaseLicenseModalAccept: take(Actions.Modals.PurchaseLicense.Accept),
@@ -34,6 +34,8 @@ function* purchaseLicense(action: Action & { offering: WorkOffering }) {
 
   if (!purchaseLicenseModalAccept)
     return;
+
+  yield put({ type: Actions.Modals.PurchaseLicense.Hide});
 
   yield put({
     type: Actions.Transactions.SignSubmitRequested,
@@ -63,10 +65,10 @@ function* purchaseLicense(action: Action & { offering: WorkOffering }) {
     const transaction = result.paidLicense.transaction;
     const outputIndex = result.paidLicense.outputIndex;
     const publicKey = yield select(currentPublicKey);
-
     const licenseTx = yield call(submitLicense, reference, transaction, outputIndex, publicKey, offeringAttributes.id);
 
     yield put({ type: Actions.Modals.SignTransaction.Hide });
+    yield put({ type: Actions.Modals.PurchaseLicense.ShowSuccess });
 
     browserHistory.push('/licenses/');
 

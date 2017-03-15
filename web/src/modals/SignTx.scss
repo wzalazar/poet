@@ -1,6 +1,12 @@
 @import "../templates/Animations";
+@import "./Modal";
 
 .modal-sign-transaction {
+  @include modal;
+  text-align: center;
+  padding: 20px;
+  width: 400px;
+
   &.loading {
     display: flex;
     justify-content: center;

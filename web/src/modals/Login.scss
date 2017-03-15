@@ -1,9 +1,9 @@
+@import "./Modal";;
+
 .modal-login {
+  @include modal;
   width: 281px;
   height: calc(404px + 71px);
-  display: flex;
-  flex-direction: column;
-  padding: 0;
 
   background-color: transparent;
   border: none;
@@ -25,6 +25,7 @@
     background-color: white;
     box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
     padding: 30px 18px 18px 18px;
+    text-align: center;
 
     .qr {
       margin-bottom: 20px;

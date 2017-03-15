@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 import { HexString } from '../../common';
+import { WorkOffering, Work } from '../../atoms/Interfaces';
 
-import { WorkOffering } from '../../atoms/Interfaces';
 import Overview from './Overview';
 import { WorkOfferings } from './WorkOfferings';
 import Title from './Title';
@@ -12,7 +12,7 @@ import './Layout.scss';
 
 export interface WorkProps {
   id: HexString,
-  purchase: (offering: WorkOffering) => void;
+  purchase: (work: Work, offering: WorkOffering) => void;
 }
 
 export class WorkLayout extends React.Component<WorkProps, undefined> {

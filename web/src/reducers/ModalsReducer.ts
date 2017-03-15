@@ -2,7 +2,7 @@ import { Action } from 'redux';
 
 import { Actions } from '../actions/index';
 import { ModalStore } from '../store/PoetAppState';
-import { WorkOffering } from '../atoms/Interfaces';
+import { WorkOffering, Work } from '../atoms/Interfaces';
 
 export function modalsReducer(state: ModalStore, action: Action): ModalStore {
   switch (action.type) {
@@ -27,9 +27,14 @@ export function modalsReducer(state: ModalStore, action: Action): ModalStore {
       return { ...state, transfer: false };
 
     case Actions.Modals.PurchaseLicense.Show:
-      const purchaseLicenseAction = action as { offering: WorkOffering } & Action;
-      return { ...state, purchaseLicense: purchaseLicenseAction.offering };
-    case Actions.Modals.PurchaseLicense.Accept:
+      const purchaseLicenseAction = action as { work: Work, offering: WorkOffering } & Action;
+      return { ...state, purchaseLicense: {
+        visible: true, offering: purchaseLicenseAction.offering, work: purchaseLicenseAction.work
+      } };
+    case Actions.Modals.PurchaseLicense.ShowSuccess:
+      return { ...state, purchaseLicense: { ...state.purchaseLicense, visible: true, success: true } };
+    case Actions.Modals.PurchaseLicense.Hide:
+      return { ...state, purchaseLicense: { ...state.purchaseLicense, visible: false } };
     case Actions.Modals.PurchaseLicense.Cancel:
       return { ...state, purchaseLicense: null };
 
