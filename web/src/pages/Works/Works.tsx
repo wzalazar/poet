@@ -79,13 +79,17 @@ export class WorksComponent extends PoetAPIResourceProvider<WorksResource, Works
 
   renderWork(props: Work) {
     return (
-      <li key={props.id} className="mb-3">
+      <li key={props.id} className="work-item">
         <div className="name"><WorkNameWithLink work={props} /></div>
         <div className="info">
           <span className="timestamp">Timestamped <TimeElapsedSinceTimestamp claimInfo={props.claimInfo} />&nbsp;</span>
           <span className="author">by <AuthorWithLink work={props}/> </span>
         </div>
-        <div className="content">{props.attributes.content}</div>
+        <div className="content">
+          <pre>
+            {props.attributes.content.substr(0, 500)}...
+          </pre>
+        </div>
       </li>
     )
   }

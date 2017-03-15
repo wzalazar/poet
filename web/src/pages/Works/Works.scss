@@ -11,7 +11,7 @@
   ul.works {
     list-style: none;
 
-    li {
+    li.work-item {
       font-size: 10px;
 
       a {
@@ -32,6 +32,17 @@
           margin-bottom: 19px;
         }
 
+      }
+
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #E3E1DF;
+
+      .content {
+        pre {
+          white-space: pre-wrap;
+          word-wrap: break-word;
+        }
       }
     }
   }
