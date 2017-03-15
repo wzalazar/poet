@@ -51,6 +51,14 @@ export class WalletBalance extends ResourceProvider<UnspentTransactionOutputs, W
     )
   }
 
+  renderLoading() {
+    return (
+      <section className={this.props.className}>
+        Loading...
+      </section>
+    )
+  }
+
   private renderSimple(btc: number) {
     return this.renderBtc(btc)
   }

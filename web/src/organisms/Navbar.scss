@@ -61,18 +61,18 @@ nav.navbar {
 
   }
 
-  ul {
+  ul.navbar-nav {
     display: flex;
     margin: 0 0 0 auto;
     align-items: center;
     list-style: none;
 
-    li {
+    >li {
       margin-left: 5px;
       margin-right: 15px;
     }
 
-    li.notifications {
+    >li.notifications {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -88,14 +88,6 @@ nav.navbar {
       a {
         color: white;
         text-decoration: none;
-      }
-    }
-
-    li.avatar {
-      img {
-        $avatar-size: 30px;
-        width: $avatar-size;
-        height: $avatar-size;
       }
     }
 

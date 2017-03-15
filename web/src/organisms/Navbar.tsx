@@ -9,6 +9,7 @@ import Constants from '../constants';
 import { LoginButton } from "../components/LoginButton";
 import { Images } from '../images/Images';
 import { countUnreadNotifications } from '../selectors/session';
+import { AccountDropdown } from './AccountDropdown';
 
 import './Navbar.scss';
 
@@ -19,7 +20,6 @@ interface NavbarActions {
 
 export interface NavbarProps {
   readonly loggedIn?: boolean;
-  readonly avatar?: string;
   readonly notifications?: number;
   readonly shadow?: boolean;
   readonly transparent?: boolean;
@@ -76,18 +76,10 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
     return <li key={key} className="nav-item"><Link to={'/' + key} className="nav-link">{text}</Link></li>
   }
 
-  private renderAvatar() {
-    return (
-      <Link to={'/account/notifications'} className="nav-link">
-        <img key="avatar" src={this.props.avatar || Images.Anon } className="rounded-circle" />
-      </Link>
-   );
-  }
-
   private notLoggedActions(): JSX.Element[] {
     return [
       this.renderNavLink('network/about', 'About'),
-      this.renderNavLink('documentation/overview', 'Documetation'),
+      this.renderNavLink('documentation/overview', 'Documentation'),
       <li key="login"><LoginButton>Login</LoginButton></li>,
       <li key='try-it-out'>
         <Link to={'/try-it-out'} className="try-it-out">
@@ -101,7 +93,7 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
     return [
       this.renderNavLink('portfolio', 'Portfolio'),
       this.renderNavLink('licenses', 'Licenses'),
-      <li key="avatar" className="nav-item avatar">{ this.renderAvatar() }</li>,
+      <li key="avatar" className="nav-item avatar"><AccountDropdown /></li>,
       this.countNotifications() > 0 ? <li key="notifications" className="nav-item notifications">{ this.notifications() }</li> : <span key="nonotif"/>,
       <li key="create-work" className="nav-item"><Link to={'/create-work'} className="button-primary">New Work</Link></li>
     ];
@@ -120,7 +112,6 @@ function mapStateToProps(state: any, ownProps: NavbarProps): NavbarProps {
   return {
     ...ownProps,
     loggedIn: state.session && (state.session.state === Constants.LOGGED_IN),
-    avatar: state.profile && state.profile.attributes && state.profile.attributes.imageData,
     notifications: countUnreadNotifications(state)
   }
 }

@@ -1,3 +1,8 @@
+/**
+ * DEPRECATED
+ * Use molecules/DropdownMenu instead.
+ */
+
 import * as React from 'react';
 const classNames = require('classnames');
 
