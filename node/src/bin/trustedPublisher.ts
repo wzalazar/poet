@@ -50,7 +50,10 @@ export default async function createServer(options?: TrustedPublisherOptions) {
         return
       }
 
-      ctx.body = await ClaimBuilder.broadcastTx(tx)
+      const txid = await ClaimBuilder.broadcastTx(tx)
+      ctx.body = JSON.stringify({
+        createdClaims: block.claims
+      })
     } catch (error) {
       ctx.body = JSON.stringify({ error })
     }
