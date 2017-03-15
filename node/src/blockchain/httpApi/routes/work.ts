@@ -104,14 +104,14 @@ export default class WorkRoute extends Route<Work> {
     if (opts.startPublicationDate) {
       queryBuilder.andWhere(`(attr${iterAttrs}.key=:startDate AND attr${iterAttrs}.value >= :value3)`,
         {
-          startDate: 'publicationDate', value3: opts.startPublicationDate
+          startDate: 'datePublished', value3: opts.startPublicationDate
         })
       iterAttrs++
     }
     if (opts.endPublicationDate) {
       queryBuilder.andWhere(`(attr${iterAttrs}.key=:endDate AND attr${iterAttrs}.value <= :value4)`,
         {
-          endDate: 'publicationDate', value4: opts.endPublicationDate
+          endDate: 'datePublished', value4: opts.endPublicationDate
         })
       iterAttrs++
     }

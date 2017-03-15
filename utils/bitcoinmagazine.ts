@@ -29,7 +29,7 @@ interface Article {
   mediaType: string
   articleType: string
   name: string
-  publicationDate: string
+  datePublished: string
 }
 
 function getContent(article: any): string {
@@ -71,7 +71,7 @@ function processItem(article: any): Article {
     name: getTitle(article),
     mediaType: 'article',
     articleType: 'news-article',
-    publicationDate: getPublicationDate(article)
+    datePublished: getPublicationDate(article)
   }
 }
 
