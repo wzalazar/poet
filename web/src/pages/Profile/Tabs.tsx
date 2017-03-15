@@ -4,8 +4,8 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Configuration } from '../../configuration';
 import { HexString } from '../../common';
 
-import { LicensesByProfile } from '../../organisms/LicensesByProfile';
-import { WorksByProfile } from '../../organisms/WorksByProfile';
+import { LicensesByProfile } from '../../components/organisms/LicensesByProfile';
+import { WorksByProfile } from '../../components/organisms/WorksByProfile';
 
 import './Tabs.scss';
 

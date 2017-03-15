@@ -3,13 +3,13 @@ import { browserHistory } from 'react-router';
 import { Action } from 'redux';
 import { connect } from "react-redux";
 
-import { Images } from '../images/Images';
-import { Actions } from '../actions/index';
-import { DropdownMenu } from '../components/molecules/DropdownMenu';
+import { Images } from '../../images/Images';
+import { Actions } from '../../actions/index';
+import { DropdownMenu } from '../molecules/DropdownMenu';
 
-import { WalletBalance } from '../atoms/WalletBalance';
-import { currentPublicKey } from '../selectors/session';
-import { publicKeyToAddress } from '../bitcoin/addressHelpers';
+import { WalletBalance } from '../../atoms/WalletBalance';
+import { currentPublicKey } from '../../selectors/session';
+import { publicKeyToAddress } from '../../bitcoin/addressHelpers';
 
 import './AccountDropDown.scss';
 

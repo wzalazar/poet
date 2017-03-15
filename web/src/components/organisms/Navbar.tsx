@@ -4,11 +4,11 @@ import { Action } from 'redux';
 import { connect } from "react-redux";
 const classNames = require('classnames');
 
-import { Actions } from '../actions/index';
-import Constants from '../constants';
-import { LoginButton } from "../components/LoginButton";
-import { Images } from '../images/Images';
-import { countUnreadNotifications } from '../selectors/session';
+import { Actions } from '../../actions/index';
+import Constants from '../../constants';
+import { LoginButton } from "../LoginButton";
+import { Images } from '../../images/Images';
+import { countUnreadNotifications } from '../../selectors/session';
 import { AccountDropdown } from './AccountDropdown';
 
 import './Navbar.scss';
