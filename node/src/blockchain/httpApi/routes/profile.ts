@@ -26,6 +26,9 @@ export default class ProfileRoute extends Route<Profile> {
   }
 
   async prepareItem(profile: Profile) {
+    if (!profile) {
+      return null
+    }
     return await this.service.getProfileFull(profile.id)
   }
 
