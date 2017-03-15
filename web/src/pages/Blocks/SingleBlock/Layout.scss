@@ -3,9 +3,33 @@ section.blocks {
     margin-bottom: 20px;
   }
 
+  .item {
+    border: 1px solid #cacaca;
+    padding: 15px;
+    background: white;
+    margin-bottom: 20px;
+
+    .title {
+      font-weight: bold;
+      padding-bottom: 5px;
+    }
+  }
+
   .leftCol {
     border: 1px solid #cacaca;
-    padding: 0;
+    padding: 15px;
+    background: white;
+    padding-bottom: 0px;
+
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .title {
+      font-weight: bold;
+      padding-bottom: 5px;
+    }
 
     .headHeight {
       height: 100px;

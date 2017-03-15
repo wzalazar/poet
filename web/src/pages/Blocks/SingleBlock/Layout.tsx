@@ -6,11 +6,19 @@ import FetchComponent from '../../../hocs/FetchComponent'
 import BlockHeader from '../components/Header'
 
 import './Layout.scss'
+import { normalizeToMillis } from '../../../atoms/Work';
+import moment = require('moment');
 
-const Item = (props: { name: string, value: string }) => <div> <span>{props.name}</span> <span>{props.value}</span></div>
+const Item = (props: { name: string, value: string }) => {
+  return <div>
+    <div className="title">{props.name}</div>
+    <pre>{props.value}</pre>
+  </div>
+}
 
 const BlockInfo = (block: any) => (
   <div>
+    <Item name="Timestamp date" value={moment(normalizeToMillis(block.timestamp)).format(Configuration.dateTimeFormat)} />
     <Item name="Torrent Hash" value={block.torrentHash} />
     <Item name="Height" value={block.height} />
     <Item name="Bitcoin Hash" value={block.bitcoinHash} />
@@ -34,22 +42,25 @@ const displayType = (type: string) => {
 
 const displayDescription = (claim: any) => {
   switch (claim.type) {
-    case 'Work': return claim.attributes.name || 'Untitled ' + claim.id;
+    case 'Work': return 'Title: ' + claim.attributes.name || 'Untitled ' + claim.id;
     case 'Profile': return claim.attributes.displayName || 'Unnamed ' + claim.publicKey;
+    case 'Title': return 'For ' + claim.attributes.reference || 'Unreferenced';
+    case 'Offering': return 'Reference to ' + claim.attributes.reference || 'Unreferenced';
+    case 'Certificate': return claim.attributes.reference || 'Unknown reference';
     default: return claim.attributes.for ? 'for ' + claim.attributes.for : claim.id;
   }
 }
 
 const makeLink = (claim: any) => {
   switch (claim.type) {
-    case 'Work': return `/works/${claim.id}`;
-    case 'Profile': return `/profiles/${claim.publicKey}`;
     default: return `/claims/${claim.id}`
   }
 }
 
-const DisplayClaim = (claim: any) => (<div key={claim.id}>
-  <Link to={makeLink(claim)}>{displayType(claim.type)}: {displayDescription(claim)}</Link>
+const DisplayClaim = (claim: any) => (<div key={claim.id} className="item">
+  <div className="title">{displayType(claim.type)}</div>
+  <div>Technical information: <Link to={makeLink(claim)}>{claim.id}</Link></div>
+  <div>{displayDescription(claim)}</div>
 </div>)
 
 const ClaimList = (block: any) => <div>{block.claims.map(DisplayClaim)}</div>
