@@ -7,17 +7,33 @@ import { AttributeName } from './AttributeName';
 
 import './Attribute.scss';
 
-export interface AttributeProps {
-  keyName: string;
+export interface AttributeData {
+  readonly keyName: string;
   value: string;
   readonly optional?: boolean;
+  readonly keyNameReadOnly?: boolean;
+}
+
+export interface AttributeProps {
   readonly onKeyChange: (key: string) => void;
   readonly onValueChange: (value: string) => void;
   readonly onRemove: () => void;
+  readonly displayErrors: boolean;
 }
 
-export class Attribute extends React.Component<AttributeProps, undefined> {
+interface AttributeState {
+  readonly valueInputHasBeenBlurred: boolean;
+}
+
+export class Attribute extends React.Component<AttributeProps & AttributeData, AttributeState> {
   private attributeName: AttributeName;
+
+  constructor() {
+    super(...arguments);
+    this.state = {
+      valueInputHasBeenBlurred: false
+    };
+  }
 
   render() {
     return (
@@ -27,6 +43,7 @@ export class Attribute extends React.Component<AttributeProps, undefined> {
             onChange={this.props.onKeyChange}
             attributeName={this.props.keyName}
             ref={attributeName => this.attributeName = attributeName}
+            readOnly={this.props.keyNameReadOnly}
           />
         </div>
         <div className="col-sm-7">
@@ -52,7 +69,9 @@ export class Attribute extends React.Component<AttributeProps, undefined> {
 
   private renderValueText() {
     return <input
+      className={this.isValueInvalid() && 'invalid'}
       onChange={(event: any) => this.props.onValueChange(event.target.value)}
+      onBlur={this.onBlur}
       type="text"
       placeholder="Attribute Value"
       value={this.props.value} />;
@@ -61,13 +80,23 @@ export class Attribute extends React.Component<AttributeProps, undefined> {
   private renderValueDate() {
     const value = moment(parseInt(this.props.value));
     return <ReactDatePicker
+      className={this.isValueInvalid() && 'invalid'}
       onChange={(moment: moment.Moment) => this.props.onValueChange(moment.toDate().getTime().toString())}
+      onBlur={this.onBlur}
       selected={value.isValid() ? value : null}
       dateFormat="dddd, MMMM Do YYYY"
-      customInput={<DatePickerInput/>} />;
+      customInput={<DatePickerInput />} />;
   }
 
   focus() {
     this.attributeName.focus();
+  }
+
+  private onBlur = () => {
+    this.setState({ valueInputHasBeenBlurred: true });
+  };
+
+  private isValueInvalid() {
+    return (this.state.valueInputHasBeenBlurred || this.props.displayErrors ) && !this.props.optional && !this.props.value;
   }
 }

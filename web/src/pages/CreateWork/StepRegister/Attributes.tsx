@@ -2,89 +2,76 @@ import * as React from 'react';
 import * as classNames from 'classnames';
 
 import { ClassNameProps } from '../../../common';
-import { Attribute, AttributeProps } from './Attribute';
+import { Attribute, AttributeData } from './Attribute';
 
 import './Attributes.scss';
 
-type PickedAttributeProps = Pick<AttributeProps, 'keyName' | 'value' | 'optional' >;
-
-interface AttributesState {
-  readonly attributes: ReadonlyArray<PickedAttributeProps>;
+interface AttributesProps extends ClassNameProps {
+  readonly attributes: ReadonlyArray<AttributeData>;
+  readonly onChange: (attributes: ReadonlyArray<AttributeData>) => void;
+  readonly displayErrors: boolean;
 }
 
-export class Attributes extends React.Component<ClassNameProps, AttributesState> {
+export class Attributes extends React.Component<AttributesProps, undefined> {
   private attributes?: Attribute[] = [];
-  private readonly defaultAttributes: ReadonlyArray<PickedAttributeProps> =
-    ['name', 'author', 'dateCreated', 'datePublished'].map(keyName => ({keyName, value: ''}));
-
-  constructor() {
-    super(...arguments);
-    this.state = {
-      attributes: [ ...this.defaultAttributes ]
-    }
-  }
 
   render() {
     return (
       <section className={classNames('attributes', this.props.className)}>
         <h2>Attributes</h2>
         <main>
-          { this.state.attributes.map(this.renderAttribute.bind(this)) }
+          { this.props.attributes.map(this.renderAttribute) }
         </main>
         <button
-          onClick={this.onAddAttribute.bind(this)}
+          onClick={this.onAddAttribute}
           className="button-secondary">Add Field</button>
       </section>
     )
   }
 
-  private renderAttribute(attribute: PickedAttributeProps, index: number): JSX.Element {
+  private renderAttribute = (attribute: AttributeData, index: number) => {
     return <Attribute
       key={index}
       keyName={attribute.keyName}
       value={attribute.value}
       optional={attribute.optional}
+      keyNameReadOnly={attribute.keyNameReadOnly}
       onKeyChange={this.onKeyChange.bind(this, index)}
       onValueChange={this.onValueChange.bind(this, index)}
       onRemove={this.onRemoveAttribute.bind(this, index)}
       ref={attribute => this.attributes[index] = attribute}
+      displayErrors={this.props.displayErrors}
     />
-  }
+  };
 
   private onValueChange(index: number, value: string) {
-    const attributes = [ ...this.state.attributes ];
-    attributes[index].value = value;
-    this.setState({
-      attributes
-    });
+    const attributes = [ ...this.props.attributes ];
+    attributes[index] = { ...attributes[index], value };
+    this.props.onChange(attributes);
   }
 
   private onKeyChange(index: number, keyName: string) {
-    const attributes = [ ...this.state.attributes ];
-    attributes[index].keyName = keyName;
-    this.setState({
-      attributes
-    });
+    const attributes = [ ...this.props.attributes ];
+    attributes[index] = { ...attributes[index], keyName };
+    this.props.onChange(attributes);
   }
 
-  private onAddAttribute() {
-    if (!this.state.attributes[this.state.attributes.length - 1].keyName) {
+  private onAddAttribute = () => {
+    if (!this.props.attributes[this.props.attributes.length - 1].keyName) {
       this.attributes[this.attributes.length - 1].focus();
       return;
     }
 
-    this.setState({
-      attributes: [ ...this.state.attributes, {
-        keyName: '',
-        value: '',
-        optional: true
-      } ]
-    })
-  }
+    this.props.onChange([...this.props.attributes, {
+      keyName: '',
+      value: '',
+      optional: true,
+      keyNameReadOnly: false
+    }]);
+
+  };
 
   private onRemoveAttribute(index: number) {
-    this.setState({
-      attributes: this.state.attributes.filter((el, idx) => idx !== index)
-    });
+    this.props.onChange(this.props.attributes.filter((el, idx) => idx !== index))
   }
 }

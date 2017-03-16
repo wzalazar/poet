@@ -14,7 +14,7 @@
   "dependencies": {
     "@types/classnames": "0.0.32",
     "@types/react": "^0.14.55",
-    "@types/react-datepicker": "^0.28.10",
+    "@types/react-datepicker": "^0.40.1",
     "@types/react-dom": "^0.14.20",
     "@types/react-redux": "^4.4.35",
     "@types/react-router": "^2.0.41",
@@ -29,7 +29,7 @@
     "protobufjs": "^6.5.3",
     "react": "^15.4.1",
     "react-autocomplete": "^1.4.0",
-    "react-datepicker": "^0.40.0",
+    "react-datepicker": "^0.41.1",
     "react-dom": "^15.4.1",
     "react-overlays": "^0.6.10",
     "react-qr": "0.0.2",

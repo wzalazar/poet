@@ -7,6 +7,7 @@ import { Attributes } from './Attributes';
 import { Content } from './Content';
 
 import './StepRegister.scss';
+import { AttributeData } from './Attribute';
 
 
 export interface StepRegisterData {
@@ -24,6 +25,8 @@ interface StepRegisterState {
   readonly mediaType?: string;
   readonly articleType?: string;
   readonly content?: string;
+  readonly attributes?: ReadonlyArray<AttributeData>;
+  readonly displayErrors?: boolean;
 }
 
 // http://stackoverflow.com/questions/18679576/counting-words-in-string
@@ -35,14 +38,14 @@ function countWords(s: string) {
 }
 
 export class StepRegister extends React.Component<StepRegisterProps, StepRegisterState> {
-  private attributes: Attributes;
-
   constructor() {
     super(...arguments);
     this.state = {
       mediaType: 'article',
       articleType: 'news-article',
-      content: ''
+      content: '',
+      attributes: ['name', 'author', 'dateCreated', 'datePublished'].map(keyName => ({keyName, value: '', keyNameReadOnly: true})),
+      displayErrors: false
     }
   }
 
@@ -55,12 +58,20 @@ export class StepRegister extends React.Component<StepRegisterProps, StepRegiste
           onMediaTypeSelected={mediaType => this.setState({ mediaType })}
           onArticleTypeSelected={articleType => this.setState({ articleType })}
         />
-        <Attributes ref={attributes => this.attributes = attributes} />
+        <Attributes
+          attributes={this.state.attributes}
+          onChange={attributes => this.setState({ attributes })}
+          displayErrors={this.state.displayErrors}/>
         <Content
           content={this.state.content}
           onChange={this.onContentChange.bind(this)}
           onFileNameChange={this.onContentFileNameChange.bind(this)} />
-        <button className="button-primary" onClick={this.submit.bind(this)}>Next</button>
+        <button
+          className="button-primary"
+          onClick={this.submit.bind(this)}
+          >
+          Next
+        </button>
       </section>
     );
   }
@@ -75,9 +86,9 @@ export class StepRegister extends React.Component<StepRegisterProps, StepRegiste
   }
 
   private contentToAttributes(content?: string, fileName?: string) {
-    const attributes = [...this.attributes.state.attributes];
+    const attributes = [...this.state.attributes];
 
-    const attributeByKey = (keyName: string) => this.attributes.state.attributes.find(attribute => attribute.keyName === keyName);
+    const attributeByKey = (keyName: string) => attributes.find(attribute => attribute.keyName === keyName);
     const updateAttribute = (keyName: string, value: string) => attributeByKey(keyName).value = value;
     const addAttribute = (keyName: string, value: string) => attributes.push({ keyName, value });
     const upsertAttribute = (keyName: string, value: string) => attributeByKey(keyName) ? updateAttribute(keyName, value) : addAttribute(keyName, value);
@@ -93,15 +104,24 @@ export class StepRegister extends React.Component<StepRegisterProps, StepRegiste
       upsertAttribute('dateCreated', '' + new Date().getTime());
     }
 
-    this.attributes.setState({ attributes })
+    this.setState({ attributes })
   }
 
   private submit(): void {
+    if (this.gotInvalidFields()) {
+      this.setState({ displayErrors: true });
+      return;
+    }
+
     this.props.onSubmit({
-      attributes: this.attributes.state.attributes.map(attribute => ({key: attribute.keyName, value: attribute.value})),
+      attributes: this.state.attributes.map(attribute => ({key: attribute.keyName, value: attribute.value})),
       mediaType: this.state.mediaType,
       articleType: this.state.articleType,
       content: this.state.content
     });
+  }
+
+  private gotInvalidFields() {
+    return this.state.attributes.some(attribute => !attribute.optional && !attribute.value);
   }
 }
