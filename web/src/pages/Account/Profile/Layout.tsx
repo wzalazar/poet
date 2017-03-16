@@ -19,7 +19,6 @@ export interface ProfileAttributes {
   readonly email?: string;
   readonly location?: string;
   readonly avatarImageData?: string;
-  readonly currency?: string;
 }
 
 export interface UserProfileProps extends ProfileAttributes {
@@ -38,9 +37,11 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
       return !(
         this.props.displayName === props.displayName &&
           this.props.name === props.name &&
+          this.props.bio === props.bio &&
+          this.props.url === props.url &&
           this.props.email === props.email &&
           this.props.avatarImageData === props.avatarImageData &&
-          this.props.currency === props.currency
+          this.props.location === props.location
       )
     };
     if (!propsChanged())
@@ -52,9 +53,11 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
     return {
       displayName: props.displayName,
       name: props.name,
+      bio: props.bio,
+      url: props.url,
       email: props.email,
-      currency: props.currency,
-      avatarImageData: props.avatarImageData
+      avatarImageData: props.avatarImageData,
+      location: props.location
     }
   }
 
@@ -142,8 +145,7 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
         url: this.state.url,
         email: this.state.email,
         location: this.state.location,
-        imageData: this.state.avatarImageData,
-        currency: this.state.currency
+        imageData: this.state.avatarImageData
       }
     });
   }
