@@ -3,10 +3,11 @@ import { Link } from 'react-router';
 
 import * as moment from 'moment';
 
-import { PoetAPIResourceProvider } from './base/PoetApiResource';
+import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from './base/PoetApiResource';
 import { Work, Profile } from './Interfaces';
 import { SelectWorkById } from './Arguments';
 import { ProfileLink } from '../components/ProfileLink';
+import { Configuration } from '../configuration';
 
 interface WorkProps {
   readonly work: Work;
@@ -36,6 +37,30 @@ export class WorkNameById extends WorkById<undefined> {
       && resource.attributes.name
       || '(untitled)';
     return <span>{ title }</span>;
+  }
+}
+
+export class WorksCounter extends PoetAPIResourceProvider<any, undefined, undefined> {
+  poetURL(): string {
+    return '/works'
+  }
+
+  renderElement(works: any, headers: Headers) {
+    return (<span>
+      {headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT))}
+    </span>)
+  }
+}
+
+export class BlocksCounter extends PoetAPIResourceProvider<any, undefined, undefined> {
+  poetURL(): string {
+    return '/blocks'
+  }
+
+  renderElement(blocks: any, headers: Headers) {
+    return (<span>
+      {headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT))}
+    </span>)
   }
 }
 

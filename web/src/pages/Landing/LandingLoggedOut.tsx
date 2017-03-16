@@ -6,6 +6,7 @@ import LatestBlocks from '../../components/LatestBlocks';
 import LatestWorks from '../../components/LatestWorks';
 import { Reviews } from './Reviews';
 import { Partners } from './Partners';
+import { WorksCounter, BlocksCounter } from '../../atoms/Work';
 
 export interface LandingProps {
 }
@@ -22,15 +23,20 @@ export class LandingLoggedOut extends React.Component<LandingProps, undefined> {
             <button className="button-secondary">Learn more</button>
           </div>
           <section className="row landing-boxes">
-            <section className="col-sm-4">
-              {/*<LatestBlocks />*/}
+            <section className="col-sm-4 boxed">
+              <div className="number">
+                <BlocksCounter />
+              </div>
+              <div className="explain">Poet Blocks</div>
             </section>
             <section className="col-sm-4 boxed">
               <div className="number">$1,000,000</div>
               <div className="explain">Amount Raised</div>
             </section>
             <section className="col-sm-4 registered boxed">
-              <div className="number">12,014</div>
+              <div className="number">
+                <WorksCounter />
+              </div>
               <div className="explain">Creative Works Registered</div>
             </section>
           </section>
