@@ -101,9 +101,23 @@ export function WorkNameWithLink(props: WorkProps) {
 }
 
 export class WorkNameWithLinkById extends WorkById<undefined> {
+
   renderElement(work: Work): JSX.Element {
     return <WorkNameWithLink work={work} />
   }
+
+  renderLoading() {
+    return this.renderChildren() || super.renderLoading();
+  }
+
+  renderError(error: any) {
+    return this.renderChildren() || super.renderError(error);
+  }
+
+  renderChildren() {
+    return this.props.children && <span>{this.props.children}</span>;
+  }
+
 }
 
 export function WorkName(props: WorkProps) {

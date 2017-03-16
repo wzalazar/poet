@@ -7,7 +7,7 @@ import { NotificationsStore, Notification } from '../../../store/PoetAppState';
 import { selectNotifications } from '../../../selectors/session';
 
 export interface NotificationsActions {
-  markRead: (id: number) => ({ type: null })
+  markRead: (notification: Notification) => void;
 }
 
 export class NotificationsPage extends PageLoader<NotificationsStore, Object> {
@@ -31,7 +31,7 @@ export class NotificationsPage extends PageLoader<NotificationsStore, Object> {
   }
 
   select(state: any, ownProps: any): Object {
-    return selectNotifications(state)
+    return selectNotifications(state)|| {}
   }
 
   mapDispatchToProps(): Object {

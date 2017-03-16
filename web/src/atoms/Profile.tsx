@@ -8,12 +8,27 @@ import { PoetAPIResourceProvider } from './base/PoetApiResource';
 import { SelectProfileById } from './Arguments';
 
 export class ProfileNameWithLink extends PoetAPIResourceProvider<Profile, SelectProfileById, undefined> {
+
   poetURL(): string {
     return '/profiles/' + this.props.profileId;
   }
+
   renderElement(resource: Profile): JSX.Element {
     return <Link to={"/profiles/" + resource.id}>{ resource.displayName || 'Anonymous' }</Link>
   }
+
+  renderLoading() {
+    return this.renderChildren() || super.renderLoading();
+  }
+
+  renderError(error: any) {
+    return this.renderChildren() || super.renderError(error);
+  }
+
+  renderChildren() {
+    return this.props.children && <span>{this.props.children}</span>;
+  }
+
 }
 
 export function LicenseOwnerNameWithLink(props: { license: License }) {

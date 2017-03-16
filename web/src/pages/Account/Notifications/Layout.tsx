@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { NotificationsStore, Notification } from '../../../store/PoetAppState';
-import { getEventMessage } from './Model';
 import moment = require('moment');
 
-import './Layout.scss'
+import { NotificationsStore, Notification } from '../../../store/PoetAppState';
+import { renderEventMessage } from './Model';
 import { NotificationsActions } from './Loader';
+
+import './Layout.scss'
 
 export class NotificationsLayout extends React.Component<NotificationsStore & NotificationsActions, undefined> {
 
@@ -13,35 +14,19 @@ export class NotificationsLayout extends React.Component<NotificationsStore & No
       <section className="container page-account-notifications">
         <h1>Notifications</h1>
         <table>
-          <thead>
-            <tr>
-              <td></td>
-              <td>Time</td>
-              <td>Description</td>
-            </tr>
-          </thead>
           <tbody>
-            { this.props.notifications && this.props.notifications.map(notification => this.renderNotification(notification)) }
+            { this.props.notifications && this.props.notifications.map(this.renderNotification) }
           </tbody>
         </table>
       </section>
     );
   }
 
-  markRead(id: number) {
-    return () => {
-      this.props.markRead(id)
-    }
-  }
-
-  renderNotification(notification: Notification) {
+  renderNotification = (notification: Notification) => {
     return (
-      <tr key={notification.id}>
-        <td><input type="checkbox"/></td>
-        <td>{ moment(notification.event.timestamp).fromNow() }</td>
-        <td className={ notification.read ? 'bold' : ''}>
-          { getEventMessage(notification.event) }
-        </td>
+      <tr key={notification.id} className={ notification.read ? 'read' : ''} >
+        <td className="message">{ renderEventMessage(notification.event) }</td>
+        <td className="datetime">{ moment(notification.event.timestamp).fromNow() }</td>
       </tr>
     )
   }

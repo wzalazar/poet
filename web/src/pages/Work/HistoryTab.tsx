@@ -6,7 +6,7 @@ import { PoetAPIResourceProvider } from '../../atoms/base/PoetApiResource';
 import { SelectWorkById } from '../../atoms/Arguments';
 import moment = require('moment');
 import { NotificationEvent } from '../../store/PoetAppState';
-import { getEventMessage } from '../Account/Notifications/Model';
+import { renderEventMessage } from '../Account/Notifications/Model';
 
 class HistoryList extends PoetAPIResourceProvider<Event[], SelectWorkById, undefined> {
   poetURL(): string {
@@ -14,7 +14,7 @@ class HistoryList extends PoetAPIResourceProvider<Event[], SelectWorkById, undef
   }
 
   renderItem(event: NotificationEvent) {
-    const text = getEventMessage(event)
+    const text = renderEventMessage(event)
     if (!text) return <span key={event.id}/>
     return <li key={event.id}> { moment(event.timestamp).fromNow() }: { text }</li>
   }
