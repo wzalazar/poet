@@ -3,11 +3,11 @@ import {connect} from "react-redux";
 const Autocomplete = require('react-autocomplete');
 const QR = require('react-qr');
 
-import { Configuration } from '../configuration';
+import { Configuration } from '../../configuration';
+import { Actions } from "../../actions/index";
+import { PoetAppState } from '../../store/PoetAppState';
+import Loading from "../Loading";
 import Modal, {ModalProps} from "./Modal";
-import { Actions } from "../actions/index";
-import Loading from "../components/Loading";
-import { PoetAppState } from '../store/PoetAppState';
 
 import "./Transfer.scss";
 

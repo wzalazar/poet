@@ -1,12 +1,12 @@
 import * as React from "react";
 import {connect} from "react-redux";
 
-import { Images } from '../images/Images';
-import { PoetAppState } from '../store/PoetAppState';
-import { Actions } from "../actions/index";
+import { Images } from '../../images/Images';
+import { PoetAppState } from '../../store/PoetAppState';
+import { Actions } from "../../actions/index";
+import { Claim } from '../../Claim';
+import { WorkDetails } from '../atoms/WorkDetails';
 import Modal, {ModalProps} from "./Modal";
-import { Claim } from '../Claim';
-import { WorkDetails } from '../components/atoms/WorkDetails';
 
 import "./Modal.scss";
 import "./CreateWorkResult.scss";

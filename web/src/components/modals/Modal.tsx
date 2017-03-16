@@ -1,5 +1,4 @@
 import * as React from 'react'
-
 const Overlays = require('react-overlays');
 
 export interface ModalVisible {

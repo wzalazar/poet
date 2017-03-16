@@ -1,14 +1,13 @@
 import * as React from "react";
 import {connect} from "react-redux";
-
-import { Images } from '../images/Images';
-import { Claim, WORK, PROFILE } from '../Claim';
-import Modal, {ModalProps} from "./Modal";
-import { Actions } from "../actions/index";
-import { WorkDetails } from '../components/atoms/WorkDetails';
-import Loading from "../components/Loading";
-
 const QR = require('react-qr');
+
+import { Images } from '../../images/Images';
+import { Actions } from "../../actions/index";
+import { Claim, WORK, PROFILE } from '../../Claim';
+import { WorkDetails } from '../atoms/WorkDetails';
+import Loading from "../Loading";
+import Modal, {ModalProps} from "./Modal";
 
 import "./Modal.scss";
 import "./SignClaims.scss";

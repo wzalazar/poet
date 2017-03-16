@@ -3,10 +3,10 @@ import { Link } from 'react-router'
 import { connect } from 'react-redux'
 const QR = require('react-qr');
 
-import { Images } from '../images/Images';
+import { Images } from '../../images/Images';
+import { Actions } from '../../actions/index'
+import Loading from '../Loading'
 import Modal, { ModalProps } from './Modal'
-import { Actions } from '../actions/index'
-import Loading from '../components/Loading'
 
 import './Modal.scss'
 import './SignTx.scss'

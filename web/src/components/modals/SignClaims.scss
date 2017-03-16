@@ -1,5 +1,5 @@
-@import "../components/styles/Animations";
-@import "./Modal";;
+@import "../styles/Animations";
+@import "Modal";;
 
 .modal-sign-work {
   @include modal;

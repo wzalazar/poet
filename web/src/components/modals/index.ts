@@ -5,4 +5,4 @@ import Transfer from './Transfer';
 import { PurchaseLicense } from './PurchaseLicense';
 import { CreateWorkResult } from './CreateWorkResult';
 
-export default [Login, SignWork, SignTx, Transfer, PurchaseLicense, CreateWorkResult];
+export const Modals = [Login, SignWork, SignTx, Transfer, PurchaseLicense, CreateWorkResult];

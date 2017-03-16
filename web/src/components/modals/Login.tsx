@@ -2,12 +2,11 @@ import * as React from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import { Action } from 'redux'
-
 const QR = require('react-qr');
 
+import { Actions } from '../../actions/index'
+import Loading from '../Loading'
 import Modal, { ModalVisible, ModalProps } from './Modal'
-import Loading from '../components/Loading'
-import { Actions } from '../actions/index'
 
 import './Login.scss'
 

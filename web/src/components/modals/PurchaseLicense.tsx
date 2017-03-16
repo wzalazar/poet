@@ -3,14 +3,14 @@ import { connect } from 'react-redux'
 import { Action } from 'redux'
 import { browserHistory } from 'react-router';
 
-import { Configuration } from '../configuration';
+import { Configuration } from '../../configuration';
+import { WorkOffering, Work } from '../../Interfaces';
+import { Actions } from '../../actions/index'
+import { Images } from '../../images/Images';
+import { currentPublicKey } from '../../selectors/session';
+import { publicKeyToAddress } from '../../bitcoin/addressHelpers';
+import { WalletBalance, UnspentTransactionOutput } from '../atoms/WalletBalance';
 import Modal, { ModalProps } from './Modal'
-import { Actions } from '../actions/index'
-import { Images } from '../images/Images';
-import { currentPublicKey } from '../selectors/session';
-import { publicKeyToAddress } from '../bitcoin/addressHelpers';
-import { WalletBalance, UnspentTransactionOutput } from '../components/atoms/WalletBalance';
-import { WorkOffering, Work } from '../Interfaces';
 
 import './PurchaseLicense.scss'
 
