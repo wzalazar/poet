@@ -3,11 +3,11 @@ import * as React from 'react';
 import '../../extensions/String';
 
 import { Configuration } from '../../configuration';
-import { OwnerName } from '../../atoms/Work';
-import { License } from '../../atoms/Interfaces';
-import { TimeSinceIssueDate, ReferencedWorkNameWithLink } from '../../atoms/License';
-import { OfferingType } from '../../atoms/Offering';
-import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../../atoms/base/PoetApiResource';
+import { OwnerName } from '../atoms/Work';
+import { License } from '../../Interfaces';
+import { TimeSinceIssueDate, ReferencedWorkNameWithLink } from '../atoms/License';
+import { OfferingType } from '../atoms/Offering';
+import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../atoms/base/PoetApiResource';
 import { DropdownMenu } from '../DropdownMenu';
 import { Pagination } from '../Pagination';
 

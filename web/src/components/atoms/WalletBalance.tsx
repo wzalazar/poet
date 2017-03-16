@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { Configuration } from '../configuration';
-import { ClassNameProps } from '../common';
-import { ResourceProvider, ResourceLocator } from '../components/ResourceProvider';
-import { BitcoinToCurrency } from '../pages/Account/Wallet/BitcoinToCurrency';
+import { Configuration } from '../../configuration';
+import { ClassNameProps } from '../../common';
+import { ResourceProvider, ResourceLocator } from '../ResourceProvider';
+import { BitcoinToCurrency } from '../../pages/Account/Wallet/BitcoinToCurrency';
 
 export interface WalletBalanceProps extends ClassNameProps {
   readonly address: string;

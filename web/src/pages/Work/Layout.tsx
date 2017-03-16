@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { HexString } from '../../common';
-import { WorkOffering, Work } from '../../atoms/Interfaces';
+import { WorkOffering, Work } from '../../Interfaces';
 
 import Overview from './Overview';
 import { WorkOfferings } from './WorkOfferings';

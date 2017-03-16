@@ -6,7 +6,7 @@ import FetchComponent from '../../../hocs/FetchComponent'
 import BlockHeader from '../components/Header'
 
 import './Layout.scss'
-import { normalizeToMillis } from '../../../atoms/Work';
+import { normalizeToMillis } from '../../../components/atoms/Work';
 import moment = require('moment');
 
 const Item = (props: { name: string, value: string }) => {

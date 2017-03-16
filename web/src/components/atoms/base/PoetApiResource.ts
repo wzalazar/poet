@@ -1,6 +1,6 @@
-import { Configuration } from '../../configuration';
-import { UrlObject, isUrlObject, urlObjectToUrl } from '../../common';
-import { ResourceProvider } from '../../components/ResourceProvider';
+import { Configuration } from '../../../configuration';
+import { UrlObject, isUrlObject, urlObjectToUrl } from '../../../common';
+import { ResourceProvider } from '../../ResourceProvider';
 
 export abstract class PoetAPIResourceProvider<Resource, PropTypes, State> extends ResourceProvider<Resource, PropTypes, State> {
   abstract poetURL(): string | UrlObject

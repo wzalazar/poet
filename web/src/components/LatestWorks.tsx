@@ -6,8 +6,8 @@ import '../extensions/String';
 import { Configuration } from '../configuration';
 import { ClassNameProps } from '../common';
 import { ResourceProvider } from './ResourceProvider';
-import { Work } from '../atoms/Interfaces';
-import { WorkNameWithLink, WorkStampedDate } from '../atoms/Work';
+import { Work } from '../Interfaces';
+import { WorkNameWithLink, WorkStampedDate } from './atoms/Work';
 
 import './LatestWorks.scss';
 

@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as moment from 'moment';
 
-import { ClassNameProps } from '../common';
-import { Claim } from '../Claim';
+import { ClassNameProps } from '../../common';
+import { Claim } from '../../Claim';
 
 interface WorkDetailsProps extends ClassNameProps {
   readonly work: Claim;

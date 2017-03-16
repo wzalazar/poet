@@ -2,7 +2,7 @@ import { Action } from 'redux';
 
 import { Actions } from '../actions/index';
 import { ModalStore } from '../store/PoetAppState';
-import { WorkOffering, Work } from '../atoms/Interfaces';
+import { WorkOffering, Work } from '../Interfaces';
 
 export function modalsReducer(state: ModalStore, action: Action): ModalStore {
   switch (action.type) {

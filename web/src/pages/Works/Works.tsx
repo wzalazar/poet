@@ -3,10 +3,10 @@ import { browserHistory } from 'react-router'
 import * as moment from 'moment';
 
 import { LicenseType } from '../../common';
-import { Work } from '../../atoms/Interfaces';
-import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../../atoms/base/PoetApiResource';
-import { WorkNameWithLink, AuthorWithLink } from '../../atoms/Work';
-import { TimeElapsedSinceTimestamp } from '../../atoms/Claim';
+import { Work } from '../../Interfaces';
+import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../../components/atoms/base/PoetApiResource';
+import { WorkNameWithLink, AuthorWithLink } from '../../components/atoms/Work';
+import { TimeElapsedSinceTimestamp } from '../../components/atoms/Claim';
 import { Pagination } from '../../components/Pagination';
 
 import './Works.scss';

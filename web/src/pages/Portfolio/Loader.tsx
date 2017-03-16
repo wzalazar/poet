@@ -4,7 +4,7 @@ import { Route } from 'react-router';
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
 import { PortfolioLayout } from './Layout';
 import { currentPublicKey } from '../../selectors/session';
-import { SelectProfileById } from '../../atoms/Arguments';
+import { SelectProfileById } from '../../components/atoms/Arguments';
 import { Actions } from '../../actions/index';
 
 export class Portfolio extends PageLoader<null, SelectProfileById> {

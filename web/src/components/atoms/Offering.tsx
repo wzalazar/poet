@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Offering } from './Interfaces';
+import { Offering } from '../../Interfaces';
 
 export function OfferingType(props: { offering: Offering }) {
   const type = props.offering

@@ -6,7 +6,7 @@ import { browserHistory } from 'react-router';
 import { Configuration } from '../configuration';
 import { Actions } from '../actions'
 import { currentPublicKey } from '../selectors/session'
-import { WorkOffering, Work } from '../atoms/Interfaces';
+import { WorkOffering, Work } from '../Interfaces';
 
 async function submitLicense(reference: string, txId: string, outputIndex: number, publicKey: string, referenceOffering: string) {
   return await fetch(Configuration.api.user + '/licenses', {

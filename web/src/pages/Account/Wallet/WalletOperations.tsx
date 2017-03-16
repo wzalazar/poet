@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 
-import { WalletBalance } from '../../../atoms/WalletBalance';
+import { WalletBalance } from '../../../components/atoms/WalletBalance';
 import { WalletOperationDeposit } from './WalletOperationDeposit';
 import { WalletOperationWithdraw } from './WalletOperationWithdraw';
 

@@ -4,10 +4,10 @@ import { browserHistory } from 'react-router';
 import { Configuration } from '../../configuration';
 import { UrlObject } from '../../common';
 import { DispatchesTransferRequested } from '../../actions/requests';
-import { WorkNameWithLink, WorkType, WorkPublishedDate } from '../../atoms/Work';
-import { Work } from '../../atoms/Interfaces';
-import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../../atoms/base/PoetApiResource';
-import { SelectWorksByOwner } from '../../atoms/Arguments';
+import { WorkNameWithLink, WorkType, WorkPublishedDate } from '../atoms/Work';
+import { Work } from '../../Interfaces';
+import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../atoms/base/PoetApiResource';
+import { SelectWorksByOwner } from '../atoms/Arguments';
 import { DropdownMenu } from '../DropdownMenu';
 import { Pagination } from '../Pagination';
 

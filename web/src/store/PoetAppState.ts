@@ -1,6 +1,6 @@
 import { FetchStatus } from '../enums/FetchStatus'
 import { Claim } from '../Claim';
-import { WorkOffering, Work } from '../atoms/Interfaces';
+import { WorkOffering, Work } from '../Interfaces';
 
 export interface PoetSessionToken {
   publicKey: string

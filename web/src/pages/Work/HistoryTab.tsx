@@ -1,9 +1,9 @@
 import * as React from 'react';
 
 import WorkComponent from '../../hocs/WorkComponent';
-import { Work } from '../../atoms/Interfaces';
-import { PoetAPIResourceProvider } from '../../atoms/base/PoetApiResource';
-import { SelectWorkById } from '../../atoms/Arguments';
+import { Work } from '../../Interfaces';
+import { PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
+import { SelectWorkById } from '../../components/atoms/Arguments';
 import moment = require('moment');
 import { NotificationEvent } from '../../store/PoetAppState';
 import { renderEventMessage } from '../Account/Notifications/Model';

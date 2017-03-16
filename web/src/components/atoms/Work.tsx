@@ -4,10 +4,10 @@ import { Link } from 'react-router';
 import * as moment from 'moment';
 
 import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from './base/PoetApiResource';
-import { Work, Profile } from './Interfaces';
+import { Work, Profile } from '../../Interfaces';
 import { SelectWorkById } from './Arguments';
-import { ProfileLink } from '../components/ProfileLink';
-import { Configuration } from '../configuration';
+import { ProfileLink } from '../ProfileLink';
+import { Configuration } from '../../configuration';
 
 interface WorkProps {
   readonly work: Work;

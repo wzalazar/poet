@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDatePicker from 'react-datepicker';
 import * as moment from 'moment';
 
-import { DatePickerInput } from '../../../atoms/DatePickerInput';
+import { DatePickerInput } from '../../../components/atoms/DatePickerInput';
 import { AttributeName } from './AttributeName';
 
 import './Attribute.scss';

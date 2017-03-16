@@ -3,7 +3,7 @@ import * as ReactDatePicker from 'react-datepicker';
 import * as moment from 'moment';
 
 import { LicenseTypes, LicenseType } from "../../common";
-import { DatePickerInput } from '../../atoms/DatePickerInput';
+import { DatePickerInput } from '../../components/atoms/DatePickerInput';
 
 import './Filters.scss';
 

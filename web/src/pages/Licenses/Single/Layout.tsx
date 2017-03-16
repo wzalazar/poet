@@ -1,11 +1,11 @@
 import * as React from 'react';
 import './Layout.scss';
-import { License } from '../../../atoms/Interfaces';
-import { SelectLicenseById } from '../../../atoms/Arguments';
-import { ReferencedWorkNameWithLink } from '../../../atoms/License';
-import { PoetAPIResourceProvider } from '../../../atoms/base/PoetApiResource';
-import { LicenseOwnerNameWithLink, LicenseEmitterNameWithLink, LicenseEmittedDate } from '../../../atoms/Profile';
-import { WorkHashById } from '../../../atoms/Work';
+import { License } from '../../../Interfaces';
+import { SelectLicenseById } from '../../../components/atoms/Arguments';
+import { ReferencedWorkNameWithLink } from '../../../components/atoms/License';
+import { PoetAPIResourceProvider } from '../../../components/atoms/base/PoetApiResource';
+import { LicenseOwnerNameWithLink, LicenseEmitterNameWithLink, LicenseEmittedDate } from '../../../components/atoms/Profile';
+import { WorkHashById } from '../../../components/atoms/Work';
 
 export class SingleLicense extends PoetAPIResourceProvider<License, SelectLicenseById, undefined> {
 

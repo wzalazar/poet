@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 import { DispatchesTransferRequested } from '../../actions/requests';
-import { SelectProfileById } from '../../atoms/Arguments';
-import { SearchInput } from '../../atoms/SearchInput';
+import { SelectProfileById } from '../../components/atoms/Arguments';
+import { SearchInput } from '../../components/atoms/SearchInput';
 import { WorksByProfile, WorkToProfileRelationship } from '../../components/organisms/WorksByProfile';
 import { PortfolioWorksFilters } from './Filters';
 

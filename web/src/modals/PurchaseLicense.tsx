@@ -9,8 +9,8 @@ import { Actions } from '../actions/index'
 import { Images } from '../images/Images';
 import { currentPublicKey } from '../selectors/session';
 import { publicKeyToAddress } from '../bitcoin/addressHelpers';
-import { WalletBalance, UnspentTransactionOutput } from '../atoms/WalletBalance';
-import { WorkOffering, Work } from '../atoms/Interfaces';
+import { WalletBalance, UnspentTransactionOutput } from '../components/atoms/WalletBalance';
+import { WorkOffering, Work } from '../Interfaces';
 
 import './PurchaseLicense.scss'
 

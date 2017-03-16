@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import LatestWorks from '../../components/LatestWorks'
 import BlockHeader from './components/Header'
-import { BlockInfo } from '../../atoms/Interfaces';
+import { BlockInfo } from '../../Interfaces';
 import { Blocks } from './Blocks';
 
 import './Layout.scss'

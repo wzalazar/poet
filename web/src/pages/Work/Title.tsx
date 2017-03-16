@@ -6,7 +6,7 @@ import WorkComponent from '../../hocs/WorkComponent';
 import { ProfileLink } from '../../components/ProfileLink';
 
 import './Title.scss';
-import { Work } from '../../atoms/Interfaces';
+import { Work } from '../../Interfaces';
 
 function render(props: Work): JSX.Element {
   const owner = props.title && props.title.attributes && props.title.attributes.owner

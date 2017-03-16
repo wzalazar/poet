@@ -1,6 +1,6 @@
 import { Configuration } from '../configuration';
 import FetchComponent from './FetchComponent';
-import { Work } from '../atoms/Interfaces';
+import { Work } from '../Interfaces';
 
 function propsToQueryString(props: Work): any {
   const searchable: string[] = ['author']; // TODO: Object.keys(props).filter(...).map(...), but we can'd do this on WorkProps since it extends from FetchComponentProps

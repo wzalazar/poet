@@ -2,7 +2,7 @@ import * as React from 'react';
 const QR = require('react-qr');
 import { Link } from 'react-router';
 
-import { CopyableText } from '../../../atoms/CopyableText';
+import { CopyableText } from '../../../components/atoms/CopyableText';
 
 import './WalletOperationDeposit.scss';
 

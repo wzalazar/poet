@@ -1,8 +1,8 @@
 import * as React from 'react';
 const classNames = require('classnames');
 
-import { ClassNameProps } from '../common';
-import { Images } from '../images/Images';
+import { ClassNameProps } from '../../common';
+import { Images } from '../../images/Images';
 
 interface SearchInputProps extends ClassNameProps {
   readonly value: string;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ClaimInfo } from "./Interfaces";
+import { ClaimInfo } from "../../Interfaces";
 import moment = require('moment');
 import { timeFrom } from './Work';
 

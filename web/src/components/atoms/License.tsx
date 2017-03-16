@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as moment from 'moment';
 
-import { Configuration } from '../configuration';
-import { License } from './Interfaces';
+import { Configuration } from '../../configuration';
+import { License } from '../../Interfaces';
 import { WorkNameById, WorkNameWithLinkById } from './Work';
 
 

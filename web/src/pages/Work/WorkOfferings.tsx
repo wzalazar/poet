@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { Work, WorkOffering } from "../../atoms/Interfaces";
-import { PoetAPIResourceProvider } from '../../atoms/base/PoetApiResource';
+import { Work, WorkOffering } from "../../Interfaces";
+import { PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
 
 import './WorkOfferings.scss';
 

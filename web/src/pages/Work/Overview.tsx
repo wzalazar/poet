@@ -4,7 +4,7 @@ import '../../extensions/Map';
 import WorkComponent from '../../hocs/WorkComponent';
 import ProfileLink from '../../components/ProfileLink';
 import './Overview.scss';
-import { Work } from '../../atoms/Interfaces';
+import { Work } from '../../Interfaces';
 
 function renderRow({key, value}: {key: string, value: string}) {
   return (

@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 import { NotificationEvent } from '../../../store/PoetAppState';
-import { WorkNameWithLinkById } from '../../../atoms/Work';
-import { ProfileNameWithLink } from '../../../atoms/Profile';
+import { WorkNameWithLinkById } from '../../../components/atoms/Work';
+import { ProfileNameWithLink } from '../../../components/atoms/Profile';
 
 export enum EventType {
   WORK_CREATED,

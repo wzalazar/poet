@@ -7,7 +7,7 @@ import { Images } from '../../images/Images';
 import { Actions } from '../../actions/index';
 import { DropdownMenu } from '../molecules/DropdownMenu';
 
-import { WalletBalance } from '../../atoms/WalletBalance';
+import { WalletBalance } from '../atoms/WalletBalance';
 import { currentPublicKey } from '../../selectors/session';
 import { publicKeyToAddress } from '../../bitcoin/addressHelpers';
 

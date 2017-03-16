@@ -4,7 +4,7 @@ import * as moment from 'moment';
 const classNames = require('classnames');
 
 import { ClassNameProps } from '../../common';
-import { BlockInfo } from '../../atoms/Interfaces';
+import { BlockInfo } from '../../Interfaces';
 
 import './Blocks.scss';
 

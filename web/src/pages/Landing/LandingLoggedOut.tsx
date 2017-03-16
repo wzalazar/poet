@@ -6,7 +6,7 @@ import LatestBlocks from '../../components/LatestBlocks';
 import LatestWorks from '../../components/LatestWorks';
 import { Reviews } from './Reviews';
 import { Partners } from './Partners';
-import { WorksCounter, BlocksCounter } from '../../atoms/Work';
+import { WorksCounter, BlocksCounter } from '../../components/atoms/Work';
 
 export interface LandingProps {
 }

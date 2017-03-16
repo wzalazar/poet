@@ -7,8 +7,8 @@ import { AddressTransactions, AddressTransactionsProps, Transaction } from '../.
 
 import './Transactions.scss';
 
-import { SelectProfileById } from '../../../atoms/Arguments';
-import { PoetAPIResourceProvider } from '../../../atoms/base/PoetApiResource';
+import { SelectProfileById } from '../../../components/atoms/Arguments';
+import { PoetAPIResourceProvider } from '../../../components/atoms/base/PoetApiResource';
 import { UrlObject } from '../../../common';
 import { publicKeyToAddress } from '../../../bitcoin/addressHelpers';
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { HexString } from '../../common';
 
-import { SearchInput } from '../../atoms/SearchInput';
+import { SearchInput } from '../../components/atoms/SearchInput';
 import { LicensesByProfile, LicenseToProfileRelationship } from '../../components/organisms/LicensesByProfile'
 import { Filters } from './Filters';
 

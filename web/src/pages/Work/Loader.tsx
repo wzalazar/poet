@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Route } from 'react-router';
 
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
-import { WorkOffering } from '../../atoms/Interfaces';
+import { WorkOffering } from '../../Interfaces';
 import { Actions } from '../../actions/index';
 import { WorkLayout } from './Layout';
 
