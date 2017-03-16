@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import { Tabs } from 'react-tabs';
 
 import Constants from '../constants';
-import { Navbar } from "../components/organisms/Navbar";
-import { Footer } from '../components/organisms/Footer';
+import { Navbar } from "./organisms/Navbar";
+import { Footer } from './organisms/Footer';
 import Modals from '../modals';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
-import './RootLayout.scss'
+import './Root.scss'
 
 Tabs.setUseDefaultStyles(false);
 

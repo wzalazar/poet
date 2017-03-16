@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { Router, Route, browserHistory } from "react-router";
 
 import createPoetStore from './store';
-import { Layout } from './templates/RootLayout';
+import { Layout } from './components/Root';
 
 const { store, pages } = createPoetStore();
 
