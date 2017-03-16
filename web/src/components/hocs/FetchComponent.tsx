@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { Actions } from '../actions/index';
-import { FetchStatus } from '../enums/FetchStatus';
+import { Actions } from '../../actions/index';
+import { FetchStatus } from '../../enums/FetchStatus';
 
 type RequestParams = (props: any) => FetchRequestParams;
 type Render = (props: any) => JSX.Element;

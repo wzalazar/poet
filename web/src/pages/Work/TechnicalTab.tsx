@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import WorkComponent from '../../hocs/WorkComponent';
 import { Work } from '../../Interfaces';
+import WorkComponent from '../../components/hocs/WorkComponent';
 
 function render(props: Work): JSX.Element {
   return (

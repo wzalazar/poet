@@ -1,5 +1,6 @@
 import * as React from 'react';
-import ProfileComponent, { ProfileProps } from '../../hocs/ProfileComponent';
+
+import ProfileComponent, { ProfileProps } from '../../components/hocs/ProfileComponent';
 
 import './Overview.scss';
 import { Images } from '../../images/Images';

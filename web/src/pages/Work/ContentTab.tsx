@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import WorkComponent from '../../hocs/WorkComponent';
+import { Work } from '../../Interfaces';
+import WorkComponent from '../../components/hocs/WorkComponent';
 
 import './ContentTab.scss';
-import { Work } from '../../Interfaces';
 
 function renderAttributes(props: Work): JSX.Element {
   return (

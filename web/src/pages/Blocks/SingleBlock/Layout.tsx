@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router';
 
 import { Configuration } from '../../../configuration';
-import FetchComponent from '../../../hocs/FetchComponent'
+import FetchComponent from '../../../components/hocs/FetchComponent'
 import BlockHeader from '../components/Header'
 
 import './Layout.scss'

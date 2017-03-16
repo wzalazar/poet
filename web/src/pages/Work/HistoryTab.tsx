@@ -1,11 +1,11 @@
 import * as React from 'react';
+import * as moment from 'moment';
 
-import WorkComponent from '../../hocs/WorkComponent';
 import { Work } from '../../Interfaces';
+import { NotificationEvent } from '../../store/PoetAppState';
+import WorkComponent from '../../components/hocs/WorkComponent';
 import { PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
 import { SelectWorkById } from '../../components/atoms/Arguments';
-import moment = require('moment');
-import { NotificationEvent } from '../../store/PoetAppState';
 import { renderEventMessage } from '../Account/Notifications/Model';
 
 class HistoryList extends PoetAPIResourceProvider<Event[], SelectWorkById, undefined> {

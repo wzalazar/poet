@@ -7,7 +7,6 @@ import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from './base/PoetApiRes
 import { Work, Profile } from '../../Interfaces';
 import { SelectWorkById } from './Arguments';
 import { ProfileLink } from '../ProfileLink';
-import { Configuration } from '../../configuration';
 
 interface WorkProps {
   readonly work: Work;
@@ -71,19 +70,6 @@ export class WorkHashById extends WorkById<undefined> {
       || '(unknown)';
     return <span className="hash-long monospaced">{ hash }</span>;
   }
-}
-
-export function OwnerNameWithLink(props: WorkProps) {
-  const publicKey = props.work && props.work.owner && props.work.owner.publicKey
-  const authorName = props.work
-    && props.work.owner
-    && props.work.owner.attributes
-    && props.work.owner.attributes.displayName
-    || 'Unknown Author'
-  if (!publicKey) {
-    return <span>{ authorName }</span>
-  }
-  return <Link to={'/profile/' + publicKey}> { authorName }</Link>
 }
 
 export function AuthorWithLink(props: WorkProps) {

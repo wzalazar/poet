@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { Configuration } from '../../../configuration';
-import FetchComponent from '../../../hocs/FetchComponent'
+import FetchComponent from '../../../components/hocs/FetchComponent'
 
 const NumberOfPeers = FetchComponent(
   () => ({ url: Configuration.api.explorer + '/node '}),

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 
-import ProfileComponent, { ProfileProps } from '../hocs/ProfileComponent';
+import ProfileComponent, { ProfileProps } from './hocs/ProfileComponent';
 
 function render(props: ProfileProps) {
   if (props.attributes && props.attributes['displayName']) {

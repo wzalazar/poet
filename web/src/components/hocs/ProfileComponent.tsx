@@ -1,6 +1,6 @@
-import { Configuration } from '../configuration';
+import { Configuration } from '../../configuration';
 
-import { HexString } from '../common'
+import { HexString } from '../../common'
 import FetchComponent, { FetchComponentProps } from './FetchComponent'
 
 export interface ProfileProps extends FetchComponentProps {

@@ -2,11 +2,11 @@ import * as React from 'react';
 
 import '../../extensions/String';
 
-import WorkComponent from '../../hocs/WorkComponent';
+import { Work } from '../../Interfaces';
+import WorkComponent from '../../components/hocs/WorkComponent';
 import { ProfileLink } from '../../components/ProfileLink';
 
 import './Title.scss';
-import { Work } from '../../Interfaces';
 
 function render(props: Work): JSX.Element {
   const owner = props.title && props.title.attributes && props.title.attributes.owner
