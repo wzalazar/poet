@@ -46,6 +46,22 @@
   }
 }
 
+.button-not-important {
+  @include button;
+
+  border: 1px solid #7d7d7d;
+  background-color: #E3E1DF;
+  color: #413D3B;
+
+  &:hover, &:focus {
+    background-color: #FAFAFA;
+    color: #413D3B;
+  }
+  width: initial;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
 a.button-primary, a.button-secondary {
   display: flex;
   align-items: center;

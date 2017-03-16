@@ -32,6 +32,11 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
     }
   }
 
+  skipLicenseSubmit: (() => void) = () => {
+    this.setState({ selectedStep: 2 })
+    window.scrollTo(0, 0)
+  }
+
   render() {
     return (
       <section className="container create-work">
@@ -43,7 +48,7 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
           />
         </header>
         { this.state.selectedStep === 0 && <StepRegister onSubmit={this.onStepRegisterSubmit.bind(this)} /> }
-        { this.state.selectedStep === 1 && <StepLicense onSubmit={this.onStepLicenseSubmit.bind(this)} /> }
+        { this.state.selectedStep === 1 && <StepLicense onSubmit={this.onStepLicenseSubmit.bind(this)} skip={this.skipLicenseSubmit} /> }
         { this.state.selectedStep === 2 &&
           <StepPublishAndReview
             workTitle={this.state.workTitle}
@@ -78,7 +83,7 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
   }
 
   private submitWork() {
-    this.props.createWorkRequested([
+    const request = ([
       {
         type: 'Work',
         attributes: [
@@ -90,7 +95,9 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
           { key: 'dateSubmitted', value: '' + new Date().getTime() }
         ]
       },
-      {
+    ]);
+    if (this.state.licenseData) {
+      request.push({
         type: 'Offering',
         attributes: {
           'licenseType': this.state.licenseData.licenseType.id,
@@ -100,10 +107,10 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
           'pricingPriceCurrency': this.state.licenseData.pricing.price.currency,
           'paymentAddress': publicKeyToAddress(this.props.userPublicKey),
           'amountInSatoshis': (this.state.licenseData.pricing.price.amount * 1e8).toFixed(0)
-
-        }
-      }
-    ])
+        } as any
+      })
+    }
+    this.props.createWorkRequested(request);
   }
 }
 

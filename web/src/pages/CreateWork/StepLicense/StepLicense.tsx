@@ -6,6 +6,8 @@ import { Pricing } from './Pricing';
 import { LicensePreview } from './LicensePreview';
 import { LicenseTypeComponent } from './LicenseType';
 
+import './StepLicense.scss'
+
 export interface StepLicenseData {
   readonly licenseType?: Common.LicenseType;
   readonly pricing?: Common.Pricing;
@@ -13,9 +15,20 @@ export interface StepLicenseData {
 
 export interface StepLicenseProps {
   readonly onSubmit: (stepRegisterData: StepLicenseData) => void;
+  readonly skip: () => void;
 }
 
 export class StepLicense extends React.Component<StepLicenseProps, StepLicenseData> {
+
+  skip: () => void = () => {
+    this.props.skip();
+  }
+  submit: () => void = () => {
+    this.props.onSubmit({
+      licenseType: this.state.licenseType,
+      pricing: this.state.pricing
+    });
+  }
 
   constructor() {
     super(...arguments);
@@ -44,10 +57,17 @@ export class StepLicense extends React.Component<StepLicenseProps, StepLicenseDa
               pricing={this.state.pricing}
               onChange={this.onPricingChange.bind(this)}
             />
+            <div className="row">
+              <div className="col-sm-6">
+                <button className="button button-not-important" onClick={this.skip}>skip</button>
+              </div>
+              <div className="col-sm-6 next-container">
+                <button className="button button-primary" onClick={this.submit}>Next</button>
+              </div>
+            </div>
           </div>
           <LicensePreview licenseType={this.state.licenseType} className="col-sm-6"/>
         </div>
-        <button className="button-primary" onClick={this.submit.bind(this)}>Next</button>
       </section>
     )
   }
@@ -56,12 +76,5 @@ export class StepLicense extends React.Component<StepLicenseProps, StepLicenseDa
     this.setState({
       pricing
     })
-  }
-
-  private submit(): void {
-    this.props.onSubmit({
-      licenseType: this.state.licenseType,
-      pricing: this.state.pricing
-    });
   }
 }
