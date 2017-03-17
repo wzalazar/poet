@@ -7,7 +7,7 @@ import PageLoader, { ReducerDescription } from '../../components/PageLoader';
 import { LandingLayout } from './Layout';
 import { Actions } from '../../actions/index';
 
-export class LandingLoader extends PageLoader<Object, Object> {
+export class Landing extends PageLoader<Object, Object> {
 
   component = LandingLayout;
 

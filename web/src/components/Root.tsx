@@ -26,6 +26,7 @@ interface RootLayoutProps {
 function render(props: RootLayoutProps) {
   // TODO: a way for pages to provide these so the RootLayout doesn't need to know what urls are mapped to what pages
   const worksUrl = '/works';
+  const loginUrl = '/login';
 
   const navbarShadow = ![worksUrl, '/'].includes(props.location.pathname);
   const navbarTransparent = ['/'].includes(props.location.pathname) && props.loggedIn;
@@ -37,16 +38,16 @@ function render(props: RootLayoutProps) {
   return (
     <div className="root-layout">
       { modals }
-      <Navbar
+      { props.location.pathname !== loginUrl && <Navbar
         shadow={navbarShadow}
         displayLogo={displayNavbarLogo}
         displaySearch={displayNavbarSearch}
         transparent={navbarTransparent}
         searchShadow={searchShadow}
         margin={navbarMargin}
-      />
+      /> }
       { props.children }
-      <Footer/>
+      { props.location.pathname !== loginUrl && <Footer/> }
     </div>
   );
 }

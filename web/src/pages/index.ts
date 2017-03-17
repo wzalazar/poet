@@ -1,4 +1,4 @@
-import { LandingLoader } from './Landing/Loader'
+import { Landing } from './Landing/Loader'
 import { Work } from "./Work/Loader";
 import { Works } from "./Works/Loader";
 import { Profile } from "./Profile/Loader";
@@ -13,9 +13,11 @@ import { Network } from "./Network";
 import { Documentation } from "./Documentation";
 import { Company } from './Company';
 import { Account } from "./Account";
+import { Login } from './Login/Loader';
 
 export default [
-  LandingLoader,
+  Landing,
+  Login,
   Work,
   Works,
   Blocks,

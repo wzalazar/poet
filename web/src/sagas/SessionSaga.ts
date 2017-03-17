@@ -22,7 +22,6 @@ async function bindAuthResponse(request: any) {
 }
 
 function* loginButtonClickedAction(action: any) {
-  yield put({ type: Actions.Modals.Login.Show });
   const requestId = yield call(requestIdFromAuth);
   yield put({ type: Actions.Session.LoginIdReceived, payload: requestId });
   const response = yield call(bindAuthResponse, requestId);

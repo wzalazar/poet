@@ -6,7 +6,6 @@ const classNames = require('classnames');
 
 import { Actions } from '../../actions/index';
 import Constants from '../../constants';
-import { LoginButton } from "../LoginButton";
 import { Images } from '../../images/Images';
 import { countUnreadNotifications } from '../../selectors/session';
 import { AccountDropdown } from './AccountDropdown';
@@ -72,15 +71,19 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
     )
   }
 
-  private renderNavLink(key: string, text: string): JSX.Element {
-    return <li key={key} className="nav-item"><Link to={'/' + key} className="nav-link">{text}</Link></li>
+  private renderNavLink(key: string, text: string, className: string = 'nav-link'): JSX.Element {
+    return (
+      <li key={key} className="nav-item">
+        <Link to={'/' + key} className={className}>{text}</Link>
+      </li>
+    )
   }
 
   private notLoggedActions(): JSX.Element[] {
     return [
       this.renderNavLink('network/about', 'About'),
       this.renderNavLink('documentation/overview', 'Documentation'),
-      <li key="login"><LoginButton>Login</LoginButton></li>,
+      this.renderNavLink('login', 'Login', 'login-button button-secondary'),
       <li key='try-it-out'>
         <Link to={'/try-it-out'} className="try-it-out">
           <img src={Images.QuillInverted} /><span>Try It Out</span>
