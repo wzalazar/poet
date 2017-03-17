@@ -24,7 +24,6 @@ interface LoginActions {
 
 export class LoginLayout extends React.Component<LoginLayoutProps & LoginActions, LoginLayoutState> {
   render() {
-    console.log('this.props.requestId',this.props.requestId);
     return (
       <section className="page-login">
         <div className="top-row">
