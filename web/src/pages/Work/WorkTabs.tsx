@@ -5,9 +5,9 @@ import '../../extensions/Array'
 
 import { HexString } from '../../common';
 
-import ContentTab from './ContentTab';
-import HistoryTab from './HistoryTab';
-import TechnicalTab from './TechnicalTab';
+import ContentTab from './Tabs/ContentTab';
+import HistoryTab from './Tabs/HistoryTab';
+import TechnicalTab from './Tabs/TechnicalTab';
 
 interface WorkTabProps {
   id: HexString;
@@ -15,22 +15,21 @@ interface WorkTabProps {
 
 export class WorkTabs extends React.Component<WorkTabProps, undefined> {
   render() {
-    const workId = this.props.id;
     return (
       <Tabs selectedIndex={0} className="work-tabs" >
-        <TabList className="tab-option-group">
+        <TabList className="tab-list-one" activeTabClassName="selected">
           <Tab>Content</Tab>
           <Tab>History</Tab>
           <Tab>Technical</Tab>
         </TabList>
         <TabPanel>
-          <ContentTab id={workId} />
+          <ContentTab id={this.props.id} />
         </TabPanel>
         <TabPanel>
-          <HistoryTab id={workId} />
+          <HistoryTab id={this.props.id} />
         </TabPanel>
         <TabPanel>
-          <TechnicalTab id={workId} />
+          <TechnicalTab id={this.props.id} />
         </TabPanel>
       </Tabs>
     )

@@ -1,0 +1,30 @@
+@import "Tab";
+
+.page-work .work-tabs .history-tab {
+  @include tab-list-base;
+
+  font-family: "Source Code Pro";
+  font-size: 14px;
+  line-height: 24px;
+  color: #666666;
+  padding: 43px 52px;
+
+  ul {
+    list-style: none;
+
+    li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 40px;
+
+      img {
+        margin-right: 16px;
+      }
+
+      .time {
+        margin-left: auto;
+      }
+    }
+  }
+
+}

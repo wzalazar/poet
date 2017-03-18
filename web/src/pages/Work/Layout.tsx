@@ -20,11 +20,10 @@ export class WorkLayout extends React.Component<WorkProps, undefined> {
     const workId = this.props.id;
 
     return (
-      <section className="container work">
+      <section className="container page-work">
         <div className="row">
           <div className="col-xs-7">
             <Overview id={workId}/>
-            <WorkTabs id={workId}/>
           </div>
           <div className="col-xs-1"/>
           <div className="col-xs-4">
@@ -32,6 +31,7 @@ export class WorkLayout extends React.Component<WorkProps, undefined> {
             <Title id={workId}/>
           </div>
         </div>
+        <WorkTabs id={workId}/>
       </section>
     )
   }

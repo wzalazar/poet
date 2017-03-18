@@ -2,6 +2,7 @@
 @import "styles/Forms";
 @import "styles/OptionGroups";
 @import "styles/Pagination";
+@import "styles/Tabs";
 
 * {
   padding: 0;
@@ -39,4 +40,8 @@ html, body, #app, .root-layout {
 // TODO: remove this definition!
 .text-center {
   text-align: center;
+}
+
+a {
+  color: #43B980;
 }

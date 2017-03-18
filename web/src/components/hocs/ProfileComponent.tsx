@@ -1,3 +1,7 @@
+/**
+ * TODO: use PoetApiResource instead of FetchComponent, move to atoms
+ */
+
 import { Configuration } from '../../configuration';
 
 import { HexString } from '../../common'

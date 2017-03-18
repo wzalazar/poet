@@ -2,9 +2,10 @@ import * as React from 'react';
 
 import '../../extensions/String';
 
+import { Images } from '../../images/Images';
 import { Work } from '../../Interfaces';
 import WorkComponent from '../../components/hocs/WorkComponent';
-import { ProfileLink } from '../../components/ProfileLink';
+import { ProfileNameWithLink } from '../../components/atoms/Profile';
 
 import './Title.scss';
 
@@ -12,25 +13,11 @@ function render(props: Work): JSX.Element {
   const owner = props.title && props.title.attributes && props.title.attributes.owner
   return (
     <section className="title">
-      <h3>Title</h3>
-      <table>
-        <tbody>
-          { owner &&
-            <tr>
-              <td>Owner</td>
-              <td><ProfileLink id={owner} /></td>
-            </tr>
-          }
-          <tr>
-            <td>Type of Ownership</td>
-            <td>{props.title.attributes.typeOfOwnership || 'Single Ownership'}</td>
-          </tr>
-          <tr style={{display: 'none'}}>
-            <td>Status</td>
-            <td>{props.title.attributes.status}</td>
-          </tr>
-        </tbody>
-      </table>
+      <h3>Owner</h3>
+      <div className="wrapper">
+        <img src={Images.Anon} />
+        <ProfileNameWithLink profileId={owner} />
+      </div>
     </section>
   )
 }

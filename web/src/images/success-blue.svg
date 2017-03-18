@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>Oval 1 Copy 32</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M336,616 C342.075132,616 347,611.075132 347,605 C347,598.924868 342.075132,594 336,594 C329.924868,594 325,598.924868 325,605 C325,611.075132 329.924868,616 336,616 Z" id="path-1"></path>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="22" height="22" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+    </defs>
+    <g id="MASTER" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="cw-history" transform="translate(-325.000000, -594.000000)" stroke="#108EE9" stroke-width="2">
+            <use id="Oval-1-Copy-32" mask="url(#mask-2)" xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>

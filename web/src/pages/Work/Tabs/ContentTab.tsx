@@ -1,19 +1,20 @@
 import * as React from 'react';
 
-import { Work } from '../../Interfaces';
-import WorkComponent from '../../components/hocs/WorkComponent';
+import { Work } from '../../../Interfaces';
+import WorkComponent from '../../../components/hocs/WorkComponent';
 
 import './ContentTab.scss';
 
 function renderAttributes(props: Work): JSX.Element {
+  console.log();
   return (
     <table>
       <tbody>
       {
-        Object.keys(props.attributes).filter(key => key !== 'content').map(key => (
+        Object.entries(props.attributes).filter(([key, value]) => key !== 'content').map(([key, value]) => (
           <tr key={key}>
             <td>{key}</td>
-            <td>{props.attributes[key]}</td>
+            <td>{value}</td>
           </tr>
         ))
       }
@@ -24,11 +25,11 @@ function renderAttributes(props: Work): JSX.Element {
 
 function render(props: Work): JSX.Element {
   return (
-    <section className="contentTab">
+    <section className="content-tab">
       <section className="attributes">
         { renderAttributes(props) }
       </section>
-      <pre className="content">{ props.attributes.content }</pre>
+      <section className="content">{ props.attributes.content }</section>
     </section>
   )
 }

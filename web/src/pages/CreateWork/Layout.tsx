@@ -5,9 +5,9 @@ import { publicKeyToAddress } from '../../bitcoin/addressHelpers'
 import { StepRegister, StepRegisterData } from './StepRegister/StepRegister'
 import { StepLicense, StepLicenseData } from './StepLicense/StepLicense'
 import StepPublishAndReview from './StepPublishAndReview/StepPublishAndReview'
+import { CurrentStep } from './CurrentStep';
 
 import './Layout.scss';
-import { CurrentStep } from './CurrentStep';
 
 interface CreateWorkProps {
   readonly createWorkRequested: (claims: any[]) => any // Actions.claimsSubmitRequested
@@ -30,11 +30,6 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
     this.state = {
       selectedStep: 0
     }
-  }
-
-  skipLicenseSubmit: (() => void) = () => {
-    this.setState({ selectedStep: 2 })
-    window.scrollTo(0, 0)
   }
 
   render() {
@@ -82,6 +77,11 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
     window.scrollTo(0, 0);
   }
 
+  private skipLicenseSubmit: (() => void) = () => {
+    this.setState({ selectedStep: 2 });
+    window.scrollTo(0, 0);
+  };
+
   private submitWork() {
     const request = ([
       {
@@ -91,7 +91,7 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
           { key: 'mediaType', value: this.state.workData.mediaType },
           { key: 'articleType', value: this.state.workData.articleType },
           { key: 'content', value: this.state.workData.content },
-          { key: 'authorPublicKey', value: this.props.userPublicKey },
+          //{ key: 'author', value: this.props.userPublicKey },
           { key: 'dateSubmitted', value: '' + new Date().getTime() }
         ]
       },

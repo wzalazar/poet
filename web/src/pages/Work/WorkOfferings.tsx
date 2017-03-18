@@ -46,7 +46,7 @@ export class WorkOfferings extends PoetAPIResourceProvider<Work, WorkOfferingsPr
               </div>
             </div>
           </div>
-          <button className="button-primary" onClick={() => this.props.onPurchaseRequest(work, workOffering)}>Purchase License</button>
+          <button className="button-secondary" onClick={() => this.props.onPurchaseRequest(work, workOffering)}>Purchase License</button>
         </main>
         { workOffering.licenses && this.renderLicenses(workOffering.licenses) }
       </section>

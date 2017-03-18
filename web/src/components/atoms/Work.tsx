@@ -6,7 +6,7 @@ import * as moment from 'moment';
 import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from './base/PoetApiResource';
 import { Work, Profile } from '../../Interfaces';
 import { SelectWorkById } from './Arguments';
-import { ProfileLink } from '../ProfileLink';
+import { ProfileNameWithLink } from './Profile';
 
 interface WorkProps {
   readonly work: Work;
@@ -73,10 +73,13 @@ export class WorkHashById extends WorkById<undefined> {
 }
 
 export function AuthorWithLink(props: WorkProps) {
-  if (props.work.attributes.authorPublicKey) {
-    return <ProfileLink id={props.work.attributes.authorPublicKey} />
-  }
-  return <span>{ props.work.attributes.author || 'Unknown author' }</span>
+  return props.work.author ? (
+    <ProfileNameWithLink profileId={props.work.author.id}>
+      {props.work.author.displayName}
+    </ProfileNameWithLink>
+  ) : (
+    <span>{props.work.attributes.author || 'Unknown Author'}</span>
+  );
 }
 
 export function WorkNameWithLink(props: WorkProps) {

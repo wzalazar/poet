@@ -1,6 +1,5 @@
 interface String {
   firstAndLastCharacters(amount: number): string;
-  padEnd(targetLength: number, padString?: string): string;
 }
 
 String.prototype.firstAndLastCharacters = function (amount: number) {

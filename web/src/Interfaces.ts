@@ -60,15 +60,18 @@ export interface Work extends Claim {
   readonly claimInfo?: ClaimInfo
   readonly owner?: Claim
   readonly title?: TitleClaim
-  readonly author?: Claim
+  readonly author?: {
+    readonly claim: HexString;
+    readonly displayName: string;
+    readonly id: HexString;
+  }
   readonly offerings?: ReadonlyArray<WorkOffering>
   readonly attributes: {
     readonly [key: string]: string
     readonly name: string;
     readonly datePublished: string;
     readonly dateCreated: string;
-    readonly authorPublicKey: string;
-    readonly authorDisplayName: string;
+    readonly author: string; // Can be a publicKey referencing a profile or a free text
     readonly lastModified: string;
     readonly contentHash: string;
     readonly tags: string;

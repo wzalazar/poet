@@ -3,7 +3,7 @@ import * as React from 'react';
 import '../../extensions/Map';
 import { Work } from '../../Interfaces';
 import WorkComponent from '../../components/hocs/WorkComponent';
-import ProfileLink from '../../components/ProfileLink';
+import { AuthorWithLink } from '../../components/atoms/Work';
 
 import './Overview.scss';
 
@@ -34,14 +34,7 @@ function render(props: Work) {
         <tbody>
           <tr key="author">
             <td>Author</td>
-            <td>{
-              props.attributes.author
-              ? props.attributes.author
-              : props.attributes.authorPublicKey
-                ? <ProfileLink id={props.attributes.authorPublicKey} />
-                : 'Unknown author'
-            }
-            </td>
+            <td><AuthorWithLink work={props} /></td>
           </tr>
             { tableData.toKeyValueArray().map(renderRow) }
         </tbody>
