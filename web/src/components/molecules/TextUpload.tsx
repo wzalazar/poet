@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ClassNameProps } from '../common';
+import { ClassNameProps } from '../../common';
 
 export interface TextUploadProps extends ClassNameProps {
   readonly text?: string;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { LicenseType, LicenseTypes } from '../../../common';
-import { OptionGroup, Option } from '../../../components/OptionGroup';
+import { OptionGroup, Option } from '../../../components/molecules/OptionGroup';
 
 import './LicenseType.scss';
 

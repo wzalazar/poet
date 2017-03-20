@@ -6,7 +6,7 @@ import { Images } from '../../images/Images';
 import { Actions } from "../../actions/index";
 import { Claim, WORK, PROFILE } from '../../Claim';
 import { WorkDetails } from '../atoms/WorkDetails';
-import Loading from "../Loading";
+import Loading from "../atoms/Loading";
 import Modal, {ModalProps} from "./Modal";
 
 import "./Modal.scss";

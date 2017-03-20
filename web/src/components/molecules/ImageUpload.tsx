@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
 
-import { ClassNameProps } from '../common';
+import { ClassNameProps } from '../../common';
 
 export interface ImageUploadProps extends ClassNameProps {
   readonly onChange?: (imageDataUrl: string) => void;

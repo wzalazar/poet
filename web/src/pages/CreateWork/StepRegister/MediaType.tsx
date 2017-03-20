@@ -2,7 +2,7 @@ import * as React from 'react';
 const classNames = require('classnames');
 
 import { ClassNameProps } from '../../../common';
-import { OptionGroup, Option } from '../../../components/OptionGroup';
+import { OptionGroup, Option } from '../../../components/molecules/OptionGroup';
 
 import './MediaType.scss';
 

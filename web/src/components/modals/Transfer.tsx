@@ -6,7 +6,7 @@ const QR = require('react-qr');
 import { Configuration } from '../../configuration';
 import { Actions } from "../../actions/index";
 import { PoetAppState } from '../../store/PoetAppState';
-import Loading from "../Loading";
+import Loading from "../atoms/Loading";
 import Modal, {ModalProps} from "./Modal";
 
 import "./Transfer.scss";

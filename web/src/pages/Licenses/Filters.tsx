@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { OptionGroup, Option } from '../../components/OptionGroup';
+import { OptionGroup, Option } from '../../components/molecules/OptionGroup';
 
 import './Filters.scss';
 

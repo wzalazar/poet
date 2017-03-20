@@ -7,7 +7,7 @@ import { Work } from '../../Interfaces';
 import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../../components/atoms/base/PoetApiResource';
 import { WorkNameWithLink, AuthorWithLink } from '../../components/atoms/Work';
 import { TimeElapsedSinceTimestamp } from '../../components/atoms/Claim';
-import { Pagination } from '../../components/Pagination';
+import { Pagination } from '../../components/molecules/Pagination';
 
 import './Works.scss';
 

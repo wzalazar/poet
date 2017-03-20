@@ -7,7 +7,7 @@ import { Configuration } from '../../../configuration';
 import { ClassNameProps } from "../../../common";
 import { ProfileAttributes } from '../../../Interfaces';
 import { PROFILE, Claim } from '../../../Claim';
-import { ImageUpload } from '../../../components/ImageUpload';
+import { ImageUpload } from '../../../components/molecules/ImageUpload';
 import { Images } from '../../../images/Images';
 
 import './Layout.scss';

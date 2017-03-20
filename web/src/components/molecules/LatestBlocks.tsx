@@ -2,12 +2,12 @@ import * as React from 'react';
 import { Link } from 'react-router';
 import * as moment from 'moment';
 
-import '../extensions/String';
+import '../../extensions/String';
 
-import { Configuration } from '../configuration';
-import { ClassNameProps } from '../common';
+import { Configuration } from '../../configuration';
+import { ClassNameProps } from '../../common';
 
-import { ResourceProvider } from './ResourceProvider';
+import { ResourceProvider } from '../ResourceProvider';
 
 import './LatestBlocks.scss';
 

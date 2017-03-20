@@ -3,7 +3,7 @@ import * as React from 'react';
 import '../Layout.scss';
 import './Content.scss';
 
-import { TextUpload } from '../../../components/TextUpload';
+import { TextUpload } from '../../../components/molecules/TextUpload';
 
 export interface ContentProps {
   readonly content: string;

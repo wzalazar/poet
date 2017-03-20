@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import LatestWorks from '../../components/LatestWorks'
+import LatestWorks from '../../components/molecules/LatestWorks'
 import BlockHeader from './components/Header'
 import { BlockInfo } from '../../Interfaces';
 import { Blocks } from './Blocks';

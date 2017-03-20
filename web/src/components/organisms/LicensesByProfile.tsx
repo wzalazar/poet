@@ -9,7 +9,7 @@ import { TimeSinceIssueDate, ReferencedWorkNameWithLink } from '../atoms/License
 import { OfferingType } from '../atoms/Offering';
 import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../atoms/base/PoetApiResource';
 import { DropdownMenu } from '../DropdownMenu';
-import { Pagination } from '../Pagination';
+import { Pagination } from '../molecules/Pagination';
 
 import './LicensesByProfile.scss';
 

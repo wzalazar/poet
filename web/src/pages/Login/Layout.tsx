@@ -5,7 +5,7 @@ const QR = require('react-qr');
 
 import '../../extensions/String';
 import { Images } from '../../images/Images';
-import Loading from '../../components/Loading';
+import Loading from '../../components/atoms/Loading';
 
 import './Layout.scss';
 

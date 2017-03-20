@@ -5,7 +5,7 @@ const QR = require('react-qr');
 
 import { Images } from '../../images/Images';
 import { Actions } from '../../actions/index'
-import Loading from '../Loading'
+import Loading from '../atoms/Loading'
 import Modal, { ModalProps } from './Modal'
 
 import './Modal.scss'

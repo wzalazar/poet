@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 
-import '../extensions/String';
+import '../../extensions/String';
 
-import { Configuration } from '../configuration';
-import { ClassNameProps } from '../common';
-import { ResourceProvider } from './ResourceProvider';
-import { Work } from '../Interfaces';
-import { WorkNameWithLink, WorkStampedDate } from './atoms/Work';
+import { Configuration } from '../../configuration';
+import { ClassNameProps } from '../../common';
+import { ResourceProvider } from '../ResourceProvider';
+import { Work } from '../../Interfaces';
+import { WorkNameWithLink, WorkStampedDate } from '../atoms/Work';
 
 import './LatestWorks.scss';
 

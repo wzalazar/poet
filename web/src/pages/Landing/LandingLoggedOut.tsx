@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import './LandingLoggedOut.scss';
 
-import LatestBlocks from '../../components/LatestBlocks';
-import LatestWorks from '../../components/LatestWorks';
+import LatestBlocks from '../../components/molecules/LatestBlocks';
+import LatestWorks from '../../components/molecules/LatestWorks';
 import { Reviews } from './Reviews';
 import { Partners } from './Partners';
 import { WorksCounter, BlocksCounter } from '../../components/atoms/Work';

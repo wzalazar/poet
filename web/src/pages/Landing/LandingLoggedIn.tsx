@@ -4,8 +4,8 @@ import './LandingLoggedIn.scss';
 
 import { Images } from '../../images/Images';
 
-import LatestBlocks from '../../components/LatestBlocks';
-import LatestWorks from '../../components/LatestWorks';
+import LatestBlocks from '../../components/molecules/LatestBlocks';
+import LatestWorks from '../../components/molecules/LatestWorks';
 
 export interface LandingProps {
   dispatchSearch: () => any,
