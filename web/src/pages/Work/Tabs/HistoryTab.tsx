@@ -11,7 +11,7 @@ import { renderEventMessage } from '../../Account/Notifications/Model';
 
 import './HistoryTab.scss';
 
-class HistoryList extends PoetAPIResourceProvider<Event[], SelectWorkById, undefined> {
+class HistoryList extends PoetAPIResourceProvider<NotificationEvent[], SelectWorkById, undefined> {
 
   poetURL() {
     return {
@@ -22,19 +22,21 @@ class HistoryList extends PoetAPIResourceProvider<Event[], SelectWorkById, undef
     }
   }
 
-  renderElement(resource: Event[], headers: Headers) {
+  renderElement(resource: NotificationEvent[], headers: Headers) {
     return (
       <ul>
-        { resource.map(this.renderItem.bind(this)) }
+        { resource.map(this.renderItem) }
       </ul>
     )
   }
 
-  renderItem(event: NotificationEvent) {
+  renderItem = (event: NotificationEvent) => {
     const text = renderEventMessage(event);
     return text && (
       <li key={event.id}>
-        <img src={Images.SuccessMarkGreen} />
+        <div className="icon">
+          <img src={Images.SuccessMarkGreen} />
+        </div>
         <div className="message">{ text }</div>
         <div className="time">{ moment(event.timestamp).fromNow() }</div>
       </li>

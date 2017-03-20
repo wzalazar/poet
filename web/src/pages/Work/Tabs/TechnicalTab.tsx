@@ -6,13 +6,16 @@ import WorkComponent from '../../../components/hocs/WorkComponent';
 import './TechnicalTab.scss';
 
 function render(props: Work): JSX.Element {
+  if (!props.claimInfo) {
+    return <div className="technical-tab">Could not load technical information.</div>
+  }
   return (
     <div className="technical-tab">
       <table>
         <tbody>
         {
           Object.entries(props.claimInfo).filter(([key, value]) => key !== 'id').map(([key, value]) => (
-            <tr>
+            <tr key={key}>
               <td>{ key }</td><td>{ value }</td>
             </tr>
           ))

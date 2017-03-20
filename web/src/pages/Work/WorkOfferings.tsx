@@ -16,9 +16,9 @@ export class WorkOfferings extends PoetAPIResourceProvider<Work, WorkOfferingsPr
     return `/works/${this.props.workId}`;
   }
 
-  renderElement(work: Work): JSX.Element {
+  renderElement(work: Work) {
     if (!work || !work.offerings || !work.offerings.length)
-      return <section className="offerings">This work has no offerings</section>;
+      return null;
 
     return (
       <section className="offerings">
@@ -27,7 +27,7 @@ export class WorkOfferings extends PoetAPIResourceProvider<Work, WorkOfferingsPr
     )
   }
 
-  private renderOffering(work: Work, workOffering: WorkOffering): JSX.Element {
+  private renderOffering(work: Work, workOffering: WorkOffering) {
     return (
       <section className="offering" key={workOffering.id} >
         <h3>License</h3>
@@ -48,26 +48,8 @@ export class WorkOfferings extends PoetAPIResourceProvider<Work, WorkOfferingsPr
           </div>
           <button className="button-secondary" onClick={() => this.props.onPurchaseRequest(work, workOffering)}>Purchase License</button>
         </main>
-        { workOffering.licenses && this.renderLicenses(workOffering.licenses) }
       </section>
     );
   }
 
-  renderLicenses(licenses: ReadonlyArray<any>) {
-    return (
-      <section className="licenses">
-        <h3>Publishers with this license </h3>
-        { licenses.map(this.renderLicense.bind(this)) }
-      </section>
-    )
-  }
-
-  renderLicense(license: any): JSX.Element {
-    return (
-      <section className="license" key={license.id}>
-        <div className="publisher">{ license.publisher }</div>
-        <div className="url"><a href={ license.url } target="_blank">{ license.url }</a></div>
-      </section>
-    )
-  }
 }

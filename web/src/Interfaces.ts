@@ -3,11 +3,18 @@ type HexString = string;
 export interface Profile {
   readonly id: string
   readonly displayName: string
-  readonly attributes: {
-    displayName: string;
-  }
+  readonly attributes: ProfileAttributes;
 }
 
+export interface ProfileAttributes {
+  readonly displayName?: string;
+  readonly name?: string;
+  readonly bio?: string;
+  readonly url?: string;
+  readonly email?: string;
+  readonly location?: string;
+  readonly imageData?: string;
+}
 
 // TODO: lacks a "type" field, duplicated declaration! See Claim.ts
 export interface Claim {

@@ -47,7 +47,7 @@ export class Profile extends PageLoader<UserProfileProps, Object> {
       url,
       email,
       location,
-      avatarImageData: imageData
+      imageData
     };
   }
 

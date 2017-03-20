@@ -4,22 +4,13 @@ import * as classNames from 'classnames';
 
 import { Configuration } from '../../../configuration';
 
+import { ClassNameProps } from "../../../common";
+import { ProfileAttributes } from '../../../Interfaces';
 import { PROFILE, Claim } from '../../../Claim';
 import { ImageUpload } from '../../../components/ImageUpload';
 import { Images } from '../../../images/Images';
 
 import './Layout.scss';
-import { ClassNameProps } from "../../../common";
-
-export interface ProfileAttributes {
-  readonly displayName?: string;
-  readonly name?: string;
-  readonly bio?: string;
-  readonly url?: string;
-  readonly email?: string;
-  readonly location?: string;
-  readonly avatarImageData?: string;
-}
 
 export interface UserProfileProps extends ProfileAttributes {
   readonly submitProfileRequested?: (payload: Claim) => Action;
@@ -40,7 +31,7 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
           this.props.bio === props.bio &&
           this.props.url === props.url &&
           this.props.email === props.email &&
-          this.props.avatarImageData === props.avatarImageData &&
+          this.props.imageData === props.imageData &&
           this.props.location === props.location
       )
     };
@@ -56,7 +47,7 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
       bio: props.bio,
       url: props.url,
       email: props.email,
-      avatarImageData: props.avatarImageData,
+      imageData: props.imageData,
       location: props.location
     }
   }
@@ -116,13 +107,13 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
                 <div className="profile-picture field">
                   <ImageUpload
                     className="image-upload"
-                    classNames={[this.state.avatarImageData && 'loaded']}
+                    classNames={[this.state.imageData && 'loaded']}
                     buttonClassName="button-secondary"
                     imageWidthLimit={Configuration.imageUpload.maxWidth}
                     imageHeightLimit={Configuration.imageUpload.maxHeight}
-                    imageData={this.state.avatarImageData || Images.Anon}
+                    imageData={this.state.imageData || Images.Anon}
                     fileSizeLimit={Math.pow(1024, 2) * 20}
-                    onChange={imageDataUrl => this.setState({avatarImageData: imageDataUrl})}
+                    onChange={imageDataUrl => this.setState({imageData: imageDataUrl})}
                   />
                   <small>Up to 20 MB</small>
                 </div>
@@ -145,7 +136,7 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
         url: this.state.url,
         email: this.state.email,
         location: this.state.location,
-        imageData: this.state.avatarImageData
+        imageData: this.state.imageData
       }
     });
   }

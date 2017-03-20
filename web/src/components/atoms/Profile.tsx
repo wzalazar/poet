@@ -4,8 +4,18 @@ import * as moment from 'moment';
 
 import { Configuration } from '../../configuration';
 import { Profile, License } from '../../Interfaces';
+import { Images } from '../../images/Images';
+import { ClassNameProps } from "../../common";
 import { PoetAPIResourceProvider } from './base/PoetApiResource';
 import { SelectProfileById } from './Arguments';
+
+export abstract class ProfileById<Props> extends PoetAPIResourceProvider<Profile, SelectProfileById & Props, undefined> {
+
+  poetURL(): string {
+    return '/profiles/' + this.props.profileId;
+  }
+
+}
 
 export class ProfileNameWithLink extends PoetAPIResourceProvider<Profile, SelectProfileById, undefined> {
 
@@ -48,4 +58,24 @@ export function LicenseEmittedDate(props: { license: License }) {
       ? moment(publishDate * 1000).format(Configuration.dateTimeFormat)
       : '(pending timestamp on the blockchain)'
   }</span>)
+}
+
+export class ProfilePictureById extends ProfileById<ClassNameProps> {
+
+  renderElement(resource: Profile): JSX.Element {
+    return <img src={resource.attributes.imageData}/>
+  }
+
+  renderLoading() {
+    return this.renderChildren() || <img src={Images.Anon}/>;
+  }
+
+  renderError(error: any) {
+    return this.renderChildren() || <img src={Images.Anon}/>;
+  }
+
+  renderChildren() {
+    return this.props.children && <span>{this.props.children}</span>;
+  }
+
 }
