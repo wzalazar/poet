@@ -1,10 +1,14 @@
 ul.tab-list-one {
+  $item-height: 32px;
+  $border-bottom-width: 1px;
   list-style: none;
   display: flex;
   margin-bottom: 0;
+  border-bottom: $border-bottom-width solid #E9E9E9;
+  height: ($item-height + $border-bottom-width); // Border Hack
 
   li {
-    height: 32px;
+    height: $item-height;
     flex: 1 1 auto;
     display: flex;
     justify-content: center;
@@ -24,13 +28,13 @@ ul.tab-list-one {
       margin-right: 3px;
     }
 
-
     &.selected {
       border-top: 3px solid #64B77E;
       border-radius: 5px 5px 0 0;
       background-color: #FFFFFF;
       color: #43B980;
       font-weight: bold;
+      height: ($item-height + $border-bottom-width); // Border Hack
     }
 
     &:not(.selected) {
@@ -39,6 +43,9 @@ ul.tab-list-one {
       background-color: #F3F0EE;
     }
 
-
   }
+
 }
+
+// Border Hack:
+// We need to set the height so the .selected li overflows and thus renders on top of the ul's border-bottom

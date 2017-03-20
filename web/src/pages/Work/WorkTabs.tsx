@@ -10,28 +10,24 @@ import HistoryTab from './Tabs/HistoryTab';
 import TechnicalTab from './Tabs/TechnicalTab';
 
 interface WorkTabProps {
-  id: HexString;
+  readonly id: HexString;
 }
 
-export class WorkTabs extends React.Component<WorkTabProps, undefined> {
-  render() {
-    return (
-      <Tabs selectedIndex={0} className="work-tabs" >
-        <TabList className="tab-list-one" activeTabClassName="selected">
-          <Tab>Content</Tab>
-          <Tab>History</Tab>
-          <Tab>Technical</Tab>
-        </TabList>
-        <TabPanel>
-          <ContentTab id={this.props.id} />
-        </TabPanel>
-        <TabPanel>
-          <HistoryTab id={this.props.id} />
-        </TabPanel>
-        <TabPanel>
-          <TechnicalTab id={this.props.id} />
-        </TabPanel>
-      </Tabs>
-    )
-  }
-}
+export const WorkTabs = (props: WorkTabProps) => (
+  <Tabs selectedIndex={0} className="work-tabs" >
+    <TabList className="tab-list-one" activeTabClassName="selected">
+      <Tab>Content</Tab>
+      <Tab>History</Tab>
+      <Tab>Technical</Tab>
+    </TabList>
+    <TabPanel>
+      <ContentTab id={props.id} />
+    </TabPanel>
+    <TabPanel>
+      <HistoryTab id={props.id} />
+    </TabPanel>
+    <TabPanel>
+      <TechnicalTab id={props.id} />
+    </TabPanel>
+  </Tabs>
+);
