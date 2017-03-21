@@ -50,6 +50,7 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
             price={this.state.licenseData && this.state.licenseData.pricing.price}
             onSubmit={this.submitWork.bind(this)}
             licenseType={this.state.licenseData && this.state.licenseData.licenseType}
+            authorName={this.state.workData.attributes.find(({key, value}) => key === 'author').value}
             /> }
       </section>
 

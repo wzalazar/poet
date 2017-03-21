@@ -1,18 +1,22 @@
 .create-work .step-3-publish .preview {
+  color: #4A4A4A;
+  border: 1px solid darken(#43B980, 15%);
+  border-radius: 3px;
   background-color: white;
-  border: 1px solid #979797;
-  color: #666666;
+  box-shadow: 0 2px 4px #EDEDED;
+  font-family: "Source Sans Pro";
+
+  padding: 12px;
 
   >section {
     >table {
-      >tbody {
-        >tr {
-          >td:first-child {
-            min-width: 130px;
-          }
-        }
+      width: 100%;
+
+      >tbody>tr>td:first-child {
+        min-width: 130px;
       }
     }
   }
+
 }
 

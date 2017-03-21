@@ -19,7 +19,7 @@ export class CopyableText extends React.Component<CopyableTextProps, undefined> 
           ref={input => this.input = input}
           readOnly />
         <button onClick={this.onClick.bind(this)}>COPY</button>
-        <div className="value">{this.props.text}</div>
+        <div className="value">{this.props.children || this.props.text}</div>
       </div>
     );
   }

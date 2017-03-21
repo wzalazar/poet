@@ -15,42 +15,48 @@ export interface StepPublishAndReviewProps {
   readonly licenseType: LicenseType;
 }
 
-export interface EnableButton {
-  enabled: boolean;
+export interface StepPublishAndReviewState {
+  readonly acceptedTos: boolean;
 }
 
-export default class StepPublishAndReview extends React.Component<StepPublishAndReviewProps, EnableButton> {
-
-  changeEnabled: (newState: boolean) => void;
+export default class StepPublishAndReview extends React.Component<StepPublishAndReviewProps, StepPublishAndReviewState> {
 
   constructor() {
     super(...arguments);
     this.state = {
-      enabled: false
-    }
-    this.changeEnabled = (newState: boolean) => {
-      this.setState({ enabled: newState })
-    }
+      acceptedTos: false
+    };
   }
+
   render() {
     return (
       <section className="step-3-publish">
         <div className="row">
-          <div className="col-sm-7">
-            <TermsOfUse onChange={this.changeEnabled} />
-            <button disabled={!this.state.enabled} onClick={this.props.onSubmit} className="button-primary">Timestamp to the blockchain</button>
+          <div className="col-sm-7 terms-of-use">
+            <TermsOfUse onChange={this.setAcceptedTos} />
+            <button
+              disabled={!this.state.acceptedTos}
+              onClick={this.props.onSubmit}
+              className="button-primary submit">
+              Timestamp to the blockchain
+            </button>
           </div>
-          <Preview
-            className="col-sm-5"
-            authorName={this.props.authorName}
-            workTitle={this.props.workTitle}
-            mediaType="Article"
-            price={this.props.price}
-            licenseType={this.props.licenseType}
-          />
+          <div className="col-sm-5">
+            <Preview
+              authorName={this.props.authorName}
+              workTitle={this.props.workTitle}
+              mediaType="Article"
+              price={this.props.price}
+              licenseType={this.props.licenseType}
+            />
+          </div>
         </div>
       </section>
     )
+  }
+
+  private setAcceptedTos = (value: boolean) => {
+    this.setState({ acceptedTos: value })
   }
 }
 

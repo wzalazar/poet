@@ -1,9 +1,9 @@
 .create-work .step-3-publish {
-  button {
+  .submit {
     width: 376px;
     height: 52px;
   }
-  button[disabled] {
+  .submit[disabled] {
     background-color: #7d7d7d;
     cursor: default;
   }

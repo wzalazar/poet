@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as moment from 'moment';
-const classNames = require('classnames'); // TODO: we have typings for this...
 
 import { Price, LicenseType, ClassNameProps } from '../../../common';
+import { Hash } from '../../../components/atoms/Hash';
 
 import './Preview.scss';
 
@@ -15,11 +15,13 @@ export interface PreviewProps extends ClassNameProps {
 }
 
 export class Preview extends React.Component<PreviewProps, undefined> {
+
   render() {
+
     return (
-      <section className={classNames('preview', this.props.className)} >
+      <section className="preview" >
         <section>
-          <div className="text-center mb-2">
+          <div>
             <h5>Title of Ownership</h5>
             <div>by { this.props.authorName }</div>
           </div>
@@ -63,19 +65,13 @@ export class Preview extends React.Component<PreviewProps, undefined> {
               </tr>
               <tr>
                 <td>Content Hash</td>
-                <td>e1e4af97dab996066ec77e0027511549631f9157dfb6b90852b2ca2ba23136d4</td>
+                <td><Hash className="hash">e1e4af97dab996066ec77e0027511549631f9157dfb6b90852b2ca2ba23136d4</Hash></td>
               </tr>
             </tbody>
           </table>
         </section>
         <hr/>
-        <section>
-          <div className="row mb-2">
-            <div className="col-sm-6"><h5>{ this.props.licenseType && this.props.licenseType.name || 'No License Selected' }</h5></div>
-            <div className="col-sm-6 text-right"><h5>$ {this.props.price && this.props.price.amount || 0} {this.props.price && this.props.price.currency || 'BTC'}</h5></div>
-          </div>
-          <p>{ this.props.licenseType && this.props.licenseType.description || 'No License Selected' }</p>
-        </section>
+        { this.renderLicense() }
         <hr/>
         <section>
           <h5>Notary</h5>
@@ -99,4 +95,24 @@ export class Preview extends React.Component<PreviewProps, undefined> {
       </section>
     );
   }
+
+  private renderLicense = () => {
+    const hasLicense = !!this.props.licenseType;
+
+    if (!hasLicense) {
+      return <section><h5>Unlicensed</h5></section>
+    } else {
+      return (
+        <section>
+          <div className="row">
+            <div className="col-sm-6"><h5>{ this.props.licenseType && this.props.licenseType.name || 'No License Selected' }</h5></div>
+            <div className="col-sm-6"><h5>$ {this.props.price && this.props.price.amount || 0} {this.props.price && this.props.price.currency || 'BTC'}</h5></div>
+          </div>
+          <p>{ this.props.licenseType.description }</p>
+        </section>
+      )
+    }
+
+  };
+
 }
