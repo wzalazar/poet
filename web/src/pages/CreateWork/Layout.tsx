@@ -42,8 +42,8 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
             className="current-step"
           />
         </header>
-        { this.state.selectedStep === 0 && <StepRegister onSubmit={this.onStepRegisterSubmit.bind(this)} /> }
-        { this.state.selectedStep === 1 && <StepLicense onSubmit={this.onStepLicenseSubmit.bind(this)} skip={this.skipLicenseSubmit} /> }
+        { this.state.selectedStep === 0 && <StepRegister onSubmit={this.onStepRegisterSubmit} /> }
+        { this.state.selectedStep === 1 && <StepLicense onSubmit={this.onStepLicenseSubmit} onSkip={this.onStepLicenseSkip} /> }
         { this.state.selectedStep === 2 &&
           <StepPublishAndReview
             workTitle={this.state.workTitle}
@@ -56,7 +56,7 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
     )
   }
 
-  private onStepRegisterSubmit(workData: StepRegisterData) {
+  private onStepRegisterSubmit = (workData: StepRegisterData) => {
     const workTitleAttribute = workData.attributes.find(attribute => attribute.key == 'name');
 
     this.setState({
@@ -66,18 +66,18 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
     });
 
     window.scrollTo(0, 0);
-  }
+  };
 
-  private onStepLicenseSubmit(licenseData: StepLicenseData) {
+  private onStepLicenseSubmit = (licenseData: StepLicenseData) => {
     this.setState({
       selectedStep: 2,
       licenseData: licenseData
     });
 
     window.scrollTo(0, 0);
-  }
+  };
 
-  private skipLicenseSubmit: (() => void) = () => {
+  private onStepLicenseSkip: (() => void) = () => {
     this.setState({ selectedStep: 2 });
     window.scrollTo(0, 0);
   };
