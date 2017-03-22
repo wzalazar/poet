@@ -15,14 +15,9 @@
     justify-content: center;
 
     input {
-      display: block;
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      top: -20px;
-      left: -20px;
-      outline: none;
-      cursor: pointer;
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
     }
 
     button {
