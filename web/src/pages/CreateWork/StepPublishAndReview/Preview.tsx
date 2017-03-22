@@ -65,7 +65,7 @@ export class Preview extends React.Component<PreviewProps, undefined> {
               </tr>
               <tr>
                 <td>Content Hash</td>
-                <td><Hash className="hash">e1e4af97dab996066ec77e0027511549631f9157dfb6b90852b2ca2ba23136d4</Hash></td>
+                <td><Hash className="copyable-hash">e1e4af97dab996066ec77e0027511549631f9157dfb6b90852b2ca2ba23136d4</Hash></td>
               </tr>
             </tbody>
           </table>
