@@ -1,3 +1,5 @@
+@import "../styles/Animations";
+
 .works-by-profile {
 
   table.works {
@@ -106,4 +108,15 @@
     }
   }
 
+  &.loading {
+    td {
+      text-align: center;
+    }
+
+    img {
+      @include animation-loading-quill;
+      width: 50px;
+      margin: 30px;
+    }
+  }
 }

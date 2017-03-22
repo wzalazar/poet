@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { browserHistory } from 'react-router';
 
+import { Images } from '../../images/Images';
 import { Configuration } from '../../configuration';
 import { UrlObject } from '../../common';
 import { DispatchesTransferRequested } from '../../actions/requests';
@@ -89,6 +90,28 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
           onClick={offset => this.setState({offset})}
           className="pagination"
           disabledClassName="disabled"/>
+      </section>
+    )
+  }
+
+  renderLoading() {
+    return (
+      <section className="works-by-profile loading">
+        <table className="works">
+          <thead>
+          <tr>
+            <td>Name</td>
+            <td>Hash</td>
+            <td>Timestamp</td>
+            { this.props.showActions && <td>Actions</td> }
+          </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colSpan={3}><img src={Images.Quill} /></td>
+            </tr>
+          </tbody>
+        </table>
       </section>
     )
   }
