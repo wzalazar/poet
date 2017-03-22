@@ -43,7 +43,7 @@ class ResourceProviderBase<T> extends React.Component<ResourceProviderProps<T>, 
     if (this.props.request && this.props.request.status === FetchStatus.Error) {
       return this.props.provider.renderError(this.props.request.body);
     }
-    return this.props.request && this.props.request.body
+    return this.props.request
       && this.props.provider.renderElement(this.props.request.body, this.props.request.headers)
       || <span/>
   }

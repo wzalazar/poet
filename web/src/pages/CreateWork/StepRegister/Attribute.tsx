@@ -3,6 +3,7 @@ import * as ReactDatePicker from 'react-datepicker';
 import * as moment from 'moment';
 
 import { DatePickerInput } from '../../../components/atoms/DatePickerInput';
+import { ProfileAutocomplete } from '../../../components/atoms/ProfileAutocomplete';
 import { AttributeName } from './AttributeName';
 
 import './Attribute.scss';
@@ -47,7 +48,7 @@ export class Attribute extends React.Component<AttributeProps & AttributeData, A
           />
         </div>
         <div className="col-sm-7">
-          { this.isDate(this.props.keyName) ? this.renderValueDate() : this.renderValueText() }
+          { this.isDate(this.props.keyName) ? this.renderValueDate() : this.isAuthor(this.props.keyName) ? this.renderValueAuthor() : this.renderValueText() }
         </div>
         <div className="col-sm-1">
           { this.props.optional && <button
@@ -65,6 +66,10 @@ export class Attribute extends React.Component<AttributeProps & AttributeData, A
 
   private isDate(keyName: string) {
     return ['dateCreated', 'datePublished'].includes(keyName);
+  }
+
+  private isAuthor(keyName: string) {
+    return keyName === 'author';
   }
 
   private renderValueText() {
@@ -88,8 +93,11 @@ export class Attribute extends React.Component<AttributeProps & AttributeData, A
       customInput={<DatePickerInput />} />;
   }
 
-  focus() {
-    this.attributeName.focus();
+  private renderValueAuthor() {
+    return <ProfileAutocomplete
+      onSelect={this.props.onValueChange}
+      onChange={this.props.onValueChange}
+      value={this.props.value} />
   }
 
   private onBlur = () => {
@@ -98,5 +106,9 @@ export class Attribute extends React.Component<AttributeProps & AttributeData, A
 
   private isValueInvalid() {
     return (this.state.valueInputHasBeenBlurred || this.props.displayErrors ) && !this.props.optional && !this.props.value;
+  }
+
+  public focus() {
+    this.attributeName.focus();
   }
 }

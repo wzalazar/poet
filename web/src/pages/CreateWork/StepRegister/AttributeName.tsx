@@ -4,8 +4,6 @@ import * as classNames from 'classnames';
 
 import { load } from '../../../schema.org';
 
-import './AttributeName.scss';
-
 interface AttributeNameProps {
   readonly attributeName?: string;
   readonly onChange?: (name: string) => void;
@@ -43,7 +41,7 @@ export class AttributeName extends React.Component<AttributeNameProps, Attribute
         onChange={(event: any, value: string) => this.props.onChange(value)}
         getItemValue={(item: any) => item}
         shouldItemRender={this.shouldItemRender.bind(this)}
-        wrapperProps={{className: 'attribute-name'}}
+        wrapperProps={{className: 'autocomplete'}}
         inputProps={{className: classNames('input-text', this.state.menuIsOpen && 'open'), placeholder: 'Attribute Name'}}
         onMenuVisibilityChange={(menuIsOpen: boolean) => this.setState({menuIsOpen})}
       />;
