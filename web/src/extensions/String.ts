@@ -1,5 +1,6 @@
 interface String {
   firstAndLastCharacters(amount: number): string;
+  trimLeft(pattern: string): string;
 }
 
 String.prototype.firstAndLastCharacters = function (amount: number) {
@@ -22,3 +23,7 @@ if (!String.prototype.padEnd) {
     }
   };
 }
+
+String.prototype.trimLeft = function(pattern: string) {
+  return this.replace(new RegExp(`^(${pattern})*`, 'i'), '');
+};

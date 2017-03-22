@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Tabs } from 'react-tabs';
 
+import '../extensions/String';
 import Constants from '../constants';
 import { Navbar } from "./organisms/Navbar";
 import { Footer } from './organisms/Footer';
@@ -25,20 +26,22 @@ interface RootLayoutProps {
 
 function render(props: RootLayoutProps) {
   // TODO: a way for pages to provide these so the RootLayout doesn't need to know what urls are mapped to what pages
-  const worksUrl = '/works';
-  const loginUrl = '/login';
+  const location = props.location.pathname.trimLeft('/');
 
-  const navbarShadow = ![worksUrl, '/'].includes(props.location.pathname);
-  const navbarTransparent = ['/'].includes(props.location.pathname) && props.loggedIn;
-  const navbarMargin = ![worksUrl].includes(props.location.pathname);
-  const displayNavbarLogo = !['/'].includes(props.location.pathname) || !props.loggedIn;
-  const displayNavbarSearch = !['/'].includes(props.location.pathname) || !props.loggedIn;
-  const searchShadow = [worksUrl].includes(props.location.pathname);
+  const worksUrl = 'works';
+  const loginUrl = 'login';
+
+  const navbarShadow = ![worksUrl, ''].includes(location);
+  const navbarTransparent = [''].includes(location) && props.loggedIn;
+  const navbarMargin = ![worksUrl].includes(location);
+  const displayNavbarLogo = ![''].includes(location) || !props.loggedIn;
+  const displayNavbarSearch = ![''].includes(location) || !props.loggedIn;
+  const searchShadow = [worksUrl].includes(location);
 
   return (
     <div className="root-layout">
       { modals }
-      { props.location.pathname !== loginUrl && <Navbar
+      { location !== loginUrl && <Navbar
         shadow={navbarShadow}
         displayLogo={displayNavbarLogo}
         displaySearch={displayNavbarSearch}
@@ -47,7 +50,7 @@ function render(props: RootLayoutProps) {
         margin={navbarMargin}
       /> }
       { props.children }
-      { props.location.pathname !== loginUrl && <Footer/> }
+      { location !== loginUrl && <Footer/> }
     </div>
   );
 }
