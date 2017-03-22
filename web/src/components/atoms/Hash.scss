@@ -26,4 +26,19 @@
   .value {
     font-family: 'Source Code Pro';
   }
+
+  .tooltip {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .4s;
+    padding: 4px;
+    background: black;
+    color: white;
+    border-radius: 4px;
+    position: fixed;
+  }
+
+  &.tooltip-visible .tooltip {
+    opacity: 1;
+  }
 }
