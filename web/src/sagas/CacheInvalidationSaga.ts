@@ -50,7 +50,7 @@ export function CacheInvalidationSaga() {
   return function*() {
     yield takeEvery(Actions.Claims.SubmittedSuccess, claimsSubmittedSuccess);
     yield takeEvery(Actions.Transactions.SubmittedSuccess, invalidateBalance);
-    yield takeEvery(Actions.Licenses.Paid, invalidateLicenses);
+    yield takeEvery(Actions.Licenses.Success, invalidateLicenses);
     yield takeEvery(Actions.Transfer.Success, invalidateWorks);
   }
 }

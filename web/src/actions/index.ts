@@ -63,7 +63,7 @@ export namespace Actions {
 
   export namespace Licenses {
     export const PurchaseRequested = 'license purchase requested';
-    export const Paid = 'license paid';
+    export const Success = 'license bought';
   }
 
   export namespace Modals {

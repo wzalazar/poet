@@ -43,14 +43,14 @@ function* purchaseLicense(action: Action & { work: Work, offering: WorkOffering 
       paymentAddress: offeringAttributes.paymentAddress,
       amountInSatoshis: parseFloat(offeringAttributes.pricingPriceAmount) * (offeringAttributes.pricingPriceCurrency === "BTC" ? 1e8 : 1),
       conceptOf: 'License',
-      resultAction: Actions.Licenses.Paid,
+      resultAction: Actions.Licenses.Success,
       resultPayload: action.offering
     }
   });
 
   while (true) {
     const result = yield race({
-      paidLicense: take(Actions.Licenses.Paid),
+      paidLicense: take(Actions.Licenses.Success),
       noBalance: call(function* () {
         yield take(Actions.noBalanceAvailable);
         return true
@@ -65,10 +65,12 @@ function* purchaseLicense(action: Action & { work: Work, offering: WorkOffering 
     const transaction = result.paidLicense.transaction;
     const outputIndex = result.paidLicense.outputIndex;
     const publicKey = yield select(currentPublicKey);
-    const licenseTx = yield call(submitLicense, reference, transaction, outputIndex, publicKey, offeringAttributes.id);
+    const createdClaims = yield call(submitLicense, reference, transaction, outputIndex, publicKey, offeringAttributes.id);
 
+    console.log(createdClaims)
     yield put({ type: Actions.Modals.SignTransaction.Hide });
-    yield put({ type: Actions.Modals.PurchaseLicense.ShowSuccess });
+    yield put({ type: Actions.Licenses.Success, resultId: createdClaims[0].id });
+    yield put({ type: Actions.Modals.PurchaseLicense.ShowSuccess })
 
     browserHistory.push('/licenses/');
 
