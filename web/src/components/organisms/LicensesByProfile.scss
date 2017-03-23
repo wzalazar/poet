@@ -4,6 +4,7 @@
   ul.licenses {
     list-style: none;
     display: flex;
+    flex-wrap: wrap;
 
     li {
       width: 220px;
@@ -13,6 +14,7 @@
       margin: 16px;
       background-color: #FFFFFF;
       box-shadow: 0 2px 4px 0 #EDEDED;
+      min-width: 22%;
 
       &:hover {
         border-color: #43B980;
