@@ -68,6 +68,7 @@ export interface ModalStore {
   transfer?: boolean;
   readonly purchaseLicense?: PurchaseLicenseStore;
   createWorkResult?: boolean;
+  readonly tryItOut?: boolean;
 }
 
 export interface TransferStore {

@@ -12,7 +12,7 @@ export class Images {
   static readonly Anon = require('./user.svg');
   static readonly SuccessMark = require('./success.svg');
   static readonly SuccessMarkGreen = require('./success-green.svg');
-  static readonly SuccessMarkBlue = require('./success-blue.svg');
   static readonly FailureMark = require('./failure.svg');
   static readonly Badge = require('./badge.svg');
+  static readonly Upload = require('./upload.svg');
 }

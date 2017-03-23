@@ -98,5 +98,9 @@ export namespace Actions {
       export const Show = 'create work result modal show';
       export const Hide = 'create work result modal hide';
     }
+    export namespace TryItOut {
+      export const Show = 'try-it-out modal show';
+      export const Hide = 'try-it-out modal hide';
+    }
   }
 }

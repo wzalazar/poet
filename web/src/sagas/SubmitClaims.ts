@@ -70,6 +70,9 @@ function* signClaims(claimTemplates: any) {
 
   const publicKey = yield select(currentPublicKey);
 
+  if (!publicKey)
+    throw new Error('Claim Sign Saga: cannot sign a claim without a public key.');
+
   const serializedToSign = claimTemplates.payload.map((template: any) => {
     return builder.getEncodedForSigning(template, publicKey);
   });

@@ -28,36 +28,70 @@ export class TextUpload extends React.Component<TextUploadProps, undefined> {
   }
 
   render() {
+    return this.props.children ? this.renderCustomChildren() : this.renderDefaultChildren();
+  }
+
+  private renderDefaultChildren() {
     return (
       <section className={this.props.className} >
-        <input
-          type="file"
-          ref={fileInput => this.fileInput = fileInput}
-          onChange={this.onFileInputChange.bind(this)}
-          accept=".txt, .md"
-          style={{'display': 'none'}}
-        />
+        {this.renderFileInput()}
         <div>
           <textarea
             ref={textArea => this.textArea = textArea}
             value={this.props.text}
-            onChange={this.onTextAreaChange.bind(this)}
+            onChange={this.onTextAreaChange}
             placeholder={this.props.placeholder} />
         </div>
         <div>
-          <button onClick={this.onClick.bind(this)} className={this.props.buttonClassName}>Upload</button>
+          <button onClick={this.onClick} className={this.props.buttonClassName}>Upload</button>
           <span>acceptable formats: .txt, .md</span>
         </div>
       </section>
     )
   }
 
-  private onClick(event: Event) {
-    event.preventDefault();
-    this.fileInput.click();
+  private renderCustomChildren() {
+    if (!this.validateChildren())
+      throw new Error('TextUpload must have a TextUploadButton child.');
+
+    return (
+      <section className={this.props.className} >
+        {this.renderFileInput()}
+        {React.Children.map(this.props.children, (child: any) => {
+          if (child.type === TextUploadButton)
+            return React.cloneElement(child, {onClick: this.onClick});
+          else
+            return child;
+        })}
+
+      </section>
+    )
   }
 
-  private onFileInputChange(event: Event) {
+  private renderFileInput = () => {
+    return <input
+      type="file"
+      ref={fileInput => this.fileInput = fileInput}
+      onChange={this.onFileInputChange}
+      accept=".txt, .md"
+      style={{'display': 'none'}}
+    />;
+  }
+
+  private validateChildren = () => {
+    const hasButton = () => {
+      return React.Children.map(this.props.children, (child: any) => child.type === TextUploadButton).some(el => el);
+    };
+
+    return hasButton();
+  };
+
+  private onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    this.fileInput.click();
+  };
+
+  private onFileInputChange = (event: React.FormEvent<HTMLInputElement>) => {
     event.preventDefault();
 
     const file = this.fileInput.files[0];
@@ -72,19 +106,29 @@ export class TextUpload extends React.Component<TextUploadProps, undefined> {
     }
 
     const reader = new FileReader();
-    reader.onload = this.onFileLoaded.bind(this);
+    reader.onload = this.onFileLoaded;
     reader.readAsText(file);
 
     this.props.onFileNameChange && this.props.onFileNameChange(file.name);
 
-  }
+  };
 
-  private onFileLoaded(event: any) {
+  private onFileLoaded = (event: any) => {
     this.props.onChange && this.props.onChange(event.target.result);
-  }
+  };
 
-  private onTextAreaChange(event: any) {
+  private onTextAreaChange = (event: any) => {
     this.props.onChange && this.props.onChange(this.textArea.value);
-  }
+  };
 
+}
+
+interface TextUploadButtonProps {
+  readonly onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+export class TextUploadButton extends React.Component<TextUploadButtonProps, undefined> {
+  render() {
+    return <button onClick={this.props.onClick}>{this.props.children}</button>;
+  }
 }

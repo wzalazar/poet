@@ -3,12 +3,12 @@ const classNames = require('classnames');
 
 import { ClassNameProps } from '../../common';
 
-export interface OptionsProps extends ClassNameProps {
-  readonly selectedId: string;
-  readonly onOptionSelected: (id: string) => void;
+export interface OptionGroupProps extends ClassNameProps {
+  readonly selectedId: any;
+  readonly onOptionSelected: (id: any) => void;
 }
 
-export class OptionGroup extends React.Component<OptionsProps, undefined> {
+export class OptionGroup extends React.Component<OptionGroupProps, undefined> {
   render() {
     return (
       <ol className={classNames(this.props.className)} >
@@ -28,7 +28,7 @@ export class OptionGroup extends React.Component<OptionsProps, undefined> {
 }
 
 export interface OptionProps {
-  readonly id: string;
+  readonly id: any;
   readonly isSelected?: boolean;
   readonly onClick?: () => void;
 }

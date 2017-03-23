@@ -92,7 +92,6 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
           { key: 'mediaType', value: this.state.workData.mediaType },
           { key: 'articleType', value: this.state.workData.articleType },
           { key: 'content', value: this.state.workData.content },
-          //{ key: 'author', value: this.props.userPublicKey },
           { key: 'dateSubmitted', value: '' + new Date().getTime() }
         ]
       },

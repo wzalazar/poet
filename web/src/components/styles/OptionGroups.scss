@@ -26,7 +26,7 @@
     border-bottom: $border;
     background-color: transparent;
     opacity: 0.75;
-    cursor: default;
+    cursor: pointer;
 
     &:hover {
       border-color: lighten($border-color, 15%);
@@ -57,7 +57,7 @@
     border-radius: 3px;
     background-color: white;
     box-shadow: 0 2px 4px #EDEDED;
-    cursor: default;
+    cursor: pointer;
 
     &:hover {
       border-color: #43B980;

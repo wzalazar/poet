@@ -15,6 +15,7 @@ import './Navbar.scss';
 interface NavbarActions {
   dispatchSearchClick: () => Action;
   dispatchSearchChange: (searchQuery: string) => Action
+  dispatchShowTryItOut: () => Action
 }
 
 export interface NavbarProps {
@@ -85,9 +86,9 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
       this.renderNavLink('documentation/overview', 'Documentation'),
       this.renderNavLink('login', 'Login', 'login-button button-secondary'),
       <li key='try-it-out'>
-        <Link to={'/try-it-out'} className="try-it-out">
+        <button className="try-it-out" onClick={this.props.dispatchShowTryItOut}>
           <img src={Images.QuillInverted} /><span>Try It Out</span>
-        </Link>
+        </button>
       </li>
     ];
   }
@@ -121,7 +122,8 @@ function mapStateToProps(state: any, ownProps: NavbarProps): NavbarProps {
 
 const mapDispatch = {
   dispatchSearchClick: () => ({ type: Actions.Search.Submit }),
-  dispatchSearchChange: (searchQuery: string) => ({ type: Actions.Search.Change, searchQuery })
+  dispatchSearchChange: (searchQuery: string) => ({ type: Actions.Search.Change, searchQuery }),
+  dispatchShowTryItOut: () => ({ type: Actions.Modals.TryItOut.Show })
 };
 
 export const Navbar = connect(mapStateToProps, mapDispatch)(NavbarComponent);

@@ -42,6 +42,11 @@ export function modalsReducer(state: ModalStore, action: Action): ModalStore {
       return { ...state, createWorkResult: true };
     case Actions.Modals.CreateWorkResult.Hide:
       return { ...state, createWorkResult: false };
+
+    case Actions.Modals.TryItOut.Show:
+      return { ...state, tryItOut: true};
+    case Actions.Modals.TryItOut.Hide:
+      return { ...state, tryItOut: false};
   }
   return state || {};
 }
