@@ -31,6 +31,8 @@ interface bitcoreLib {
 interface IAddress {
   (source: string, network: Network): Address
   (source: PublicKey, network: Network): Address
+
+  isValid(something: any): boolean
 }
 interface Address {
 

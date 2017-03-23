@@ -9,6 +9,7 @@ import './WalletOperations.scss';
 
 interface WalletOperationsProps {
   readonly address?: string;
+  readonly balance?: number;
   readonly requestWithdrawal?: any;
 }
 
@@ -26,7 +27,7 @@ export class WalletOperations extends React.Component<WalletOperationsProps, und
             <WalletOperationDeposit address={this.props.address} />
           </TabPanel>
           <TabPanel>
-            <WalletOperationWithdraw address={this.props.address} requestWithdrawal={this.props.requestWithdrawal}/>
+            <WalletOperationWithdraw address={this.props.address} requestWithdrawal={this.props.requestWithdrawal} balance={this.props.balance}/>
           </TabPanel>
         </Tabs>
       </section>

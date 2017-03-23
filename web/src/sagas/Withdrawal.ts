@@ -19,6 +19,7 @@ function* withdraw(action: any) {
   });
 
   yield take(Actions.withdrawalDone);
+  yield put({ type: Actions.Modals.SignTransaction.Hide })
 }
 
 export default function() {
