@@ -63,6 +63,9 @@ export function LicenseEmittedDate(props: { license: License }) {
 export class ProfilePictureById extends ProfileById<ClassNameProps> {
 
   renderElement(resource: Profile): JSX.Element {
+    if (!resource.attributes || !resource.attributes.imageData) {
+      return <img src={Images.Anon} />
+    }
     return <img src={resource.attributes.imageData}/>
   }
 
