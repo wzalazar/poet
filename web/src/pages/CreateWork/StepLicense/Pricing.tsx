@@ -67,7 +67,7 @@ export class Pricing extends React.Component<PricingProps, PricingState> {
       ...this.props.pricing,
       price: {
         ...this.props.pricing.price,
-        amount: parseInt(event.currentTarget.value)
+        amount: parseFloat(event.currentTarget.value)
       },
     });
   };
