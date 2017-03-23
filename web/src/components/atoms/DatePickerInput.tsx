@@ -13,6 +13,8 @@ interface DatePickerInputProps extends ClassNameProps {
 }
 
 export class DatePickerInput extends React.Component<DatePickerInputProps, undefined>{
+  focus() {
+  }
   render() {
     return (
       <button
