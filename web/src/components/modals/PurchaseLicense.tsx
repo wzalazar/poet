@@ -2,6 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Action } from 'redux'
 import { browserHistory } from 'react-router';
+import * as moment from 'moment'
 
 import { Configuration } from '../../configuration';
 import { WorkOffering, Work } from '../../Interfaces';
@@ -13,6 +14,7 @@ import { WalletBalance, UnspentTransactionOutput } from '../atoms/WalletBalance'
 import Modal, { ModalProps } from './Modal'
 
 import './PurchaseLicense.scss'
+import { AuthorWithLink } from '../atoms/Work';
 
 interface PurchaseLicenseProps extends ModalProps {
   readonly success: boolean;
@@ -20,6 +22,7 @@ interface PurchaseLicenseProps extends ModalProps {
   readonly address: string;
   readonly offering: WorkOffering;
   readonly work: Work;
+  readonly resultId?: string;
   readonly utxos: ReadonlyArray<UnspentTransactionOutput>;
 }
 
@@ -64,20 +67,20 @@ class PurchaseLicenseComponent extends Modal<PurchaseLicenseProps, undefined> {
 
   private renderSuccess() {
 
-    const mockIframe = '<iframe src=“http://po.et/00fj74hbvv0hdvll0471bn”><div class=“poet-badge” style=“script/poetbadge.css”><img src=“embed”></div></iframe>';
+    const license = (id: string, time: string) => `<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"></head><body> <div style=" width: 165px; height: 50px; background-color: white; font-family: Roboto; font-size: 12px; border: 1px solid #CDCDCD; border-radius: 4px; box-shadow: 0 2px 0 0 #F0F0F0;"> <a href="https://poet.host/l/${id}" style=" color: #35393E; text-decoration: none; display: flex; flex-direction: row;  height: 50px"> <img src="https://poet.host/images/quill64.png" style=" width: 31px; height: 31px; margin-top: 8px; margin-left: 8px; margin-right: 8px; background-color: #393534; color: #35393E; font-family: Roboto;"> <div><p style="padding-top: 10px; line-height: 15px; margin: 0; font-size: 10pt; font-weight: bold; text-align: left;">Licensed via po.et</p><p style="text-align: left; line-height: 15px; margin: 0; font-size: 10px; padding-top: 1px; font-size: 8px; font-family: Roboto; font-weight: bold; line-height: 13px; color: #707070;">${time}</p></div></a></div>`;
 
     return (
       <section className="modal-purchase-license-success">
         <header>
           <h1>{ this.props.work && this.props.work.attributes.name }</h1>
-          <h2>Original Author: { this.props.work && this.props.work.attributes.author }</h2>
+          <h2>Original Author: <AuthorWithLink work={this.props.work} /></h2>
         </header>
         <main>
           <div className="row">
             <div className="col-sm-3"><label>Message</label></div>
             <div className="col-sm-9">
               <div className="iframe">
-                <textarea value={mockIframe} ref={textarea => this.textarea = textarea} />
+                <textarea value={license(this.props.resultId, moment().format(Configuration.dateTimeFormat))} ref={textarea => this.textarea = textarea} />
                 <button onClick={this.onCopy}>Copy</button>
               </div>
             </div>
@@ -90,7 +93,7 @@ class PurchaseLicenseComponent extends Modal<PurchaseLicenseProps, undefined> {
                   <img src={Images.Badge} />
                 </div>
                 <div className="data">
-                  <h3>Published via po.et</h3>
+                  <h3>Licensed via po.et</h3>
                   <time>4.15.16  9:30 AM</time>
                 </div>
               </div>
@@ -128,6 +131,7 @@ function mapStateToProps(state: any): PurchaseLicenseProps {
     address,
     offering: state.modals.purchaseLicense && state.modals.purchaseLicense.offering,
     work: state.modals.purchaseLicense && state.modals.purchaseLicense.work,
+    resultId: state.modals.purchaseLicense && state.modals.purchaseLicense.resultId,
     utxos: fetchUtxo && fetchUtxo.body
   }
 }
