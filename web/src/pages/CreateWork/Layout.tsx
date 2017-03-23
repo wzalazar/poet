@@ -103,7 +103,7 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
           'licenseType': this.state.licenseData.licenseType.id,
           'licenseDescription': this.state.licenseData.licenseType.description,
           'pricingFrequency': this.state.licenseData.pricing.frequency,
-          'pricingPriceAmount': this.state.licenseData.pricing.price.amount,
+          'pricingPriceAmount': '' + this.state.licenseData.pricing.price.amount,
           'pricingPriceCurrency': this.state.licenseData.pricing.price.currency,
           'paymentAddress': publicKeyToAddress(this.props.userPublicKey),
           'amountInSatoshis': (this.state.licenseData.pricing.price.amount * 1e8).toFixed(0)
