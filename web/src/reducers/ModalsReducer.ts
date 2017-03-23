@@ -33,7 +33,7 @@ export function modalsReducer(state: ModalStore, action: Action): ModalStore {
       } };
     case Actions.Licenses.Success:
       return { ...state, purchaseLicense: {
-        ...state.purchaseLicense, resultId: (action as any).payload.resultId
+        ...state.purchaseLicense, resultId: (action as any).resultId
       } };
 
     case Actions.Modals.PurchaseLicense.ShowSuccess:

@@ -20,7 +20,7 @@ abstract class ProfileByWorkOwner<State> extends PoetAPIResourceProvider<Profile
 
 export class OwnerName extends ProfileByWorkOwner<undefined> {
   renderElement(resource: Profile): JSX.Element {
-    return (<span>{resource.attributes.displayName}</span>);
+    return (<span>{resource.attributes && resource.attributes.displayName || 'Anonymous'}</span>);
   }
 }
 

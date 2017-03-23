@@ -80,7 +80,7 @@ export class LicensesLayout extends PoetAPIResourceProvider<LicensesResource, Li
           searchQuery={this.state.searchQuery}
           relation={this.selectedFilterRelationship()}
           limit={Configuration.pagination.visiblePageCount}
-          showActions />
+          showActions={false} />
       </section>
     )
   }
