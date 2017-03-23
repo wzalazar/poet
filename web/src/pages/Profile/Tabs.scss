@@ -2,4 +2,17 @@
   .tab-list li {
     cursor: pointer;
   }
+
+  .no-results {
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 4px 0 #ECECEC;
+    border: 1px solid #E6E3E1;
+    border-radius: 4px;
+    padding: 30px ;
+    display: flex;
+
+    a {
+      margin-right: 5px;
+    }
+  }
 }

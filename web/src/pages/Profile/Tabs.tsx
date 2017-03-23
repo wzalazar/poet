@@ -4,6 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Configuration } from '../../configuration';
 import { HexString } from '../../common';
 
+import { ProfileNameWithLink } from '../../components/atoms/Profile';
 import { LicensesByProfile } from '../../components/organisms/LicensesByProfile';
 import { WorksByProfile } from '../../components/organisms/WorksByProfile';
 
@@ -27,13 +28,21 @@ export class ProfileTabs extends React.Component<ProfileTabsProps, any> {
             owner={this.props.id}
             transferRequested={() => null}
             relationship="author"
-            query="" />
+            query="" >
+            <div className="no-results">
+              <ProfileNameWithLink profileId={this.props.id}>This user&nbsp;</ProfileNameWithLink> hasn't registered any works yet.
+            </div>
+          </WorksByProfile>
         </TabPanel>
         <TabPanel>
           <LicensesByProfile
             publicKey={this.props.id}
             relation="relatedTo"
-            limit={Configuration.pagination.limit} />
+            limit={Configuration.pagination.limit} >
+            <div className="no-results">
+              <ProfileNameWithLink profileId={this.props.id} >This user&nbsp;</ProfileNameWithLink> doesn't own any licenses yet.
+            </div>
+          </LicensesByProfile>
         </TabPanel>
       </Tabs>
     )

@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import '../../extensions/String';
 
+import { Images } from '../../images/Images';
 import { Configuration } from '../../configuration';
 import { OwnerName } from '../atoms/Work';
 import { License } from '../../Interfaces';
@@ -13,7 +14,7 @@ import { Pagination } from '../molecules/Pagination';
 
 import './LicensesByProfile.scss';
 
-type LicensesResource = ReadonlyArray<License>;
+export type LicensesResource = ReadonlyArray<License>;
 
 export type LicenseToProfileRelationship = 'relatedTo' | 'emitter' | 'holder';
 
@@ -59,6 +60,14 @@ export class LicensesByProfile extends PoetAPIResourceProvider<LicensesResource,
     return (licenses && licenses.length) ? this.renderLicenses(licenses, headers) : this.renderNoLicenses();
   }
 
+  renderLoading() {
+    return (
+      <section className="licenses-by-profile loading">
+        <img src={Images.Quill} />
+      </section>
+    )
+  }
+
   private renderLicenses(licenses: LicensesResource, headers: Headers) {
     const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
     return (
@@ -81,7 +90,7 @@ export class LicensesByProfile extends PoetAPIResourceProvider<LicensesResource,
   private renderNoLicenses() {
     return (
       <section className="licenses">
-        <div>{ !this.props.searchQuery ? 'No licenses to show' : 'No licenses match the given criteria' }</div>
+        <div>{ this.props.children || (!this.props.searchQuery ? 'No licenses to show' : 'No licenses match the given criteria') }</div>
       </section>
     )
   }

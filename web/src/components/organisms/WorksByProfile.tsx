@@ -60,38 +60,14 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
       this.setState({ offset: 0 })
   }
 
-  renderElement(works: Work[], headers: Headers): JSX.Element {
+  renderElement(works: Work[], headers: Headers) {
     const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
 
     if (!count)
       return this.renderNoWorks();
+    else
+      return this.renderWorks(works, count);
 
-    return (
-      <section className="works-by-profile">
-        <table className="works">
-          <thead>
-            <tr>
-              <td>Name</td>
-              <td>Hash</td>
-              <td>Timestamp</td>
-              { this.props.showActions && <td>Actions</td> }
-            </tr>
-          </thead>
-          <tbody>
-            { works.map(this.renderWork.bind(this)) }
-          </tbody>
-        </table>
-
-        <Pagination
-          offset={this.state.offset}
-          limit={this.props.limit}
-          count={count}
-          visiblePageCount={Configuration.pagination.visiblePageCount}
-          onClick={offset => this.setState({offset})}
-          className="pagination"
-          disabledClassName="disabled"/>
-      </section>
-    )
   }
 
   renderLoading() {
@@ -112,6 +88,35 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
             </tr>
           </tbody>
         </table>
+      </section>
+    )
+  }
+
+  private renderWorks(works: Work[], count: number) {
+    return (
+      <section className="works-by-profile">
+        <table className="works">
+          <thead>
+          <tr>
+            <td>Name</td>
+            <td>Hash</td>
+            <td>Timestamp</td>
+            { this.props.showActions && <td>Actions</td> }
+          </tr>
+          </thead>
+          <tbody>
+          { works.map(this.renderWork.bind(this)) }
+          </tbody>
+        </table>
+
+        <Pagination
+          offset={this.state.offset}
+          limit={this.props.limit}
+          count={count}
+          visiblePageCount={Configuration.pagination.visiblePageCount}
+          onClick={offset => this.setState({offset})}
+          className="pagination"
+          disabledClassName="disabled"/>
       </section>
     )
   }
@@ -143,7 +148,7 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
 
   private renderNoWorks() {
     return (
-      <section>{ !this.props.query ? 'No works to show' : 'No works match the given criteria' }</section>
+      <section>{ this.props.children || (!this.props.query ? 'No works to show' : 'No works match the given criteria') }</section>
     )
   }
 

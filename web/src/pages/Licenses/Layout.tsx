@@ -1,13 +1,18 @@
 import * as React from 'react';
+import { Link } from 'react-router';
 
+import { Images } from '../../images/Images';
 import { HexString } from '../../common';
-
+import { Configuration } from '../../configuration';
 import { SearchInput } from '../../components/atoms/SearchInput';
-import { LicensesByProfile, LicenseToProfileRelationship } from '../../components/organisms/LicensesByProfile'
+import {
+  LicensesByProfile, LicensesResource,
+  LicenseToProfileRelationship
+} from '../../components/organisms/LicensesByProfile'
+import { HEADER_X_TOTAL_COUNT, PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
 import { Filters } from './Filters';
 
 import './Layout.scss';
-import { Configuration } from '../../configuration';
 
 interface LicensesProps {
   publicKey: HexString;
@@ -18,7 +23,7 @@ interface LicensesLayoutState {
   readonly searchQuery?: string;
 }
 
-export class LicensesLayout extends React.Component<LicensesProps, LicensesLayoutState> {
+export class LicensesLayout extends PoetAPIResourceProvider<LicensesResource, LicensesProps, LicensesLayoutState> {
 
   constructor() {
     super(...arguments);
@@ -28,7 +33,35 @@ export class LicensesLayout extends React.Component<LicensesProps, LicensesLayou
     }
   }
 
-  render() {
+  poetURL() {
+    return {
+      url: `/licenses`,
+      query: {
+        limit: 1,
+        relatedTo: this.props.publicKey
+      }
+    }
+  }
+
+  renderElement(licenses: LicensesResource, headers: Headers) {
+    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+    return count ? this.renderLicenses() : this.renderNoLicenses();
+  }
+
+  renderLoading() {
+    return (
+      <section className="container page-licenses loading">
+        <header>
+          <h1>Licenses</h1>
+        </header>
+        <main>
+          <img src={Images.Quill} />
+        </main>
+      </section>
+    )
+  }
+
+  private renderLicenses() {
     return (
       <section className="container page-licenses">
         <header>
@@ -48,6 +81,22 @@ export class LicensesLayout extends React.Component<LicensesProps, LicensesLayou
           relation={this.selectedFilterRelationship()}
           limit={Configuration.pagination.visiblePageCount}
           showActions />
+      </section>
+    )
+  }
+
+  private renderNoLicenses() {
+    return (
+      <section className="container page-licenses no-licenses">
+        <header>
+          <h1>Licenses</h1>
+        </header>
+        <main>
+          <div className="circle"></div>
+          <div className="message">
+            You have no licenses yet — <Link to="/works">browse published works</Link> to buy some or <Link to="/create-work">register a new work</Link> of your own to start selling licenses.
+          </div>
+        </main>
       </section>
     )
   }
