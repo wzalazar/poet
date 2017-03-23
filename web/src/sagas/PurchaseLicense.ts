@@ -67,7 +67,6 @@ function* purchaseLicense(action: Action & { work: Work, offering: WorkOffering 
     const publicKey = yield select(currentPublicKey);
     const createdClaims = yield call(submitLicense, reference, transaction, outputIndex, publicKey, action.offering.id);
 
-    console.log(createdClaims)
     yield put({ type: Actions.Modals.SignTransaction.Hide });
     yield put({ type: Actions.Licenses.Success, resultId: createdClaims[0].id });
     yield put({ type: Actions.Modals.PurchaseLicense.ShowSuccess })
