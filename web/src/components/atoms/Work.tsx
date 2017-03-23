@@ -73,12 +73,12 @@ export class WorkHashById extends WorkById<undefined> {
 }
 
 export function AuthorWithLink(props: WorkProps) {
-  return props.work.author ? (
+  return props.work && props.work.author ? (
     <ProfileNameWithLink profileId={props.work.author.id}>
       {props.work.author.displayName}
     </ProfileNameWithLink>
   ) : (
-    <span>{props.work.attributes.author || 'Unknown Author'}</span>
+    <span>{props.work && props.work.attributes && props.work.attributes.author || 'Unknown Author'}</span>
   );
 }
 
