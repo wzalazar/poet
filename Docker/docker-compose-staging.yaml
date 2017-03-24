@@ -89,6 +89,7 @@ services:
       dockerfile: ./Docker/nginx-staging.dockerfile
     volumes:
       - ./letsencrypt:/etc/letsencrypt
+      - ../web/src:/images
     networks:
       - outside
       - http
