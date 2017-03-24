@@ -8,12 +8,11 @@ import { LicenseOwnerNameWithLink, LicenseEmitterNameWithLink, LicenseEmittedDat
 import { WorkHashById } from '../../../components/atoms/Work';
 import moment = require('moment');
 import { Configuration } from '../../../configuration';
+import { badge } from '../../../components/LicenseBadge';
 
 export class SingleLicense extends PoetAPIResourceProvider<License, SelectLicenseById, undefined> {
 
   textarea: HTMLTextAreaElement;
-
-  license = (id: string, time: string) => `<iframe src="https://poet.host/p/${id}" width="165" height="50" style="border: none"><link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"></head><iframe> <div style=" width: 165px; height: 50px; background-color: white; font-family: Roboto; font-size: 12px; border: 1px solid #CDCDCD; border-radius: 4px; box-shadow: 0 2px 0 0 #F0F0F0;"> <a href="https://poet.host/l/${id}" style=" color: #35393E; text-decoration: none; display: flex; flex-direction: row;  height: 50px"> <img src="https://poet.host/images/quill64.png" style=" width: 31px; height: 31px; margin-top: 8px; margin-left: 8px; margin-right: 8px; background-color: #393534; color: #35393E; font-family: Roboto;"> <div><p style="padding-top: 10px; line-height: 15px; margin: 0; font-size: 10pt; font-weight: bold; text-align: left;">Licensed via po.et</p><p style="text-align: left; line-height: 15px; margin: 0; font-size: 10px; padding-top: 1px; font-size: 8px; font-family: Roboto; font-weight: bold; line-height: 13px; color: #707070;">${time}</p></div></a></div></iframe>`;
 
   poetURL(): string {
     return '/licenses/' + this.props.licenseId;
@@ -72,7 +71,7 @@ export class SingleLicense extends PoetAPIResourceProvider<License, SelectLicens
             </div>
             <div className="value col-sm-8">
               <div className="iframe">
-                <textarea value={this.license(resource.id, moment(resource.claimInfo.timestamp * 1000).format(Configuration.dateTimeFormat))} ref={textarea => this.textarea = textarea} />
+                <textarea value={badge(resource.id, moment(resource.claimInfo.timestamp * 1000).format(Configuration.dateTimeFormat))} ref={textarea => this.textarea = textarea} />
                 <button onClick={this.onCopy}>Copy</button>
               </div>
             </div>

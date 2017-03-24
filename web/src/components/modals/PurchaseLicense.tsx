@@ -15,6 +15,7 @@ import Modal, { ModalProps } from './Modal'
 
 import './PurchaseLicense.scss'
 import { AuthorWithLink } from '../atoms/Work';
+import { badge } from '../LicenseBadge';
 
 interface PurchaseLicenseProps extends ModalProps {
   readonly success: boolean;
@@ -67,8 +68,6 @@ class PurchaseLicenseComponent extends Modal<PurchaseLicenseProps, undefined> {
 
   private renderSuccess() {
 
-    const license = (id: string, time: string) => `<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"></head><body> <div style=" width: 165px; height: 50px; background-color: white; font-family: Roboto; font-size: 12px; border: 1px solid #CDCDCD; border-radius: 4px; box-shadow: 0 2px 0 0 #F0F0F0;"> <a href="https://poet.host/l/${id}" style=" color: #35393E; text-decoration: none; display: flex; flex-direction: row;  height: 50px"> <img src="https://poet.host/images/quill64.png" style=" width: 31px; height: 31px; margin-top: 8px; margin-left: 8px; margin-right: 8px; background-color: #393534; color: #35393E; font-family: Roboto;"> <div><p style="padding-top: 10px; line-height: 15px; margin: 0; font-size: 10pt; font-weight: bold; text-align: left;">Licensed via po.et</p><p style="text-align: left; line-height: 15px; margin: 0; font-size: 10px; padding-top: 1px; font-size: 8px; font-family: Roboto; font-weight: bold; line-height: 13px; color: #707070;">${time}</p></div></a></div>`;
-
     return (
       <section className="modal-purchase-license-success">
         <header>
@@ -80,7 +79,7 @@ class PurchaseLicenseComponent extends Modal<PurchaseLicenseProps, undefined> {
             <div className="col-sm-3"><label>Message</label></div>
             <div className="col-sm-9">
               <div className="iframe">
-                <textarea value={license(this.props.resultId, moment().format(Configuration.dateTimeFormat))} ref={textarea => this.textarea = textarea} />
+                <textarea value={badge(this.props.resultId, moment().format(Configuration.dateTimeFormat))} ref={textarea => this.textarea = textarea} />
                 <button onClick={this.onCopy}>Copy</button>
               </div>
             </div>
