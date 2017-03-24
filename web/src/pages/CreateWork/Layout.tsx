@@ -48,6 +48,8 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
           <StepPublishAndReview
             workTitle={this.state.workTitle}
             price={this.state.licenseData && this.state.licenseData.pricing.price}
+            contentHash={this.getContentHash()}
+            wordCount={this.getWordCount()}
             onSubmit={this.submitWork.bind(this)}
             licenseType={this.state.licenseData && this.state.licenseData.licenseType}
             authorName={this.state.workData.attributes.find(({key, value}) => key === 'author').value}
@@ -55,6 +57,21 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
       </section>
 
     )
+  }
+
+  getContentHash() {
+    return this.getAttribute('contentHash');
+  }
+
+  getWordCount() {
+    return parseInt(this.getAttribute('wordCount'), 10);
+  }
+
+  getAttribute(key: string) {
+    const filter = this.state.workData.attributes.filter((entry) => entry.key === key);
+    if (filter.length) {
+      return filter[0].value;
+    }
   }
 
   private onStepRegisterSubmit = (workData: StepRegisterData) => {

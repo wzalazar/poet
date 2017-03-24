@@ -11,6 +11,8 @@ export interface StepPublishAndReviewProps {
   readonly onSubmit: () => void;
   readonly authorName?: string;
   readonly workTitle: string;
+  readonly contentHash?: string;
+  readonly wordCount?: number;
   readonly price: Price;
   readonly licenseType: LicenseType;
 }
@@ -45,6 +47,8 @@ export default class StepPublishAndReview extends React.Component<StepPublishAnd
             <Preview
               authorName={this.props.authorName}
               workTitle={this.props.workTitle}
+              contentHash={this.props.contentHash}
+              wordCount={this.props.wordCount}
               mediaType="Article"
               price={this.props.price}
               licenseType={this.props.licenseType}

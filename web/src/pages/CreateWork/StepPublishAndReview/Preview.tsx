@@ -10,6 +10,8 @@ export interface PreviewProps extends ClassNameProps {
   readonly authorName?: string;
   readonly mediaType: string;
   readonly workTitle: string;
+  readonly wordCount?: number;
+  readonly contentHash?: string;
   readonly price: Price;
   readonly licenseType: LicenseType;
 }
@@ -47,17 +49,13 @@ export class Preview extends React.Component<PreviewProps, undefined> {
           <h5>{ this.props.workTitle } </h5>
           <table>
             <tbody>
+            { this.props.wordCount &&
               <tr>
                 <td>Word Count</td>
-                <td>14,104</td>
+                <td>{ this.props.wordCount }</td>
               </tr>
+            }
               <tr>
-                <td>Tags</td>
-                <td>
-                  <span className="badge badge-primary">Primary</span>
-                  <span className="badge badge-success">Success</span>
-                  <span className="badge badge-info">Info</span>
-                </td>
               </tr>
               <tr>
                 <td>Category</td>
@@ -65,7 +63,7 @@ export class Preview extends React.Component<PreviewProps, undefined> {
               </tr>
               <tr>
                 <td>Content Hash</td>
-                <td><Hash className="copyable-hash">e1e4af97dab996066ec77e0027511549631f9157dfb6b90852b2ca2ba23136d4</Hash></td>
+                <td><Hash className="copyable-hash">{ this.props.contentHash }</Hash></td>
               </tr>
             </tbody>
           </table>
@@ -83,7 +81,7 @@ export class Preview extends React.Component<PreviewProps, undefined> {
             </tr>
             <tr>
               <td>Notary</td>
-              <td>PoetNotary141</td>
+              <td>Poet</td>
             </tr>
             <tr>
               <td>Estimated</td>

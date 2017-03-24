@@ -30,13 +30,19 @@ export class OptionGroup extends React.Component<OptionGroupProps, undefined> {
 export interface OptionProps {
   readonly id: any;
   readonly isSelected?: boolean;
+  readonly disabled?: boolean;
   readonly onClick?: () => void;
 }
 
 export class Option extends React.Component<OptionProps, undefined> {
+  click = () => {
+    if (!this.props.disabled) {
+      this.props.onClick()
+    }
+  }
   render() {
     return (
-      <li key={this.props.id} className={classNames(this.props.isSelected && 'selected')} onClick={() => this.props.onClick()}>
+      <li key={this.props.id} className={classNames(this.props.isSelected && 'selected', this.props.disabled && 'disabled')} onClick={this.click}>
         {this.props.children}
       </li>
     )

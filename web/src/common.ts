@@ -30,7 +30,7 @@ export class LicenseType {
 }
 
 export const LicenseTypes: ReadonlyArray<LicenseType> = [
-  new LicenseType('pay-to-publish', 'Pay to Publish', 'Lorem Ipsum Pay to Publish')
+  new LicenseType('license-to-publish', 'License to Publish', 'Publication rights are extended to anyone who provides proof of payment on the Bitcoin blockchain for the amount expressed by the owner of this creative work.')
 ];
 
 export interface ClassNameProps {

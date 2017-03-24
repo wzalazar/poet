@@ -25,10 +25,12 @@ export class MediaType extends React.Component<MediaTypeProps, undefined> {
           onOptionSelected={this.props.onMediaTypeSelected}
         >
           <Option id="article">Article</Option>
-          <Option id="audio">Audio</Option>
-          <Option id="video">Video</Option>
-          <Option id="image">Image</Option>
+          <Option id="document">Document</Option>
+          <Option id="audio" disabled>Audio</Option>
+          <Option id="video" disabled>Video</Option>
+          <Option id="image" disabled>Image</Option>
         </OptionGroup>
+        { this.props.mediaType === "article" &&
         <OptionGroup
           className="panel-option-group"
           selectedId={this.props.articleType}
@@ -39,6 +41,7 @@ export class MediaType extends React.Component<MediaTypeProps, undefined> {
           <Option id="scholarly">Scholarly</Option>
           <Option id="technical">Technical</Option>
         </OptionGroup>
+        }
       </section>
     )
   }
