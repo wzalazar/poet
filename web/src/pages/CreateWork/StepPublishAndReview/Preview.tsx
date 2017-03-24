@@ -56,15 +56,15 @@ export class Preview extends React.Component<PreviewProps, undefined> {
               </tr>
             }
               <tr>
-              </tr>
-              <tr>
                 <td>Category</td>
                 <td>Bitcoin</td>
               </tr>
+            {this.props.contentHash &&
               <tr>
                 <td>Content Hash</td>
                 <td><Hash className="copyable-hash">{ this.props.contentHash }</Hash></td>
               </tr>
+            }
             </tbody>
           </table>
         </section>
