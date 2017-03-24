@@ -10,6 +10,7 @@ import { SelectWorkById } from '../../../components/atoms/Arguments';
 import { renderEventMessage } from '../../Account/Notifications/Model';
 
 import './HistoryTab.scss';
+import { Configuration } from '../../../configuration';
 
 class HistoryList extends PoetAPIResourceProvider<NotificationEvent[], SelectWorkById, undefined> {
 
@@ -38,7 +39,7 @@ class HistoryList extends PoetAPIResourceProvider<NotificationEvent[], SelectWor
           <img src={Images.SuccessMarkGreen} />
         </div>
         <div className="message">{ text }</div>
-        <div className="time">{ moment(event.timestamp).fromNow() }</div>
+        <div className="time">{ moment(event.timestamp).format(Configuration.dateTimeFormat) }<br/>({ moment(event.timestamp).fromNow() })</div>
       </li>
     );
   }

@@ -6,6 +6,8 @@ import WorkComponent from '../../components/hocs/WorkComponent';
 import { AuthorWithLink } from '../../components/atoms/Work';
 
 import './Overview.scss';
+import moment = require('moment');
+import { Configuration } from '../../configuration';
 
 function renderRow({key, value}: {key: string, value: string}) {
   return (
@@ -22,8 +24,10 @@ function render(props: Work) {
   }
 
   const tableData = new Map<string, any>();
-  tableData.set('Published', props.attributes.datePublished);
-  tableData.set('Last Modified', props.attributes.dateModified);
+  props.attributes.datePublished &&
+  tableData.set('Published', moment(parseInt(props.attributes.datePublished, 10)).format(Configuration.dateFormat));
+  props.attributes.dateModified &&
+  tableData.set('Last Modified', moment(parseInt(props.attributes.dateModified, 10)).format(Configuration.dateFormat));
   props.attributes.tags && tableData.set('Tags', props.attributes.tags || []);
   tableData.set('Type', props.attributes.articleType || 'Unknown');
 
