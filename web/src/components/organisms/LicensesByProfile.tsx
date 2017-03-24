@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router';
 
 import '../../extensions/String';
 
@@ -6,7 +7,7 @@ import { Images } from '../../images/Images';
 import { Configuration } from '../../configuration';
 import { OwnerName } from '../atoms/Work';
 import { License } from '../../Interfaces';
-import { TimeSinceIssueDate, ReferencedWorkNameWithLink } from '../atoms/License';
+import { TimeSinceIssueDate, ReferencedWorkNameWithLink, ReferencedWorkName } from '../atoms/License';
 import { OfferingType } from '../atoms/Offering';
 import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../atoms/base/PoetApiResource';
 import { DropdownMenu } from '../DropdownMenu';
@@ -99,7 +100,7 @@ export class LicensesByProfile extends PoetAPIResourceProvider<LicensesResource,
     return (
       <li key={license.id}>
         <header>
-          <h2><ReferencedWorkNameWithLink license={license} /></h2>
+          <h2><Link to={"/l/" + license.id}><ReferencedWorkName license={license} /></Link></h2>
           { this.props.showActions && this.renderLicenseDropdownMenu(license) }
         </header>
         <main>
