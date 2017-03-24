@@ -83,7 +83,6 @@ async function process(xmlResponse: any): Promise<Article[]> {
           console.log(err)
           return reject(err)
         }
-        console.log(res.RSS.CHANNEL)
         return resolve(res.RSS.CHANNEL[0].ITEM)
       })
     )
@@ -94,13 +93,14 @@ async function process(xmlResponse: any): Promise<Article[]> {
 async function scanBTCMagazine(): Promise<any> {
   fetch(targetURL).then(process).then(async (results) => {
     try {
-      const newArticles = []
+      const newArticles = results.filter((e, index) => index === 0)
       for (let article of results) {
         if (!(await exists(article))) {
           newArticles.push(article)
         }
       }
-      await submitArticles(newArticles)
+      const submitedArticles = (await submitArticles(newArticles)) as any
+      const submitedLicenses = await submitLicenses(submitedArticles)
     } catch (err) {
       console.log(err, err.stack)
     }
@@ -131,6 +131,30 @@ async function submitArticles(articles: Article[]) {
   return await postClaims(signedClaims)
 }
 
+async function submitLicenses(articles: any[]) {
+  const builder = await getBuilder()
+  const signedClaims = articles.map(article => {
+    const data = {
+      type: 'License',
+      attributes: {
+        reference: article.id,
+        licenseHolder: btcmediaPubkey,
+        licenseEmitter: btcmediaPubkey,
+        referenceOwner: btcmediaPubkey,
+        proofType: 'LicenseOwner',
+      }
+    }
+    const message = builder.getEncodedForSigning(data, btcmediaPrivkey)
+    const id = builder.getId(data, btcmediaPrivkey)
+    const signature = common.sign(btcmediaPrivkey, id)
+    return {
+      message: new Buffer(new Buffer(message).toString('hex')).toString('hex'),
+      signature: new Buffer(signature).toString('hex')
+    }
+  })
+  return await postClaims(signedClaims)
+}
+
 async function postClaims(claims: any) {
   return fetch(`${publisherURL}/claims`, {
     method: 'POST',
@@ -141,7 +165,7 @@ async function postClaims(claims: any) {
   }).then(body => {
     return body.text()
   }).then(body => {
-    console.log(body.substr(0, 100) + '...')
+    return JSON.parse(body).createdClaims.filter((e: any) => e.type === 'Work')
   }).catch(err => {
     console.log(err, err.stack)
   })
