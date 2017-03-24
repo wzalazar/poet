@@ -1,5 +1,6 @@
 section.blocks .blocks {
   border: 1px solid #cacaca;
+  background-color: white;
   padding: 0;
 
   .headHeight {
@@ -17,8 +18,8 @@ section.blocks .blocks {
     }
     margin-bottom: 20px;
   }
-  tr td:first-child {
-    padding-left: 20px;
+  tr td {
+    text-align: center;
   }
   tr td:last-child {
     padding-right: 15px;

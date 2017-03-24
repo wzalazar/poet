@@ -19,7 +19,9 @@ export class BlocksLayout extends React.Component<BlocksLayoutProps, undefined> 
         <section className="blocks">
           <BlockHeader />
           <div className="row">
-            <Blocks className="col-sm-6 col-md-4" blocks={this.props.blocks} />
+            <div className="col-sm-6 col-md-4">
+              <Blocks blocks={this.props.blocks} />
+            </div>
             <div className="col-sm-6 col-md-8">
               <LatestWorks limit={20} />
             </div>
