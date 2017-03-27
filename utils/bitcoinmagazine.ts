@@ -93,7 +93,7 @@ async function process(xmlResponse: any): Promise<Article[]> {
 async function scanBTCMagazine(): Promise<any> {
   fetch(targetURL).then(process).then(async (results) => {
     try {
-      const newArticles = results.filter((e, index) => index === 0)
+      const newArticles = []
       for (let article of results) {
         if (!(await exists(article))) {
           newArticles.push(article)
