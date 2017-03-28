@@ -58,6 +58,22 @@
 
   }
 
+  .id {
+    align-items: center;
+    .key {
+      margin-right: 10px;
+      text-transform: uppercase;
+    }
+    .copyable-hash {
+      cursor: pointer;
+
+      button {
+        display: none;
+      }
+    }
+  }
+
+
   .publicKey pre {
     white-space: pre-wrap;
     word-wrap: break-word;

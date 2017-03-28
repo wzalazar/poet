@@ -5,6 +5,11 @@ import { CopyableText } from './CopyableText';
 
 import './Hash.scss';
 
-export const Hash = (props: ClassNameProps & {children?: any}) => (
-  <CopyableText text={props.children.toString()} className={props.className} >{props.children.toString().firstAndLastCharacters(6)}</CopyableText>
+interface HashProps extends ClassNameProps {
+  readonly children?: any
+  readonly textClickable?: boolean;
+}
+
+export const Hash = (props: HashProps) => (
+  <CopyableText text={props.children.toString()} textClickable={props.textClickable} className={props.className} >{props.children.toString().firstAndLastCharacters(6)}</CopyableText>
 );

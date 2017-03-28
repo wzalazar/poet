@@ -2,10 +2,10 @@ import * as React from 'react';
 const classNames = require('classnames');
 
 import { ClassNameProps } from '../../common';
-import { clearTimeout } from 'timers';
 
 export interface CopyableTextProps extends ClassNameProps {
   readonly text: string;
+  readonly textClickable?: boolean;
 }
 
 interface CopyableTextState {
@@ -37,13 +37,13 @@ export class CopyableText extends React.Component<CopyableTextProps, CopyableTex
           ref={input => this.input = input}
           readOnly />
         <button onClick={this.onClick}>COPY</button>
-        <div className="value">{this.props.children || this.props.text}</div>
-        <div className="tooltip" style={{...this.styleTranslate, ...this.stylePosition()}} >Copied</div>
+        <div className="value" onClick={this.props.textClickable && this.onClick} >{this.props.children || this.props.text}</div>
+        <div className="tooltip" onClick={this.props.textClickable && this.onClick} style={{...this.styleTranslate, ...this.stylePosition()}} >Copied</div>
       </div>
     );
   }
 
-  private onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  private onClick = (event: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>) => {
     this.input.select();
     document.execCommand('copy');
 
