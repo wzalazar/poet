@@ -95,8 +95,6 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
 
   private loggedInActions(): JSX.Element[] {
     return [
-      this.renderNavLink('portfolio', 'Portfolio'),
-      this.renderNavLink('licenses', 'Licenses'),
       <li key="avatar" className="nav-item avatar"><AccountDropdown /></li>,
       this.countNotifications() > 0 ? <li key="notifications" className="nav-item notifications">{ this.notifications() }</li> : <span key="nonotif"/>,
       <li key="create-work" className="nav-item"><Link to={'/create-work'} className="button-primary"><img src={Images.QuillInverted} />Register New Work</Link></li>

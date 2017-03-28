@@ -5,8 +5,6 @@ import { Profile } from "./Profile/Loader";
 import { Blocks } from "./Blocks/Loader";
 import { Claim } from "./Blocks/Claim/Loader";
 import { SingleBlock } from "./Blocks/SingleBlock/Loader";
-import { Portfolio } from "./Portfolio/Loader";
-import { Licenses } from "./Licenses/Loader";
 import { CreateWork } from "./CreateWork/Loader";
 import { SingleLicense } from './Licenses/Single/Loader';
 import { Network } from "./Network";
@@ -24,8 +22,6 @@ export default [
   Claim,
   SingleBlock,
   Profile,
-  Portfolio,
-  Licenses,
   SingleLicense,
   CreateWork,
   ...Network,

@@ -1,0 +1,112 @@
+import * as React from 'react';
+import { Link } from 'react-router';
+
+import { Images } from '../../images/Images';
+import { Work } from "../../Interfaces";
+import { UrlObject } from '../../common';
+import { DispatchesTransferRequested } from '../../actions/requests';
+import { HEADER_X_TOTAL_COUNT, PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
+import { SelectProfileById } from '../../components/atoms/Arguments';
+import { SearchInput } from '../../components/atoms/SearchInput';
+import { ProfileNameWithLink } from '../../components/atoms/Profile';
+import { WorksByProfile, WorkToProfileRelationship } from '../../components/organisms/WorksByProfile';
+import { PortfolioWorksFilters } from './PortfolioFilters';
+
+interface WorksTabProps extends SelectProfileById, DispatchesTransferRequested{
+  readonly authenticatedUserIsOwner?: boolean;
+}
+
+interface WorksTabState {
+  readonly selectedFilter?: string;
+  readonly searchQuery?: string;
+  readonly profileId?: string;
+}
+
+export class WorksTab extends PoetAPIResourceProvider<Work[], WorksTabProps, WorksTabState> {
+
+  constructor() {
+    super(...arguments);
+    this.state = {
+      selectedFilter: PortfolioWorksFilters.ALL
+    }
+  }
+
+  poetURL(): UrlObject {
+    return {
+      url: `/works`,
+      query: {
+        relatedTo: this.props.profileId,
+        limit: 1,
+      }
+    }
+  }
+
+  renderElement(works: Work[], headers: Headers) {
+    const count = 0 && headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+
+    if (!count)
+      return this.renderNoWorks();
+
+    return (
+      <section className="works">
+        <nav>
+          <SearchInput
+            className="search"
+            value={this.state.searchQuery}
+            onChange={searchQuery => this.setState({searchQuery})}
+            placeholder="Search Works" />
+          <PortfolioWorksFilters
+            selectedId={this.state.selectedFilter}
+            onOptionSelected={selectedFilter => this.setState({selectedFilter})}
+            className="filters"/>
+        </nav>
+        <WorksByProfile
+          owner={this.props.profileId}
+          transferRequested={() => null}
+          relationship={this.selectedFilterRelationship()}
+          searchQuery={this.state.searchQuery}
+          showActions={this.props.authenticatedUserIsOwner}>
+          <div className="no-results">
+            <ProfileNameWithLink profileId={this.props.profileId}>This user&nbsp;</ProfileNameWithLink> hasn't registered any works yet.
+          </div>
+        </WorksByProfile>
+      </section>
+    )
+  }
+
+  renderLoading() {
+    return (
+      <section className="works loading">
+        <img src={Images.Quill} />
+      </section>
+    )
+  }
+
+  private renderNoWorks() {
+    return (
+      <section className="works no-items">
+        <div className="circle"></div>
+        <div className="message">
+          { this.props.authenticatedUserIsOwner && <h1>You haven’t registered any creative works yet</h1> }
+          { this.props.authenticatedUserIsOwner && <small>This takes you through the process of registereing a new work. If you would like to automate this process please view our integrations.</small> }
+          { !this.props.authenticatedUserIsOwner && <h1><ProfileNameWithLink profileId={this.props.profileId}>This user&nbsp;</ProfileNameWithLink> hasn't registered any creative works yet.</h1> }
+          { !this.props.authenticatedUserIsOwner && <small>Bummer.</small> }
+        </div>
+        { this.props.authenticatedUserIsOwner && <Link to="/create-work" className="button-primary"><img src={Images.QuillInverted} />Register New Work</Link> }
+      </section>
+    )
+  }
+
+  private selectedFilterRelationship(): WorkToProfileRelationship {
+    switch (this.state.selectedFilter) {
+      case PortfolioWorksFilters.ALL:
+        return 'relatedTo';
+      case PortfolioWorksFilters.LICENSED_TO_ME:
+        return 'licensedTo';
+      case PortfolioWorksFilters.OWNED:
+        return 'owner';
+      case PortfolioWorksFilters.AUTHORED:
+        return 'author';
+    }
+  }
+}
