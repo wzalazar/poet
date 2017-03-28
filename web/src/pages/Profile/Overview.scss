@@ -44,7 +44,10 @@
 
     li {
       display: flex;
-      align-items: center;
+
+      img {
+        margin-right: 10px;
+      }
 
       // we need to wrap the text with a div for text-overflow to work, see https://bugzilla.mozilla.org/show_bug.cgi?id=972664
       >div {
@@ -53,14 +56,6 @@
       }
     }
 
-    li:before {
-      flex: 0 0 auto;
-      width: 14px;
-      height: 14px;
-      background-color: #D8D8D8;
-      content: ' ';
-      margin-right: 10px;
-    }
   }
 
   .publicKey pre {

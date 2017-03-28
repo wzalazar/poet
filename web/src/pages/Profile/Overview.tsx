@@ -1,9 +1,9 @@
 import * as React from 'react';
 
+import { Images } from '../../images/Images';
 import ProfileComponent, { ProfileProps } from '../../components/hocs/ProfileComponent';
 
 import './Overview.scss';
-import { Images } from '../../images/Images';
 
 function render(props: ProfileProps) {
   return (
@@ -13,7 +13,7 @@ function render(props: ProfileProps) {
       <div className="bio">{ props.attributes && props.attributes.bio }</div>
       <div className="publicKey">Identifier: <pre>{ props.id }</pre></div>
       <ul>
-        { props.attributes && props.attributes.email && <li><div>{props.attributes.email}</div></li> }
+        { props.attributes && props.attributes.email && <li><img src={Images.Mail} /><div>{props.attributes.email}</div></li> }
       </ul>
     </div>
   )
