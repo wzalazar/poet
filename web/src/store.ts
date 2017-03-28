@@ -6,7 +6,7 @@ import './extensions/Array';
 
 import PageLoader from './components/PageLoader';
 
-import authSocket from './auth';
+import { Authentication } from './authentication';
 import pageCreators from "./pages";
 import sagaList from './sagas'
 import reducers from './reducers';
@@ -45,7 +45,7 @@ function bindInitialState(pages: PageLoader<any, any>[]): any {
   return initialState;
 }
 
-export default function createPoetStore() {
+export function createPoetStore() {
   const pages = pageCreators.map(Page => new Page());
 
   const initialState = bindInitialState(pages);
@@ -61,12 +61,12 @@ export default function createPoetStore() {
   );
 
   sagaMiddleware.run(bindSagas(pages));
-  authSocket.setHandler((payload) => {
+  Authentication.setHandler((payload) => {
     store.dispatch({
       type: Actions.unrecognizedSocketMessage,
       payload
     })
-  })
+  });
 
   return { store, pages };
 }

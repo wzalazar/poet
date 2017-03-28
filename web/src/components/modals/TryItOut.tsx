@@ -6,6 +6,7 @@ const Overlays = require('react-overlays');
 import { Images } from '../../images/Images';
 import { Actions } from '../../actions/index';
 import { PoetAppState } from '../../store/PoetAppState';
+import { TryItOutSubmitAction } from '../../sagas/TryItOut';
 import { Option, OptionGroup } from '../molecules/OptionGroup';
 import { TextUpload, TextUploadButton } from '../molecules/TextUpload';
 
@@ -114,9 +115,12 @@ const mapStateToProps = (state: PoetAppState) => ({
   visible: state.modals.tryItOut
 });
 
-const mapDispatch = {
+const mapDispatch: {
+  readonly hide: () => Action;
+  readonly submit: (workClaim: any) => TryItOutSubmitAction;
+} = {
   hide: () => ({ type: Actions.Modals.TryItOut.Hide }),
-  submit: (payload: any[]) => ({ type: Actions.Claims.SubmitRequested, payload })
+  submit: (workClaim: any) => ({ type: Actions.Modals.TryItOut.Submit, workClaim })
 };
 
 export const TryItOut = connect(mapStateToProps, mapDispatch)(TryItOutComponent);

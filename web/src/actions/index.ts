@@ -68,10 +68,6 @@ export namespace Actions {
   }
 
   export namespace Modals {
-    export namespace Login {
-      export const Show = 'login modal open';
-      export const Hide = 'login modal close';
-    }
     export namespace PurchaseLicense {
       export const Show = 'purchase license modal show';
       export const Hide = 'purchase license modal hide';
@@ -102,6 +98,7 @@ export namespace Actions {
     export namespace TryItOut {
       export const Show = 'try-it-out modal show';
       export const Hide = 'try-it-out modal hide';
+      export const Submit = 'try-it-out modal submit';
     }
   }
 }

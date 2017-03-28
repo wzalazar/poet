@@ -6,11 +6,6 @@ import { WorkOffering, Work } from '../Interfaces';
 
 export function modalsReducer(state: ModalStore, action: Action): ModalStore {
   switch (action.type) {
-    case Actions.Modals.Login.Show:
-      return { ...state, login: true };
-    case Actions.Modals.Login.Hide:
-      return { ...state, login: false };
-
     case Actions.Modals.SignClaims.Show:
       return { ...state, signWork: true };
     case Actions.Modals.SignClaims.Hide:

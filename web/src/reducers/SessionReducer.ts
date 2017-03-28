@@ -1,7 +1,7 @@
 import { Actions } from '../actions/index';
 import Constants from '../constants';
 
-export default function sessionReducer(state: any, action: any) {
+export function sessionReducer(state: any, action: any) {
   if (action.type) {
     switch (action.type) {
       case Actions.Session.LoginSuccess:

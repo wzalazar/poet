@@ -4,23 +4,60 @@ import { call, put, select } from 'redux-saga/effects'
 import * as protobuf from 'protobufjs'
 
 import { Actions } from '../actions/index'
-import auth from '../auth'
+import { Authentication } from '../authentication'
 import { currentPublicKey } from '../selectors/session'
-import { getMockPrivateKey } from '../mockKey'
+import { getMockPrivateKey } from '../helpers/mockKey'
 import { Claim } from '../Claim';
 import { Configuration } from '../configuration';
 
 const jsonClaims = require('../claim.json');
 
-async function requestIdFromAuth(dataToSign: string[]) {
-  return await auth.getRequestIdForMultipleSigning(dataToSign, false)
+export function submitClaims() {
+  return function*() {
+    yield takeEvery(Actions.Claims.SubmitRequested, submitRequested);
+    yield takeEvery(Actions.Claims.FakeSign, fakeSign);
+  }
 }
 
-async function bindAuthResponse(request: any) {
-  return await auth.onResponse(request.id) as any;
+function* submitRequested(claimTemplates: any) {
+  yield put({ type: Actions.Modals.SignClaims.Show });
+
+  const publicKey = (yield select(currentPublicKey)) || claimTemplates.publicKey;
+
+  if (!publicKey)
+    throw new Error('Claim Sign Saga: cannot sign a claim without a public key.');
+
+  const serializedToSign = claimTemplates.payload.map((template: any) => {
+    return builder.getEncodedForSigning(template, publicKey);
+  });
+
+  const requestId = yield call(requestIdFromAuth, serializedToSign);
+  yield put({ type: Actions.Claims.IdReceived, payload: requestId.id });
+
+  const response = yield call(getAuthResponse, requestId);
+  yield put({ type: Actions.Claims.Response, payload: response });
+
+  const postClaimsResult = yield call(postClaims, response);
+
+  yield put({ type: Actions.Claims.SubmittedSuccess, claims: claimTemplates.payload });
+
+  yield put({ type: Actions.Modals.SignClaims.Hide });
+
+  const createdWorkClaim = postClaimsResult.createdClaims.find((claim: Claim) => claim.type === 'Work');
+
+  if (createdWorkClaim) {
+    browserHistory.push(`/works/` + createdWorkClaim.id);
+  } else {
+    browserHistory.push(`/portfolio`);
+  }
+
 }
 
-class ClaimBuilder {
+function* fakeSign(action: any) {
+  yield call(fetch, Configuration.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
+}
+
+const builder = new class {
   attribute: any;
   claim: any;
 
@@ -30,19 +67,9 @@ class ClaimBuilder {
     this.claim = root.lookup('Poet.Claim');
   }
 
-  getAttributes(attrs: any) {
-    if (attrs instanceof Array) {
-      return attrs.map(attr => {
-        return this.attribute.create(attr)
-      })
-    } else {
-      return Object.keys(attrs).map(attr => {
-        return this.attribute.create({
-          key: attr,
-          value: attrs[attr]
-        })
-      })
-    }
+  getAttributes(attributes: ReadonlyArray<KeyValue<string, string>> | {[index: string]: string}) {
+    const attributesArray = attributes instanceof Array ? attributes : Object.entries(attributes).map(([key, value]) => ({key, value}));
+    return attributesArray.map(this.attribute.create, this.attribute)
   }
 
   getEncodedForSigning(data: any, publicKey: string): string {
@@ -54,59 +81,19 @@ class ClaimBuilder {
       attributes: this.getAttributes(data.attributes)
     })).finish()).toString('hex')
   }
+};
+
+async function requestIdFromAuth(dataToSign: string[]) {
+  return await Authentication.getRequestIdForMultipleSigning(dataToSign, false)
 }
 
-async function submitClaims(data: any) {
+async function getAuthResponse(request: any) {
+  return await Authentication.onResponse(request.id) as any;
+}
+
+async function postClaims(data: any) {
   return await fetch(Configuration.api.user + '/claims', {
     method: 'POST',
     body: JSON.stringify(data)
-  }).then((res: any) => res.json())
+  }).then(res => res.json())
 }
-
-const builder = new ClaimBuilder();
-
-function* signClaims(claimTemplates: any) {
-  yield put({ type: Actions.Modals.SignClaims.Show });
-
-  const publicKey = yield select(currentPublicKey);
-
-  if (!publicKey)
-    throw new Error('Claim Sign Saga: cannot sign a claim without a public key.');
-
-  const serializedToSign = claimTemplates.payload.map((template: any) => {
-    return builder.getEncodedForSigning(template, publicKey);
-  });
-
-  const requestId = yield call(requestIdFromAuth, serializedToSign);
-  yield put({ type: Actions.Claims.IdReceived, payload: requestId.id });
-  const response = yield call(bindAuthResponse, requestId);
-  yield put({ type: Actions.Claims.Response, payload: response });
-
-  const result = yield call(submitClaims, response);
-
-  yield put({ type: Actions.Claims.SubmittedSuccess, claims: claimTemplates.payload });
-
-  yield put({ type: Actions.Modals.SignClaims.Hide });
-
-  const createdWorkClaim = result.createdClaims.find((claim: Claim) => claim.type === 'Work');
-
-  if (createdWorkClaim) {
-    browserHistory.push(`/works/` + createdWorkClaim.id);
-  } else {
-    browserHistory.push(`/portfolio`);
-  }
-
-}
-
-function* mockLoginHit(action: any) {
-  yield call(fetch, Configuration.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
-}
-
-function claimSubmitSaga() {
-  return function*() {
-    yield takeEvery(Actions.Claims.SubmitRequested, signClaims);
-    yield takeEvery(Actions.Claims.FakeSign, mockLoginHit);
-  }
-}
-
-export default claimSubmitSaga;

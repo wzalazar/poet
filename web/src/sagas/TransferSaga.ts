@@ -1,23 +1,21 @@
-import { browserHistory } from 'react-router'
 import { takeEvery } from 'redux-saga'
 import { call, put, select, take, race } from 'redux-saga/effects'
 import * as protobuf from 'protobufjs'
 
 import { Configuration } from '../configuration';
 import { Actions } from '../actions/index'
-import auth from '../auth'
+import { Authentication } from '../authentication'
 import { currentPublicKey } from '../selectors/session'
-import { getMockPrivateKey } from '../mockKey'
-import { Claim } from '../Claim';
+import { getMockPrivateKey } from '../helpers/mockKey'
 
 const jsonClaims = require('../claim.json');
 
 async function requestIdFromAuth(dataToSign: string[]) {
-  return await auth.getRequestIdForMultipleSigning(dataToSign, false)
+  return await Authentication.getRequestIdForMultipleSigning(dataToSign, false)
 }
 
 async function bindAuthResponse(request: any) {
-  return await auth.onResponse(request.id) as any;
+  return await Authentication.onResponse(request.id) as any;
 }
 
 interface TransferAttributes {

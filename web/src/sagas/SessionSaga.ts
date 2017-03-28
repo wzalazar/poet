@@ -4,49 +4,10 @@ import { call, put } from 'redux-saga/effects'
 
 import { Configuration } from '../configuration';
 import { Actions } from '../actions/index'
-import auth from '../auth'
-import { getMockPrivateKey } from '../mockKey'
+import { Authentication } from '../authentication'
+import { getMockPrivateKey } from '../helpers/mockKey'
 
 const LOCALSTORAGE_SESSION = 'session';
-
-async function requestIdFromAuth() {
-  return await auth.getRequestIdForLogin()
-}
-
-async function bindAuthResponse(request: any) {
-  const data = (await auth.onResponse(request.id) as any).signatures[0];
-  return {
-    publicKey: data.publicKey,
-    token: { ...data, message: data.message }
-  }
-}
-
-function* loginButtonClickedAction(action: any) {
-  const requestId = yield call(requestIdFromAuth);
-  yield put({ type: Actions.Session.LoginIdReceived, payload: requestId });
-  const response = yield call(bindAuthResponse, requestId);
-  yield put({ type: Actions.Session.LoginResponse, payload: response })
-}
-
-function* logoutButtonClickedAction(action: any) {
-  yield put({ type: Actions.Session.LogoutRequested });
-  localStorage.removeItem(LOCALSTORAGE_SESSION);
-  browserHistory.push('/');
-}
-
-function* loginResponseAction(action: any) {
-  yield put({ type: Actions.Modals.Login.Hide });
-
-  localStorage.setItem(LOCALSTORAGE_SESSION, JSON.stringify(action.payload));
-  yield put({ type: Actions.Session.LoginSuccess, token: action.payload });
-
-  yield put({ type: Actions.Profile.FetchProfile, profilePublicKey: action.payload.publicKey });
-  browserHistory.push('/'); // TODO: redirect to login_success
-}
-
-function* mockLoginHit(action: any) {
-  yield call(fetch, Configuration.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
-}
 
 export function sessionSaga() {
   return function*() {
@@ -58,9 +19,42 @@ export function sessionSaga() {
       yield put({ type: Actions.Profile.FetchProfile, profilePublicKey: token.publicKey });
     }
 
-    yield takeEvery(Actions.Session.LoginButtonClicked, loginButtonClickedAction);
-    yield takeEvery(Actions.Session.LogoutButtonClicked, logoutButtonClickedAction);
-    yield takeEvery(Actions.Session.LoginResponse, loginResponseAction);
-    yield takeEvery(Actions.Session.MockLoginRequest, mockLoginHit);
+    yield takeEvery(Actions.Session.LoginButtonClicked, loginButtonClicked);
+    yield takeEvery(Actions.Session.LogoutButtonClicked, logoutButtonClicked);
+    yield takeEvery(Actions.Session.LoginResponse, loginResponse);
+    yield takeEvery(Actions.Session.MockLoginRequest, mockLoginRequest);
+  }
+}
+
+function* loginButtonClicked() {
+  const loginRequestId = yield call(Authentication.getRequestIdForLogin);
+  yield put({ type: Actions.Session.LoginIdReceived, payload: loginRequestId });
+  const response = yield call(getPublicKey, loginRequestId);
+  yield put({ type: Actions.Session.LoginResponse, payload: response })
+}
+
+function* logoutButtonClicked() {
+  yield put({ type: Actions.Session.LogoutRequested });
+  localStorage.removeItem(LOCALSTORAGE_SESSION);
+  browserHistory.push('/');
+}
+
+function* loginResponse(action: any) {
+  localStorage.setItem(LOCALSTORAGE_SESSION, JSON.stringify(action.payload));
+  yield put({ type: Actions.Session.LoginSuccess, token: action.payload });
+
+  yield put({ type: Actions.Profile.FetchProfile, profilePublicKey: action.payload.publicKey });
+  browserHistory.push('/');
+}
+
+function* mockLoginRequest(action: any) {
+  yield call(fetch, Configuration.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
+}
+
+async function getPublicKey(request: any) {
+  const data = (await Authentication.onResponse(request.id) as any).signatures[0];
+  return {
+    publicKey: data.publicKey,
+    token: { ...data, message: data.message }
   }
 }

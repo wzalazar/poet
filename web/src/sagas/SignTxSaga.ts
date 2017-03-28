@@ -5,18 +5,18 @@ import { call, put, select, take, race } from 'redux-saga/effects';
 
 import { Configuration } from '../configuration';
 import { Actions } from '../actions/index';
-import auth from '../auth';
-import { getMockPrivateKey } from '../mockKey';
+import { Authentication } from '../authentication'
+import { getMockPrivateKey } from '../helpers/mockKey';
 import { getUtxos, submitTx } from '../bitcoin/insight';
 import { getSighash, applyHexSignaturesInOrder } from '../bitcoin/txHelpers';
 import { currentPublicKey } from '../selectors/session';
 
 async function requestIdFromAuth(dataToSign: Buffer[], bitcoin: boolean) {
-  return await auth.getRequestIdForMultipleSigningBuffers(dataToSign, bitcoin)
+  return await Authentication.getRequestIdForMultipleSigningBuffers(dataToSign, bitcoin)
 }
 
 async function bindAuthResponse(request: any) {
-  return await auth.onResponse(request.id) as any;
+  return await Authentication.onResponse(request.id) as any;
 }
 
 export interface SignTransactionParameters {

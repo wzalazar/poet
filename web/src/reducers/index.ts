@@ -1,6 +1,6 @@
 import { fetchReducer } from './FetchReducer';
 import { modalsReducer } from './ModalsReducer';
-import SessionReducer from './SessionReducer';
+import { sessionReducer } from './SessionReducer';
 import ProfileReducer from './ProfileReducer';
 import { claimSignReducer } from './ClaimSignReducer';
 import BlockReducer from './BlockReducer';
@@ -12,7 +12,7 @@ import { createWorkReducer } from './CreateWorkReducer';
 export default {
   fetch: fetchReducer,
   modals: modalsReducer,
-  session: SessionReducer,
+  session: sessionReducer,
   profile: ProfileReducer,
   signTx: signTransactionReducer,
   transfer: transferReducer,
