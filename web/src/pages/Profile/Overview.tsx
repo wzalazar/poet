@@ -13,7 +13,7 @@ function render(props: ProfileProps) {
       <h2>{props.attributes && props.attributes.displayName || 'Anonymous'}</h2>
       <div className="bio">{ props.attributes && props.attributes.bio }</div>
       <ul>
-        { props.id && <li className="id"><div className="key">id</div><Hash className="copyable-hash" textClickable>{props.id}</Hash></li> }
+        { props.id && <li className="id"><div className="key">id</div><Hash className="copyable-hash-no-button" textClickable>{props.id}</Hash></li> }
         { props.attributes && props.attributes.email && <li><img src={Images.Mail} /><div>{props.attributes.email}</div></li> }
       </ul>
     </div>

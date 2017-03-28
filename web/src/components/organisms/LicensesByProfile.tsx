@@ -21,10 +21,10 @@ export type LicenseToProfileRelationship = 'relatedTo' | 'emitter' | 'holder';
 
 export interface LicensesProps {
   readonly publicKey?: string;
-  readonly limit: number;
+  readonly limit?: number;
   readonly showActions?: boolean;
   readonly searchQuery?: string;
-  readonly relation: LicenseToProfileRelationship
+  readonly relationship: LicenseToProfileRelationship
 }
 
 interface LicensesState {
@@ -35,7 +35,8 @@ export class LicensesByProfile extends PoetAPIResourceProvider<LicensesResource,
   static defaultProps: Partial<LicensesProps> = {
     showActions: false,
     searchQuery: '',
-    relation: 'relatedTo'
+    relationship: 'relatedTo',
+    limit: Configuration.pagination.limit
   };
 
   constructor() {
@@ -51,7 +52,7 @@ export class LicensesByProfile extends PoetAPIResourceProvider<LicensesResource,
       query: {
         limit: this.props.limit,
         offset: this.state.offset,
-        [this.props.relation]: this.props.publicKey,
+        [this.props.relationship]: this.props.publicKey,
         query: this.props.searchQuery
       }
     }

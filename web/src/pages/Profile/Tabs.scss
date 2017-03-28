@@ -1,6 +1,45 @@
 .page-profile .tabs {
-  .tab-list li {
-    cursor: pointer;
+  .tab-list {
+    margin-bottom: 20px;
+
+    li {
+      cursor: pointer;
+    }
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    margin-bottom: 37px;
+
+    .search {
+      width: 401px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      background-color: #FFFFFF;
+      box-shadow: 2px 2px 9px 0 rgba(0,0,0,0.06);
+      border-radius: 3px;
+      margin: 0;
+
+      img {
+        margin: 10px;
+      }
+
+      input {
+        background-color: transparent;
+        border: none;
+        font-family: "Roboto Slab";
+        font-size: 10px;
+        font-weight: bold;
+        line-height: 14px;
+        color: #6B6B6B;
+      }
+    }
+
+    .filters {
+      margin: 0 0 0 auto;
+    }
   }
 
   .no-results {

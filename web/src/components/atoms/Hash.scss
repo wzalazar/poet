@@ -42,3 +42,13 @@
     opacity: 1;
   }
 }
+
+
+.copyable-hash-no-button {
+  @extend .copyable-hash;
+  cursor: pointer;
+
+  button {
+    display: none;
+  }
+}

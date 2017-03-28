@@ -10,7 +10,7 @@ import {
   LicenseToProfileRelationship
 } from '../../components/organisms/LicensesByProfile'
 import { HEADER_X_TOTAL_COUNT, PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
-import { Filters } from './Filters';
+import { LicensesFilters } from '../Profile/LicensesFilters';
 
 import './Layout.scss';
 
@@ -28,7 +28,7 @@ export class LicensesLayout extends PoetAPIResourceProvider<LicensesResource, Li
   constructor() {
     super(...arguments);
     this.state = {
-      selectedFilter: Filters.ALL,
+      selectedFilter: LicensesFilters.ALL,
       searchQuery: ''
     }
   }
@@ -72,13 +72,13 @@ export class LicensesLayout extends PoetAPIResourceProvider<LicensesResource, Li
             onChange={searchQuery => this.setState({searchQuery})}
             placeholder="Search Licenses" />
         </header>
-        <Filters
+        <LicensesFilters
           selectedId={this.state.selectedFilter}
           onOptionSelected={selectedFilter => this.setState({selectedFilter})} />
         <LicensesByProfile
           publicKey={this.props.publicKey}
           searchQuery={this.state.searchQuery}
-          relation={this.selectedFilterRelationship()}
+          relationship={this.selectedFilterRelationship()}
           limit={Configuration.pagination.visiblePageCount}
           showActions={false} />
       </section>
@@ -103,11 +103,11 @@ export class LicensesLayout extends PoetAPIResourceProvider<LicensesResource, Li
 
   private selectedFilterRelationship(): LicenseToProfileRelationship {
     switch (this.state.selectedFilter) {
-      case Filters.ALL:
+      case LicensesFilters.ALL:
         return 'relatedTo';
-      case Filters.SOLD:
+      case LicensesFilters.SOLD:
         return 'emitter';
-      case Filters.PURCHASED:
+      case LicensesFilters.PURCHASED:
         return 'holder';
     }
   }

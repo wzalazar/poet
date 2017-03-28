@@ -9,6 +9,7 @@ import { Work } from '../../Interfaces';
 import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../atoms/base/PoetApiResource';
 import { WorkNameWithLink, WorkType, WorkPublishedDate } from '../atoms/Work';
 import { SelectWorksByOwner } from '../atoms/Arguments';
+import { Hash } from '../atoms/Hash';
 import { Pagination } from '../molecules/Pagination';
 import { DropdownMenu } from '../DropdownMenu';
 
@@ -21,7 +22,7 @@ export type WorkToProfileRelationship = 'author' | 'owner' | 'relatedTo' | 'lice
 
 interface WorksByProfileProps {
   readonly relationship: WorkToProfileRelationship;
-  readonly query: string;
+  readonly searchQuery: string;
   readonly showActions?: boolean;
   readonly limit?: number;
 }
@@ -50,7 +51,7 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
         [this.props.relationship]: this.props.owner,
         limit: this.props.limit,
         offset: this.state.offset,
-        query: this.props.query
+        query: this.props.searchQuery
       }
     }
   }
@@ -84,7 +85,7 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
           </thead>
           <tbody>
             <tr>
-              <td colSpan={3}><img src={Images.Quill} /></td>
+              <td colSpan={this.props.showActions ? 4 : 3}><img src={Images.Quill} /></td>
             </tr>
           </tbody>
         </table>
@@ -128,11 +129,14 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
           <WorkNameWithLink work={work} />
           <div>
             <span className="media-type">{work.attributes.mediaType} / {work.attributes.articleType}</span>
-            <span className="content-info">{work.attributes.wordCount} words at {work.attributes.fileSize} bytes</span>
+            <span className="content-info">
+              {work.attributes.wordCount && <span>{work.attributes.wordCount} word{parseInt(work.attributes.wordCount) > 1 && 's'} {work.attributes.fileSize && 'at '}</span>}
+              {work.attributes.fileSize && <span>{work.attributes.fileSize} bytes</span>}
+            </span>
           </div>
           <WorkType work={work} />
         </td>
-        <td className="hash">{work.id}</td>
+        <td className="hash"><Hash className="copyable-hash-no-button" textClickable>{work.id}</Hash></td>
         <td className="timestamp"><WorkPublishedDate work={work}/></td>
         { this.props.showActions && <td>
           <DropdownMenu
@@ -148,7 +152,7 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
 
   private renderNoWorks() {
     return (
-      <section>{ this.props.children || (!this.props.query ? 'No works to show' : 'No works match the given criteria') }</section>
+      <section>{ this.props.children || (!this.props.searchQuery ? 'No works to show' : 'No works match the given criteria') }</section>
     )
   }
 

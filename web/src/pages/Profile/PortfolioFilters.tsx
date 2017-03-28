@@ -1,10 +1,12 @@
 import * as React from 'react';
+import * as classNames from 'classnames';
 
 import { OptionGroup, Option } from '../../components/molecules/OptionGroup';
+import { ClassNameProps } from '../../common';
 
-import './Filters.scss';
+import './PortfolioFilters.scss';
 
-interface PortfolioWorksFiltersProps {
+interface PortfolioWorksFiltersProps extends ClassNameProps {
   readonly selectedId: string;
   readonly onOptionSelected: (id: string) => void;
 }
@@ -17,7 +19,10 @@ export class PortfolioWorksFilters extends React.Component<PortfolioWorksFilters
 
   render() {
     return (
-      <OptionGroup selectedId={this.props.selectedId} onOptionSelected={this.props.onOptionSelected} className="tab-option-group extended">
+      <OptionGroup
+        selectedId={this.props.selectedId}
+        onOptionSelected={this.props.onOptionSelected}
+        className={classNames('tab-option-group', 'extended', this.props.className)}>
         <Option id={PortfolioWorksFilters.ALL}>All</Option>
         <Option id={PortfolioWorksFilters.LICENSED_TO_ME}>Licensed</Option>
         <Option id={PortfolioWorksFilters.OWNED}>Owned</Option>

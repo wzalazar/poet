@@ -9,7 +9,7 @@ import { HEADER_X_TOTAL_COUNT, PoetAPIResourceProvider } from '../../components/
 import { SelectProfileById } from '../../components/atoms/Arguments';
 import { SearchInput } from '../../components/atoms/SearchInput';
 import { WorksByProfile, WorkToProfileRelationship } from '../../components/organisms/WorksByProfile';
-import { PortfolioWorksFilters } from './Filters';
+import { PortfolioWorksFilters } from '../Profile/PortfolioFilters';
 
 import './Layout.scss';
 
@@ -61,7 +61,7 @@ export class PortfolioLayout extends PoetAPIResourceProvider<Work[], SelectProfi
             owner={this.props.profileId}
             transferRequested={this.props.transferRequested}
             relationship={this.selectedFilterRelationship()}
-            query={this.state.searchQuery}
+            searchQuery={this.state.searchQuery}
             showActions={this.state.selectedFilter === PortfolioWorksFilters.OWNED}
           />
         </main>
