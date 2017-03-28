@@ -2,6 +2,7 @@ import * as Koa from 'koa'
 import { sha256 } from '../common'
 import { Signature } from './interfaces'
 import { doubleSha, verifies } from './helpers'
+import { default as corsHandle } from './cors'
 
 const bitcore = require('bitcore-lib')
 const uuid = require('uuid')
@@ -113,6 +114,9 @@ export default async function createServer(options: AuthServerOptions) {
   }
 
   const koa = new Koa() as any
+
+  koa.use(corsHandle)
+
   const io = new IO()
 
   io.attach(koa)

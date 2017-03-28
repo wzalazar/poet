@@ -39,6 +39,7 @@
     "amqplib": "^0.5.1",
     "bitcore-explorers": "eordano/bitcore-explorers",
     "bitcore-lib": "eordano/bitcore-lib",
+    "bufferutil": "1.2.x",
     "bluebird": "^3.4.6",
     "chai": "^3.5.0",
     "chai-immutable": "^1.6.0",
@@ -66,7 +67,7 @@
     "ts-node": "^2.0.0",
     "typeorm": "0.0.6",
     "typescript": "^2.2.0-dev.20170105",
-    "webtorrent": "^0.98.0"
+    "webtorrent-hybrid": "^1.0.5"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"

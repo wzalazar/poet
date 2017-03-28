@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import { ReadStream } from 'fs'
 import * as path from 'path'
-import * as WebTorrent from 'webtorrent'
+const WebTorrent = require('webtorrent-hybrid')
 
 import { Block } from './claim'
 import { default as getBuilder } from './serialization/builder'
