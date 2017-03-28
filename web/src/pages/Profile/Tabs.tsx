@@ -11,7 +11,8 @@ import { WorksByProfile } from '../../components/organisms/WorksByProfile';
 import './Tabs.scss';
 
 export interface ProfileTabsProps {
-  id: HexString;
+  readonly id: HexString;
+  readonly sessionPublicKey: string;
 }
 
 export class ProfileTabs extends React.Component<ProfileTabsProps, any> {
@@ -28,7 +29,8 @@ export class ProfileTabs extends React.Component<ProfileTabsProps, any> {
             owner={this.props.id}
             transferRequested={() => null}
             relationship="author"
-            query="" >
+            query=""
+            showActions={!!this.props.sessionPublicKey}>
             <div className="no-results">
               <ProfileNameWithLink profileId={this.props.id}>This user&nbsp;</ProfileNameWithLink> hasn't registered any works yet.
             </div>
@@ -38,7 +40,8 @@ export class ProfileTabs extends React.Component<ProfileTabsProps, any> {
           <LicensesByProfile
             publicKey={this.props.id}
             relation="relatedTo"
-            limit={Configuration.pagination.limit} >
+            limit={Configuration.pagination.limit}
+            showActions={!!this.props.sessionPublicKey}>
             <div className="no-results">
               <ProfileNameWithLink profileId={this.props.id} >This user&nbsp;</ProfileNameWithLink> doesn't own any licenses yet.
             </div>

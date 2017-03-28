@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Route } from 'react-router';
 
+import { currentPublicKey } from '../../selectors/session';
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
-import { ProfileLayout } from './Layout';
+import { ProfileLayout, ProfileLayoutProps } from './Layout';
 
 interface ProfileState {
 }
@@ -27,7 +28,10 @@ export class Profile extends PageLoader<ProfileState, Object> {
     return null;
   }
 
-  select(state: any, ownProps: any): Object {
-    return { id: ownProps.params.id };
+  select(state: any, ownProps: any): ProfileLayoutProps {
+    return {
+      id: ownProps.params.id,
+      sessionPublicKey: currentPublicKey(state)
+    };
   }
 }

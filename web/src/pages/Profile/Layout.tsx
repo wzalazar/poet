@@ -5,13 +5,18 @@ import { ProfileTabs } from './Tabs';
 
 import './Layout.scss';
 
-export class ProfileLayout extends React.Component<any, undefined> {
+export interface ProfileLayoutProps {
+  readonly id: string;
+  readonly sessionPublicKey: string;
+}
+
+export class ProfileLayout extends React.Component<ProfileLayoutProps, undefined> {
   render() {
     return (
       <section className="container">
         <div className="page-profile row">
           <Overview id={this.props.id}/>
-          <ProfileTabs id={this.props.id}/>
+          <ProfileTabs id={this.props.id} sessionPublicKey={this.props.sessionPublicKey} />
         </div>
       </section>
     );
