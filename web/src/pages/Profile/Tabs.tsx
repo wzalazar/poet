@@ -58,7 +58,7 @@ export class ProfileTabs extends React.Component<ProfileTabsProps, ProfileTabsSt
             transferRequested={() => null}
             relationship={this.selectedWorksFilterRelationship()}
             searchQuery={this.state.searchQuery}
-            showActions={!!this.props.sessionPublicKey}>
+            showActions={this.props.sessionPublicKey && this.props.sessionPublicKey === this.props.id}>
             <div className="no-results">
               <ProfileNameWithLink profileId={this.props.id}>This user&nbsp;</ProfileNameWithLink> hasn't registered any works yet.
             </div>
@@ -80,7 +80,7 @@ export class ProfileTabs extends React.Component<ProfileTabsProps, ProfileTabsSt
             publicKey={this.props.id}
             relationship={this.selectedLicensesFilterRelationship()}
             searchQuery={this.state.searchQuery}
-            showActions={!!this.props.sessionPublicKey}>
+            showActions={this.props.sessionPublicKey && this.props.sessionPublicKey === this.props.id}>
             <div className="no-results">
               <ProfileNameWithLink profileId={this.props.id} >This user&nbsp;</ProfileNameWithLink> doesn't own any licenses yet.
             </div>
