@@ -18,6 +18,7 @@ interface AccountDropdownProps {
   readonly displayName?: string;
   readonly walletAddress?: string;
   readonly logout?: () => Action;
+  readonly sessionPublicKey?: string;
 }
 
 function AccountDropdownComponent(props: AccountDropdownProps) {
@@ -26,9 +27,9 @@ function AccountDropdownComponent(props: AccountDropdownProps) {
       <img key="avatar" src={props.avatar || Images.Anon } className="rounded-circle" />
       <ul>
         <li className="inactive">Signed in as {props.displayName}</li>
+        <li onClick={() => browserHistory.push('/profiles/' + props.sessionPublicKey)}>Profile</li>
         <li onClick={() => browserHistory.push('/account/notifications')}>Notifications</li>
         <li onClick={() => browserHistory.push('/account/wallet')} className="wallet"><span>Wallet</span><WalletBalance address={props.walletAddress} className="balance" /></li>
-        <li onClick={() => browserHistory.push('/account/profile')}>Profile</li>
         <li onClick={props.logout} className="log-out">Log Out</li>
       </ul>
     </DropdownMenu>
@@ -44,6 +45,7 @@ function mapStateToProps(state: any, ownProps: AccountDropdownProps): AccountDro
     displayName: state.profile.displayName,
     walletAddress,
     avatar: state.profile && state.profile.attributes && state.profile.attributes.imageData,
+    sessionPublicKey: currentPublicKey(state)
   };
 }
 

@@ -3,12 +3,12 @@ import { takeEvery } from 'redux-saga'
 import { call, put, select } from 'redux-saga/effects'
 import * as protobuf from 'protobufjs'
 
+import { Configuration } from '../configuration';
 import { Actions } from '../actions/index'
 import { Authentication } from '../authentication'
 import { currentPublicKey } from '../selectors/session'
 import { getMockPrivateKey } from '../helpers/mockKey'
 import { Claim } from '../Claim';
-import { Configuration } from '../configuration';
 
 const jsonClaims = require('../claim.json');
 
@@ -44,11 +44,14 @@ function* submitRequested(claimTemplates: any) {
   yield put({ type: Actions.Modals.SignClaims.Hide });
 
   const createdWorkClaim = postClaimsResult.createdClaims.find((claim: Claim) => claim.type === 'Work');
+  const updatedProfile = postClaimsResult.createdClaims.find((claim: Claim) => claim.type === 'Profile');
 
   if (createdWorkClaim) {
     browserHistory.push(`/works/` + createdWorkClaim.id);
+  } else if (updatedProfile) {
+    browserHistory.push(`/profiles/` + publicKey);
   } else {
-    browserHistory.push(`/portfolio`);
+    browserHistory.push(`/portfolio/`);
   }
 
 }

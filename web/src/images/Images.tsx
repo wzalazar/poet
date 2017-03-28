@@ -16,4 +16,5 @@ export class Images {
   static readonly Badge = require('./badge.svg');
   static readonly Upload = require('./upload.svg');
   static readonly Mail = require('./mail.svg');
+  static readonly Pencil = require('./edit.svg');
 }

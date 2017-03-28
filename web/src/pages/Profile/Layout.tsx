@@ -15,7 +15,7 @@ export class ProfileLayout extends React.Component<ProfileLayoutProps, undefined
     return (
       <section className="container">
         <div className="page-profile row">
-          <Overview id={this.props.id}/>
+          <Overview profileId={this.props.id} sessionPublicKey={this.props.sessionPublicKey}  />
           <ProfileTabs id={this.props.id} sessionPublicKey={this.props.sessionPublicKey} />
         </div>
       </section>
