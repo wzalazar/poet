@@ -42,7 +42,7 @@ export class WorksTab extends PoetAPIResourceProvider<Work[], WorksTabProps, Wor
   }
 
   renderElement(works: Work[], headers: Headers) {
-    const count = 0 && headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
 
     if (!count)
       return this.renderNoWorks();

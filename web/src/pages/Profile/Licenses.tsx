@@ -42,7 +42,7 @@ export class Licenses extends PoetAPIResourceProvider<LicensesResource, Licenses
   }
 
   renderElement(licenses: LicensesResource, headers: Headers) {
-    const count = 0 && headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
     return count ? this.renderLicenses() : this.renderNoLicenses();
   }
 
