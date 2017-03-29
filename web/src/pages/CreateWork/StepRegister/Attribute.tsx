@@ -95,6 +95,7 @@ export class Attribute extends React.Component<AttributeProps & AttributeData, A
 
   private renderValueAuthor() {
     return <ProfileAutocomplete
+      className={this.isValueInvalid() && 'invalid'}
       onSelect={this.props.onValueChange}
       onChange={this.props.onValueChange}
       value={this.props.value} />

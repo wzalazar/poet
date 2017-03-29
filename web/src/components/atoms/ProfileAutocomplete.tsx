@@ -3,13 +3,14 @@ import * as classNames from 'classnames';
 const Autocomplete = require('react-autocomplete');
 
 import { PoetAPIResourceProvider } from './base/PoetApiResource';
+import { ClassNameProps } from '../../common';
 
 interface ProfileAutocompleteResource {
   readonly id: string;
   readonly displayName: string;
 }
 
-interface ProfileAutocompleteProps {
+interface ProfileAutocompleteProps extends ClassNameProps {
   readonly value: string;
   readonly onSelect: (profile: string) => void;
   readonly onChange: (profile: string) => void;
@@ -45,7 +46,7 @@ export class ProfileAutocomplete extends PoetAPIResourceProvider<ReadonlyArray<P
         getItemValue={(profile: ProfileAutocompleteResource) => profile.id}
         renderMenu={this.renderMenu}
         renderItem={this.renderProfile}
-        inputProps={{className: classNames('input-text', this.state.menuIsOpen && 'open'), placeholder: 'Attribute Name'}}
+        inputProps={{className: classNames('input-text', this.state.menuIsOpen && 'open', this.props.className), placeholder: 'Attribute Name'}}
         onMenuVisibilityChange={(menuIsOpen: boolean) => this.setState({menuIsOpen})} />
     );
   }
