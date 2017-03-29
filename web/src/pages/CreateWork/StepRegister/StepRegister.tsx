@@ -2,13 +2,13 @@ import * as React from 'react';
 const bitcore = require('bitcore-lib');
 
 import { KeyValue } from '../../../common';
+import { wordCount } from '../../../helpers/StringHelper';
 import { MediaType } from './MediaType';
 import { Attributes } from './Attributes';
+import { AttributeData } from './Attribute';
 import { Content } from './Content';
 
 import './StepRegister.scss';
-import { AttributeData } from './Attribute';
-
 
 export interface StepRegisterData {
   readonly articleType: string;
@@ -27,14 +27,6 @@ interface StepRegisterState {
   readonly content?: string;
   readonly attributes?: ReadonlyArray<AttributeData>;
   readonly displayErrors?: boolean;
-}
-
-// http://stackoverflow.com/questions/18679576/counting-words-in-string
-function countWords(s: string) {
-  s = s.replace(/(^\s*)|(\s*$)/gi,"");//exclude  start and end white-space
-  s = s.replace(/[ ]{2,}/gi," ");//2 or more space to 1
-  s = s.replace(/\n /,"\n"); // exclude newline with a start spacing
-  return s.split(' ').length;
 }
 
 export class StepRegister extends React.Component<StepRegisterProps, StepRegisterState> {
@@ -100,7 +92,7 @@ export class StepRegister extends React.Component<StepRegisterProps, StepRegiste
     if (content) {
       upsertAttribute('contentHash', new Buffer(bitcore.crypto.Hash.sha256(new Buffer(content))).toString('hex'));
       upsertAttribute('fileSize', '' + content.length);
-      upsertAttribute('wordCount', '' + countWords(content));
+      upsertAttribute('wordCount', '' + wordCount(content));
       upsertAttribute('dateCreated', '' + new Date().getTime());
     }
 
