@@ -26,7 +26,7 @@ function AccountDropdownComponent(props: AccountDropdownProps) {
     <DropdownMenu className="account-dropdown-menu">
       <img key="avatar" src={props.avatar || Images.Anon } className="rounded-circle" />
       <ul>
-        <li className="inactive">Signed in as {props.displayName}</li>
+        <li className="inactive">{ props.displayName ? `Signed in as ${props.displayName}` : 'Signed in' }</li>
         <li onClick={() => browserHistory.push('/profiles/' + props.sessionPublicKey)}>Profile</li>
         <li onClick={() => browserHistory.push('/account/notifications')}>Notifications</li>
         <li onClick={() => browserHistory.push('/account/wallet')} className="wallet"><span>Wallet</span><WalletBalance address={props.walletAddress} className="balance" /></li>

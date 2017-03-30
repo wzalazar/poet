@@ -25,6 +25,7 @@ export interface NavbarProps {
   readonly transparent?: boolean;
   readonly margin?: boolean;
   readonly displayLogo?: boolean;
+  readonly currentUser?: any;
   readonly displaySearch?: boolean;
   readonly searchShadow?: boolean;
 }
@@ -114,6 +115,7 @@ function mapStateToProps(state: any, ownProps: NavbarProps): NavbarProps {
   return {
     ...ownProps,
     loggedIn: state.session && (state.session.state === Constants.LOGGED_IN),
+    currentUser: state.session && (state.session.state === Constants.LOGGED_IN) && state.profile,
     notifications: countUnreadNotifications(state)
   }
 }
