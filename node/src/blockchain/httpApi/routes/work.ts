@@ -73,13 +73,12 @@ export default class WorkRoute extends Route<Work> {
       + (opts.query ? 1 : 0)
       + (opts.startPublicationDate ? 1 : 0)
       + (opts.endPublicationDate ? 1 : 0)
-    console.log('Ownfilter', opts, countAttrs)
     let iterAttrs = 0
     for (let i = 0; i < countAttrs; i++) {
       queryBuilder.leftJoin('attribute', 'attr' + i, `attr${i}.claim=item.id`)
     }
     if (opts.licensedTo || opts.relatedTo) {
-      queryBuilder.leftJoin('item.publishers', 'item.publishers', 'publishers')
+      queryBuilder.leftJoinAndSelect('item.publishers', 'publisher')
     }
     if (opts.owner) {
       queryBuilder.andWhere('item.owner=:owner', { owner: opts.owner })
@@ -119,10 +118,10 @@ export default class WorkRoute extends Route<Work> {
       queryBuilder.andWhere('item.author=:author', { author: opts.author })
     }
     if (opts.licensedTo) {
-      queryBuilder.andWhere('publishers.id=:licensedTo', { licensedTo: opts.licensedTo })
+      queryBuilder.andWhere('publisher.id=:licensedTo', { licensedTo: opts.licensedTo })
     }
     if (opts.relatedTo) {
-      queryBuilder.andWhere(`(publishers.id=:licensedTo)
+      queryBuilder.andWhere(`(publisher.id=:licensedTo)
                           OR (item.owner   =:owner)
                           OR (item.author  =:author)`, {
       licensedTo: opts.relatedTo,
