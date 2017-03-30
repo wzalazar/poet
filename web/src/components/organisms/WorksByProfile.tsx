@@ -14,6 +14,7 @@ import { Pagination } from '../molecules/Pagination';
 import { DropdownMenu } from '../DropdownMenu';
 
 import './WorksByProfile.scss';
+import { TimeElapsedSinceTimestamp } from '../atoms/Claim';
 
 const EDIT = 'Edit';
 const TRANSFER = 'Transfer';
@@ -128,7 +129,10 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
         <td className="name">
           <WorkNameWithLink work={work} />
           <div>
-            <span className="media-type">{work.attributes.mediaType} / {work.attributes.articleType}</span>
+            <span className="media-type">
+              { work.attributes.mediaType }
+              { work.attributes.articleType && ` / ${work.attributes.articleType}`}
+            </span>
             <span className="content-info">
               {work.attributes.wordCount && <span>{work.attributes.wordCount} word{parseInt(work.attributes.wordCount) > 1 && 's'} {work.attributes.fileSize && 'at '}</span>}
               {work.attributes.fileSize && <span>{work.attributes.fileSize} bytes</span>}
@@ -137,7 +141,7 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
           <WorkType work={work} />
         </td>
         <td className="hash"><Hash className="copyable-hash-no-button" textClickable>{work.id}</Hash></td>
-        <td className="timestamp"><WorkPublishedDate work={work}/></td>
+        <td className="timestamp"><TimeElapsedSinceTimestamp claimInfo={work.claimInfo}/></td>
         { this.props.showActions && <td>
           <DropdownMenu
             className="dropdown"

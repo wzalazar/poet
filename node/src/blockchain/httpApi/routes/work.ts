@@ -16,6 +16,7 @@ interface WorkQueryOpts extends QueryOptions {
   attribute?: string
 
   relatedTo?: string
+  sortBy?: string
 
   articleType?: string
 
@@ -30,6 +31,7 @@ const OWNER = 'owner'
 const AUTHOR = 'author'
 const RELATED_TO = 'relatedTo'
 const LICENSED_TO = 'licensedTo'
+const SORT_BY = 'sortBy'
 
 const ATTRIBUTE = 'attribute'
 const ARTICLE_TYPE = 'type'
@@ -133,6 +135,9 @@ export default class WorkRoute extends Route<Work> {
     //            or id if this doesn't exist
     queryBuilder.leftJoin('claim_info', 'claim_info', 'claim_info.hash=item.id')
     queryBuilder.orderBy('claim_info.id', 'DESC')
+    if (opts.sortBy) {
+      // TODO: Sort by
+    }
     return queryBuilder
   }
 
@@ -142,6 +147,7 @@ export default class WorkRoute extends Route<Work> {
       owner: ctx.request.query[OWNER],
       query: ctx.request.query[QUERY],
       author: ctx.request.query[AUTHOR],
+      sortBy: ctx.request.query[SORT_BY],
       licensedTo: ctx.request.query[LICENSED_TO],
       relatedTo: ctx.request.query[RELATED_TO],
       attribute: ctx.request.query[ATTRIBUTE],

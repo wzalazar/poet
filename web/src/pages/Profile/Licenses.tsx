@@ -71,8 +71,7 @@ export class Licenses extends PoetAPIResourceProvider<LicensesResource, Licenses
         <LicensesByProfile
           publicKey={this.props.profileId}
           relationship={this.selectedFilterRelationship()}
-          searchQuery={this.state.searchQuery}
-          showActions={this.props.authenticatedUserIsOwner}>
+          searchQuery={this.state.searchQuery}>
           <div className="no-results">
             <ProfileNameWithLink profileId={this.props.profileId} >This user&nbsp;</ProfileNameWithLink> doesn't own any licenses yet.
           </div>
@@ -94,7 +93,6 @@ export class Licenses extends PoetAPIResourceProvider<LicensesResource, Licenses
           </div> }
           { !this.props.authenticatedUserIsOwner && <div>
             <h1><ProfileNameWithLink profileId={this.props.profileId} >This user&nbsp;</ProfileNameWithLink> doesn't own any licenses yet.</h1>
-            <small>Bummer.</small>
           </div> }
         </div>
       </section>

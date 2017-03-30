@@ -108,7 +108,7 @@ export class StepRegister extends React.Component<StepRegisterProps, StepRegiste
     this.props.onSubmit({
       attributes: this.state.attributes.map(attribute => ({key: attribute.keyName, value: attribute.value})),
       mediaType: this.state.mediaType,
-      articleType: this.state.articleType,
+      articleType: this.state.mediaType === 'article' && this.state.articleType,
       content: this.state.content
     });
   }
