@@ -41,7 +41,7 @@ export class LandingLoggedOut extends React.Component<LandingProps, undefined> {
             </section>
           </section>
           <div>
-            <LatestWorks/>
+            <LatestWorks limit={10} />
           </div>
           <Reviews/>
           <Partners/>
