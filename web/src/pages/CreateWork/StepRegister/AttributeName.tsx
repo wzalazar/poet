@@ -54,8 +54,8 @@ export class AttributeName extends React.Component<AttributeNameProps, Attribute
         ref={this.setAutocompleteReference}
         items={this.state.schema ? this.state.schema.types.CreativeWork.properties : []}
         value={this.props.attributeName}
-        renderMenu={this.renderMenu.bind(this)}
-        renderItem={this.renderMenuItem.bind(this)}
+        renderMenu={this.renderMenu}
+        renderItem={this.renderMenuItem}
         onSelect={this.onSelect}
         onChange={this.onChange}
         sortItems={this.sortItems}
@@ -69,16 +69,16 @@ export class AttributeName extends React.Component<AttributeNameProps, Attribute
       return <input type="text" value={this.props.attributeName} readOnly />;
   }
 
-  private renderMenu(children: any) {
+  renderMenu = (children: any) => {
     return <ul className="menu">{children}</ul>;
   }
 
-  private renderMenuItem(item: string) {
+  renderMenuItem = (item: string, highlighted: boolean) => {
     const splits = item.split(new RegExp(`(${this.props.attributeName})`, 'i'));
     const matchedItem = splits.map((s, i) => <span key={i} className={classNames(this.shouldItemRender(s, this.props.attributeName) && 'matched')}>{s}</span>);
 
     return (
-      <li key={item}>
+      <li key={item} className={classNames(highlighted && 'blur')}>
         { matchedItem }
       </li>
     );

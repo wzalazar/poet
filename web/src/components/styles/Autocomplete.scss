@@ -26,6 +26,9 @@
     background-color: white;
     border: 1px solid darken(#E6E4E1, 25%);
     border-top: none;
+    &:empty {
+      border: none;
+    }
 
     li {
       display: flex;
@@ -39,6 +42,9 @@
       cursor: pointer;
 
       &:hover {
+        background-color: lighten(#BEAF7E, 15%);
+      }
+      &.blur {
         background-color: lighten(#BEAF7E, 15%);
       }
 
