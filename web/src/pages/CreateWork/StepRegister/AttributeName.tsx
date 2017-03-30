@@ -18,6 +18,25 @@ interface AttributeNameState {
 export class AttributeName extends React.Component<AttributeNameProps, AttributeNameState> {
   private autocomplete: any;
 
+  // Render pre-bound callbacks
+  setAutocompleteReference = (autocomplete: any) => this.autocomplete = autocomplete;
+  onSelect = (value: string, item: any) => this.props.onChange(item);
+  onChange = (event: any, value: string) => this.props.onChange(value);
+  shouldItemRender = (item: string, value: string) => {
+    return value && item.toLowerCase().includes(value.toLowerCase());
+  }
+  getItemValue = (_: any) => _
+  sortItems = (a: any, b: any, value: string) => {
+    if (a.startsWith(value)) {
+      return -Infinity;
+    }
+    if (b.startsWith(value)) {
+      return Infinity;
+    }
+    return a.indexOf(value[0]) - b.indexOf(value[0])
+  }
+  onMenuVisibilityChange = (menuIsOpen: boolean) => this.setState({menuIsOpen})
+
   constructor() {
     super(...arguments);
     this.state = {
@@ -32,18 +51,19 @@ export class AttributeName extends React.Component<AttributeNameProps, Attribute
   render() {
     if (!this.props.readOnly)
       return <Autocomplete
-        ref={(autocomplete: any) => this.autocomplete = autocomplete}
+        ref={this.setAutocompleteReference}
         items={this.state.schema ? this.state.schema.types.CreativeWork.properties : []}
         value={this.props.attributeName}
         renderMenu={this.renderMenu.bind(this)}
         renderItem={this.renderMenuItem.bind(this)}
-        onSelect={(value: string, item: any) => this.props.onChange(item)}
-        onChange={(event: any, value: string) => this.props.onChange(value)}
-        getItemValue={(item: any) => item}
-        shouldItemRender={this.shouldItemRender.bind(this)}
+        onSelect={this.onSelect}
+        onChange={this.onChange}
+        sortItems={this.sortItems}
+        getItemValue={this.getItemValue}
+        shouldItemRender={this.shouldItemRender}
         wrapperProps={{className: 'autocomplete'}}
         inputProps={{className: classNames('input-text', this.state.menuIsOpen && 'open'), placeholder: 'Attribute Name'}}
-        onMenuVisibilityChange={(menuIsOpen: boolean) => this.setState({menuIsOpen})}
+        onMenuVisibilityChange={this.onMenuVisibilityChange}
       />;
     else
       return <input type="text" value={this.props.attributeName} readOnly />;
@@ -64,9 +84,6 @@ export class AttributeName extends React.Component<AttributeNameProps, Attribute
     );
   }
 
-  private shouldItemRender(item: string, value: string) {
-    return value && item.toLowerCase().includes(value.toLowerCase());
-  }
 
   public focus() {
     if (!this.props.readOnly)
