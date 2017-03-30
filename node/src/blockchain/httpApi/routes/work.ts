@@ -28,8 +28,8 @@ interface WorkQueryOpts extends QueryOptions {
 const QUERY = 'query'
 const OWNER = 'owner'
 const AUTHOR = 'author'
-const RELATED_TO = 'related_to'
-const LICENSED_TO = 'licensed_to'
+const RELATED_TO = 'relatedTo'
+const LICENSED_TO = 'licensedTo'
 
 const ATTRIBUTE = 'attribute'
 const ARTICLE_TYPE = 'type'
