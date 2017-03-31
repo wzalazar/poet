@@ -5,39 +5,25 @@ const bitcore = require('bitcore-lib');
 import './WalletOperationWithdraw.scss';
 
 interface WalletOperationWithdrawProps {
-  address: string
-  balance: number
-  requestWithdrawal: (_: WalletOperationWithdrawState) => void
+  readonly address: string
+  readonly balance: number
+  readonly requestWithdrawal: (_: WalletOperationWithdrawState) => void
 }
 
 export interface WalletOperationWithdrawState {
-  amountInSatoshis?: number
-  paymentAddress?: string
-  amountInBTC?: number
-  errorAmount?: boolean
-  errorAddress?: boolean
+  readonly amountInSatoshis?: number
+  readonly paymentAddress?: string
+  readonly amountInBTC?: number
+  readonly errorAmount?: boolean
+  readonly errorAddress?: boolean
 }
 
 export class WalletOperationWithdraw extends React.Component<WalletOperationWithdrawProps, WalletOperationWithdrawState> {
 
-  requestWithdrawal = () => {
-    const amountInSatoshis = Math.round(parseFloat((''+this.state.amountInBTC)) * 1e8)
-    if (amountInSatoshis > this.props.balance) {
-      this.setState({ errorAmount: true })
-    } else if (!bitcore.Address.isValid(this.state.paymentAddress)) {
-      this.setState({ errorAddress: true })
-    } else {
-      this.props.requestWithdrawal({
-        amountInSatoshis,
-        paymentAddress: this.state.paymentAddress
-      })
-    }
-  }
-
   constructor() {
     super(...arguments);
     this.state = {
-      amountInBTC: 0,
+      amountInBTC: 1,
       paymentAddress: ''
     };
   }
@@ -52,8 +38,9 @@ export class WalletOperationWithdraw extends React.Component<WalletOperationWith
               type="number"
               name="amountInSatoshis"
               value={this.state.amountInBTC}
-              onChange={(event: any) => this.setState({ amountInBTC: event.target.value })}
+              onChange={this.onAmountChange}
               min={0}
+              step={.1}
             >
             </input>
             <small>Fees will be subtracted from this amount</small>
@@ -75,5 +62,23 @@ export class WalletOperationWithdraw extends React.Component<WalletOperationWith
       </section>
     )
   }
+
+  private onAmountChange = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ amountInBTC: parseFloat(event.currentTarget.value) || 0 })
+  };
+
+  private requestWithdrawal = () => {
+    const amountInSatoshis = Math.round(parseFloat((''+this.state.amountInBTC)) * 1e8);
+    if (amountInSatoshis > this.props.balance) {
+      this.setState({ errorAmount: true })
+    } else if (!bitcore.Address.isValid(this.state.paymentAddress)) {
+      this.setState({ errorAddress: true })
+    } else {
+      this.props.requestWithdrawal({
+        amountInSatoshis,
+        paymentAddress: this.state.paymentAddress
+      })
+    }
+  };
 
 }
