@@ -20,26 +20,49 @@ export class Overview extends PoetAPIResourceProvider<any, OverviewProps, undefi
     return '/profiles/' + this.props.profileId;
   }
 
-  renderElement(props: Profile) {
-    const authorized = this.props.sessionPublicKey && this.props.sessionPublicKey === this.props.profileId;
+  renderElement(profile: Profile) {
+    const isAuthorized = this.props.sessionPublicKey && (this.props.sessionPublicKey === this.props.profileId);
+
+    if (profile) {
+      return this.renderProfile(profile, isAuthorized);
+    } else {
+      return this.renderNoProfile(isAuthorized);
+    }
+  }
+
+  private renderProfile(profile: Profile, isAuthorized: boolean) {
     return (
       <div className="overview col-sm-3">
-        <div className={classNames('avatar', authorized && 'authorized')} onClick={authorized && this.onAvatarClick}>
-          { authorized && <div className="edit"><img src={Images.Pencil} /></div> }
-          <img src={props.attributes && props.attributes.imageData || Images.Anon} className="picture"/>
+        <div className={classNames('avatar', isAuthorized && 'authorized')} onClick={isAuthorized && this.onAvatarClick}>
+          { isAuthorized && <div className="edit"><img src={Images.Pencil} /></div> }
+          <img src={profile.attributes && profile.attributes.imageData || Images.Anon} className="picture"/>
         </div>
-        <h2>{props.attributes && props.attributes.displayName || 'Anonymous'}</h2>
-        <div className="bio">{ props.attributes && props.attributes.bio }</div>
+        <h2>{profile.attributes && profile.attributes.displayName || 'Anonymous'}</h2>
+        <div className="bio">{ profile.attributes && profile.attributes.bio }</div>
         <ul>
-          { props.id && <li className="id"><div className="key">id</div><Hash className="copyable-hash-no-button" textClickable>{props.id}</Hash></li> }
-          { props.attributes && props.attributes.email && <li><img src={Images.Mail} /><div>{props.attributes.email}</div></li> }
+          { profile.id && <li className="id"><div className="key">id</div><Hash className="copyable-hash-no-button" textClickable>{profile.id}</Hash></li> }
+          { profile.attributes && profile.attributes.email && <li><img src={Images.Mail} /><div>{profile.attributes.email}</div></li> }
         </ul>
+        { isAuthorized && <div><Link to="/account/profile">Edit Profile</Link></div> }
+      </div>
+    )
+  }
+
+  private renderNoProfile(isAuthorized: boolean) {
+    return (
+      <div className="overview col-sm-3">
+        <div className={classNames('avatar', isAuthorized && 'authorized')} onClick={isAuthorized && this.onAvatarClick}>
+          { isAuthorized && <div className="edit"><img src={Images.Pencil} /></div> }
+          <img src={Images.Anon} className="picture"/>
+        </div>
+        <h2>Anonymous</h2>
+        <div className="bio">...</div>
         <div><Link to="/account/profile">Edit Profile</Link></div>
       </div>
     )
   }
 
-  private onAvatarClick() {
+  private onAvatarClick = () => {
     browserHistory.push('/account/profile');
   }
 }
