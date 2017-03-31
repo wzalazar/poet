@@ -12,9 +12,11 @@ import { Documentation } from "./Documentation";
 import { Company } from './Company';
 import { Account } from "./Account";
 import { Login } from './Login/Loader';
+import { MarketingLanding } from './MarketingLanding/Loader';
 
 export default [
   Landing,
+  MarketingLanding,
   Login,
   Work,
   Works,

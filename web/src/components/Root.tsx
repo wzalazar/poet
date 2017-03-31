@@ -30,6 +30,7 @@ function render(props: RootLayoutProps) {
 
   const worksUrl = 'works';
   const loginUrl = 'login';
+  const marketingLandingUrl = 'marketing-landing';
 
   const navbarShadow = ![worksUrl, ''].includes(location);
   const navbarTransparent = [''].includes(location) && props.loggedIn;
@@ -37,11 +38,12 @@ function render(props: RootLayoutProps) {
   const displayNavbarLogo = ![''].includes(location) || !props.loggedIn;
   const displayNavbarSearch = ![''].includes(location) || !props.loggedIn;
   const searchShadow = [worksUrl].includes(location);
+  const displayNavbar = ![loginUrl, marketingLandingUrl].includes(location);
 
   return (
     <div className="root-layout">
       { modals }
-      { location !== loginUrl && <Navbar
+      { displayNavbar && <Navbar
         shadow={navbarShadow}
         displayLogo={displayNavbarLogo}
         displaySearch={displayNavbarSearch}

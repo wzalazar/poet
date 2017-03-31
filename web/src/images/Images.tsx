@@ -17,4 +17,10 @@ export class Images {
   static readonly Upload = require('./upload.svg');
   static readonly Mail = require('./mail.svg');
   static readonly Pencil = require('./edit.svg');
+  static readonly RadialPattern = require('./radial-pattern.svg');
+  static readonly Avatar = require('./avatar.svg');
+  static readonly BtcMagazineLogo = require('./btc-mag-logo.svg');
+  static readonly ScoutLogo = require('./scout-logo.svg');
+  static readonly LonelyPlanetLogo = require('./lonely-planet-logo.svg');
+  static readonly ChainbLogo = require('./chainb-logo.svg');
 }
