@@ -59,6 +59,24 @@ export default async function createServer(options?: TrustedPublisherOptions) {
     }
   }
 
+  koa.use(Route.post('/titles', async (ctx: any) => {
+    const body = JSON.parse(ctx.request.body)
+    const claims = [creator.createSignedClaim({
+      type: TITLE,
+      attributes: {
+        [Fields.REFERENCE]: body.reference,
+        [Fields.REFERENCE_OFFERING]: body.referenceOffering,
+        [Fields.PROOF_TYPE]: "Bitcoin Transaction",
+        [Fields.PROOF_VALUE]: JSON.stringify({
+          txId: body.txId,
+          outputIndex: body.outputIndex
+        }),
+        [Fields.LICENSE_HOLDER]: body.owner
+      }
+    }, privKey)]
+    await createBlock(claims, ctx)
+  }))
+
   koa.use(Route.post('/licenses', async (ctx: any) => {
     const body = JSON.parse(ctx.request.body)
     const claims = [creator.createSignedClaim({

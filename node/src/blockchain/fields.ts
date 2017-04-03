@@ -8,8 +8,8 @@ export default class Fields {
   static PROOF_TYPE = 'proofType'
 
   // Offering
-  static OFFERING_TYPE = 'offeringType'
-  static OFFERING_INFO = 'offeringInfo'
+  static OFFERING_TYPE = 'licenseType'
+  static OFFERING_INFO = 'licenseDescription'
 
   // Title, Work
   static OWNER_KEY = 'owner'
