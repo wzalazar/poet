@@ -73,7 +73,8 @@ module.exports = {
         : 'style!css?sourceMap&importLoaders=1!postcss!sass?sourceMap'
       },
       { test: /\.json$/, loader: 'json-loader' },
-      { test: /\.svg$/, loader: 'file-loader' }
+      { test: /\.svg$/, loader: 'file-loader' },
+      { test: /\.ico$/, loader: 'file-loader?name=[name].[ext]' }
     ],
 
     preLoaders: [

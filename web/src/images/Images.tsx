@@ -23,4 +23,5 @@ export class Images {
   static readonly ScoutLogo = require('./scout-logo.svg');
   static readonly LonelyPlanetLogo = require('./lonely-planet-logo.svg');
   static readonly ChainbLogo = require('./chainb-logo.svg');
+  static readonly FavIcon = require('./fav.ico');
 }
