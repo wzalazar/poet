@@ -21,6 +21,19 @@ async function submitLicense(reference: string, txId: string, outputIndex: numbe
   }).then((res: any) => res.text())
 }
 
+async function buyThroughOffering(reference: string, txId: string, outputIndex: number, publicKey: string, referenceOffering: string) {
+  return await fetch(Configuration.api.user + '/titles', {
+    method: 'POST',
+    body: JSON.stringify({
+      txId,
+      outputIndex: '' + outputIndex,
+      owner: publicKey,
+      reference,
+      referenceOffering
+    })
+  }).then((res: any) => res.text())
+}
+
 function* purchaseLicense(action: Action & { work: Work, offering: WorkOffering }) {
   const offeringAttributes = action.offering.attributes;
   const reference = offeringAttributes.reference;
@@ -65,13 +78,13 @@ function* purchaseLicense(action: Action & { work: Work, offering: WorkOffering 
     const transaction = result.paidLicense.transaction;
     const outputIndex = result.paidLicense.outputIndex;
     const publicKey = yield select(currentPublicKey);
-    const createdClaims = yield call(submitLicense, reference, transaction, outputIndex, publicKey, action.offering.id);
+
+    const targetFunction = action.offering.attributes.licenseType === 'for-sale' ? buyThroughOffering : submitLicense;
+    const createdClaims = yield call(targetFunction, reference, transaction, outputIndex, publicKey, action.offering.id);
 
     yield put({ type: Actions.Modals.SignTransaction.Hide });
     yield put({ type: Actions.Licenses.Success, resultId: createdClaims[0].id });
     yield put({ type: Actions.Modals.PurchaseLicense.ShowSuccess })
-
-    browserHistory.push('/licenses/');
 
     return;
   }

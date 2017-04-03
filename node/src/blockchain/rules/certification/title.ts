@@ -29,6 +29,7 @@ export default {
     if (offeringId) {
       const validation = await validateBitcoinPayment(service, claim, txInfo, work)
       if (validation === false) {
+        console.log('validation failed')
         return
       }
       const offering = validation.referenceOffering
@@ -38,6 +39,10 @@ export default {
     }
 
     const owner = await service.getOrCreateProfile(ownerId)
+    await service.titleRepository.createQueryBuilder('item')
+      .where('item.reference = :work', { work })
+      .delete()
+
     const title = await service.titleRepository.persist(
       service.titleRepository.create({
         id: claim.id,
