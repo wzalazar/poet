@@ -39,7 +39,6 @@ export class Pricing extends React.Component<PricingProps, PricingState> {
               onOptionSelected={this.onFrequencyChange}
             >
               <Option id="oneTime">One Time</Option>
-              <Option id="per-page-view">Per Page View</Option>
             </OptionGroup>
           </div>
         </div>

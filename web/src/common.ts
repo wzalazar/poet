@@ -15,7 +15,7 @@ export interface Pricing {
   readonly frequency?: PricingFrequency;
 }
 
-export type PricingFrequency = 'oneTime' | 'perPageView';
+export type PricingFrequency = 'oneTime';
 
 export class LicenseType {
   readonly id: string;
@@ -30,7 +30,8 @@ export class LicenseType {
 }
 
 export const LicenseTypes: ReadonlyArray<LicenseType> = [
-  new LicenseType('license-to-publish', 'License to Publish', 'Publication rights are extended to anyone who provides proof of payment on the Bitcoin blockchain for the amount expressed by the owner of this creative work.')
+  new LicenseType('license-to-publish', 'License to Publish', 'Publication rights are extended to anyone who provides proof of payment on the Bitcoin blockchain for the amount expressed by the owner of this creative work.'),
+  new LicenseType('for-sale', 'For Sale', 'The title of ownership will be transferred to anyone who provides proof of payment on the Bitcoin blockchain for the amount established.')
 ];
 
 export interface ClassNameProps {
