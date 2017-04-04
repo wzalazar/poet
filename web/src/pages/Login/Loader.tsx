@@ -3,12 +3,9 @@ import { Route } from 'react-router';
 
 import { Actions } from '../../actions/index';
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
-import { LoginLayout, LoginLayoutProps } from './Layout';
+import { LoginLayout, LoginLayoutProps, LoginLayoutState } from './Layout';
 
-interface LoginState {
-}
-
-export class Login extends PageLoader<LoginState, Object> {
+export class Login extends PageLoader<LoginLayoutState, Object> {
 
   component = LoginLayout;
 
@@ -20,7 +17,7 @@ export class Login extends PageLoader<LoginState, Object> {
     return [<Route path="/login" key={key} component={this.container()} />]
   }
 
-  reducerHook<State>(): ReducerDescription<LoginState> {
+  reducerHook<State>(): ReducerDescription<LoginLayoutState> {
     return null;
   }
 

@@ -3,9 +3,9 @@ import { Link } from 'react-router'
 import { Action } from 'redux'
 const QR = require('react-qr');
 
-import '../../extensions/String';
 import { Images } from '../../images/Images';
-import Loading from '../../components/atoms/Loading';
+
+import '../../extensions/String';
 
 import './Layout.scss';
 
@@ -13,7 +13,7 @@ export interface LoginLayoutProps {
   readonly requestId: string;
 }
 
-interface LoginLayoutState {
+export interface LoginLayoutState {
 
 }
 
@@ -37,7 +37,7 @@ export class LoginLayout extends React.Component<LoginLayoutProps & LoginActions
                 ? <a href="#" onClick={() => this.props.mockLoginRequest(this.props.requestId)}>
                   <QR text={ (this.props.requestId && this.props.requestId.padEnd(50)) || ''} />
                 </a>
-                : <Loading />
+                : <img src={Images.Quill} className="loading" />
               }
             </div>
             <h2>Scan QR code to log in</h2>

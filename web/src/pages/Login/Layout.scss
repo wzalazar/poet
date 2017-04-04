@@ -1,3 +1,5 @@
+@import "../../components/styles/Animations";
+
 .page-login {
   display: flex;
   flex-direction: column;
@@ -51,6 +53,12 @@
       .qr {
         text-align: center;
         margin-bottom: 26px;
+      }
+
+      .loading {
+        @include animation-loading-quill;
+        width: 175px;
+        height: 175px;
       }
 
       h2 {

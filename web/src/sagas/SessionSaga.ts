@@ -1,6 +1,6 @@
 import { browserHistory } from 'react-router'
 import { takeEvery } from 'redux-saga'
-import { call, put } from 'redux-saga/effects'
+import { call, put, take } from 'redux-saga/effects'
 
 import { Configuration } from '../configuration';
 import { Actions } from '../actions/index'
@@ -44,7 +44,13 @@ function* loginResponse(action: any) {
   yield put({ type: Actions.Session.LoginSuccess, token: action.payload });
 
   yield put({ type: Actions.Profile.FetchProfile, profilePublicKey: action.payload.publicKey });
-  browserHistory.push('/');
+
+  const profileFetched = yield take(Actions.Profile.ProfileFetched);
+
+  if (profileFetched.profile && profileFetched.profile.displayName)
+    browserHistory.push('/');
+  else
+    browserHistory.push('/account/profile');
 }
 
 function* mockLoginRequest(action: any) {
