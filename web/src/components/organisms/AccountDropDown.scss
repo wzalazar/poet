@@ -1,11 +1,44 @@
 .account-dropdown-menu {
+  display: flex;
   position: relative;
+  cursor: pointer;
 
-  img {
-    $avatar-size: 30px;
-    width: $avatar-size;
-    height: $avatar-size;
-    cursor: pointer;
+  .avatar-and-notification-count {
+    position: relative;
+    margin-right: 10px;
+
+    a {
+      $size: 20px;
+
+      width: $size;
+      height: $size;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      position: absolute;
+      top: -$size/2.5;
+      right: -$size/2.5;
+
+      font-size: 10px;
+      color: white;
+      background-color: #df583d;
+      border-radius: 50%;
+
+      text-decoration: none;
+    }
+
+    img {
+      $avatar-size: 30px;
+      width: $avatar-size;
+      height: $avatar-size;
+      cursor: pointer;
+    }
+  }
+
+  .display-name {
+
   }
 
   ul {

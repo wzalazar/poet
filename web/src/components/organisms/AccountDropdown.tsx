@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { browserHistory } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import { Action } from 'redux';
 import { connect } from "react-redux";
 
@@ -8,7 +8,7 @@ import { Actions } from '../../actions/index';
 import { DropdownMenu } from '../molecules/DropdownMenu';
 
 import { WalletBalance } from '../atoms/WalletBalance';
-import { currentPublicKey } from '../../selectors/session';
+import { countUnreadNotifications, currentPublicKey } from '../../selectors/session';
 import { publicKeyToAddress } from '../../bitcoin/addressHelpers';
 
 import './AccountDropDown.scss';
@@ -19,12 +19,17 @@ interface AccountDropdownProps {
   readonly walletAddress?: string;
   readonly logout?: () => Action;
   readonly sessionPublicKey?: string;
+  readonly notificationCount?: number;
 }
 
 function AccountDropdownComponent(props: AccountDropdownProps) {
   return (
     <DropdownMenu className="account-dropdown-menu">
-      <img key="avatar" src={props.avatar || Images.Anon } className="rounded-circle" />
+      <div className="avatar-and-notification-count">
+        <img key="avatar" src={props.avatar || Images.Anon } />
+        { props.notificationCount && <Link to="/account/notifications"> { props.notificationCount } </Link> }
+      </div>
+      <div className="display-name">{props.displayName}</div>
       <ul>
         <li className="inactive">{ props.displayName ? `Signed in as ${props.displayName}` : 'Signed in' }</li>
         <li onClick={() => browserHistory.push('/profiles/' + props.sessionPublicKey)}>Profile</li>
@@ -45,7 +50,8 @@ function mapStateToProps(state: any, ownProps: AccountDropdownProps): AccountDro
     displayName: state.profile.displayName,
     walletAddress,
     avatar: state.profile && state.profile.attributes && state.profile.attributes.imageData,
-    sessionPublicKey: currentPublicKey(state)
+    sessionPublicKey: currentPublicKey(state),
+    notificationCount: countUnreadNotifications(state)
   };
 }
 

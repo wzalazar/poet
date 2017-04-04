@@ -7,7 +7,6 @@ const classNames = require('classnames');
 import { Actions } from '../../actions/index';
 import Constants from '../../constants';
 import { Images } from '../../images/Images';
-import { countUnreadNotifications } from '../../selectors/session';
 import { AccountDropdown } from './AccountDropdown';
 
 import './Navbar.scss';
@@ -20,7 +19,6 @@ interface NavbarActions {
 
 export interface NavbarProps {
   readonly loggedIn?: boolean;
-  readonly notifications?: number;
   readonly shadow?: boolean;
   readonly transparent?: boolean;
   readonly margin?: boolean;
@@ -49,16 +47,12 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
       'search',
       this.props.searchShadow && 'shadow'
     ];
-    const search = (ev: any) => {
-      ev.preventDefault()
-      this.props.dispatchSearchClick()
-    }
     return (
       <nav className={ classNames(navClasses) }>
         { this.props.displayLogo && <a className="navbar-brand" href="/"><img src={Images.Logo} /></a> }
         { this.props.displaySearch && <div className={ classNames(searchClasses) }  >
           <img src={Images.Glass} />
-          <form onSubmit={search}>
+          <form onSubmit={this.onSearch}>
             <input
               type="text"
               placeholder="Search"
@@ -67,21 +61,12 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
           </form>
         </div> }
         <ul className="navbar-nav">
-          { this.props.loggedIn ? this.loggedInActions() : this.notLoggedActions() }
+          { this.props.loggedIn ? this.renderLoggedInActions() : this.renderNotLoggedInActions() }
         </ul>
       </nav>
     )
   }
-
-  private renderNavLink(key: string, text: string, className: string = 'nav-link'): JSX.Element {
-    return (
-      <li key={key} className="nav-item">
-        <Link to={'/' + key} className={className}>{text}</Link>
-      </li>
-    )
-  }
-
-  private notLoggedActions(): JSX.Element[] {
+  private renderNotLoggedInActions(): JSX.Element[] {
     return [
       this.renderNavLink('network/about', 'About'),
       this.renderNavLink('documentation/overview', 'Documentation'),
@@ -94,20 +79,24 @@ class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undef
     ];
   }
 
-  private loggedInActions(): JSX.Element[] {
+  private renderLoggedInActions(): JSX.Element[] {
     return [
       <li key="avatar" className="nav-item avatar"><AccountDropdown /></li>,
-      this.countNotifications() > 0 ? <li key="notifications" className="nav-item notifications">{ this.notifications() }</li> : <span key="nonotif"/>,
       <li key="create-work" className="nav-item"><Link to={'/create-work'} className="button-primary"><img src={Images.QuillInverted} />Register New Work</Link></li>
     ];
   }
 
-  private countNotifications(): number {
-    return this.props.notifications
+  private renderNavLink(key: string, text: string, className: string = 'nav-link'): JSX.Element {
+    return (
+      <li key={key} className="nav-item">
+        <Link to={'/' + key} className={className}>{text}</Link>
+      </li>
+    )
   }
 
-  private notifications(): JSX.Element {
-    return <Link to="/account/notifications"> { this.props.notifications ? '' + this.props.notifications : '0' } </Link>
+  private onSearch = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    this.props.dispatchSearchClick();
   }
 }
 
@@ -115,8 +104,7 @@ function mapStateToProps(state: any, ownProps: NavbarProps): NavbarProps {
   return {
     ...ownProps,
     loggedIn: state.session && (state.session.state === Constants.LOGGED_IN),
-    currentUser: state.session && (state.session.state === Constants.LOGGED_IN) && state.profile,
-    notifications: countUnreadNotifications(state)
+    currentUser: state.session && (state.session.state === Constants.LOGGED_IN) && state.profile
   }
 }
 
