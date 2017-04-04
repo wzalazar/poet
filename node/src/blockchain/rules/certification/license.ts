@@ -31,7 +31,6 @@ async function fetchTx(txId: string): Promise<any> {
 
 interface Validation {
   ownerOnRecord: string
-  holder: Profile
   referenceOffering: Offering
   proofType: string
   proofValue: {
@@ -53,14 +52,19 @@ export async function validateBitcoinPayment(service: BlockchainService, claim: 
   const ownerStated = claim.attributes[Fields.REFERENCE_OWNER]
   const ownerOnRecord = await service.getOwnerPublicKey(workId)
 
+  if (!ownerOnRecord) {
+    console.log('No owner on record')
+    return false
+  }
+  if (!ownerStated) {
+    console.log('No owner on claim')
+    return false
+  }
+
   if (ownerOnRecord && ownerStated && ownerOnRecord !== ownerStated) {
     console.log('Different owner on record')
     return false
   }
-
-  const holderId = claim.attributes[Holder]
-  const holder = holderId
-    && await service.profileRepository.findOneById(holderId)
 
   const proofType = claim.attributes[ProofType]
   let proofValue
@@ -106,7 +110,7 @@ export async function validateBitcoinPayment(service: BlockchainService, claim: 
     console.log("Unknown proof type", proofType)
     return false
   }
-  return { ownerOnRecord, holder, referenceOffering, proofType, proofValue }
+  return { ownerOnRecord, referenceOffering, proofType, proofValue }
 }
 
 export async function validateBitcoinPaymentForLicense(service: BlockchainService, claim: Claim, txInfo: BlockMetadata, work: Work) {
@@ -114,7 +118,12 @@ export async function validateBitcoinPaymentForLicense(service: BlockchainServic
   if (validation === false) {
     return
   }
-  const { ownerOnRecord, holder, referenceOffering, proofType, proofValue } = validation
+  const { ownerOnRecord, referenceOffering, proofType, proofValue } = validation
+
+  const holderId = claim.attributes[Holder]
+  const holder = holderId
+    && await service.profileRepository.findOneById(holderId)
+
   const owner = await service.getOrCreateProfile(ownerOnRecord)
   await service.saveEvent(claim.id, EventType.LICENSE_BOUGHT, work, holder, undefined, owner)
   await service.saveEvent(claim.id, EventType.LICENSE_SOLD, work, owner)

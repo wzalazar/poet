@@ -13,6 +13,7 @@ export default class Fields {
 
   // Title, Work
   static OWNER_KEY = 'owner'
+  static OWNER = 'owner'
   static AUTHOR = 'author'
   static PAYMENT_ADDRESS = 'paymentAddress'
   static PAYMENT_AMOUNT = 'pricingPriceAmount'

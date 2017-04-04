@@ -2,7 +2,6 @@ import {Claim as PureClaim} from "../claim";
 import {BlockMetadata} from "../events";
 import {default as certificationRules} from "./rules/certification";
 import DomainService from "./domainService";
-import {Hook, HookDescription} from "./rules/hook";
 
 export default class CertificationService {
 

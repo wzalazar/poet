@@ -71,7 +71,8 @@ export default async function createServer(options?: TrustedPublisherOptions) {
           txId: body.txId,
           outputIndex: body.outputIndex
         }),
-        [Fields.LICENSE_HOLDER]: body.owner
+        [Fields.REFERENCE_OWNER]: body.referenceOwner,
+        [Fields.OWNER]: body.owner
       }
     }, privKey)]
     await createBlock(claims, ctx)
@@ -89,6 +90,7 @@ export default async function createServer(options?: TrustedPublisherOptions) {
           txId: body.txId,
           outputIndex: body.outputIndex
         }),
+        [Fields.REFERENCE_OWNER]: body.referenceOwner,
         [Fields.LICENSE_HOLDER]: body.owner
       }
     }, privKey)]
