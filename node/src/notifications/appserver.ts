@@ -6,8 +6,9 @@ const fcm = require('fcm-node')
 
 import "reflect-metadata"
 import * as path from 'path'
-import { createConnection } from 'typeorm'
+import { createConnection, Connection } from 'typeorm'
 import Device from './device'
+import { Queue, Notification } from './queue'
 
 const SERVER_API_KEY='YOUR_SERVER_API_KEY'
 const registrationToken = 'FIREBASE_EXAMPLE_REGISTRATION_TOKEN'
@@ -49,7 +50,7 @@ const callbackLog = function (sender: string, err: any, res: any) {
     console.log("----------------------------------\n>>>")
 }
 
-app.post('/register',function(req: any, res: any) {
+app.post('/register', async function(req: any, res: any) {
 
     const deviceName = req.body.deviceName
     const deviceId   = req.body.deviceId
@@ -67,20 +68,10 @@ app.post('/register',function(req: any, res: any) {
         // res.json(constants.error.msg_empty_param)
     } else {
 
-        createConnection({
-            driver: {
-                type: 'postgres',
-                host: 'localhost',
-                port: 5432,
-                username: 'poet',
-                password: 'poet',
-                database: 'poet'
-            },
-            entities: [
-                path.join(__dirname, 'device.ts')
-            ],
-            autoSchemaSync: true
-        }).then(async connection => {
+        try {
+            if (connection == undefined) {
+                connection = await getConnection()
+            }
 
             let device = new Device()
             device.deviceId = deviceId
@@ -92,13 +83,12 @@ app.post('/register',function(req: any, res: any) {
             let deviceRepository = connection.getRepository(Device)
             await deviceRepository.persist(device)
 
-            connection.close()
             res.end("It works!!")
             console.log("Device has been saved")
-        }).catch(error => {
+        } catch (error) {
             console.log(error)
             res.end("It didn't work :(!!")
-        })
+        }
     }
 })
 
@@ -117,5 +107,69 @@ app.post('/send', function(req: any, res: any) {
 		callbackLog('sendOK', err, res)
 		res.end("It works!!")
 	})
+})
+
+function buildNotification(device: Device, title: string, body: string) {
+    return {
+        to: device.registrationId,
+        // data: { //some data object (optional)
+        //     url: 'news',
+        //     foo:'fooooooooooooo',
+        //     bar:'bar bar bar'
+        // },
+        priority: 'high',
+        content_available: true,
+        notification: { //notification object
+            title: title, body: body, sound : "default", badge: "1"
+        }
+    }
+}
+
+// TODO better error handling and retries
+let connection: Connection
+async function getConnection(): Promise<Connection> {
+    return createConnection({
+        driver: {
+            type: 'postgres',
+            host: 'localhost',
+            port: 5432,
+            username: 'poet',
+            password: 'poet',
+            database: 'poet'
+        },
+        entities: [
+            path.join(__dirname, 'device.ts')
+        ],
+        autoSchemaSync: true
+    })
+}
+
+async function getDevice(pubKey: string, connection?: Connection): Promise<Device> {
+    if (connection == undefined) {
+        connection = await getConnection()
+    }
+    const deviceRepository = connection.getRepository(Device)
+    return (await deviceRepository.findOne({publicKey : pubKey}))
+}
+
+async function startListening() {
+    const queue = new Queue()
+    connection = await getConnection()
+
+    queue.pollNotifications().subscribeOnNext(async (notification: Notification) => {
+        console.log('consuming msg', notification)
+
+        const device = await getDevice(notification.pubKey, connection)
+
+        console.log('found registered device: ', device)
+
+        fcmCli.send(buildNotification(device, "Hi stranger!", "Welcome to my house!"), function(err: any) {
+            callbackLog('sendOK', err, undefined)
+        })
+    })
+}
+
+startListening().catch(error => {
+    console.log(error, error.stack)
 })
 

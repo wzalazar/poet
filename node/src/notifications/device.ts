@@ -1,9 +1,13 @@
-import {Table, Column, PrimaryColumn} from 'typeorm'
+import {Table, Column, PrimaryGeneratedColumn, Index} from 'typeorm'
 
 @Table()
 export default class Device {
 
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
+    id: number
+
+    @Column()
+    @Index()
     registrationId: string
 
     @Column()
@@ -16,5 +20,6 @@ export default class Device {
     platform: string
 
     @Column()
+    @Index()
     publicKey: string
 }
