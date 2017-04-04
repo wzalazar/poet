@@ -22,7 +22,7 @@ export class PortfolioWorksFilters extends React.Component<PortfolioWorksFilters
       <OptionGroup
         selectedId={this.props.selectedId}
         onOptionSelected={this.props.onOptionSelected}
-        className={classNames('tab-option-group', 'extended', this.props.className)}>
+        className={classNames('panel-option-group', 'extended', this.props.className)}>
         <Option id={PortfolioWorksFilters.ALL}>All</Option>
         <Option id={PortfolioWorksFilters.LICENSED_TO_ME}>Licensed</Option>
         <Option id={PortfolioWorksFilters.OWNED}>Owned</Option>
