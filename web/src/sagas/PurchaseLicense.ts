@@ -8,31 +8,24 @@ import { Actions } from '../actions'
 import { currentPublicKey } from '../selectors/session'
 import { WorkOffering, Work } from '../Interfaces';
 
-async function submitLicense(reference: string, txId: string, outputIndex: number, publicKey: string, referenceOffering: string) {
-  return await fetch(Configuration.api.user + '/licenses', {
-    method: 'POST',
-    body: JSON.stringify({
-      txId,
-      outputIndex: '' + outputIndex,
-      owner: publicKey,
-      reference,
-      referenceOffering
-    })
-  }).then((res: any) => res.text())
+function createHelperFunc(url: string) {
+  return async function (reference: string, txId: string, outputIndex: number, workOwner: string, publicKey: string, referenceOffering: string) {
+    return await fetch(Configuration.api.user + url, {
+      method: 'POST',
+      body: JSON.stringify({
+        txId,
+        outputIndex: '' + outputIndex,
+        referenceOwner: workOwner,
+        owner: publicKey,
+        reference,
+        referenceOffering
+      })
+    }).then((res: any) => res.text())
+  }
 }
 
-async function buyThroughOffering(reference: string, txId: string, outputIndex: number, publicKey: string, referenceOffering: string) {
-  return await fetch(Configuration.api.user + '/titles', {
-    method: 'POST',
-    body: JSON.stringify({
-      txId,
-      outputIndex: '' + outputIndex,
-      owner: publicKey,
-      reference,
-      referenceOffering
-    })
-  }).then((res: any) => res.text())
-}
+const submitLicense = createHelperFunc('/licenses')
+const buyThroughOffering = createHelperFunc('/titles')
 
 function* purchaseLicense(action: Action & { work: Work, offering: WorkOffering }) {
   const offeringAttributes = action.offering.attributes;
@@ -78,9 +71,10 @@ function* purchaseLicense(action: Action & { work: Work, offering: WorkOffering 
     const transaction = result.paidLicense.transaction;
     const outputIndex = result.paidLicense.outputIndex;
     const publicKey = yield select(currentPublicKey);
+    const workOwner = action.work.title.attributes.owner;
 
     const targetFunction = action.offering.attributes.licenseType === 'for-sale' ? buyThroughOffering : submitLicense;
-    const createdClaims = yield call(targetFunction, reference, transaction, outputIndex, publicKey, action.offering.id);
+    const createdClaims = yield call(targetFunction, reference, transaction, outputIndex, workOwner, publicKey, action.offering.id);
 
     yield put({ type: Actions.Modals.SignTransaction.Hide });
     yield put({ type: Actions.Licenses.Success, resultId: createdClaims[0].id });

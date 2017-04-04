@@ -104,7 +104,7 @@ export class Preview extends React.Component<PreviewProps, undefined> {
         <section>
           <div className="row">
             <div className="col-sm-6"><h5>{ this.props.licenseType && this.props.licenseType.name || 'No License Selected' }</h5></div>
-            <div className="col-sm-6"><h5>$ {this.props.price && this.props.price.amount || 0} {this.props.price && this.props.price.currency || 'BTC'}</h5></div>
+            <div className="col-sm-6"><h5>{ this.props.price && this.props.price.amount || 0 } {this.props.price && this.props.price.currency || 'BTC'}</h5></div>
           </div>
           <p>{ this.props.licenseType.description }</p>
         </section>
