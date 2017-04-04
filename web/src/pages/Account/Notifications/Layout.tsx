@@ -23,11 +23,15 @@ export class NotificationsLayout extends React.Component<NotificationsStore & No
   }
 
   componentDidMount() {
-    document.title = 'Notifications'
+    document.title = 'Notifications';
   }
 
   componentWillUnmount() {
     document.title = 'Poet'
+  }
+
+  componentWillReceiveProps(props: NotificationsStore & NotificationsActions) {
+    this.props.markRead(props.notifications.map(_ => _.id));
   }
 
   renderNotification = (notification: Notification) => {

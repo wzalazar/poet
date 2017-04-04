@@ -67,6 +67,10 @@ export namespace Actions {
     export const Success = 'license bought';
   }
 
+  export namespace Notifications {
+    export const MarkAllAsRead = 'mark all notifications as read';
+  }
+
   export namespace Modals {
     export namespace PurchaseLicense {
       export const Show = 'purchase license modal show';

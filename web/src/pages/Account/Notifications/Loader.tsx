@@ -2,20 +2,25 @@ import * as React from 'react';
 import { Route } from 'react-router';
 
 import PageLoader, { ReducerDescription } from '../../../components/PageLoader';
-import { NotificationsLayout } from './Layout';
 import { NotificationsStore, Notification } from '../../../store/PoetAppState';
-import { selectNotifications } from '../../../selectors/session';
+import {  selectNotifications } from '../../../selectors/session';
+import { Actions } from '../../../actions/index';
+import { NotificationsLayout } from './Layout';
 
 export interface NotificationsActions {
-  markRead: (notification: Notification) => void;
+  readonly markRead: (notifications: ReadonlyArray<number>) => void;
 }
 
 export class NotificationsPage extends PageLoader<NotificationsStore, Object> {
 
   component = NotificationsLayout;
 
-  initialState() {
-    return { notifications: [] as ReadonlyArray<Notification>, unreadCount: 0, totalCount: 0 };
+  initialState(): NotificationsStore {
+    return {
+      notifications: [] as ReadonlyArray<Notification>,
+      unreadCount: 0,
+      totalCount: 0
+    };
   }
 
   routeHook(key: string) {
@@ -34,7 +39,9 @@ export class NotificationsPage extends PageLoader<NotificationsStore, Object> {
     return selectNotifications(state)|| {}
   }
 
-  mapDispatchToProps(): Object {
-    return {}
+  mapDispatchToProps(): NotificationsActions {
+    return {
+      markRead: (notifications: ReadonlyArray<number>) => ({ type: Actions.Notifications.MarkAllAsRead, notifications })
+    }
   }
 }

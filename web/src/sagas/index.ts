@@ -10,6 +10,7 @@ import { purchaseLicenseSaga } from './PurchaseLicense';
 import { CacheInvalidationSaga } from './CacheInvalidationSaga';
 import { createWorkSaga } from './CreateWorkSaga';
 import { tryItOut } from './TryItOut';
+import { notificationsSaga } from './Notifications';
 
 export default [
   fetchSaga,
@@ -23,5 +24,6 @@ export default [
   purchaseLicenseSaga,
   CacheInvalidationSaga,
   createWorkSaga,
-  tryItOut
+  tryItOut,
+  notificationsSaga
 ];

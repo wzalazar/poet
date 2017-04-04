@@ -2,83 +2,73 @@ import { FetchStatus } from '../enums/FetchStatus'
 import { Claim } from '../Claim';
 import { WorkOffering, Work } from '../Interfaces';
 
-export interface PoetSessionToken {
-  publicKey: string
-  message: string
-  signature: string
+export interface PoetAppState {
+  readonly session: SessionStore
+  readonly profile: ProfileStore
+  readonly fetch: FetchStore
+  readonly modals: ModalStore
+  readonly transfer: TransferStore
+  readonly createWork: CreateWorkStore;
 }
 
-export interface PoetSession {
-  token: PoetSessionToken
-  publicKey: string
+export interface SessionStore {
+  readonly token: SessionToken
+  readonly publicKey: string
 }
 
-export interface FetchStoreEntry<T> {
-  status: FetchStatus
-  body?: T
-  error?: any
-  headers?: Headers;
+export interface SessionToken {
+  readonly publicKey: string
+  readonly message: string
+  readonly signature: string
+}
+
+export interface ProfileStore {
+  readonly notifications: NotificationsStore
+}
+
+export interface NotificationsStore {
+  readonly notifications: ReadonlyArray<Notification>;
+  readonly unreadCount: number
+  readonly totalCount: number
+}
+
+export interface Notification {
+  readonly id: number,
+  readonly user: string,
+  readonly read: boolean,
+  readonly event: NotificationEvent
+}
+
+export interface NotificationEvent {
+  readonly id: number,
+  readonly type: number,
+  readonly timestamp: number,
+  readonly claimReference: string,
+  readonly workId: string,
+  readonly workDisplayName?: string,
+  readonly actorId: string,
+  readonly actorDisplayName?: string
 }
 
 export interface FetchStore {
   [key: string]: FetchStoreEntry<any>
 }
 
-export interface NotificationEvent {
-  id: number,
-  type: number,
-  timestamp: number,
-  claimReference: string,
-  workId: string,
-  workDisplayName?: string,
-  actorId: string,
-  actorDisplayName?: string
-}
-
-export interface Notification {
-  id: number,
-  user: string,
-  read: boolean,
-  event: NotificationEvent
-}
-
-export interface NotificationsStore {
-  notifications: ReadonlyArray<Notification>
-  unreadCount: number
-  totalCount: number
-}
-
-export interface ProfileStore {
-  notifications: NotificationsStore
-}
-
-export interface PoetAppState {
-  session: PoetSession
-  profile: ProfileStore
-  fetch: FetchStore
-  modals: ModalStore
-  transfer: TransferStore
-  createWork: CreateWorkStore;
+export interface FetchStoreEntry<T> {
+  readonly status: FetchStatus
+  readonly body?: T
+  readonly error?: any
+  readonly headers?: Headers;
 }
 
 export interface ModalStore {
-  login?: boolean;
-  signWork?: boolean;
-  signTx?: boolean;
-  transfer?: boolean;
+  readonly login?: boolean;
+  readonly signWork?: boolean;
+  readonly signTx?: boolean;
+  readonly transfer?: boolean;
   readonly purchaseLicense?: PurchaseLicenseStore;
-  createWorkResult?: boolean;
+  readonly createWorkResult?: boolean;
   readonly tryItOut?: boolean;
-}
-
-export interface TransferStore {
-  id: string
-  success: boolean
-  targetPublicKey: string
-}
-
-export interface CreateWorkStore {
-  readonly workClaim: Claim;
 }
 
 export interface PurchaseLicenseStore {
@@ -88,4 +78,12 @@ export interface PurchaseLicenseStore {
   readonly success?: boolean;
 }
 
-export default PoetAppState;
+export interface TransferStore {
+  readonly id: string
+  readonly success: boolean
+  readonly targetPublicKey: string
+}
+
+export interface CreateWorkStore {
+  readonly workClaim: Claim;
+}
