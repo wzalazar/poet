@@ -12,7 +12,7 @@ import { ProfileNameWithLink } from '../../components/atoms/Profile';
 import { WorksByProfile, WorkToProfileRelationship } from '../../components/organisms/WorksByProfile';
 import { PortfolioWorksFilters } from './PortfolioFilters';
 
-interface WorksTabProps extends SelectProfileById, DispatchesTransferRequested{
+interface WorksTabProps extends SelectProfileById, DispatchesTransferRequested {
   readonly authenticatedUserIsOwner?: boolean;
 }
 
@@ -62,7 +62,7 @@ export class WorksTab extends PoetAPIResourceProvider<Work[], WorksTabProps, Wor
         </nav>
         <WorksByProfile
           owner={this.props.profileId}
-          transferRequested={() => null}
+          transferRequested={this.props.transferRequested}
           relationship={this.selectedFilterRelationship()}
           searchQuery={this.state.searchQuery}
           showActions={this.props.authenticatedUserIsOwner}>

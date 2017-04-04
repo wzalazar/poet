@@ -21,7 +21,7 @@ const TRANSFER = 'Transfer';
 
 export type WorkToProfileRelationship = 'author' | 'owner' | 'relatedTo' | 'licensedTo';
 
-interface WorksByProfileProps {
+interface WorksByProfileProps extends SelectWorksByOwner, DispatchesTransferRequested {
   readonly relationship: WorkToProfileRelationship;
   readonly searchQuery: string;
   readonly showActions?: boolean;
@@ -32,7 +32,7 @@ interface WorksByProfileState {
   readonly offset?: number;
 }
 
-export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfileProps & SelectWorksByOwner & DispatchesTransferRequested, WorksByProfileState> {
+export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfileProps, WorksByProfileState> {
 
   static defaultProps: Partial<WorksByProfileProps> = {
     limit: Configuration.pagination.limit

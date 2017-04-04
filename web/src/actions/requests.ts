@@ -1,13 +1,10 @@
-import { Actions } from './index';
+import { Action } from 'redux';
 
 export interface DispatchesTransferRequested {
-  transferRequested(workId: string): void
+  transferRequested?(workId: string): TransferRequestedAction
 }
 
-export interface TransferRequestedAction {
-  type: string,
-  payload: {
-    workId: string
-  }
+export interface TransferRequestedAction extends Action {
+  readonly workId: string;
 }
 
