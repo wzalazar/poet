@@ -19,6 +19,7 @@ async function startListening() {
         await blockchain.blockSeen(block)
       } catch (error) {
         console.log(error, error.stack)
+        queue.dispatchWork('blockRetry', block)
       }
     })
 
@@ -28,12 +29,13 @@ async function startListening() {
         await blockchain.blockSeen(block)
       } catch (error) {
         console.log(error, error.stack)
+        queue.dispatchWork('blockRetry', block)
       }
     })
 
     queue.bitcoinBlock().subscribeOnNext(async (block: BitcoinBlockMetadata) => {
-      try {
-        for (let poetTx of block.poet) {
+      for (let poetTx of block.poet) {
+        try {
           poetTx.bitcoinHash = block.blockHash
           poetTx.bitcoinHeight = block.blockHeight
           poetTx.timestamp = block.timestamp
@@ -43,9 +45,10 @@ async function startListening() {
           }
           console.log('Confirming block with torrent hash', poetTx.torrentHash)
           await blockchain.blockConfirmed(poetTx)
+        } catch (error) {
+          console.log(error, error.stack)
+          queue.dispatchWork('confirmRetry', poetTx)
         }
-      } catch (error) {
-        console.log(error, error.stack)
       }
     })
   } catch (error) {

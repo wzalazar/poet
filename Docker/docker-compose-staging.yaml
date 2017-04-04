@@ -36,6 +36,16 @@ services:
       - queue
       - outside
       - db
+  retry-eval:
+    build:
+      context: ..
+      dockerfile: ./Docker/retry-eval.dockerfile
+    volumes:
+      - ../node/src:/poet/src
+    networks:
+      - queue
+      - outside
+      - db
   explorer:
     build:
       context: ..

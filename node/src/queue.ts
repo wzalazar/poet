@@ -102,7 +102,7 @@ export class Queue {
     }
   }
 
-  private async dispatchWork(target: string, payload: any) {
+  async dispatchWork(target: string, payload: any) {
     let connection, channel
     try {
       connection = (await connect()) as amqp.Connection
@@ -117,7 +117,7 @@ export class Queue {
     }
   }
 
-  private async workThread(queueName: string, handler: any) {
+  async workThread(queueName: string, handler: any) {
     let connection, channel: Channel
 
     try {
@@ -127,6 +127,7 @@ export class Queue {
       return
     }
 
+    channel = await bluebird.promisify(connection.createChannel.bind(connection))() as Channel
     const queue = await channel.assertQueue(queueName, { durable: true })
     channel.prefetch(1)
 
