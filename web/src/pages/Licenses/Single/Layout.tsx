@@ -8,7 +8,7 @@ import { LicenseOwnerNameWithLink, LicenseEmitterNameWithLink, LicenseEmittedDat
 import { WorkHashById } from '../../../components/atoms/Work';
 import moment = require('moment');
 import { Configuration } from '../../../configuration';
-import { badge } from '../../../components/LicenseBadge';
+import { badge } from '../../../helpers/LicenseBadge';
 
 export class SingleLicense extends PoetAPIResourceProvider<License, SelectLicenseById, undefined> {
 

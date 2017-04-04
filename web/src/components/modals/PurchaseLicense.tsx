@@ -15,7 +15,7 @@ import Modal, { ModalProps } from './Modal'
 
 import './PurchaseLicense.scss'
 import { AuthorWithLink } from '../atoms/Work';
-import { badge } from '../LicenseBadge';
+import { badge } from '../../helpers/LicenseBadge';
 
 interface PurchaseLicenseProps extends ModalProps {
   readonly success: boolean;
