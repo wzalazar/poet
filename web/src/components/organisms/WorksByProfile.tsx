@@ -94,6 +94,8 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
     )
   }
 
+  setOffset = (offset: any) => this.setState({ offset });
+
   private renderWorks(works: Work[], count: number) {
     return (
       <section className="works-by-profile">
@@ -116,7 +118,7 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
           limit={this.props.limit}
           count={count}
           visiblePageCount={Configuration.pagination.visiblePageCount}
-          onClick={offset => this.setState({offset})}
+          onClick={this.setOffset}
           className="pagination"
           disabledClassName="disabled"/>
       </section>

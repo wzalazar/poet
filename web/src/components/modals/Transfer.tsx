@@ -23,7 +23,7 @@ interface TransferActions {
   selectPublicKey: (id: string) => any
 }
 
-function DisplayName(profile: any) {
+function DisplayName(profile: any, highlight: boolean) {
   return <div
     key={profile.id}
     id={profile.id}
@@ -31,7 +31,7 @@ function DisplayName(profile: any) {
       display: 'block',
       position: 'relative',
       color: 'black',
-      background: 'white'
+      background: highlight ? '#333' : 'white'
     }}
   >{ profile.displayName }</div>
 }
@@ -59,22 +59,36 @@ class TransferModal extends Modal<TransferProps & TransferActions & ModalProps, 
   }
 
   reactToUserInput(input: any) {
-    this.setState({ loading: true, value: input });
+    this.setState({loading: true, value: input});
     return fetch(Configuration.api.explorer + '/profiles/autocomplete/' + input)
       .then(result => result.json())
       .then((result: any) => {
-        this.setState({ loading: false, suggestions: result })
+        this.setState({loading: false, suggestions: result})
       })
   }
 
   clearValue() {
-    this.setState({ loading: false, value: '', suggestions: [] })
+    this.setState({loading: false, value: '', suggestions: []})
   }
 
   formSubmit() {
     const publicKey = Value(this.state.selected);
     this.props.selectPublicKey(publicKey);
-    this.setState({ loading: false, suggestions: [], value: '' })
+    this.setState({loading: false, suggestions: [], value: ''})
+  }
+
+  onSelect = (value: string, item: any) => {
+    this.setState({selected: item, value}, () => this.formSubmit())
+  }
+
+  onChange = (event: any, value: string) => {
+    this.reactToUserInput(value)
+  }
+
+  renderMenu = (children: any) => {
+    return (<div style={{ position: 'absolute', width: '100%' }}>
+      {children}
+    </div>)
   }
 
   draw() {
@@ -94,18 +108,10 @@ class TransferModal extends Modal<TransferProps & TransferActions & ModalProps, 
                 ref="autocomplete"
                 items={suggestions}
                 value={value}
-                onSelect={(value: string, item: any) => {
-                  this.setState({ selected: item, value }, () => this.formSubmit())
-                }}
-                onChange={(event: any, value: string) => {
-                  this.reactToUserInput(value)
-                }}
+                onSelect={this.onSelect}
+                onChange={this.onChange}
                 getItemValue={Value}
-                renderMenu={(children: any) =>
-                  <div style={{ position: 'absolute', width: '100%' }}>
-                    {children}
-                  </div>
-                }
+                renderMenu={this.renderMenu}
                 wrapperStyle={{ position: 'relative', display: 'inline-block' }}
                 renderItem={DisplayName}
                 inputProps={inputProps} />

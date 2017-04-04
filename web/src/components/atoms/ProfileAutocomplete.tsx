@@ -72,11 +72,12 @@ export class ProfileAutocomplete extends PoetAPIResourceProvider<ReadonlyArray<P
 
   private renderMenu = (children: any) => <ul className="menu">{children}</ul>;
 
-  private renderProfile = (profile: ProfileAutocompleteResource) => {
+  private renderProfile = (profile: ProfileAutocompleteResource, highlight: boolean) => {
     return (
       <li
         key={profile.id}
         id={profile.id}
+        className={highlight ? 'blur' : ''}
       >{profile.displayName}</li>
     )
   }
