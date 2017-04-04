@@ -8,13 +8,6 @@ import Router = require('koa-router')
 import Context = Koa.Context
 import NotificationRead from '../../orm/events/notification';
 
-interface EventQueryOpts extends QueryOptions {
-  profile?: string
-  work?: string
-}
-
-const PROFILE = 'profile'
-const WORK = 'work'
 
 export default class NotificationsRoute extends Route<NotificationRead> {
   service: BlockchainService
