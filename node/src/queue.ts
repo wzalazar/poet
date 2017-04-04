@@ -89,7 +89,7 @@ export class Queue {
   }
 
   private async publish(target: string, payload: any) {
-      let connection, channel
+    let connection, channel
     try {
       connection = (await connect()) as amqp.Connection
       channel = await bluebird.promisify(connection.createChannel.bind(connection))() as Channel
@@ -102,4 +102,42 @@ export class Queue {
     }
   }
 
+  private async dispatchWork(target: string, payload: any) {
+    let connection, channel
+    try {
+      connection = (await connect()) as amqp.Connection
+      channel = await bluebird.promisify(connection.createChannel.bind(connection))() as Channel
+
+      await channel.assertQueue(target, { durable: true })
+      await channel.sendToQueue(target, new Buffer(JSON.stringify(payload)), { persistent: true })
+      return await channel.close()
+    } catch (error) {
+      console.log('Error publishing', error, error.stack)
+      throw error
+    }
+  }
+
+  private async workThread(queueName: string, handler: any) {
+    let connection, channel: Channel
+
+    try {
+      connection = await connect()
+    } catch (error) {
+      console.log('Error connecting', error)
+      return
+    }
+
+    const queue = await channel.assertQueue(queueName, { durable: true })
+    channel.prefetch(1)
+
+    await channel.consume(queueName, (msg) => {
+      const payload = JSON.parse(msg.content.toString())
+      try {
+        handler(payload)
+        channel.ack(msg)
+      } catch (error) {
+        channel.nack(msg)
+      }
+    })
+  }
 }
