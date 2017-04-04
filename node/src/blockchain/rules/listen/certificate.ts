@@ -20,7 +20,7 @@ export default {
         console.log('problem with certificate: no referred claim found')
         return
       }
-      service.certificationService.certifyClaim(reference, txInfo)
+      await service.certificationService.certifyClaim(reference, txInfo)
     }
   }
 }
