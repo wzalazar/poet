@@ -30,7 +30,12 @@ export class Overview extends PoetAPIResourceProvider<any, OverviewProps, undefi
     }
   }
 
+  componentWillUnmount() {
+    document.title = 'Poet';
+  }
+
   private renderProfile(profile: Profile, isAuthorized: boolean) {
+    document.title = profile.displayName || 'Profile';
     return (
       <div className="overview col-sm-3">
         <div className={classNames('avatar', isAuthorized && 'authorized')} onClick={isAuthorized && this.onAvatarClick}>

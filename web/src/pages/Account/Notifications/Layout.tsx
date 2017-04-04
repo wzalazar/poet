@@ -22,6 +22,14 @@ export class NotificationsLayout extends React.Component<NotificationsStore & No
     );
   }
 
+  componentDidMount() {
+    document.title = 'Notifications'
+  }
+
+  componentWillUnmount() {
+    document.title = 'Poet'
+  }
+
   renderNotification = (notification: Notification) => {
     return (
       <tr key={notification.id} className={ notification.read ? 'read' : ''} >
@@ -30,5 +38,6 @@ export class NotificationsLayout extends React.Component<NotificationsStore & No
       </tr>
     )
   }
+
 }
 

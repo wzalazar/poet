@@ -23,6 +23,8 @@ function render(props: Work) {
     return '';
   }
 
+  document.title = props.attributes.name || '(Untitled Work)';
+
   const tableData = new Map<string, any>();
 
   props.attributes.datePublished &&
@@ -40,7 +42,7 @@ function render(props: Work) {
 
   return (
     <div className="overview">
-      <h1>{props.attributes.name}</h1>
+      <h1>{props.attributes.name || '(Untitled Work)'}</h1>
       <table>
         <tbody>
           <tr key="author">

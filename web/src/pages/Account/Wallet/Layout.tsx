@@ -12,6 +12,7 @@ interface WalletLayoutProps {
 }
 
 export class WalletLayout extends React.Component<WalletLayoutProps, undefined> {
+
   render() {
     return (
       <section className="container page-account-wallet">
@@ -26,6 +27,14 @@ export class WalletLayout extends React.Component<WalletLayoutProps, undefined> 
         </main>
       </section>
     )
+  }
+
+  componentDidMount() {
+    document.title = 'Wallet'
+  }
+
+  componentWillUnmount() {
+    document.title = 'Poet'
   }
 }
 

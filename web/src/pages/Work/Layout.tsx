@@ -16,6 +16,7 @@ export interface WorkProps {
 }
 
 export class WorkLayout extends React.Component<WorkProps, undefined> {
+
   render() {
     return (
       <section className="container page-work">
@@ -33,4 +34,9 @@ export class WorkLayout extends React.Component<WorkProps, undefined> {
       </section>
     )
   }
+
+  componentWillUnmount() {
+    document.title = 'Poet';
+  }
+  
 }

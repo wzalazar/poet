@@ -59,6 +59,14 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
     )
   }
 
+  componentDidMount() {
+    document.title = 'Register New Work'
+  }
+
+  componentWillUnmount() {
+    document.title = 'Poet';
+  }
+
   getContentHash() {
     return this.getAttribute('contentHash');
   }
