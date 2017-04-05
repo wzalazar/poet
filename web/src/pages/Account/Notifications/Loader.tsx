@@ -2,14 +2,11 @@ import * as React from 'react';
 import { Route } from 'react-router';
 
 import PageLoader, { ReducerDescription } from '../../../components/PageLoader';
-import { NotificationsStore, Notification } from '../../../store/PoetAppState';
-import {  selectNotifications } from '../../../selectors/session';
+import { NotificationsStore, Notification, PoetAppState } from '../../../store/PoetAppState';
 import { Actions } from '../../../actions/index';
-import { NotificationsLayout } from './Layout';
+import { NotificationsActions, NotificationsLayout } from './Layout';
+import { currentPublicKey } from '../../../selectors/session';
 
-export interface NotificationsActions {
-  readonly markRead: (notifications: ReadonlyArray<number>) => void;
-}
 
 export class NotificationsPage extends PageLoader<NotificationsStore, Object> {
 
@@ -35,8 +32,10 @@ export class NotificationsPage extends PageLoader<NotificationsStore, Object> {
     return null
   }
 
-  select(state: any, ownProps: any): Object {
-    return selectNotifications(state)|| {}
+  select(state: PoetAppState): Object {
+    return {
+      sessionPublicKey: currentPublicKey(state)
+    }
   }
 
   mapDispatchToProps(): NotificationsActions {

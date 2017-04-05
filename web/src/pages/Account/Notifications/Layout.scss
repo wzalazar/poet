@@ -12,6 +12,7 @@
     font-size: 12px;
     color: #413D3B;
     background-color: #FFFFFF;
+    transition: opacity .1s;
 
     tbody {
 
@@ -32,6 +33,13 @@
         font-weight: bold;
         color: #43B980;
       }
+    }
+  }
+
+  &.loading {
+    table {
+      opacity: .5;
+      pointer-events: none;
     }
   }
 }

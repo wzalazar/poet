@@ -48,6 +48,11 @@ class ResourceProviderBase<T> extends React.Component<ResourceProviderProps<T>, 
       || <span/>
   }
 
+  componentDidUpdate(prevProps: ResourceProviderProps<T>, prevState: undefined) {
+    if (this.props.request && this.props.request.status === FetchStatus.Loaded && prevProps.request && prevProps.request.status === FetchStatus.Loading)
+      this.props.provider.componentDidFetch(this.props.request.body, this.props.request.headers);
+  }
+
 }
 
 function mapStateToProps<T>(state: ResourceProviderReduxState<T>, ownProps: ResourceProviderProps<T>): ResourceProviderProps<T> {
@@ -89,4 +94,6 @@ export abstract class ResourceProvider<Resource, PropTypes, State> extends React
       <ConnectedResourceProvider resourceLocator={this.resourceLocator()} provider={this} />
     )
   }
+
+  componentDidFetch(resource: Resource, headers: Headers) {}
 }
