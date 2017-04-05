@@ -13,5 +13,7 @@ export function notificationsSaga() {
 
 function* markAllAsRead(action: { type: string, notifications: ReadonlyArray<number>}) {
   const publicKey = yield select(currentPublicKey);
-  fetch(Configuration.api.explorer + '/notifications/' + publicKey, { method: 'PATCH', body: JSON.stringify(action.notifications) });
+  const headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  fetch(Configuration.api.explorer + '/notifications/' + publicKey, { method: 'PATCH', body: JSON.stringify(action.notifications), headers });
 }
