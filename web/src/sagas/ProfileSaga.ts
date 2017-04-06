@@ -13,8 +13,8 @@ function* fetchProfileData(action: any) {
 
   const notificationsResponse = yield call(fetch, Configuration.api.explorer + '/notifications/' + action.profilePublicKey);
   if (notificationsResponse.status === 200) {
-    const unreadCount = notificationsResponse.headers.get('x-unread')
-    const totalCount = notificationsResponse.headers.get('x-total-count')
+    const unreadCount = parseInt(notificationsResponse.headers.get('x-unread'));
+    const totalCount = parseInt(notificationsResponse.headers.get('x-total-count'));
     const notifications = yield notificationsResponse.json();
     yield put({ type: Actions.Profile.NotificationsUpdate, payload: { notifications, unreadCount, totalCount } });
   }

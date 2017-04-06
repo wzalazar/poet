@@ -27,7 +27,7 @@ function AccountDropdownComponent(props: AccountDropdownProps) {
     <DropdownMenu className="account-dropdown-menu">
       <div className="avatar-and-notification-count">
         <img key="avatar" src={props.avatar || Images.Anon } />
-        { props.notificationCount && <Link to="/account/notifications"> { props.notificationCount } </Link> }
+        { props.notificationCount > 0 && <Link to="/account/notifications"> { props.notificationCount } </Link> }
       </div>
       <div className="display-name">{props.displayName}</div>
       <ul>
