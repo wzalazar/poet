@@ -21,6 +21,7 @@ interface ProfileAutocompleteState {
 }
 
 export class ProfileAutocomplete extends PoetAPIResourceProvider<ReadonlyArray<ProfileAutocompleteResource>, ProfileAutocompleteProps, ProfileAutocompleteState> {
+  private lastFetchedProfiles: ReadonlyArray<ProfileAutocompleteResource> = [];
 
   constructor() {
     super(...arguments);
@@ -34,13 +35,11 @@ export class ProfileAutocomplete extends PoetAPIResourceProvider<ReadonlyArray<P
   }
 
   renderElement(profiles: ReadonlyArray<ProfileAutocompleteResource>) {
-    const displayValue = this.getDisplayValue(profiles) || this.props.value;
-
     return (
       <Autocomplete
         wrapperProps={{className: 'autocomplete'}}
         items={profiles || []}
-        value={displayValue}
+        value={this.getDisplayValue(profiles)}
         onSelect={(value: string, item: ProfileAutocompleteResource) => this.props.onSelect(value)}
         onChange={(event: any, value: string) => this.onChange(profiles, value)}
         getItemValue={(profile: ProfileAutocompleteResource) => profile.id}
@@ -52,34 +51,47 @@ export class ProfileAutocomplete extends PoetAPIResourceProvider<ReadonlyArray<P
   }
 
   renderLoading() {
-    return this.renderElement([]);
+    return this.renderElement(this.lastFetchedProfiles || []);
   }
 
   renderError() {
-    console.error('Error loading profile autocomplete.');
     return this.renderElement([]);
   }
 
-  private getDisplayValue(profiles: ReadonlyArray<ProfileAutocompleteResource>) {
-    const profile = profiles && profiles.find((profile) => profile.id === this.props.value);
-    return profile && profile.displayName;
+  componentDidFetch(profiles: ReadonlyArray<ProfileAutocompleteResource>) {
+    this.lastFetchedProfiles = profiles;
+  }
+
+  private getDisplayValue(profiles?: ReadonlyArray<ProfileAutocompleteResource>) {
+    const allProfiles = [...(profiles || []), ...(this.lastFetchedProfiles || [])];
+    const profile = allProfiles.find(_ => _.id === this.props.value);
+    return profile ? profile.displayName : this.props.value;
   }
 
   private onChange = (profiles: ReadonlyArray<ProfileAutocompleteResource>, value: string) => {
-    const profile = profiles && profiles.find((profile) => profile.displayName === value);
+    const profile = profiles && profiles.find(_ => _.displayName === value);
     this.props.onChange(profile ? profile.id : value);
   };
 
-  private renderMenu = (children: any) => <ul className="menu">{children}</ul>;
+  private renderMenu = (children: React.ReactChildren) => <ul className="menu">{children}</ul>;
 
   private renderProfile = (profile: ProfileAutocompleteResource, highlight: boolean) => {
+    const displayValue = this.getDisplayValue();
+
+    const splits = profile.displayName.split(new RegExp(`(${displayValue})`, 'i'));
+    const matchedItem = splits.map((s, i) => <span key={i} className={classNames(this.shouldItemRender(s, displayValue) && 'matched')}>{s}</span>);
+
     return (
       <li
         key={profile.id}
         id={profile.id}
         className={highlight ? 'blur' : ''}
-      >{profile.displayName}</li>
+      >{matchedItem}</li>
     )
+  };
+
+  private shouldItemRender = (item: string, value: string) => {
+    return value && item.toLowerCase().includes(value.toLowerCase());
   }
 
 }

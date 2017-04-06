@@ -18,25 +18,6 @@ interface AttributeNameState {
 export class AttributeName extends React.Component<AttributeNameProps, AttributeNameState> {
   private autocomplete: any;
 
-  // Render pre-bound callbacks
-  setAutocompleteReference = (autocomplete: any) => this.autocomplete = autocomplete;
-  onSelect = (value: string, item: any) => this.props.onChange(item);
-  onChange = (event: any, value: string) => this.props.onChange(value);
-  shouldItemRender = (item: string, value: string) => {
-    return value && item.toLowerCase().includes(value.toLowerCase());
-  }
-  getItemValue = (_: any) => _
-  sortItems = (a: any, b: any, value: string) => {
-    if (a.startsWith(value)) {
-      return -Infinity;
-    }
-    if (b.startsWith(value)) {
-      return Infinity;
-    }
-    return a.indexOf(value[0]) - b.indexOf(value[0])
-  }
-  onMenuVisibilityChange = (menuIsOpen: boolean) => this.setState({menuIsOpen})
-
   constructor() {
     super(...arguments);
     this.state = {
@@ -69,11 +50,11 @@ export class AttributeName extends React.Component<AttributeNameProps, Attribute
       return <input type="text" value={this.props.attributeName} readOnly />;
   }
 
-  renderMenu = (children: any) => {
+  private renderMenu = (children: any) => {
     return <ul className="menu">{children}</ul>;
-  }
+  };
 
-  renderMenuItem = (item: string, highlighted: boolean) => {
+  private renderMenuItem = (item: string, highlighted: boolean) => {
     const splits = item.split(new RegExp(`(${this.props.attributeName})`, 'i'));
     const matchedItem = splits.map((s, i) => <span key={i} className={classNames(this.shouldItemRender(s, this.props.attributeName) && 'matched')}>{s}</span>);
 
@@ -82,11 +63,35 @@ export class AttributeName extends React.Component<AttributeNameProps, Attribute
         { matchedItem }
       </li>
     );
-  }
+  };
 
+  private setAutocompleteReference = (autocomplete: any) => this.autocomplete = autocomplete;
+
+  private onSelect = (value: string, item: any) => this.props.onChange(item);
+
+  private onChange = (event: any, value: string) => this.props.onChange(value);
+
+  private shouldItemRender = (item: string, value: string) => {
+    return value && item.toLowerCase().includes(value.toLowerCase());
+  };
+
+  private getItemValue = (_: any) => _;
+
+  private sortItems = (a: any, b: any, value: string) => {
+    if (a.startsWith(value)) {
+      return -Infinity;
+    }
+    if (b.startsWith(value)) {
+      return Infinity;
+    }
+    return a.indexOf(value[0]) - b.indexOf(value[0])
+  };
+
+  private onMenuVisibilityChange = (menuIsOpen: boolean) => this.setState({menuIsOpen});
 
   public focus() {
     if (!this.props.readOnly)
       this.autocomplete.refs.input.focus();
   }
+
 }
