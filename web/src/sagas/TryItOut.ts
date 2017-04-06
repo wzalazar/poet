@@ -20,14 +20,19 @@ function* tryItOutSubmitted(action: TryItOutSubmitAction) {
   yield put({type: Actions.Session.MockLoginRequest, payload: loginRequestId.id});
 
   const publicKey = yield call(getPublicKey, loginRequestId.id);
-  yield put({type: Actions.Claims.SubmitRequested, payload: action.workClaim, publicKey});
+
+  yield put({type: Actions.Claims.SubmitRequested, payload: action.workClaim, publicKey, noModal: true});
 
   const claimId = yield take(Actions.Claims.IdReceived);
 
   yield put({type: Actions.Claims.FakeSign, payload: claimId.payload});
+
+  yield take(Actions.Claims.SubmittedSuccess);
+
+  yield put({ type: Actions.Modals.TryItOut.Hide });
 }
 
-async function getPublicKey(requestId: any) {
+async function getPublicKey(requestId: string) {
   const authenticationResponse = await Authentication.onResponse(requestId) as any;
   return authenticationResponse.signatures[0].publicKey
 }

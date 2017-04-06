@@ -12,6 +12,12 @@ import { Claim } from '../Claim';
 
 const jsonClaims = require('../claim.json');
 
+export interface SubmitRequestedAction {
+  readonly publicKey: string;
+  readonly payload: ReadonlyArray<Claim>;
+  readonly noModal: boolean;
+}
+
 export function submitClaims() {
   return function*() {
     yield takeEvery(Actions.Claims.SubmitRequested, submitRequested);
@@ -19,15 +25,16 @@ export function submitClaims() {
   }
 }
 
-function* submitRequested(claimTemplates: any) {
-  yield put({ type: Actions.Modals.SignClaims.Show });
+function* submitRequested(action: SubmitRequestedAction) {
+  if (!action.noModal)
+    yield put({ type: Actions.Modals.SignClaims.Show });
 
-  const publicKey = (yield select(currentPublicKey)) || claimTemplates.publicKey;
+  const publicKey = (yield select(currentPublicKey)) || action.publicKey;
 
   if (!publicKey)
     throw new Error('Claim Sign Saga: cannot sign a claim without a public key.');
 
-  const serializedToSign = claimTemplates.payload.map((template: any) => {
+  const serializedToSign = action.payload.map((template: any) => {
     return builder.getEncodedForSigning(template, publicKey);
   });
 
@@ -39,9 +46,10 @@ function* submitRequested(claimTemplates: any) {
 
   const postClaimsResult = yield call(postClaims, response);
 
-  yield put({ type: Actions.Claims.SubmittedSuccess, claims: claimTemplates.payload });
+  yield put({ type: Actions.Claims.SubmittedSuccess, claims: action.payload });
 
-  yield put({ type: Actions.Modals.SignClaims.Hide });
+  if (!action.noModal)
+    yield put({ type: Actions.Modals.SignClaims.Hide });
 
   const createdWorkClaim = postClaimsResult.createdClaims.find((claim: Claim) => claim.type === 'Work');
   const updatedProfile = postClaimsResult.createdClaims.find((claim: Claim) => claim.type === 'Profile');
@@ -75,7 +83,7 @@ const builder = new class {
     return attributesArray.map(this.attribute.create, this.attribute)
   }
 
-  getEncodedForSigning(data: any, publicKey: string): string {
+  getEncodedForSigning(data: Claim, publicKey: string): string {
     return new Buffer(this.claim.encode(this.claim.create({
       id: new Buffer(''),
       publicKey: new Buffer(publicKey, 'hex'),

@@ -1,4 +1,5 @@
 @import "Modal";;
+@import '../styles/Animations';
 
 .modal-try-it-out {
   @include modal;
@@ -8,6 +9,21 @@
   padding: 30px 25px 20px;
   align-items: center;
   text-align: center;
+
+  &.loading {
+    height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      @include animation-loading-quill;
+      $size: 100px;
+      width: $size;
+      height: $size;
+    }
+
+  }
 
   h1 {
     font-size: 22px;

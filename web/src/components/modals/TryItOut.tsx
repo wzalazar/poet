@@ -11,6 +11,7 @@ import { Option, OptionGroup } from '../molecules/OptionGroup';
 import { TextUpload, TextUploadButton } from '../molecules/TextUpload';
 
 import './TryItOut.scss';
+import { Claim } from '../../Claim';
 
 enum Tabs {
   Text, UploadFile
@@ -27,6 +28,7 @@ interface TryItOutState {
   readonly text?: string;
   readonly fileContent?: string;
   readonly fileName?: string;
+  readonly isSubmitting?: boolean;
 }
 
 class TryItOutComponent extends React.Component<TryItOutProps, TryItOutState> {
@@ -34,11 +36,14 @@ class TryItOutComponent extends React.Component<TryItOutProps, TryItOutState> {
   constructor() {
     super(...arguments);
     this.state = {
-      selectedTab: Tabs.Text
+      selectedTab: Tabs.Text,
+      isSubmitting: false
     }
   }
 
   render() {
+    if (this.state.isSubmitting)
+      return this.renderSubmitting();
     return (
       <Overlays.Modal
         className="modals-container"
@@ -62,6 +67,21 @@ class TryItOutComponent extends React.Component<TryItOutProps, TryItOutState> {
             (this is how poet proves your ownership of intellectual property)
           </small>
           <button className="button-primary" onClick={this.onSubmit} disabled={!this.canSubmit()}>Timestamp to the blockchain at  03-28-17 at 12:30:93</button>
+        </section>
+      </Overlays.Modal>
+    )
+  }
+
+  renderSubmitting() {
+    return (
+      <Overlays.Modal
+        className="modals-container"
+        backdropClassName="backdrop"
+        show={this.props.visible}
+        onHide={this.props.hide}
+      >
+        <section className="modal-try-it-out loading">
+          <img src={Images.Quill} />
         </section>
       </Overlays.Modal>
     )
@@ -95,7 +115,7 @@ class TryItOutComponent extends React.Component<TryItOutProps, TryItOutState> {
   };
 
   private onSubmit = () => {
-    this.props.hide();
+    this.setState({ isSubmitting: true });
     this.props.submit([{
       type: 'Work',
       attributes: [
@@ -117,7 +137,7 @@ const mapStateToProps = (state: PoetAppState) => ({
 
 const mapDispatch: {
   readonly hide: () => Action;
-  readonly submit: (workClaim: any) => TryItOutSubmitAction;
+  readonly submit: (workClaim: Claim) => TryItOutSubmitAction;
 } = {
   hide: () => ({ type: Actions.Modals.TryItOut.Hide }),
   submit: (workClaim: any) => ({ type: Actions.Modals.TryItOut.Submit, workClaim })
