@@ -25,21 +25,29 @@
     color: #666666;
   }
 
-  tbody td {
-    font-size: 11px;
-    line-height: 24px;
-    color: #666666;
+  tbody {
+    tr {
+      td {
+        font-size: 11px;
+        line-height: 24px;
+        color: #666666;
 
-    &.amount {
-      font-size: 15px;
-      text-align: right;
-      line-height: 24px;
+        &.amount {
+          font-size: 15px;
+          text-align: right;
+          line-height: 24px;
 
-      &.positive {
-        color: #7ED321;
+          &.positive {
+            color: #7ED321;
+          }
+          &.negative {
+            color: #D0021B;
+          }
+        }
       }
-      &.negative {
-        color: #D0021B;
+      
+      &:hover td {
+        background: rgba(0, 0, 0, .1);
       }
     }
   }

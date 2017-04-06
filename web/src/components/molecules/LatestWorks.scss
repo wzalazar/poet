@@ -66,5 +66,9 @@ table.latest-works {
       text-align: right;
       color: #737373;
     }
+
+    &:hover td {
+      background-color: #FBFBFB;
+    }
   }
 }

@@ -15,20 +15,13 @@ export interface LandingProps {
 export class LandingLoggedIn extends React.Component<LandingProps, undefined> {
 
   render() {
-    const search = (ev: any) => {
-      ev.preventDefault()
-      this.props.dispatchSearch()
-    }
-    const updateSearch = (ev: any) => {
-      this.props.dispatchSearchChange(ev.target.value)
-    }
     return (
       <section className="landing-logged-in">
         <div className="container">
           <img className="logo" src={Images.Logo} />
           <section className="search">
-            <form onSubmit={search}>
-              <div><input type="text" onChange={updateSearch} /></div>
+            <form onSubmit={this.onSearch}>
+              <div><input type="text" onChange={this.updateSearch} /></div>
               <div><button>Poet Search</button></div>
             </form>
           </section>
@@ -48,4 +41,14 @@ export class LandingLoggedIn extends React.Component<LandingProps, undefined> {
       </section>
     )
   }
+
+  private onSearch = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    this.props.dispatchSearch();
+  };
+
+  private updateSearch = (event: React.FormEvent<HTMLInputElement>) => {
+    this.props.dispatchSearchChange(event.currentTarget.value);
+  };
+
 }
