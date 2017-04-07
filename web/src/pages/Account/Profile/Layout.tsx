@@ -119,14 +119,14 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
                 </div>
               </div>
             </div>
-            <button onClick={this.onSubmit.bind(this)} className="button-primary">Save Changes</button>
+            <button onClick={this.onSubmit} className="button-primary">Save Changes</button>
           </main>
         </div>
       </section>
     );
   }
 
-  private onSubmit() {
+  private onSubmit = () => {
     this.props.submitProfileRequested({
       type: PROFILE,
       attributes: {
@@ -142,21 +142,18 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
   }
 }
 
-interface ProfileLayoutProps extends ClassNameProps {
+interface ProfileLayoutRowProps extends ClassNameProps {
   readonly label: string;
   readonly small?: string;
+  readonly children?: React.ReactChildren;
 }
 
-class ProfileLayoutRow extends React.Component<ProfileLayoutProps, undefined> {
-  render() {
-    return (
-      <div className={classNames('field', this.props.className)}>
-        <label>{ this.props.label }</label>
-        <div>
-          { this.props.children }
-        </div>
-        { this.props.small && <small>{this.props.small}</small>  }
-      </div>
-    );
-  }
-}
+const ProfileLayoutRow = (props: ProfileLayoutRowProps) => (
+  <div className={classNames('field', props.className)}>
+    <label>{ props.label }</label>
+    <div>
+      { props.children }
+    </div>
+    { props.small && <small>{props.small}</small>  }
+  </div>
+);

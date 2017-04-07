@@ -19,6 +19,10 @@
     }
   }
 
+  img.loading {
+    @include animation-loading-quill;
+    width: 140px;
+  }
 
   header {
     padding: 28px 0 15px 0;

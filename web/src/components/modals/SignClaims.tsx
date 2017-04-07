@@ -6,7 +6,6 @@ import { Images } from '../../images/Images';
 import { Actions } from "../../actions/index";
 import { Claim, WORK, PROFILE } from '../../Claim';
 import { WorkDetails } from '../atoms/WorkDetails';
-import Loading from "../atoms/Loading";
 import Modal, {ModalProps} from "./Modal";
 
 import "./Modal.scss";
@@ -54,13 +53,11 @@ class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefine
         </header>
         <main>
           <div className="qr">
-            { this.props.submitting
-              ? <Loading />
-              : this.props.requestId
-              ? <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
-              <QR text={this.props.requestId || ''} />
-            </a>
-              : <Loading />
+            { this.props.submitting || !this.props.requestId
+              ? <img src={Images.Quill} className="loading" />
+              : <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
+                  <QR text={this.props.requestId || ''} />
+                </a>
             }
           </div>
           <h2>This will authorize the following transaction</h2>
