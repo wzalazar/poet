@@ -48,9 +48,9 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
           <StepPublishAndReview
             workTitle={this.state.workTitle}
             price={this.state.licenseData && this.state.licenseData.pricing.price}
-            contentHash={this.getContentHash()}
-            wordCount={this.getWordCount()}
-            onSubmit={this.submitWork.bind(this)}
+            contentHash={this.getAttributeValue('contentHash')}
+            wordCount={this.getAttributeValue('wordCount')}
+            onSubmit={this.onStepPublishAndReviewSubmit}
             licenseType={this.state.licenseData && this.state.licenseData.licenseType}
             authorName={this.state.workData.attributes.find(({key, value}) => key === 'author').value}
             /> }
@@ -67,19 +67,9 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
     document.title = 'Poet';
   }
 
-  getContentHash() {
-    return this.getAttribute('contentHash');
-  }
-
-  getWordCount() {
-    return parseInt(this.getAttribute('wordCount'), 10);
-  }
-
-  getAttribute(key: string) {
-    const filter = this.state.workData.attributes.filter((entry) => entry.key === key);
-    if (filter.length) {
-      return filter[0].value;
-    }
+  private getAttributeValue(key: string): string {
+    const attribute = this.state.workData.attributes.find(_ => _.key === key);
+    return attribute && attribute.value;
   }
 
   private onStepRegisterSubmit = (workData: StepRegisterData) => {
@@ -108,19 +98,17 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
     window.scrollTo(0, 0);
   };
 
-  private submitWork() {
-    const request = ([
-      {
-        type: 'Work',
-        attributes: [
-          ...this.state.workData.attributes,
-          { key: 'mediaType', value: this.state.workData.mediaType },
-          { key: 'articleType', value: this.state.workData.articleType },
-          { key: 'content', value: this.state.workData.content },
-          { key: 'dateSubmitted', value: '' + new Date().getTime() }
-        ]
-      },
-    ]);
+  private onStepPublishAndReviewSubmit = () => {
+    const request = [{
+      type: 'Work',
+      attributes: [
+        ...this.state.workData.attributes,
+        { key: 'mediaType', value: this.state.workData.mediaType },
+        { key: 'articleType', value: this.state.workData.articleType },
+        { key: 'content', value: this.state.workData.content },
+        { key: 'dateSubmitted', value: '' + new Date().getTime() }
+      ]
+    }];
     if (this.state.licenseData) {
       request.push({
         type: 'Offering',
@@ -137,5 +125,6 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps, CreateWor
     }
     this.props.createWorkRequested(request);
   }
+
 }
 

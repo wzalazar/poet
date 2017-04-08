@@ -17,14 +17,39 @@ export abstract class ProfileById<Props> extends PoetAPIResourceProvider<Profile
 
 }
 
-export class ProfileNameWithLink extends PoetAPIResourceProvider<Profile, SelectProfileById, undefined> {
+interface ProfileNameProps {
+  readonly loadingPlaceholder?: string;
+}
 
-  poetURL(): string {
-    return '/profiles/' + this.props.profileId;
+export class ProfileName extends ProfileById<ProfileNameProps> {
+
+  renderElement(profile: Profile) {
+    return profile
+      ? <span>{ profile.displayName || 'Anonymous' }</span>
+      : this.renderError(null);
   }
 
-  renderElement(resource: Profile): JSX.Element {
-    return <Link to={"/profiles/" + resource.id}>{ resource.displayName || 'Anonymous' }</Link>
+  renderLoading() {
+    return this.renderLoadingPlaceholder() || this.renderChildren() || super.renderLoading();
+  }
+
+  renderError(error: any) {
+    return this.renderChildren() || super.renderError(error);
+  }
+
+  private renderChildren() {
+    return this.props.children && <span>{this.props.children}</span>;
+  }
+
+  private renderLoadingPlaceholder() {
+    return this.props.loadingPlaceholder && <span>{this.props.loadingPlaceholder}</span>;
+  }
+}
+
+export class ProfileNameWithLink extends ProfileById<undefined> {
+
+  renderElement(profile: Profile) {
+    return <Link to={"/profiles/" + profile.id}>{ profile.displayName || 'Anonymous' }</Link>
   }
 
   renderLoading() {

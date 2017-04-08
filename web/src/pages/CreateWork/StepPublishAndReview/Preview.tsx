@@ -3,6 +3,7 @@ import * as moment from 'moment';
 
 import { Price, LicenseType, ClassNameProps } from '../../../common';
 import { Hash } from '../../../components/atoms/Hash';
+import { ProfileName } from '../../../components/atoms/Profile';
 
 import './Preview.scss';
 
@@ -10,7 +11,7 @@ export interface PreviewProps extends ClassNameProps {
   readonly authorName?: string;
   readonly mediaType: string;
   readonly workTitle: string;
-  readonly wordCount?: number;
+  readonly wordCount?: string;
   readonly contentHash?: string;
   readonly price: Price;
   readonly licenseType: LicenseType;
@@ -19,13 +20,12 @@ export interface PreviewProps extends ClassNameProps {
 export class Preview extends React.Component<PreviewProps, undefined> {
 
   render() {
-
     return (
       <section className="preview" >
         <section>
           <div>
             <h5>Title of Ownership</h5>
-            <div>by { this.props.authorName }</div>
+            <div>by <ProfileName profileId={this.props.authorName} loadingPlaceholder="..." >{this.props.authorName}</ProfileName> </div>
           </div>
           <table>
             <tbody>
@@ -35,7 +35,7 @@ export class Preview extends React.Component<PreviewProps, undefined> {
               </tr>
               <tr>
                 <td>Owner Name</td>
-                <td>{ this.props.authorName || 'Unspecified'}</td>
+                <td><ProfileName profileId={this.props.authorName} loadingPlaceholder="..." >{this.props.authorName}</ProfileName></td>
               </tr>
               <tr>
                 <td>Notarized at</td>
@@ -59,7 +59,7 @@ export class Preview extends React.Component<PreviewProps, undefined> {
                 <td>Category</td>
                 <td>Bitcoin</td>
               </tr>
-            {this.props.contentHash &&
+            { this.props.contentHash &&
               <tr>
                 <td>Content Hash</td>
                 <td><Hash className="copyable-hash">{ this.props.contentHash }</Hash></td>
@@ -94,10 +94,8 @@ export class Preview extends React.Component<PreviewProps, undefined> {
     );
   }
 
-  private renderLicense = () => {
-    const hasLicense = !!this.props.licenseType;
-
-    if (!hasLicense) {
+  private renderLicense = () => {{}
+    if (!this.props.licenseType) {
       return <section><h5>Unlicensed</h5></section>
     } else {
       return (

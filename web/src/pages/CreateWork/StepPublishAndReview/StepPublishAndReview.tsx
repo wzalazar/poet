@@ -12,7 +12,7 @@ export interface StepPublishAndReviewProps {
   readonly authorName?: string;
   readonly workTitle: string;
   readonly contentHash?: string;
-  readonly wordCount?: number;
+  readonly wordCount?: string;
   readonly price: Price;
   readonly licenseType: LicenseType;
 }
