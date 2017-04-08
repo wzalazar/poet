@@ -1,6 +1,11 @@
 .overview {
   margin-bottom: 48px;
 
+  &.loading {
+    opacity: .5;
+    pointer-events: none;
+  }
+
   h1 {
     margin-bottom: 16px;
     font-family: "Roboto Slab";
