@@ -61,7 +61,12 @@
 
         img {
           margin-left: 28px;
+
+          &:hover {
+            opacity: .5;
+          }
         }
+
       }
     }
   }

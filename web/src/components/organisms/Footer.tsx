@@ -47,10 +47,8 @@ export class Footer extends React.Component<undefined, undefined> {
           <div className="logo-and-social">
             <img src={Images.InvertedLogo} />
             <div className="social">
-              <img src={Images.Twitter} />
-              <img src={Images.Github} />
-              <img src={Images.Reddit} />
-              <img src={Images.Slack} />
+              <a href="https://twitter.com/poetchain" target="_blank"><img src={Images.Twitter} /></a>
+              <a href="https://github.com/poetapp" target="_blank"><img src={Images.Github} /></a>
             </div>
           </div>
         </div>
