@@ -23,6 +23,7 @@ interface WorksTabState {
 }
 
 export class WorksTab extends PoetAPIResourceProvider<Work[], WorksTabProps, WorksTabState> {
+  private didLoading: boolean;
 
   constructor() {
     super(...arguments);
@@ -43,13 +44,18 @@ export class WorksTab extends PoetAPIResourceProvider<Work[], WorksTabProps, Wor
 
   renderElement(works: Work[], headers: Headers) {
     const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+    return count ? this.renderWorks() : this.renderNoWorks();
+  }
 
-    if (!count)
-      return this.renderNoWorks();
+  renderLoading() {
+    this.didLoading = true;
+    return <section className="works loading"></section>;
+  }
 
+  private renderWorks() {
     return (
       <section className="works">
-        <nav>
+        <nav className={this.didLoading && 'fade-in'}>
           <SearchInput
             className="search"
             value={this.state.searchQuery}
@@ -70,14 +76,6 @@ export class WorksTab extends PoetAPIResourceProvider<Work[], WorksTabProps, Wor
             <ProfileNameWithLink profileId={this.props.profileId}>This user&nbsp;</ProfileNameWithLink> hasn't registered any works yet.
           </div>
         </WorksByProfile>
-      </section>
-    )
-  }
-
-  renderLoading() {
-    return (
-      <section className="works loading">
-        <img src={Images.Quill} />
       </section>
     )
   }
@@ -109,4 +107,5 @@ export class WorksTab extends PoetAPIResourceProvider<Work[], WorksTabProps, Wor
         return 'author';
     }
   }
+
 }

@@ -14,6 +14,10 @@
     align-items: center;
     margin-bottom: 37px;
 
+    &.fade-in {
+      @include animation-fade-in;
+    }
+
     .search {
       width: 401px;
       height: 36px;
@@ -103,15 +107,7 @@
   }
 
   .loading {
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 auto;
-    align-items: center;
-    justify-content: center;
-
-    img {
-      @include animation-loading-quill;
-      width: 100px;
-    }
+    opacity: .5;
+    pointer-events: none;
   }
 }

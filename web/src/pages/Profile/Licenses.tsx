@@ -22,6 +22,7 @@ interface LicensesState {
 }
 
 export class Licenses extends PoetAPIResourceProvider<LicensesResource, LicensesProps, LicensesState> {
+  private didLoading: boolean;
 
   constructor() {
     super(...arguments);
@@ -47,17 +48,14 @@ export class Licenses extends PoetAPIResourceProvider<LicensesResource, Licenses
   }
 
   renderLoading() {
-    return (
-      <section className="licenses loading">
-        <img src={Images.Quill} />
-      </section>
-    )
+    this.didLoading = true;
+    return <section className="licenses loading"></section>;
   }
 
   private renderLicenses() {
     return (
       <section className="licenses">
-        <nav>
+        <nav className={this.didLoading && 'fade-in'}>
           <SearchInput
             className="search"
             value={this.state.searchQuery}
