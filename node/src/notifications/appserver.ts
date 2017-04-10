@@ -9,6 +9,7 @@ import * as path from 'path'
 import { createConnection, Connection } from 'typeorm'
 import Device from './device'
 import { Queue, Notification } from './queue'
+import { verifies, doubleSha } from '../authentication/helpers'
 
 const SERVER_API_KEY='YOUR_SERVER_API_KEY'
 const registrationToken = 'FIREBASE_EXAMPLE_REGISTRATION_TOKEN'
@@ -50,47 +51,56 @@ function createServer (serverKey: string, port: number) {
 
   app.post('/register', async function(req: any, res: any) {
 
-    const deviceName = req.body.deviceName
-    const deviceId   = req.body.deviceId
-    const registrationId = req.body.registrationId
-    const platform = req.body.platform
-    const pubKey = req.body.pubKey
+    const deviceName        = req.body.deviceName
+    const deviceId          = req.body.deviceId
+    const registrationId    = req.body.registrationId
+    const platform          = req.body.platform
+    const pubKey            = req.body.pubKey
+    const signature         = req.body.signature
 
-    if (typeof pubKey  == 'undefined' || typeof deviceId == 'undefined' || typeof registrationId  == 'undefined') {
-        //TODO error handling
-        // console.log(constants.error.msg_invalid_param.message)
-        // res.json(constants.error.msg_invalid_param)
-    } else if (!pubKey.trim() || !deviceId.trim() || !registrationId.trim()) {
-        //TODO error handling
-        // console.log(constants.error.msg_empty_param.message)
-        // res.json(constants.error.msg_empty_param)
-    } else {
+    try {
 
-      try {
+        if (typeof pubKey  == 'undefined' || typeof deviceId == 'undefined' || typeof registrationId  == 'undefined') {
+            //TODO error handling
+            // console.log(constants.error.msg_invalid_param.message)
+            // res.json(constants.error.msg_invalid_param)
+            res.status(400)
+            res.end()
+        } else if (!pubKey.trim() || !deviceId.trim() || !registrationId.trim()) {
+            //TODO error handling
+            // console.log(constants.error.msg_empty_param.message)
+            // res.json(constants.error.msg_empty_param)
+            res.status(400)
+            res.end()
+        } else if (!verifies(doubleSha, new Buffer(deviceId, 'utf8'), signature, pubKey)) {
+            console.log("Invalid signature")
+            res.json("Invalid signature")
+            res.status(400)
+            res.end()
+        } else {
 
-        if (connection == undefined) {
-          connection = await getConnection()
+                if (connection == undefined) {
+                    connection = await getConnection()
+                }
+
+                let device = new Device()
+                device.deviceId = deviceId
+                device.deviceName = deviceName
+                device.platform = platform
+                device.publicKey = pubKey
+                device.registrationId = registrationId
+
+                let deviceRepository = connection.getRepository(Device)
+                await deviceRepository.persist(device)
+
+                res.end("It works!!")
+                console.log("Device has been saved")
+
         }
-
-        let device = new Device()
-        device.deviceId = deviceId
-        device.deviceName = deviceName
-        device.platform = platform
-        device.publicKey = pubKey
-        device.registrationId = registrationId
-
-        let deviceRepository = connection.getRepository(Device)
-        await deviceRepository.persist(device)
-
-        res.end("It works!!")
-        console.log("Device has been saved")
-
-      } catch (error) {
-
+    } catch (error) {
         console.log(error)
+        res.status(400)
         res.end("It didn't work :(!!")
-
-      }
     }
   })
 
