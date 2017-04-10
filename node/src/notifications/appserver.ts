@@ -57,6 +57,7 @@ function createServer (serverKey: string, port: number) {
     const platform          = req.body.platform
     const pubKey            = req.body.pubKey
     const signature         = req.body.signature
+    const timestamp         = req.body.timestamp
 
     try {
 
@@ -72,7 +73,7 @@ function createServer (serverKey: string, port: number) {
             // res.json(constants.error.msg_empty_param)
             res.status(400)
             res.end()
-        } else if (!verifies(doubleSha, new Buffer(deviceId, 'utf8'), signature, pubKey)) {
+        } else if (!verifies(doubleSha, new Buffer(deviceId + timestamp, 'utf8'), signature, pubKey)) {
             console.log("Invalid signature")
             res.json("Invalid signature")
             res.status(400)
