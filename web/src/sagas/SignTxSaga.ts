@@ -11,8 +11,8 @@ import { getUtxos, submitTx } from '../bitcoin/insight';
 import { getSighash, applyHexSignaturesInOrder } from '../bitcoin/txHelpers';
 import { currentPublicKey } from '../selectors/session';
 
-async function requestIdFromAuth(dataToSign: Buffer[], bitcoin: boolean) {
-  return await Authentication.getRequestIdForMultipleSigningBuffers(dataToSign, bitcoin)
+async function requestIdFromAuth(dataToSign: Buffer[], bitcoin: boolean, notifyPubkey?: string) {
+  return await Authentication.getRequestIdForMultipleSigningBuffers(dataToSign, bitcoin, notifyPubkey)
 }
 
 async function bindAuthResponse(request: any) {
@@ -47,7 +47,7 @@ export function* signTx(action: { payload: SignTransactionParameters }) {
     .change(myAddressString);
   const sighash = getSighash(tx, myAddress);
 
-  const requestId = yield call(requestIdFromAuth, sighash, true);
+  const requestId = yield call(requestIdFromAuth, sighash, true, publicKey);
   yield put({ type: Actions.Transactions.SignIdReceived, payload: requestId.id });
   const response = yield call(bindAuthResponse, requestId);
   yield put({ type: Actions.Transactions.Submitting });

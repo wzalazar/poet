@@ -58,15 +58,16 @@ export const Authentication = new class {
       timestamp: Date.now()
     }))], false);
 
-  public getRequestIdForMultipleSigning(payload: string[], bitcoin: boolean): Promise<string> {
+  public getRequestIdForMultipleSigning(payload: string[], bitcoin: boolean, notifyPubkey?: string): Promise<string> {
     return this.getRequestIdForMultipleSigningBuffers(payload.map(payload => new Buffer(payload)), bitcoin)
   }
 
-  public getRequestIdForMultipleSigningBuffers(payload: Buffer[], bitcoin: boolean): Promise<string> {
+  public getRequestIdForMultipleSigningBuffers(payload: Buffer[], bitcoin: boolean, notifyPubkey?: string): Promise<string> {
     const ref = v4();
     const data = JSON.stringify({
       type: 'multiple',
       bitcoin,
+      notifyPubkey,
       payload: payload.map(payload => payload.toString('hex')),
       ref
     });

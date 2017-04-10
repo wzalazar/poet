@@ -38,7 +38,7 @@ function* submitRequested(action: SubmitRequestedAction) {
     return builder.getEncodedForSigning(template, publicKey);
   });
 
-  const requestId = yield call(requestIdFromAuth, serializedToSign);
+  const requestId = yield call(requestIdFromAuth, serializedToSign, publicKey);
   yield put({ type: Actions.Claims.IdReceived, payload: requestId.id });
 
   const response = yield call(getAuthResponse, requestId);
@@ -94,8 +94,8 @@ const builder = new class {
   }
 };
 
-async function requestIdFromAuth(dataToSign: string[]) {
-  return await Authentication.getRequestIdForMultipleSigning(dataToSign, false)
+async function requestIdFromAuth(dataToSign: string[], notifyPubkey: string) {
+  return await Authentication.getRequestIdForMultipleSigning(dataToSign, false, notifyPubkey)
 }
 
 async function getAuthResponse(request: any) {

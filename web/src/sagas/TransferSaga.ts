@@ -51,7 +51,7 @@ function* transferFlow(action: TransferRequestedAction) {
 
   const serializedToSign = [ builder.getEncodedForSigning(payload, publicKey) ];
 
-  const requestId = yield call(requestIdFromAuth, serializedToSign);
+  const requestId = yield call(requestIdFromAuth, serializedToSign, publicKey);
   yield put({ type: Actions.Transfer.TransferIdReceived, payload: requestId.id });
   const response = yield call(bindAuthResponse, requestId);
 
@@ -67,8 +67,8 @@ function* watchDismiss() {
   yield put({ type: Actions.Modals.Transfer.Hide });
 }
 
-async function requestIdFromAuth(dataToSign: string[]) {
-  return await Authentication.getRequestIdForMultipleSigning(dataToSign, false);
+async function requestIdFromAuth(dataToSign: string[], publicKey: string) {
+  return await Authentication.getRequestIdForMultipleSigning(dataToSign, false, publicKey);
 }
 
 async function bindAuthResponse(request: any) {

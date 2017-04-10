@@ -2,6 +2,7 @@ import * as Koa from 'koa'
 import { sha256 } from '../common'
 import { Signature } from './interfaces'
 import { doubleSha, verifies } from './helpers'
+import { Queue } from '../notifications/queue';
 
 const bitcore = require('bitcore-lib')
 const uuid = require('uuid')
@@ -14,6 +15,8 @@ export interface AuthServerOptions {
 }
 
 export default async function createServer(options: AuthServerOptions) {
+
+  const queue = new Queue()
 
   /**
    * We store a mapping from request id to websocket owning the request
@@ -54,6 +57,11 @@ export default async function createServer(options: AuthServerOptions) {
     requests[id] = request
     mappingToWebsocket[id] = websocket
 
+    const notifyPubkey = messages.notifyPubkey
+    if (notifyPubkey) {
+      queue.publishNotification({ pubKey: notifyPubkey, requestId: id })
+    }
+
     websocket.emit('message', makeCreateResponse(request, ref))
   }
 
@@ -80,6 +88,11 @@ export default async function createServer(options: AuthServerOptions) {
 
     requests[id] = request
     mappingToWebsocket[id] = websocket
+
+    const notifyPubkey = message.notifyPubkey
+    if (notifyPubkey) {
+      queue.publishNotification({ pubKey: notifyPubkey, requestId: id })
+    }
 
     websocket.emit('message', makeCreateResponse(request, ref))
   }
@@ -149,6 +162,11 @@ export default async function createServer(options: AuthServerOptions) {
     const request = makeRequest(id, ctx.request.body, false, !!ctx.params.bitcoin)
 
     requests[id] = request
+
+    const notifyPubkey = ctx.request.headers.get('x-notify-pubkey')
+    if (notifyPubkey) {
+      await queue.publishNotification({ pubKey: notifyPubkey, requestId: id })
+    }
 
     ctx.response.body = id
   }))
