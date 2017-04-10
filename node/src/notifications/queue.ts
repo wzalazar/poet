@@ -16,7 +16,7 @@ export async function connect() {
     let attempts = 30
     while (attempts--) {
         try {
-            return (await amqpConnect()) as amqp.Connection
+            return (await amqpConnect('amqp://rabbit:rabbit@rabbitmq:5672')) as amqp.Connection
         } catch (error) {
             console.log('Reconnecting...')
             await delay(1000)

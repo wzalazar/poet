@@ -13,7 +13,7 @@ services:
   notifications:
     build:
       context: ..
-      dockerfile: ./Docker/notifications:.dockerfile
+      dockerfile: ./Docker/notifications.dockerfile
     volumes:
       - ../node/src:/poet/src
     networks:

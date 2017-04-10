@@ -10,6 +10,7 @@
     "claims-to-db": "./node_modules/.bin/ts-node ./src/bin/claimsToDb.ts",
     "explorer-api": "./node_modules/.bin/ts-node ./src/bin/explorerApi.ts",
     "mock-signer": "./node_modules/.bin/ts-node ./src/bin/mockSigner.ts",
+    "notifications": "./node_modules/.bin/ts-node ./src/bin/notifications.ts",
     "retry-eval": "./node_modules/.bin/ts-node ./src/bin/retryEval.ts",
     "torrent-system": "./node_modules/.bin/ts-node ./src/bin/torrentSystem.ts",
     "trusted-publisher": "./node_modules/.bin/ts-node ./src/bin/trustedPublisher.ts"
