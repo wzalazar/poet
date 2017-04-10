@@ -1,6 +1,7 @@
 @import "../styles/Animations";
 
 .works-by-profile {
+  transition: opacity .3s;
 
   table.works {
     $border-radius: 4px;
@@ -109,14 +110,25 @@
   }
 
   &.loading {
-    td {
-      text-align: center;
+
+    &:not(.no-content) {
+      transition-delay: .5s;
+      opacity: .5;
+      pointer-events: none;
     }
 
-    img {
-      @include animation-loading-quill;
-      width: 50px;
-      margin: 30px;
+    &.no-content {
+      td {
+        text-align: center;
+      }
+
+      img {
+        @include animation-loading-quill;
+        width: 50px;
+        margin: 30px;
+      }
+
     }
   }
+
 }

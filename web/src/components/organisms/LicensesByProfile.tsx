@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router';
+import * as classNames from 'classnames';
 
 import '../../extensions/String';
 
@@ -32,6 +33,9 @@ interface LicensesState {
 }
 
 export class LicensesByProfile extends PoetAPIResourceProvider<LicensesResource, LicensesProps, LicensesState> {
+  private lastFetchedLicenses: LicensesResource;
+  private lastFetchedCount: number;
+
   static defaultProps: Partial<LicensesProps> = {
     showActions: false,
     searchQuery: '',
@@ -59,24 +63,28 @@ export class LicensesByProfile extends PoetAPIResourceProvider<LicensesResource,
   }
 
   renderElement(licenses: LicensesResource, headers: Headers) {
-    return (licenses && licenses.length) ? this.renderLicenses(licenses, headers) : this.renderNoLicenses();
+    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+    return (licenses && licenses.length) ? this.renderLicenses(licenses, count) : this.renderNoLicenses();
   }
 
   renderLoading() {
-    return (
-      <section className="licenses-by-profile loading">
-        <img src={Images.Quill} />
-      </section>
-    )
+    return this.renderLicenses(this.lastFetchedLicenses, this.lastFetchedCount, true);
   }
 
-  private renderLicenses(licenses: LicensesResource, headers: Headers) {
+  componentDidFetch(licenses: LicensesResource, headers: Headers) {
     const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+    this.lastFetchedLicenses = licenses;
+    this.lastFetchedCount = count;
+  }
+
+  private renderLicenses(licenses: LicensesResource, count: number, isLoading?: boolean) {
     return (
-      <section className="licenses-by-profile">
-        <ul className="licenses">
-          { licenses.map(this.renderLicense.bind(this)) }
-        </ul>
+      <section className={classNames('licenses-by-profile', isLoading && 'loading', !licenses && 'no-content')}>
+        {
+          isLoading && !licenses
+            ? <img src={Images.Quill} />
+            : <ul className="licenses">{ licenses.map(this.renderLicense, this) }</ul>
+        }
         <Pagination
           offset={this.state.offset}
           limit={this.props.limit}

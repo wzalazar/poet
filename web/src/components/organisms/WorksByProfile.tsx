@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { browserHistory } from 'react-router';
+import * as classNames from 'classnames';
 
 import { Images } from '../../images/Images';
 import { Configuration } from '../../configuration';
@@ -33,6 +34,8 @@ interface WorksByProfileState {
 }
 
 export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfileProps, WorksByProfileState> {
+  private lastFetchedWorks: Work[];
+  private lastFetchedCount: number;
 
   static defaultProps: Partial<WorksByProfileProps> = {
     limit: Configuration.pagination.limit
@@ -73,32 +76,19 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
   }
 
   renderLoading() {
-    return (
-      <section className="works-by-profile loading">
-        <table className="works">
-          <thead>
-          <tr>
-            <td>Name</td>
-            <td>Hash</td>
-            <td>Timestamp</td>
-            { this.props.showActions && <td>Actions</td> }
-          </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colSpan={this.props.showActions ? 4 : 3}><img src={Images.Quill} /></td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-    )
+    return this.renderWorks(this.lastFetchedWorks, this.lastFetchedCount, true);
   }
 
-  setOffset = (offset: any) => this.setState({ offset });
+  componentDidFetch(works: Work[], headers: Headers) {
+    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
 
-  private renderWorks(works: Work[], count: number) {
+    this.lastFetchedWorks = works;
+    this.lastFetchedCount = count;
+  }
+
+  private renderWorks(works: Work[], count: number, isLoading?: boolean) {
     return (
-      <section className="works-by-profile">
+      <section className={classNames('works-by-profile', isLoading && 'loading', !works && 'no-content')}>
         <table className="works">
           <thead>
           <tr>
@@ -109,7 +99,11 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
           </tr>
           </thead>
           <tbody>
-          { works.map(this.renderWork.bind(this)) }
+          {
+            isLoading && !works
+              ? <tr><td colSpan={this.props.showActions ? 4 : 3}><img src={Images.Quill} /></td></tr>
+              : works.map(this.renderWork, this)
+          }
           </tbody>
         </table>
 
@@ -118,7 +112,7 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
           limit={this.props.limit}
           count={count}
           visiblePageCount={Configuration.pagination.visiblePageCount}
-          onClick={this.setOffset}
+          onClick={this.onOffset}
           className="pagination"
           disabledClassName="disabled"/>
       </section>
@@ -162,6 +156,8 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
     )
   }
 
+  private onOffset = (offset: number) => this.setState({ offset });
+
   private optionSelected(work: Work, action: string) {
     switch (action) {
       case EDIT:
@@ -172,4 +168,5 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
         return;
     }
   }
+
 }

@@ -1,6 +1,8 @@
 @import '../../components/styles/Animations';
 
 .licenses-by-profile {
+  transition: opacity .3s;
+
   ul.licenses {
     list-style: none;
     display: flex;
@@ -37,13 +39,24 @@
   }
 
   &.loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
-    img {
-      @include animation-loading-quill;
-      width: 100px;
+    &:not(.no-content) {
+      transition-delay: .5s;
+      opacity: .5;
+      pointer-events: none;
     }
+
+    &.no-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        @include animation-loading-quill;
+        width: 100px;
+      }
+    }
+
   }
+
 }

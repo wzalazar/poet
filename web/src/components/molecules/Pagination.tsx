@@ -20,7 +20,7 @@ export class Pagination extends React.Component<PaginationProps, undefined> {
   };
 
   render() {
-    if (this.props.count <= this.props.limit)
+    if (!this.props.count || this.props.count <= this.props.limit)
       return null;
 
     return (
