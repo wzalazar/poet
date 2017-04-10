@@ -11,8 +11,8 @@ export namespace Actions {
   export const noBalanceAvailable = 'no balance available';
 
   export namespace Search {
-    export const Submit = 'search submit';
     export const Change = 'search change';
+    export const Offset = 'search offset';
   }
 
   export namespace Session {

@@ -8,7 +8,7 @@ export interface PaginationProps extends ClassNameProps {
   readonly offset: number;
   readonly limit: number;
   readonly count: number;
-  readonly visiblePageCount: number;
+  readonly visiblePageCount?: number;
   readonly onClick: (offset: number) => void;
   readonly disabledClassName: string;
 }
@@ -16,7 +16,7 @@ export interface PaginationProps extends ClassNameProps {
 export class Pagination extends React.Component<PaginationProps, undefined> {
 
   static defaultProps: Partial<PaginationProps> = {
-    visiblePageCount: Configuration.pagination.visiblePageCount
+    visiblePageCount: Configuration.pagination.visiblePageCount,
   };
 
   render() {

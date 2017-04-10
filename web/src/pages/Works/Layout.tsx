@@ -1,18 +1,23 @@
 import * as React from 'react';
+import { Action } from 'redux';
 import * as moment from 'moment';
 
 import './Layout.scss';
-import { WorksComponent } from './Works';
+import { Works } from './Works';
 import { FiltersComponent } from './Filters';
 import { LicenseType, LicenseTypes } from '../../common';
 
 interface WorksLayoutProps {
   readonly location?: {
     readonly query: {
+      readonly query: string;
       readonly offset: string;
     }
   }
-  readonly query: string;
+}
+
+interface WorksLayoutActions {
+  dispatchSearchOffsetChangeAction: (_: number) => Action;
 }
 
 export interface WorksLayoutState {
@@ -22,7 +27,7 @@ export interface WorksLayoutState {
   readonly licenseType?: LicenseType;
 }
 
-export class WorksLayout extends React.Component<WorksLayoutProps, WorksLayoutState> {
+export class WorksLayout extends React.Component<WorksLayoutProps & WorksLayoutActions, WorksLayoutState> {
 
   constructor() {
     super(...arguments);
@@ -45,16 +50,17 @@ export class WorksLayout extends React.Component<WorksLayoutProps, WorksLayoutSt
           onSortChange={sortBy => this.setState({ sortBy })}
           onLicenseTypeChange={licenseType => this.setState({ licenseType })}
         />
-        <WorksComponent
+        <Works
           offset={parseInt(this.props.location.query.offset) || 0}
-          limit={10}
+          onOffset={this.props.dispatchSearchOffsetChangeAction}
           sortBy={this.state.sortBy}
           dateFrom={this.state.dateFrom}
           dateTo={this.state.dateTo}
-          query={this.props.query}
+          query={this.props.location.query.query}
           licenseType={this.state.licenseType}
         />
       </section>
     )
   }
+
 }

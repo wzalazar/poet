@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import { Action } from 'redux';
 import { connect } from "react-redux";
-const classNames = require('classnames');
+import * as classNames from 'classnames';
 
 import { Actions } from '../../actions/index';
 import Constants from '../../constants';
@@ -12,7 +12,6 @@ import { AccountDropdown } from './AccountDropdown';
 import './Navbar.scss';
 
 interface NavbarActions {
-  dispatchSearchClick: () => Action;
   dispatchSearchChange: (searchQuery: string) => Action
   dispatchShowTryItOut: () => Action
 }
@@ -28,78 +27,6 @@ export interface NavbarProps {
   readonly searchShadow?: boolean;
 }
 
-class NavbarComponent extends React.Component<NavbarProps & NavbarActions, undefined> {
-  static defaultProps: NavbarProps = {
-    shadow: true,
-    transparent: false,
-    displayLogo: true,
-    displaySearch: true
-  };
-
-  render() {
-    const navClasses = [
-      'navbar',
-      this.props.shadow && 'shadow',
-      this.props.transparent && 'transparent',
-      this.props.margin && 'margin'
-    ];
-    const searchClasses = [
-      'search',
-      this.props.searchShadow && 'shadow'
-    ];
-    return (
-      <nav className={ classNames(navClasses) }>
-        { this.props.displayLogo && <a className="navbar-brand" href="/"><img src={Images.Logo} /></a> }
-        { this.props.displaySearch && <div className={ classNames(searchClasses) }  >
-          <img src={Images.Glass} />
-          <form onSubmit={this.onSearch}>
-            <input
-              type="text"
-              placeholder="Search"
-              onChange={(event: any) => this.props.dispatchSearchChange(event.target.value) }
-            />
-          </form>
-        </div> }
-        <ul className="navbar-nav">
-          { this.props.loggedIn ? this.renderLoggedInActions() : this.renderNotLoggedInActions() }
-        </ul>
-      </nav>
-    )
-  }
-  private renderNotLoggedInActions(): JSX.Element[] {
-    return [
-      this.renderNavLink('network/about', 'About'),
-      this.renderNavLink('documentation/overview', 'Documentation'),
-      this.renderNavLink('login', 'Login', 'login-button button-secondary'),
-      <li key='try-it-out'>
-        <button className="try-it-out" onClick={this.props.dispatchShowTryItOut}>
-          <img src={Images.QuillInverted} /><span>Try It Out</span>
-        </button>
-      </li>
-    ];
-  }
-
-  private renderLoggedInActions(): JSX.Element[] {
-    return [
-      <li key="avatar" className="nav-item avatar"><AccountDropdown /></li>,
-      <li key="create-work" className="nav-item"><Link to={'/create-work'} className="button-primary"><img src={Images.QuillInverted} />Register New Work</Link></li>
-    ];
-  }
-
-  private renderNavLink(key: string, text: string, className: string = 'nav-link'): JSX.Element {
-    return (
-      <li key={key} className="nav-item">
-        <Link to={'/' + key} className={className}>{text}</Link>
-      </li>
-    )
-  }
-
-  private onSearch = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    this.props.dispatchSearchClick();
-  }
-}
-
 function mapStateToProps(state: any, ownProps: NavbarProps): NavbarProps {
   return {
     ...ownProps,
@@ -109,9 +36,89 @@ function mapStateToProps(state: any, ownProps: NavbarProps): NavbarProps {
 }
 
 const mapDispatch = {
-  dispatchSearchClick: () => ({ type: Actions.Search.Submit }),
-  dispatchSearchChange: (searchQuery: string) => ({ type: Actions.Search.Change, searchQuery }),
+  dispatchSearchChange: (query: string) => ({ type: Actions.Search.Change, query }),
   dispatchShowTryItOut: () => ({ type: Actions.Modals.TryItOut.Show })
 };
 
-export const Navbar = connect(mapStateToProps, mapDispatch)(NavbarComponent);
+export const Navbar = connect(mapStateToProps, mapDispatch)(
+  class extends React.Component<NavbarProps & NavbarActions, undefined> {
+
+    static defaultProps: NavbarProps = {
+      shadow: true,
+      transparent: false,
+      displayLogo: true,
+      displaySearch: true
+    };
+
+    render() {
+      const navClasses = [
+        'navbar',
+        this.props.shadow && 'shadow',
+        this.props.transparent && 'transparent',
+        this.props.margin && 'margin'
+      ];
+      const searchClasses = [
+        'search',
+        this.props.searchShadow && 'shadow'
+      ];
+
+      return (
+        <nav className={classNames(navClasses)}>
+          { this.props.displayLogo && <a className="navbar-brand" href="/"><img src={Images.Logo} /></a> }
+          { this.props.displaySearch && <div className={classNames(searchClasses)}  >
+            <img src={Images.Glass} />
+            <form>
+              <input
+                type="text"
+                placeholder="Search"
+                defaultValue={this.getSearchQuery()}
+                onChange={(event: React.FormEvent<HTMLInputElement>) => this.props.dispatchSearchChange(event.currentTarget.value) }
+              />
+            </form>
+          </div> }
+          <ul className="navbar-nav">
+            { this.props.loggedIn ? this.renderLoggedInActions() : this.renderNotLoggedInActions() }
+          </ul>
+        </nav>
+      )
+    }
+
+    private renderNotLoggedInActions(): JSX.Element[] {
+      return [
+        this.renderNavLink('network/about', 'About'),
+        this.renderNavLink('documentation/overview', 'Documentation'),
+        this.renderNavLink('login', 'Login', 'login-button button-secondary'),
+        <li key='try-it-out'>
+          <button className="try-it-out" onClick={this.props.dispatchShowTryItOut}>
+            <img src={Images.QuillInverted} /><span>Try It Out</span>
+          </button>
+        </li>
+      ];
+    }
+
+    private renderLoggedInActions(): JSX.Element[] {
+      return [
+        <li key="avatar" className="nav-item avatar"><AccountDropdown /></li>,
+        <li key="create-work" className="nav-item"><Link to={'/create-work'} className="button-primary"><img src={Images.QuillInverted} />Register New Work</Link></li>
+      ];
+    }
+
+    private renderNavLink(key: string, text: string, className: string = 'nav-link'): JSX.Element {
+      return (
+        <li key={key} className="nav-item">
+          <Link to={'/' + key} className={className}>{text}</Link>
+        </li>
+      )
+    }
+
+    private getSearchQuery() {
+      const currentLocation = browserHistory.getCurrentLocation();
+
+      if (currentLocation.pathname === '/works')
+        return (currentLocation.query as any).query;
+      else
+        return '';
+    }
+
+  }
+);

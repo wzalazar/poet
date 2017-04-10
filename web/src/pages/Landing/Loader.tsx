@@ -5,7 +5,6 @@ import { Action } from 'redux';
 import Constants from '../../constants';
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
 import { LandingLayout } from './Layout';
-import { Actions } from '../../actions/index';
 
 export class Landing extends PageLoader<Object, Object> {
 
@@ -37,9 +36,6 @@ export class Landing extends PageLoader<Object, Object> {
   }
 
   mapDispatchToProps(): any {
-    return {
-      dispatchSearch: () => ({ type: Actions.Search.Submit }),
-      dispatchSearchChange: (searchQuery: string) => ({ type: Actions.Search.Change, searchQuery })
-    }
+    return {}
   }
 }

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { browserHistory } from 'react-router'
 import * as moment from 'moment';
 
+import { Configuration } from '../../configuration';
 import { LicenseType } from '../../common';
 import { Work } from '../../Interfaces';
 import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../../components/atoms/base/PoetApiResource';
@@ -15,6 +15,7 @@ type WorksResource = ReadonlyArray<Work>;
 
 export interface WorksProps {
   readonly offset?: number;
+  readonly onOffset?: (offset: number) => void;
   readonly limit?: number;
   readonly dateFrom?: moment.Moment;
   readonly dateTo?: moment.Moment;
@@ -23,10 +24,10 @@ export interface WorksProps {
   readonly licenseType?: LicenseType;
 }
 
-export class WorksComponent extends PoetAPIResourceProvider<WorksResource, WorksProps, undefined> {
+export class Works extends PoetAPIResourceProvider<WorksResource, WorksProps, undefined> {
+
   static defaultProps: WorksProps = {
-    offset: 0,
-    limit: 10
+    limit: Configuration.pagination.limit
   };
 
   poetURL() {
@@ -52,19 +53,18 @@ export class WorksComponent extends PoetAPIResourceProvider<WorksResource, Works
         <div className="row">
           <div className="col-md-8">
             <ul className="works">
-              { works.map(this.renderWork) }
+              { works.map(this.renderWork, this) }
             </ul>
           </div>
         </div>
-        { count > this.props.limit && <Pagination
+        <Pagination
           className="pagination"
           offset={this.props.offset}
           limit={this.props.limit}
           count={count}
-          visiblePageCount={5}
-          onClick={ offset => browserHistory.push({pathname: 'works', query: { offset }})}
+          onClick={this.props.onOffset}
           disabledClassName="disabled"
-        /> }
+        />
       </section>
     )
   }
@@ -77,7 +77,7 @@ export class WorksComponent extends PoetAPIResourceProvider<WorksResource, Works
     )
   }
 
-  renderWork(props: Work) {
+  private renderWork(props: Work) {
     return (
       <li key={props.id} className="work-item">
         <div className="name"><WorkNameWithLink work={props} /></div>

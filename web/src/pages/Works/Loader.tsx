@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Route } from 'react-router';
 
+import { Actions } from '../../actions/index';
 import PageLoader, { ReducerDescription } from '../../components/PageLoader';
 import { WorksLayout } from './Layout';
 
@@ -28,8 +29,12 @@ export class Works extends PageLoader<WorkState, Object> {
   }
 
   select(state: any, ownProps: any): Object {
+    return {};
+  }
+
+  mapDispatchToProps() {
     return {
-      query: state.navbar && state.navbar.searchQuery || ''
-    };
+      dispatchSearchOffsetChangeAction: (offset: number) => ({ type: Actions.Search.Offset, offset })
+    }
   }
 }

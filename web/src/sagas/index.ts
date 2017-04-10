@@ -1,5 +1,5 @@
 import { fetchSaga } from './FetchSaga';
-import { navbarSaga } from './NavbarSaga';
+import { workSearchSaga } from './NavbarSaga';
 import { sessionSaga } from './SessionSaga';
 import ProfileSaga from './ProfileSaga';
 import SignTxSaga from './SignTxSaga';
@@ -14,7 +14,7 @@ import { notificationsSaga } from './Notifications';
 
 export default [
   fetchSaga,
-  navbarSaga,
+  workSearchSaga,
   sessionSaga,
   transferSaga,
   ProfileSaga,
