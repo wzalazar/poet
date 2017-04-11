@@ -1,5 +1,11 @@
 .page-works > section.works {
   font-family: 'Roboto Slab';
+  transition: .5s opacity;
+
+  &.loading {
+    transition-delay: .5s;
+    opacity: .5;
+  }
 
   .work-count {
     font-size: 18px;

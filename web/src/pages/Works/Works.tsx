@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as moment from 'moment';
+import * as classNames from 'classnames';
 
 import { Configuration } from '../../configuration';
 import { LicenseType } from '../../common';
@@ -25,6 +26,8 @@ export interface WorksProps {
 }
 
 export class Works extends PoetAPIResourceProvider<WorksResource, WorksProps, undefined> {
+  private lastFetchedWorks: WorksResource;
+  private lastFetchedCount: number;
 
   static defaultProps: WorksProps = {
     limit: Configuration.pagination.limit
@@ -47,8 +50,29 @@ export class Works extends PoetAPIResourceProvider<WorksResource, WorksProps, un
 
   renderElement(works: WorksResource, headers: Headers) {
     const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+    return this.renderWorks(works, count);
+  }
+
+  renderLoading() {
+    if (this.lastFetchedWorks)
+      return this.renderWorks(this.lastFetchedWorks, this.lastFetchedCount, true);
+
     return (
-      <section className="works container">
+      <section className="works-results container loading no-content">
+        <p>Loading, please wait...</p>
+      </section>
+    )
+  }
+
+  componentDidFetch(works: WorksResource, headers: Headers) {
+    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+    this.lastFetchedWorks = works;
+    this.lastFetchedCount = count;
+  }
+
+  private renderWorks(works: WorksResource, count: number, isLoading?: boolean) {
+    return (
+      <section className={classNames('works container', isLoading && 'loading')}>
         <h4 className="work-count">Showing {works.length} of {count} Results</h4>
         <div className="row">
           <div className="col-md-8">
@@ -65,14 +89,6 @@ export class Works extends PoetAPIResourceProvider<WorksResource, WorksProps, un
           onClick={this.props.onOffset}
           disabledClassName="disabled"
         />
-      </section>
-    )
-  }
-
-  renderLoading() {
-    return (
-      <section className="works-results container loading">
-        <p>Loading, please wait...</p>
       </section>
     )
   }
