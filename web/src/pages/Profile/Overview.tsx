@@ -60,7 +60,7 @@ export class Overview extends PoetAPIResourceProvider<any, OverviewProps, undefi
           { profile.id && <li className="id"><div className="key">id</div><Hash className="copyable-hash-no-button" textClickable>{profile.id}</Hash></li> }
           { profile.attributes && profile.attributes.email && <li><img src={Images.Mail} /><div>{profile.attributes.email}</div></li> }
         </ul>
-        { isAuthorized && <div><Link to="/account/profile">Edit Profile</Link></div> }
+        { isAuthorized && <div><Link to="/account/profile" className="button-secondary edit-profile" >Edit Profile</Link></div> }
       </div>
     )
   }

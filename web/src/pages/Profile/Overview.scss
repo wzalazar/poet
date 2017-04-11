@@ -66,6 +66,7 @@
     font-family: "Source Sans Pro";
     font-size: 14px;
     color: #000000;
+    margin-bottom: 26px;
 
     li {
       display: flex;
@@ -91,9 +92,12 @@
     }
   }
 
-
   .publicKey pre {
     white-space: pre-wrap;
     word-wrap: break-word;
+  }
+
+  .edit-profile {
+    width: 100%;
   }
 }
