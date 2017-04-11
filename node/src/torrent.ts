@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import { ReadStream } from 'fs'
 import * as path from 'path'
-const WebTorrent = require('webtorrent-hybrid')
+const WebTorrent = require('webtorrent')
 
 import { Block } from './claim'
 import { default as getBuilder } from './serialization/builder'
@@ -36,7 +36,7 @@ export default class TorrentSystem {
   constructor(torrentPath: string) {
     this.queue = new Queue()
     this.path = torrentPath
-    this.client = new WebTorrent()
+    this.client = new WebTorrent({ torrentPort: 7800 })
     this.client.on('error', (error: Error) => {
       if (error.message.startsWith('Cannot add duplicate')) {
         return

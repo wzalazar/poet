@@ -77,6 +77,8 @@ services:
       - queue
       - http
       - outside
+    expose:
+      - "7800"
   trusted-publisher:
     build:
       context: ..
