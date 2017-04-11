@@ -96,24 +96,25 @@ export default class WorkRoute extends Route<Work> {
       }
     }
     if (opts.query) {
-      queryBuilder.andWhere(`(attr${iterAttrs}.key=:content OR attr${iterAttrs}.key=:title) AND lower(attr${iterAttrs}.value) LIKE :value2`,
-      {
-        content: 'content', value2: '%' + opts.query.toLowerCase() + '%', title: 'name'
+      queryBuilder.andWhere(`(attr${iterAttrs}.key=:content OR attr${iterAttrs}.key=:title)
+                             AND lower(attr${iterAttrs}.value) LIKE :value2`, {
+        content: 'content',
+        title  : 'name',
+        value2 : '%' + opts.query.toLowerCase() + '%',
       })
       iterAttrs++
     }
     if (opts.startPublicationDate) {
-      queryBuilder.andWhere(`(attr${iterAttrs}.key=:startDate AND attr${iterAttrs}.value >= :value3)`,
-        {
-          startDate: 'datePublished', value3: opts.startPublicationDate
-        })
+      queryBuilder.andWhere(`(attr${iterAttrs}.key=:startDate AND attr${iterAttrs}.value >= :value3)`, {
+        startDate: 'datePublished',
+        value3   : opts.startPublicationDate
+      })
       iterAttrs++
     }
     if (opts.endPublicationDate) {
-      queryBuilder.andWhere(`(attr${iterAttrs}.key=:endDate AND attr${iterAttrs}.value <= :value4)`,
-        {
-          endDate: 'datePublished', value4: opts.endPublicationDate
-        })
+      queryBuilder.andWhere(`(attr${iterAttrs}.key=:endDate AND attr${iterAttrs}.value <= :value4)`, {
+        endDate: 'datePublished', value4: opts.endPublicationDate
+      })
       iterAttrs++
     }
     if (opts.author) {
@@ -144,15 +145,15 @@ export default class WorkRoute extends Route<Work> {
   getParamOpts(ctx: Context): WorkQueryOpts {
     const result = super.getParamOpts(ctx)
     return Object.assign(result, {
-      owner: ctx.request.query[OWNER],
-      query: ctx.request.query[QUERY],
-      author: ctx.request.query[AUTHOR],
-      sortBy: ctx.request.query[SORT_BY],
-      licensedTo: ctx.request.query[LICENSED_TO],
-      relatedTo: ctx.request.query[RELATED_TO],
-      attribute: ctx.request.query[ATTRIBUTE],
+      owner               : ctx.request.query[OWNER],
+      query               : ctx.request.query[QUERY],
+      author              : ctx.request.query[AUTHOR],
+      sortBy              : ctx.request.query[SORT_BY],
+      licensedTo          : ctx.request.query[LICENSED_TO],
+      relatedTo           : ctx.request.query[RELATED_TO],
+      attribute           : ctx.request.query[ATTRIBUTE],
       startPublicationDate: ctx.request.query[START_PUBLICATION_DATE],
-      endPublicationDate: ctx.request.query[END_PUBLICATION_DATE],
+      endPublicationDate  : ctx.request.query[END_PUBLICATION_DATE],
     }) as WorkQueryOpts
   }
 
