@@ -20,7 +20,7 @@ const rawKey = '4cbfeb0cbfa891148988a50b549c42309e088a7839dd14ab480f542286725d3a
 const btcmediaPrivkey = bitcore.PrivateKey(rawKey)
 const btcmediaPubkey = btcmediaPrivkey.publicKey.toString()
 
-interface Article {
+export interface Article {
   id: string
   link: string
   content: string
@@ -32,40 +32,57 @@ interface Article {
   datePublished: string
 }
 
-function getContent(article: any): string {
+export async function normalizeContent(article: any): Promise<string> {
+  const content = await new Promise((resolve, reject) => {
+    return xml2js.parseString(article, (err, res) => {
+      if (err) {
+        return reject(err)
+      }
+      return resolve(res)
+    })
+  })
+
+  return (content as any).article._
+    .replace(/<(\/)?p>/gi, '\n')
+    .replace(/<br\/>/gi,   '\n')
+    .replace(/<[^>]+>/gi,  '')
+}
+
+export function getContent(article: any): string {
   const builder = new xml2js.Builder({ rootName: 'article' })
   return builder.buildObject(article.CONTENT[0])
 }
 
-function getAuthor(article: any): string {
+export function getAuthor(article: any): string {
   return article.AUTHOR.length > 1 ? article.AUTHOR.join(', ') : article.AUTHOR[0]
 }
 
-function getTags(article: any): string {
+export function getTags(article: any): string {
   return article.CATEGORY.join(',')
 }
 
-function getTitle(article: any): string {
+export function getTitle(article: any): string {
   return article.TITLE[0]
 }
 
-function getPublicationDate(article: any): string {
+export function getPublicationDate(article: any): string {
   return '' + moment(article.PUBDATE[0]).toDate().getTime()
 }
 
-function getId(article: any): string {
+export function getId(article: any): string {
   return article.GUID[0]
 }
 
-function getLink(article: any): string {
+export function getLink(article: any): string {
   return article.LINK[0]
 }
 
-function processItem(article: any): Article {
+export async function processItem(article: any): Promise<Article> {
+  const content = await normalizeContent(getContent(article))
   return {
     id: getId(article),
     link: getLink(article),
-    content: getContent(article),
+    content: content,
     author: getAuthor(article),
     tags: getTags(article),
     name: getTitle(article),
@@ -75,7 +92,15 @@ function processItem(article: any): Article {
   }
 }
 
-async function process(xmlResponse: any): Promise<Article[]> {
+export async function mapProcessItem(items: any[]): Promise<Article[]> {
+  const result = []
+  for (const item of items) {
+    result.push(await processItem(item))
+  }
+  return result
+}
+
+export async function process(xmlResponse: any): Promise<Article[]> {
   const items = await new Promise(function(resolve, reject) {
     xmlResponse.text().then((body: any) =>
       xml2js.parseString(body, { strict: false }, function(err, res) {
@@ -87,10 +112,10 @@ async function process(xmlResponse: any): Promise<Article[]> {
       })
     )
   })
-  return (items as any[]).map(processItem)
+  return await mapProcessItem(items as any[])
 }
 
-async function scanBTCMagazine(): Promise<any> {
+export async function scanBTCMagazine(): Promise<any> {
   fetch(targetURL).then(process).then(async (results) => {
     try {
       const newArticles = []
@@ -107,13 +132,13 @@ async function scanBTCMagazine(): Promise<any> {
   })
 }
 
-function exists(article: Article): Promise<boolean> {
+export function exists(article: Article): Promise<boolean> {
   return fetch(`${explorerURL}/works?attribute=id<>${article.id}&owner=${btcmediaPubkey}`)
     .then(res => res.json())
     .then(res => (res as any).length !== 0)
 }
 
-async function submitArticles(articles: Article[]) {
+export async function submitArticles(articles: Article[]) {
   const builder = await getBuilder()
   const signedClaims = articles.map(article => {
     const data = {
@@ -131,7 +156,7 @@ async function submitArticles(articles: Article[]) {
   return await postClaims(signedClaims)
 }
 
-async function submitLicenses(articles: any[]) {
+export async function submitLicenses(articles: any[]) {
   const builder = await getBuilder()
   const signedClaims = articles.map(article => {
     const data = {
@@ -155,7 +180,7 @@ async function submitLicenses(articles: any[]) {
   return await postClaims(signedClaims)
 }
 
-async function postClaims(claims: any) {
+export async function postClaims(claims: any) {
   return fetch(`${publisherURL}/claims`, {
     method: 'POST',
     headers: {
@@ -171,7 +196,7 @@ async function postClaims(claims: any) {
   })
 }
 
-async function postProfile() {
+export async function postProfile() {
   const profile = {
     displayName: "BTCMedia",
     firstName: "BTC",
@@ -192,6 +217,7 @@ async function postProfile() {
   }])
 }
 
-postProfile()
-
-scanBTCMagazine()
+if (!module.parent) {
+  postProfile()
+  scanBTCMagazine()
+}
