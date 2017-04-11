@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Link } from 'react-router';
-
 import * as moment from 'moment';
 
 import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from './base/PoetApiResource';
@@ -24,7 +23,7 @@ export class OwnerName extends ProfileByWorkOwner<undefined> {
   }
 }
 
-abstract class WorkById<State> extends PoetAPIResourceProvider<Work, SelectWorkById, State> {
+export abstract class WorkById<State> extends PoetAPIResourceProvider<Work, SelectWorkById, State> {
   poetURL() {
     return `/works/${this.props.workId}`
   }

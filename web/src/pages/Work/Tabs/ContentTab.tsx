@@ -4,34 +4,34 @@ import { Work } from '../../../Interfaces';
 import WorkComponent from '../../../components/hocs/WorkComponent';
 
 import './ContentTab.scss';
+import { WorkById } from '../../../components/atoms/Work';
 
-function renderAttributes(props: Work): JSX.Element {
-  console.log();
-  return (
-    <table>
-      <tbody>
-      {
-        Object.entries(props.attributes).filter(([key, value]) => key !== 'content').map(([key, value]) => (
-          <tr key={key}>
-            <td>{key}</td>
-            <td>{value}</td>
-          </tr>
-        ))
-      }
-      </tbody>
-    </table>
-  );
-}
+export class ContentTab extends WorkById<undefined> {
 
-function render(props: Work): JSX.Element {
-  return (
-    <section className="content-tab">
-      <section className="attributes">
-        { renderAttributes(props) }
+  renderElement(work?: Work) {
+    return (
+      <section className="content-tab">
+        <section className="attributes">
+          <table>
+            <tbody>
+            {
+              work && Object.entries(work.attributes).filter(([key, value]) => key !== 'content').map(([key, value]) => (
+                <tr key={key}>
+                  <td>{key}</td>
+                  <td>{value}</td>
+                </tr>
+              ))
+            }
+            </tbody>
+          </table>
+        </section>
+        <section className="content">{ work && work.attributes.content }</section>
       </section>
-      <section className="content">{ props.attributes.content }</section>
-    </section>
-  )
-}
+    )
+  }
 
-export default WorkComponent(render);
+  renderLoading() {
+    return this.renderElement();
+  }
+
+}

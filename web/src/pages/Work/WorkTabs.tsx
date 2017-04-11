@@ -5,7 +5,7 @@ import '../../extensions/Array'
 
 import { HexString } from '../../common';
 
-import ContentTab from './Tabs/ContentTab';
+import { ContentTab } from './Tabs/ContentTab';
 import HistoryTab from './Tabs/HistoryTab';
 import TechnicalTab from './Tabs/TechnicalTab';
 
@@ -21,7 +21,7 @@ export const WorkTabs = (props: WorkTabProps) => (
       <Tab>Technical</Tab>
     </TabList>
     <TabPanel>
-      <ContentTab id={props.id} />
+      <ContentTab workId={props.id} />
     </TabPanel>
     <TabPanel>
       <HistoryTab id={props.id} />

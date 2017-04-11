@@ -1,59 +1,86 @@
 import * as React from 'react';
+import * as moment from 'moment';
+import * as classNames from 'classnames';
 
 import '../../extensions/Map';
+
+import { Configuration } from '../../configuration';
 import { Work } from '../../Interfaces';
-import WorkComponent from '../../components/hocs/WorkComponent';
-import { AuthorWithLink } from '../../components/atoms/Work';
+import { AuthorWithLink, WorkById } from '../../components/atoms/Work';
 
 import './Overview.scss';
-import moment = require('moment');
-import { Configuration } from '../../configuration';
 
-function renderRow({key, value}: {key: string, value: string}) {
-  return (
-    <tr key={key}>
-      <td>{key}</td>
-      <td>{value}</td>
-    </tr>
-  );
-}
+export class Overview extends WorkById<undefined> {
 
-function render(props: Work) {
-  if (!props) {
-    return '';
+  renderElement(work: Work, headers: Headers) {
+    return this.renderOverview(work);
   }
 
-  document.title = props.attributes.name || '(Untitled Work)';
+  renderLoading() {
+    return this.renderOverview({
+      id: '',
+      publicKey: '',
+      signature: '',
+      attributes: {
+        name: 'Work',
+        datePublished: Date.now().toString(),
+        dateCreated: Date.now().toString(),
+        dateModified: Date.now().toString(),
+        mediaType: '',
+        articleType: '',
+        author: '',
+        lastModified: '',
+        contentHash: '',
+        tags: '',
+        type: ''
+      }
+    }, true);
+  }
 
-  const tableData = new Map<string, any>();
+  private renderOverview(work: Work, isLoading?: boolean) {
+    if (!work) {
+      return null;
+    }
 
-  props.attributes.datePublished &&
-  tableData.set('Published', moment(parseInt(props.attributes.datePublished, 10)).format(Configuration.dateFormat));
+    document.title = work.attributes.name || '(Untitled Work)';
 
-  props.attributes.dateModified &&
-  tableData.set('Last Modified', moment(parseInt(props.attributes.dateModified, 10)).format(Configuration.dateFormat));
+    const tableData = new Map<string, any>();
 
-  props.attributes.tags && tableData.set('Tags', props.attributes.tags || []);
+    work.attributes.datePublished &&
+    tableData.set('Published', moment(parseInt(work.attributes.datePublished, 10)).format(Configuration.dateFormat));
 
-  tableData.set('Type', props.attributes.mediaType || 'Unknown');
+    work.attributes.dateModified &&
+    tableData.set('Last Modified', moment(parseInt(work.attributes.dateModified, 10)).format(Configuration.dateFormat));
 
-  props.attributes.articleType &&
-  tableData.set('Article type', props.attributes.articleType || 'Unknown');
+    work.attributes.tags && tableData.set('Tags', work.attributes.tags || []);
 
-  return (
-    <div className="overview">
-      <h1>{props.attributes.name || '(Untitled Work)'}</h1>
-      <table>
-        <tbody>
+    tableData.set('Type', work.attributes.mediaType || 'Unknown');
+
+    work.attributes.articleType &&
+    tableData.set('Article type', work.attributes.articleType || 'Unknown');
+
+    return (
+      <div className={classNames('overview', isLoading && 'loading')}>
+        <h1>{work.attributes.name || '(Untitled Work)'}</h1>
+        <table>
+          <tbody>
           <tr key="author">
             <td>Author</td>
-            <td><AuthorWithLink work={props} /></td>
+            <td><AuthorWithLink work={work} /></td>
           </tr>
-            { tableData.toKeyValueArray().map(renderRow) }
-        </tbody>
-      </table>
-    </div>
-  )
-}
+          { tableData.toKeyValueArray().map(this.renderRow, this) }
+          </tbody>
+        </table>
+      </div>
+    )
+  }
 
-export default WorkComponent(render);
+  private renderRow({key, value}: KeyValue<string, string>) {
+    return (
+      <tr key={key}>
+        <td>{key}</td>
+        <td>{value}</td>
+      </tr>
+    );
+  }
+}

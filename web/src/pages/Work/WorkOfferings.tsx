@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as classNames from 'classnames';
 
 import { Work, WorkOffering } from "../../Interfaces";
 import { PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
@@ -20,8 +21,47 @@ export class WorkOfferings extends PoetAPIResourceProvider<Work, WorkOfferingsPr
     if (!work || !work.offerings || !work.offerings.length)
       return null;
 
+    return this.renderOfferings(work);
+  }
+
+  renderLoading() {
+    return this.renderOfferings({
+      id: '',
+      publicKey: '',
+      signature: '',
+      attributes: {
+        name: 'Work',
+        datePublished: Date.now().toString(),
+        dateCreated: Date.now().toString(),
+        dateModified: Date.now().toString(),
+        mediaType: '',
+        articleType: '',
+        author: '',
+        lastModified: '',
+        contentHash: '',
+        tags: '',
+        type: ''
+      },
+      offerings: [{
+        id: 'id',
+        owner: '',
+        publicKey: '',
+        signature: '',
+        attributes: {
+          licenseType: '...',
+          licenseDescription: '...',
+          pricingFrequency: '...',
+          pricingPriceAmount: '0',
+          pricingPriceCurrency: '...',
+        },
+        licenses: null
+      }] as ReadonlyArray<WorkOffering>
+    } as any, true);
+  }
+
+  private renderOfferings(work: Work, isLoading?: boolean) {
     return (
-      <section className="offerings">
+      <section className={classNames('offerings', isLoading && 'loading')}>
         { work.offerings.map(this.renderOffering.bind(this, work)) }
       </section>
     )

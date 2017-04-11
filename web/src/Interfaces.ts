@@ -65,7 +65,11 @@ export interface WorkOffering extends Claim {
 
 export interface Work extends Claim {
   readonly claimInfo?: ClaimInfo
-  readonly owner?: Claim
+  readonly owner?: {
+    readonly claim: HexString;
+    readonly displayName: string;
+    readonly id: HexString;
+  }
   readonly title?: TitleClaim
   readonly author?: {
     readonly claim: HexString;
