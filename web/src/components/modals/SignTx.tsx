@@ -1,99 +1,30 @@
 import * as React from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
+const Overlays = require('react-overlays');
 const QR = require('react-qr');
 
 import { Images } from '../../images/Images';
+import { PoetAppState } from '../../store/PoetAppState';
 import { Actions } from '../../actions/index'
-import Loading from '../atoms/Loading'
-import Modal, { ModalProps } from './Modal'
+import { ModalProps } from './Modal'
 
 import './Modal.scss'
 import './SignTx.scss'
 
 interface SignProps {
-  requestId: string;
-  visible: boolean;
-  submitting: boolean;
-  noBalance: boolean;
-  success: boolean;
+  readonly requestId: string;
+  readonly visible: boolean;
+  readonly submitting: boolean;
+  readonly noBalance: boolean;
+  readonly success: boolean;
 }
+
 interface SignActions {
   mockSign: (id: string) => any
 }
 
-class SignWorkModal extends Modal<SignProps & SignActions & ModalProps, undefined> {
-  draw() {
-    if (this.props.noBalance)
-      return this.renderNoBalance();
-
-    if (this.props.submitting)
-      return this.renderLoading();
-
-    if (!this.props.success)
-      return this.renderScanRequest();
-
-    return this.renderSuccess();
-  }
-
-  private renderNoBalance() {
-    return <div className="modal-sign-transaction">
-      <h1>Signing requested</h1>
-      <div>
-        <h2>
-          Your wallet has no balance.
-        </h2>
-        <p>
-          Please <Link to="/account/wallet" onClick={() => this.props.cancelAction()}>go here</Link> to manage your wallet
-        </p>
-      </div>
-    </div>;
-  }
-
-  private renderScanRequest() {
-    return (
-      <div className="modal-sign-transaction">
-        <h1>Authorize transaction</h1>
-        <div>
-          { this.props.requestId
-            ? <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
-            <QR text={this.props.requestId || ''} />
-          </a>
-            : <Loading />
-          }
-        </div>
-        <div className="mb-2">Scan the QR code to approve</div>
-        <div className="onboard mb-2">
-          <div className="scan">
-            <div className="placeholder-box" />
-            <div className="ml-2">
-              <div>Buying License</div>
-              <div className="text-muted">Login to the app &gt; scan QR code</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  private renderLoading() {
-    return (
-      <div className="modal-sign-transaction loading">
-        <img src={Images.Quill} />
-      </div>
-    )
-  }
-
-  private renderSuccess() {
-    return (
-      <div className="modal">
-        <h1>Bitcoin transaction submitted</h1>
-      </div>
-    )
-  }
-}
-
-function mapStateToProps(state: any): SignProps {
+function mapStateToProps(state: PoetAppState): SignProps {
   return {
     visible: state.modals.signTx,
     requestId: state.signTx.id,
@@ -108,4 +39,85 @@ const mapDispatch = {
   mockSign: (id: string) => ({ type: Actions.Transactions.FakeSign, payload: id })
 };
 
-export default connect(mapStateToProps, mapDispatch)(SignWorkModal);
+export const SignTransaction = connect(mapStateToProps, mapDispatch)(
+  class extends React.Component<SignProps & SignActions & ModalProps, undefined> {
+
+    render() {
+      if (!this.props.visible)
+        return null;
+
+      return (
+        <Overlays.Modal
+          aria-labelledby='modal-label'
+          backdropClassName="backdrop"
+          show={this.props.visible}
+          onHide={this.props.cancelAction}
+          className="modals-container"
+        >
+          {
+            this.props.noBalance
+              ? this.renderNoBalance()
+              : !this.props.success
+                ? this.renderScanRequest()
+                : this.renderSuccess()
+          }
+        </Overlays.Modal>
+      )
+    }
+
+    private renderNoBalance() {
+      return <div className="modal-sign-transaction">
+        <h1>Signing requested</h1>
+        <div>
+          <h2>
+            Your wallet has no balance.
+          </h2>
+          <p>
+            Please <Link to="/account/wallet" onClick={() => this.props.cancelAction()}>go here</Link> to manage your wallet
+          </p>
+        </div>
+      </div>;
+    }
+
+    private renderScanRequest() {
+      return (
+        <section className="modal-sign-transaction">
+          <header>
+            <h1>Scan the code from your <br/>
+              Poet: Authenticator App to <br/>
+              complete the purchase</h1>
+            <a href="">Download App</a>
+          </header>
+          <main>
+            <div className="qr">
+              { this.props.submitting || !this.props.requestId
+                ? <img src={Images.Quill} className="loading-quill" />
+                : <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
+                  <QR text={this.props.requestId || ''} />
+                </a>
+              }
+            </div>
+            <h2>This will authorize the following transaction</h2>
+
+            <ul>
+              <li>License Purchase</li>
+            </ul>
+
+          </main>
+          <nav>
+            <button onClick={this.props.cancelAction}>Cancel</button>
+          </nav>
+        </section>
+      )
+    }
+
+    private renderSuccess() {
+      return (
+        <div className="modal">
+          <h1>Bitcoin transaction submitted</h1>
+        </div>
+      )
+    }
+
+  }
+);

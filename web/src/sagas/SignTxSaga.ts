@@ -11,23 +11,31 @@ import { getUtxos, submitTx } from '../bitcoin/insight';
 import { getSighash, applyHexSignaturesInOrder } from '../bitcoin/txHelpers';
 import { currentPublicKey } from '../selectors/session';
 
-async function requestIdFromAuth(dataToSign: Buffer[], bitcoin: boolean, notifyPubkey?: string) {
-  return await Authentication.getRequestIdForMultipleSigningBuffers(dataToSign, bitcoin, notifyPubkey)
-}
-
-async function bindAuthResponse(request: any) {
-  return await Authentication.onResponse(request.id) as any;
-}
-
 export interface SignTransactionParameters {
-  paymentAddress: string
-  amountInSatoshis: number
-  conceptOf: string
-  resultAction: string
-  resultPayload: any
+  readonly paymentAddress: string
+  readonly amountInSatoshis: number
+  readonly conceptOf: string
+  readonly resultAction: string
+  readonly resultPayload: any
 }
 
-export function* signTx(action: { payload: SignTransactionParameters }) {
+export function signTransaction() {
+  return function*() {
+    yield takeEvery(Actions.Transactions.SignSubmitRequested, signTxCancellable);
+    yield takeEvery(Actions.Transactions.FakeSign, mockLoginHit);
+  }
+}
+
+function* signTxCancellable(action: { payload: SignTransactionParameters }) {
+  yield race({
+    signTx: call(signTx, action),
+    hideModal: call(function*() {
+      yield take(Actions.Modals.SignTransaction.Hide);
+    })
+  })
+}
+
+function* signTx(action: { payload: SignTransactionParameters }) {
   yield put({ type: Actions.Modals.SignTransaction.Show, payload: action.payload });
 
   const publicKey = bitcore.PublicKey(yield select(currentPublicKey));
@@ -39,7 +47,7 @@ export function* signTx(action: { payload: SignTransactionParameters }) {
   const targetAddress = action.payload.paymentAddress;
   const amount = parseInt('' + action.payload.amountInSatoshis, 10);
   if (!utxos.reduce((prev: number, next: any) => prev + next.satoshis, 0)) {
-    yield put({ type: Actions.noBalanceAvailable });
+    yield put({ type: Actions.Transactions.NoBalanceAvailable });
     return
   }
   const tx = new bitcore.Transaction().from(utxos)
@@ -65,24 +73,15 @@ export function* signTx(action: { payload: SignTransactionParameters }) {
   yield put({ type: Actions.Transactions.SubmittedSuccess });
 }
 
-export function* signTxCancellable(action: { payload: SignTransactionParameters }) {
-  yield race({
-    signTx: call(signTx, action),
-    hideModal: call(function*() {
-      yield take(Actions.Modals.SignTransaction.Hide);
-    })
-  })
+async function requestIdFromAuth(dataToSign: Buffer[], bitcoin: boolean, notifyPubkey?: string) {
+  return await Authentication.getRequestIdForMultipleSigningBuffers(dataToSign, bitcoin, notifyPubkey)
 }
 
-export function* mockLoginHit(action: any) {
+async function bindAuthResponse(request: any) {
+  return await Authentication.onResponse(request.id) as any;
+}
+
+function* mockLoginHit(action: any) {
   yield call(fetch, Configuration.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
 }
 
-export function claimSubmitSaga() {
-  return function*() {
-    yield takeEvery(Actions.Transactions.SignSubmitRequested, signTxCancellable as any);
-    yield takeEvery(Actions.Transactions.FakeSign, mockLoginHit);
-  }
-}
-
-export default claimSubmitSaga;

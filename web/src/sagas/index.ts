@@ -2,7 +2,7 @@ import { fetchSaga } from './FetchSaga';
 import { workSearchSaga } from './NavbarSaga';
 import { sessionSaga } from './SessionSaga';
 import ProfileSaga from './ProfileSaga';
-import SignTxSaga from './SignTxSaga';
+import { signTransaction } from './SignTxSaga';
 import { submitClaims } from './SubmitClaims';
 import { transferSaga } from './TransferSaga';
 import Withdrawal from './Withdrawal';
@@ -19,7 +19,7 @@ export default [
   transferSaga,
   ProfileSaga,
   submitClaims,
-  SignTxSaga,
+  signTransaction,
   Withdrawal,
   purchaseLicenseSaga,
   CacheInvalidationSaga,

@@ -9,6 +9,7 @@ export interface PoetAppState {
   readonly modals: ModalStore
   readonly transfer: TransferStore
   readonly createWork: CreateWorkStore;
+  readonly signTx: SignTransactionStore;
 }
 
 export interface SessionStore {
@@ -86,4 +87,11 @@ export interface TransferStore {
 
 export interface CreateWorkStore {
   readonly workClaim: Claim;
+}
+
+export interface SignTransactionStore {
+  readonly id: any;
+  readonly submitting: boolean;
+  readonly success: boolean;
+  readonly noBalance: boolean;
 }

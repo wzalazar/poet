@@ -8,8 +8,6 @@ export namespace Actions {
   export const withdrawalRequested = 'withdrawal started';
   export const withdrawalDone = 'withdrawal done';
 
-  export const noBalanceAvailable = 'no balance available';
-
   export namespace Search {
     export const Change = 'search change';
     export const Offset = 'search offset';
@@ -59,6 +57,7 @@ export namespace Actions {
     export const Submitting = 'submitting tx';
     export const SubmittedSuccess = 'tx submitted';
     export const SignIdReceived = 'sign tx id received';
+    export const NoBalanceAvailable = 'no balance available';
   }
 
   export namespace Licenses {

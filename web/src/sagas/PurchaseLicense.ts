@@ -8,24 +8,14 @@ import { Actions } from '../actions'
 import { currentPublicKey } from '../selectors/session'
 import { WorkOffering, Work } from '../Interfaces';
 
-function createHelperFunc(url: string) {
-  return async function (reference: string, txId: string, outputIndex: number, workOwner: string, publicKey: string, referenceOffering: string) {
-    return await fetch(Configuration.api.user + url, {
-      method: 'POST',
-      body: JSON.stringify({
-        txId,
-        outputIndex: '' + outputIndex,
-        referenceOwner: workOwner,
-        owner: publicKey,
-        reference,
-        referenceOffering
-      })
-    }).then((res: any) => res.text())
-  }
-}
-
 const submitLicense = createHelperFunc('/licenses')
 const buyThroughOffering = createHelperFunc('/titles')
+
+export function purchaseLicenseSaga() {
+  return function*() {
+    yield takeEvery(Actions.Licenses.PurchaseRequested, purchaseLicense)
+  }
+}
 
 function* purchaseLicense(action: Action & { work: Work, offering: WorkOffering }) {
   const offeringAttributes = action.offering.attributes;
@@ -58,7 +48,7 @@ function* purchaseLicense(action: Action & { work: Work, offering: WorkOffering 
     const result = yield race({
       paidLicense: take(Actions.Licenses.Paid),
       noBalance: call(function* () {
-        yield take(Actions.noBalanceAvailable);
+        yield take(Actions.Transactions.NoBalanceAvailable);
         return true
       })
     });
@@ -84,8 +74,19 @@ function* purchaseLicense(action: Action & { work: Work, offering: WorkOffering 
   }
 }
 
-export function purchaseLicenseSaga() {
-  return function*() {
-    yield takeEvery(Actions.Licenses.PurchaseRequested, purchaseLicense)
+function createHelperFunc(url: string) {
+  return async function (reference: string, txId: string, outputIndex: number, workOwner: string, publicKey: string, referenceOffering: string) {
+    return await fetch(Configuration.api.user + url, {
+      method: 'POST',
+      body: JSON.stringify({
+        txId,
+        outputIndex: '' + outputIndex,
+        referenceOwner: workOwner,
+        owner: publicKey,
+        reference,
+        referenceOffering
+      })
+    }).then((res: any) => res.text())
   }
 }
+

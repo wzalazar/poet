@@ -12,7 +12,6 @@ import './Title.scss';
 export class Title extends WorkById<undefined> {
 
   renderElement(work: Work) {
-    console.log('Title.renderElement', work);
     const owner = work.title && work.title.attributes && work.title.attributes.owner;
     return (
       <section className="title">
