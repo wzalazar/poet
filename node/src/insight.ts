@@ -53,7 +53,7 @@ export default class PoetInsightListener {
 
   async manageNewTx(tx: any) {
     try {
-      const poetData = await this.containsPoetForSocket(tx);
+      const poetData = await this.doesSocketTxContainPoetInfo(tx);
       if (poetData) {
         this.txListeners.forEach(txListener => {
           txListener(poetData)
@@ -64,29 +64,19 @@ export default class PoetInsightListener {
     }
   }
 
-  async manageNewBlock(block: any) {
+  async manageNewBlock(blockHash: string) {
     try {
-      const height = await fetch(`${this.insightUrl}/api/block/${block}`)
-        .then(parseJson)
-        .then(pluckMember('height'))
-      const bitcoreBlock = await fetch(`${this.insightUrl}/api/rawblock/${block}`)
-        .then(parseJson)
-        .then(pluckMember('rawblock'))
-        .then(getBuffer)
-        .then(turnToBitcoreBlock)
+      const height = await this.fetchHeight(blockHash)
+      const bitcoreBlock = await this.fetchBitcoreBlock(blockHash)
       return this.scanBitcoreBlock(bitcoreBlock, height)
     } catch (error) {
       console.log('Error handling block', error, error.stack)
     }
   }
 
-  notifyPoetData(newState: BitcoinBlockMetadata) {
-    this.bitcoinBlockListeners.forEach(listener => listener(newState))
-  }
-
   scanBitcoreBlock(block: any, height: number) {
     const txs = block.transactions.map((tx: any, index: number): BlockMetadata | null => {
-      const poetData = this.containsPoetForBitcore(tx)
+      const poetData = this.doesBitcoreTxContainPoetInfo(tx)
       if (!poetData) {
         return
       }
@@ -106,7 +96,7 @@ export default class PoetInsightListener {
     return blockInfo
   }
 
-  containsPoetForBitcore(tx: any): BlockMetadata {
+  doesBitcoreTxContainPoetInfo(tx: any): BlockMetadata {
     const check = function(script: any, index: number) {
       if (script.classify() !== bitcore.Script.types.DATA_OUT)
         return
@@ -125,8 +115,22 @@ export default class PoetInsightListener {
     )
   }
 
-  containsPoetForSocket(tx: any) {
-    return this.fetchTxByHash(tx.txid).then(this.containsPoetForBitcore)
+  doesSocketTxContainPoetInfo (tx: any) {
+    return this.fetchTxByHash(tx.txid).then(this.doesBitcoreTxContainPoetInfo)
+  }
+
+  fetchBitcoreBlock(hash: string) {
+    return fetch(`${this.insightUrl}/api/rawblock/${hash}`)
+      .then(parseJson)
+      .then(pluckMember('rawblock'))
+      .then(getBuffer)
+      .then(turnToBitcoreBlock)
+  }
+
+  fetchHeight(hash: string) {
+    return fetch(`${this.insightUrl}/api/block/${hash}`)
+      .then(parseJson)
+      .then(pluckMember('height'))
   }
 
   fetchTxByHash(txHash: string) {
@@ -136,6 +140,10 @@ export default class PoetInsightListener {
       .then(parseJson)
       .then(getTransaction)
       .then(turnToBitcoreTx)
+  }
+
+  notifyPoetData(newState: BitcoinBlockMetadata) {
+    this.bitcoinBlockListeners.forEach(listener => listener(newState))
   }
 
   subscribeTx(listener: TxInfoListener) {
