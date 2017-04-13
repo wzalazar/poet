@@ -44,9 +44,9 @@ export class UserWallet extends PageLoader<UserWalletProps, Object> {
 
   mapDispatchToProps(): Object {
     return {
-      requestWithdrawal: (info: WalletOperationWithdrawState) => ({
-        type: Actions.withdrawalRequested,
-        payload: info
+      requestWithdrawal: (payload: WalletOperationWithdrawState) => ({
+        type: Actions.Withdrawal.Requested,
+        payload
       })
     };
   }

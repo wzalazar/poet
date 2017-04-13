@@ -1,7 +1,7 @@
-import * as bitcore from 'bitcore-lib';
-
+import { Action } from 'redux'
 import { takeEvery } from 'redux-saga';
 import { call, put, select, take, race } from 'redux-saga/effects';
+import * as bitcore from 'bitcore-lib';
 
 import { Configuration } from '../configuration';
 import { Actions } from '../actions/index';
@@ -11,12 +11,14 @@ import { getUtxos, submitTx } from '../bitcoin/insight';
 import { getSighash, applyHexSignaturesInOrder } from '../bitcoin/txHelpers';
 import { currentPublicKey } from '../selectors/session';
 
-export interface SignTransactionParameters {
-  readonly paymentAddress: string
-  readonly amountInSatoshis: number
-  readonly conceptOf: string
-  readonly resultAction: string
-  readonly resultPayload: any
+export interface SignSubmitRequestedAction extends Action {
+  readonly payload: {
+    readonly paymentAddress: string
+    readonly amountInSatoshis: number
+    readonly conceptOf: string
+    readonly resultAction: string
+    readonly resultPayload: any
+  }
 }
 
 export function signTransaction() {
@@ -26,7 +28,7 @@ export function signTransaction() {
   }
 }
 
-function* signTxCancellable(action: { payload: SignTransactionParameters }) {
+function* signTxCancellable(action: SignSubmitRequestedAction) {
   yield race({
     signTx: call(signTx, action),
     hideModal: call(function*() {
@@ -35,7 +37,7 @@ function* signTxCancellable(action: { payload: SignTransactionParameters }) {
   })
 }
 
-function* signTx(action: { payload: SignTransactionParameters }) {
+function* signTx(action: SignSubmitRequestedAction) {
   yield put({ type: Actions.Modals.SignTransaction.Show, payload: action.payload });
 
   const publicKey = bitcore.PublicKey(yield select(currentPublicKey));
@@ -46,10 +48,7 @@ function* signTx(action: { payload: SignTransactionParameters }) {
 
   const targetAddress = action.payload.paymentAddress;
   const amount = parseInt('' + action.payload.amountInSatoshis, 10);
-  if (!utxos.reduce((prev: number, next: any) => prev + next.satoshis, 0)) {
-    yield put({ type: Actions.Transactions.NoBalanceAvailable });
-    return
-  }
+
   const tx = new bitcore.Transaction().from(utxos)
     .to(targetAddress, amount)
     .change(myAddressString);

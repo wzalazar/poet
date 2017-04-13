@@ -73,10 +73,11 @@ export interface ModalStore {
 }
 
 export interface PurchaseLicenseStore {
-  readonly offering: WorkOffering;
-  readonly work: Work;
   readonly visible: boolean;
+  readonly work: Work;
+  readonly offering: WorkOffering;
   readonly success?: boolean;
+  readonly resultId?: string;
 }
 
 export interface TransferStore {
@@ -90,8 +91,7 @@ export interface CreateWorkStore {
 }
 
 export interface SignTransactionStore {
-  readonly id: any;
+  readonly requestId: string;
   readonly submitting: boolean;
   readonly success: boolean;
-  readonly noBalance: boolean;
 }

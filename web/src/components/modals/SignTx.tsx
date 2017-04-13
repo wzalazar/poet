@@ -1,46 +1,36 @@
 import * as React from 'react'
-import { Link } from 'react-router'
 import { connect } from 'react-redux'
 const Overlays = require('react-overlays');
 const QR = require('react-qr');
 
 import { Images } from '../../images/Images';
-import { PoetAppState } from '../../store/PoetAppState';
+import { PoetAppState, SignTransactionStore } from '../../store/PoetAppState'
 import { Actions } from '../../actions/index'
-import { ModalProps } from './Modal'
+import { ModalAction, ModalProps, ModalVisible } from './Modal'
 
 import './Modal.scss'
 import './SignTx.scss'
 
-interface SignProps {
-  readonly requestId: string;
-  readonly visible: boolean;
-  readonly submitting: boolean;
-  readonly noBalance: boolean;
-  readonly success: boolean;
-}
+interface SignProps extends SignTransactionStore, ModalVisible {}
 
-interface SignActions {
+interface SignActions extends ModalAction {
   mockSign: (id: string) => any
 }
 
 function mapStateToProps(state: PoetAppState): SignProps {
   return {
     visible: state.modals.signTx,
-    requestId: state.signTx.id,
-    submitting: state.signTx.submitting,
-    success: state.signTx.success,
-    noBalance: state.signTx.noBalance
+    ...state.signTx
   }
 }
 
-const mapDispatch = {
+const mapDispatch: {} & SignActions = {
   cancelAction: () => ({ type: Actions.Modals.SignTransaction.Hide }),
   mockSign: (id: string) => ({ type: Actions.Transactions.FakeSign, payload: id })
 };
 
 export const SignTransaction = connect(mapStateToProps, mapDispatch)(
-  class extends React.Component<SignProps & SignActions & ModalProps, undefined> {
+  class extends React.Component<SignProps & SignActions, undefined> {
 
     render() {
       if (!this.props.visible)
@@ -48,75 +38,45 @@ export const SignTransaction = connect(mapStateToProps, mapDispatch)(
 
       return (
         <Overlays.Modal
-          aria-labelledby='modal-label'
+          className="modals-container"
           backdropClassName="backdrop"
           show={this.props.visible}
-          onHide={this.props.cancelAction}
-          className="modals-container"
+          onHide={this.onHide}
         >
-          {
-            this.props.noBalance
-              ? this.renderNoBalance()
-              : !this.props.success
-                ? this.renderScanRequest()
-                : this.renderSuccess()
-          }
+          <section className="modal-sign-transaction">
+            <header>
+              <h1>Scan the code from your <br/>
+                Poet: Authenticator App to <br/>
+                complete the purchase</h1>
+              <a href="">Download App</a>
+            </header>
+            <main>
+              <div className="qr">
+                { this.props.submitting || !this.props.requestId
+                  ? <img src={Images.Quill} className="loading-quill" />
+                  : <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
+                      <QR text={this.props.requestId || ''} />
+                    </a>
+                }
+              </div>
+              <h2>This will authorize the following transaction</h2>
+
+              <ul>
+                <li>License Purchase</li>
+              </ul>
+
+            </main>
+            <nav>
+              <button onClick={this.props.cancelAction}>Cancel</button>
+            </nav>
+          </section>
         </Overlays.Modal>
       )
     }
 
-    private renderNoBalance() {
-      return <div className="modal-sign-transaction">
-        <h1>Signing requested</h1>
-        <div>
-          <h2>
-            Your wallet has no balance.
-          </h2>
-          <p>
-            Please <Link to="/account/wallet" onClick={() => this.props.cancelAction()}>go here</Link> to manage your wallet
-          </p>
-        </div>
-      </div>;
-    }
-
-    private renderScanRequest() {
-      return (
-        <section className="modal-sign-transaction">
-          <header>
-            <h1>Scan the code from your <br/>
-              Poet: Authenticator App to <br/>
-              complete the purchase</h1>
-            <a href="">Download App</a>
-          </header>
-          <main>
-            <div className="qr">
-              { this.props.submitting || !this.props.requestId
-                ? <img src={Images.Quill} className="loading-quill" />
-                : <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
-                  <QR text={this.props.requestId || ''} />
-                </a>
-              }
-            </div>
-            <h2>This will authorize the following transaction</h2>
-
-            <ul>
-              <li>License Purchase</li>
-            </ul>
-
-          </main>
-          <nav>
-            <button onClick={this.props.cancelAction}>Cancel</button>
-          </nav>
-        </section>
-      )
-    }
-
-    private renderSuccess() {
-      return (
-        <div className="modal">
-          <h1>Bitcoin transaction submitted</h1>
-        </div>
-      )
+    private onHide = () => {
+      if (!this.props.submitting)
+        this.props.cancelAction();
     }
 
   }

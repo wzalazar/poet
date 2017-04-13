@@ -45,21 +45,12 @@ function* purchaseLicense(action: Action & { work: Work, offering: WorkOffering 
   });
 
   while (true) {
-    const result = yield race({
-      paidLicense: take(Actions.Licenses.Paid),
-      noBalance: call(function* () {
-        yield take(Actions.Transactions.NoBalanceAvailable);
-        return true
-      })
-    });
-    if (result.noBalance) {
-      return;
-    }
-    if (result.paidLicense.payload.id !== action.offering.id) {
+    const result = yield take(Actions.Licenses.Paid);
+
+    if (result.payload.id !== action.offering.id)
       continue;
-    }
-    const transaction = result.paidLicense.transaction;
-    const outputIndex = result.paidLicense.outputIndex;
+
+    const { transaction, outputIndex } = result;
     const publicKey = yield select(currentPublicKey);
     const workOwner = action.work.title.attributes.owner;
 

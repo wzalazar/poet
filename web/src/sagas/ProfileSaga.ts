@@ -1,10 +1,21 @@
+import { Action } from 'redux'
 import { takeEvery } from 'redux-saga'
 import { call, put } from 'redux-saga/effects'
 
 import { Configuration } from '../configuration';
 import { Actions } from '../actions/index'
 
-function* fetchProfileData(action: any) {
+interface FetchProfileAction extends Action {
+  readonly profilePublicKey: string;
+}
+
+export function profileSaga() {
+  return function*() {
+    yield takeEvery(Actions.Profile.FetchProfile, fetchProfile);
+  }
+}
+
+function* fetchProfile(action: FetchProfileAction) {
   const profileResponse = yield call(fetch, Configuration.api.explorer + '/profiles/' + action.profilePublicKey);
   if (profileResponse.status === 200) {
     const profile = yield profileResponse.json();
@@ -19,11 +30,3 @@ function* fetchProfileData(action: any) {
     yield put({ type: Actions.Profile.NotificationsUpdate, payload: { notifications, unreadCount, totalCount } });
   }
 }
-
-function profileSaga() {
-  return function*() {
-    yield takeEvery(Actions.Profile.FetchProfile, fetchProfileData);
-  }
-}
-
-export default profileSaga;

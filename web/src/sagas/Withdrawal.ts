@@ -1,9 +1,24 @@
+import { Action } from 'redux'
 import { takeEvery } from 'redux-saga'
 import { put, take } from 'redux-saga/effects'
 
 import { Actions } from '../actions/index'
 
-function* withdraw(action: any) {
+interface WithdrawalRequestedAction extends Action {
+  readonly payload: {
+    readonly paymentAddress: string;
+    readonly amountInSatoshis: number;
+    readonly conceptOf: string;
+  }
+}
+
+export function withdrawal() {
+  return function*() {
+    yield takeEvery(Actions.Withdrawal.Requested, withdrawalRequested)
+  }
+}
+
+function* withdrawalRequested(action: WithdrawalRequestedAction) {
   const paymentAddress = action.payload.paymentAddress;
   const amountInSatoshis = action.payload.amountInSatoshis;
 
@@ -13,17 +28,11 @@ function* withdraw(action: any) {
       paymentAddress,
       amountInSatoshis,
       conceptOf: action.payload.conceptOf,
-      resultAction: Actions.withdrawalDone,
+      resultAction: Actions.Withdrawal.Done,
       resultPayload: {}
     }
   });
 
-  yield take(Actions.withdrawalDone);
+  yield take(Actions.Withdrawal.Done);
   yield put({ type: Actions.Modals.SignTransaction.Hide })
-}
-
-export default function() {
-  return function*() {
-    yield takeEvery(Actions.withdrawalRequested, withdraw)
-  }
 }
