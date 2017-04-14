@@ -1,168 +1,197 @@
 import * as React from "react";
-import {connect} from "react-redux";
-const Autocomplete = require('react-autocomplete');
+import { Action } from 'redux'
+import { connect } from "react-redux";
 const QR = require('react-qr');
+const Overlays = require('react-overlays');
 
-import { Configuration } from '../../configuration';
+import { Images } from '../../images/Images'
 import { Actions } from "../../actions/index";
-import { PoetAppState } from '../../store/PoetAppState';
-import Loading from "../atoms/Loading";
-import Modal, {ModalProps} from "./Modal";
+import { PoetAppState, TransferModalStore, TransferStore } from '../../store/PoetAppState'
+import { ProfileBio, ProfileNameWithLink, ProfilePictureById } from '../atoms/Profile'
+import { WorkAuthorById, WorkContentById, WorkNameWithLinkById } from '../atoms/Work'
+import { ProfileAutocomplete } from '../atoms/ProfileAutocomplete'
+import { ModalAction } from "./Modal"
 
 import "./Transfer.scss";
 
-interface TransferProps {
-  requestId: string;
-  targetPublicKey: string;
-  visible: boolean;
-  success: boolean;
-}
+interface TransferProps extends TransferStore, TransferModalStore {}
 
 interface TransferActions {
   mockSign: (id: string) => any
-  selectPublicKey: (id: string) => any
-}
-
-function DisplayName(profile: any, highlight: boolean) {
-  return <div
-    key={profile.id}
-    id={profile.id}
-    style={{
-      display: 'block',
-      position: 'relative',
-      color: 'black',
-      background: highlight ? '#333' : 'white'
-    }}
-  >{ profile.displayName }</div>
-}
-
-function Value(profile: any) {
-  return profile.id
+  setTransferTarget: (id: string) => Action
 }
 
 interface TransferState {
-  loading?: boolean
-  suggestions?: ReadonlyArray<any>
-  value?: string
-  selected?: any
-}
-
-class TransferModal extends Modal<TransferProps & TransferActions & ModalProps, TransferState> {
-  constructor() {
-    super(...arguments);
-    this.state = {
-      selected: null,
-      loading: false,
-      suggestions: [],
-      value: ''
-    }
-  }
-
-  reactToUserInput(input: any) {
-    this.setState({loading: true, value: input});
-    return fetch(Configuration.api.explorer + '/profiles/autocomplete/' + input)
-      .then(result => result.json())
-      .then((result: any) => {
-        this.setState({loading: false, suggestions: result})
-      })
-  }
-
-  clearValue() {
-    this.setState({loading: false, value: '', suggestions: []})
-  }
-
-  formSubmit() {
-    const publicKey = Value(this.state.selected);
-    this.props.selectPublicKey(publicKey);
-    this.setState({loading: false, suggestions: [], value: ''})
-  }
-
-  onSelect = (value: string, item: any) => {
-    this.setState({selected: item, value}, () => this.formSubmit())
-  }
-
-  onChange = (event: any, value: string) => {
-    this.reactToUserInput(value)
-  }
-
-  renderMenu = (children: any) => {
-    return (<div style={{ position: 'absolute', width: '100%' }}>
-      {children}
-    </div>)
-  }
-
-  draw() {
-    if (!this.props.targetPublicKey) {
-      const { suggestions, value } = this.state;
-      const inputProps = {
-        value: value,
-        style: { "border": "1px solid black" }
-      };
-      return (
-        <div className="modal-transfer">
-          <h1>Who should the transference be made to?</h1>
-          <form onSubmit={this.formSubmit.bind(this)}>
-          <div>
-            {
-              <Autocomplete
-                ref="autocomplete"
-                items={suggestions}
-                value={value}
-                onSelect={this.onSelect}
-                onChange={this.onChange}
-                getItemValue={Value}
-                renderMenu={this.renderMenu}
-                wrapperStyle={{ position: 'relative', display: 'inline-block' }}
-                renderItem={DisplayName}
-                inputProps={inputProps} />
-            }
-          </div></form>
-        </div>
-      )
-    } else if (!this.props.success) {
-      return (
-        <div className="modal-transfer">
-          <h1>Signing requested</h1>
-          <div>
-            { this.props.requestId
-              ? <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
-                <QR text={this.props.requestId || ''} />
-              </a>
-              : <Loading />
-            }
-          </div>
-          <div className="mb-2">Scan the QR code to approve the transference</div>
-          <div className="onboard mb-2">
-            <div className="scan">
-              <div className="placeholder-box" />
-              <div className="ml-2">
-                <div className="text-muted">Login to the app &gt; scan QR code</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )
-    }
-    return (<div className="modal-transfer">
-      <h1>Transference executed</h1>
-    </div>
-    )
-  }
+  readonly value?: string
+  readonly selected?: any
 }
 
 function mapStateToProps(state: PoetAppState): TransferProps {
   return {
-    visible: state.modals.transfer,
-    requestId: state.transfer.id,
-    success: state.transfer.success,
-    targetPublicKey: state.transfer.targetPublicKey,
+    ...state.modals.transfer,
+    ...state.transfer,
   }
 }
 
 const mapDispatch = {
   cancelAction: () => ({ type: Actions.Modals.Transfer.DismissRequested }),
   mockSign: (id: string) => ({ type: Actions.Transfer.FakeTransferSign, payload: id }),
-  selectPublicKey: (id: string) => ({ type: Actions.Transfer.SetTransferTarget, payload: id })
+  setTransferTarget: (id: string) => ({ type: Actions.Transfer.SetTransferTarget, payload: id })
 };
 
-export default connect(mapStateToProps, mapDispatch)(TransferModal);
+export const Transfer = connect(mapStateToProps, mapDispatch)(
+  class extends React.Component<TransferProps & TransferActions & ModalAction, TransferState> {
+
+    constructor() {
+      super(...arguments);
+      this.state = {
+        selected: null,
+        value: ''
+      }
+    }
+
+    componentWillReceiveProps(props: TransferProps & TransferActions & ModalAction) {
+      if (this.props.visible !== props.visible)
+        this.setState({ selected: null, value: '' })
+    }
+
+    render() {
+      return (
+        <Overlays.Modal
+          className="modals-container"
+          backdropClassName="backdrop"
+          show={this.props.visible}
+          onHide={this.props.cancelAction}
+        >
+          {
+            !this.props.targetPublicKey
+              ? !this.state.selected
+                ? this.renderProfileSelection()
+                : this.renderProfileConfirmation()
+              : !this.props.success
+                ? this.renderScanRequest()
+                : this.renderSuccess()
+          }
+        </Overlays.Modal>
+      )
+    }
+
+    private renderProfileSelection() {
+      return (
+        <section className="modal-transfer profile-selection">
+          <h1>Transfer Work</h1>
+          <section className="work">
+            <header>
+              <WorkNameWithLinkById workId={this.props.workId} />&nbsp;by&nbsp;<WorkAuthorById workId={this.props.workId} />
+            </header>
+            <main>
+              <WorkContentById workId={this.props.workId} />
+            </main>
+          </section>
+          <section className="profile-select">
+            <h2>Transfer this work to:</h2>
+            <ProfileAutocomplete
+              className={this.isValueInvalid() && 'invalid'}
+              onChange={this.onChange}
+              onSelect={this.onSelect}
+              value={this.state.value}
+              placeholder="Search profiles..."/>
+          </section>
+        </section>
+      )
+    }
+
+    private renderProfileConfirmation() {
+      return (
+        <section className="modal-transfer profile-selection">
+          <h1>Transfer Work</h1>
+          <section className="work">
+            <header>
+              <WorkNameWithLinkById workId={this.props.workId} />&nbsp;by&nbsp;<WorkAuthorById workId={this.props.workId} />
+            </header>
+            <main>
+              <WorkContentById workId={this.props.workId} />
+            </main>
+          </section>
+          <h2>Transfer this work to:</h2>
+          <section className="profile">
+            <ProfilePictureById profileId={this.state.value} />
+            <div>
+              <ProfileNameWithLink profileId={this.state.value} className="profile-name" />
+              <ProfileBio profileId={this.state.value} />
+            </div>
+          </section>
+          <nav>
+            <button className="button-secondary" onClick={this.onPickSomeoneElse}>Pick Someone Else</button>
+            <button className="button-primary" onClick={this.onTransfer}>Transfer</button>
+          </nav>
+        </section>
+      )
+    }
+
+    private renderScanRequest() {
+      return (
+        <section className="modal-transfer scan-request">
+          <header>
+            <h1>Scan the code from your <br/>
+              Poet: Authenticator App to <br/>
+              complete the registration</h1>
+            <a href="">Download App</a>
+          </header>
+          <main>
+            <div className="qr">
+              { !this.props.requestId
+                ? <img src={Images.Quill} className="quill-loading" />
+                : <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
+                    <QR text={this.props.requestId || ''} onClick={()=>console.log('ho')} />
+                  </a>
+              }
+            </div>
+            <h2>This will authorize the following transaction:</h2>
+            <ul>
+              <li>Transference of Work</li>
+            </ul>
+          </main>
+          <nav>
+            <button onClick={this.props.cancelAction}>Cancel</button>
+          </nav>
+        </section>
+      )
+    }
+
+    private renderSuccess() {
+      return (
+        <section className="modal-transfer success">
+          <main>
+            <img src={Images.SuccessMark}/>
+            <h1>Success!</h1>
+            <h2>You have transfered the creative work</h2>
+          </main>
+          <nav>
+            <button className="button-primary" onClick={this.props.cancelAction} >Done</button>
+          </nav>
+        </section>
+      )
+    }
+
+    private onSelect = (value: string) => {
+      this.setState({selected: value, value})
+    }
+
+    private onChange = (value: string) => {
+      this.setState({value})
+    }
+
+    private onPickSomeoneElse = () => {
+      this.setState({ selected: null, value: '' });
+    }
+
+    private onTransfer = () => {
+      this.props.setTransferTarget(this.state.selected);
+    }
+
+    private isValueInvalid() {
+      return false;
+    }
+
+  });

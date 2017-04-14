@@ -98,7 +98,8 @@ export class Attribute extends React.Component<AttributeProps & AttributeData, A
       className={this.isValueInvalid() && 'invalid'}
       onSelect={this.props.onValueChange}
       onChange={this.props.onValueChange}
-      value={this.props.value} />
+      value={this.props.value}
+      placeholder="Attribute Name" />
   }
 
   private onBlur = () => {

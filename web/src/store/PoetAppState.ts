@@ -66,10 +66,15 @@ export interface ModalStore {
   readonly login?: boolean;
   readonly signWork?: boolean;
   readonly signTx?: boolean;
-  readonly transfer?: boolean;
+  readonly transfer?: TransferModalStore;
   readonly purchaseLicense?: PurchaseLicenseStore;
   readonly createWorkResult?: boolean;
   readonly tryItOut?: boolean;
+}
+
+export interface TransferModalStore {
+  readonly visible: boolean;
+  readonly workId: string;
 }
 
 export interface PurchaseLicenseStore {
@@ -81,7 +86,7 @@ export interface PurchaseLicenseStore {
 }
 
 export interface TransferStore {
-  readonly id: string
+  readonly requestId: string
   readonly success: boolean
   readonly targetPublicKey: string
 }

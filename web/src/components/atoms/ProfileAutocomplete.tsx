@@ -14,6 +14,7 @@ interface ProfileAutocompleteProps extends ClassNameProps {
   readonly value: string;
   readonly onSelect: (profile: string) => void;
   readonly onChange: (profile: string) => void;
+  readonly placeholder?: string;
 }
 
 interface ProfileAutocompleteState {
@@ -45,7 +46,7 @@ export class ProfileAutocomplete extends PoetAPIResourceProvider<ReadonlyArray<P
         getItemValue={(profile: ProfileAutocompleteResource) => profile.id}
         renderMenu={this.renderMenu}
         renderItem={this.renderProfile}
-        inputProps={{className: classNames('input-text', this.state.menuIsOpen && 'open', this.props.className), placeholder: 'Attribute Name'}}
+        inputProps={{className: classNames('input-text', this.state.menuIsOpen && 'open', this.props.className), placeholder: this.props.placeholder}}
         onMenuVisibilityChange={(menuIsOpen: boolean) => this.setState({menuIsOpen})} />
     );
   }

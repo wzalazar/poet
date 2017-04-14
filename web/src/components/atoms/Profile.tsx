@@ -46,10 +46,30 @@ export class ProfileName extends ProfileById<ProfileNameProps> {
   }
 }
 
-export class ProfileNameWithLink extends ProfileById<undefined> {
+export class ProfileNameWithLink extends ProfileById<ClassNameProps> {
 
   renderElement(profile: Profile) {
-    return <Link to={"/profiles/" + profile.id}>{ profile.displayName || 'Anonymous' }</Link>
+    return <Link to={"/profiles/" + profile.id} className={this.props.className}>{ profile.displayName || 'Anonymous' }</Link>
+  }
+
+  renderLoading() {
+    return this.renderChildren() || super.renderLoading();
+  }
+
+  renderError(error: any) {
+    return this.renderChildren() || super.renderError(error);
+  }
+
+  renderChildren() {
+    return this.props.children && <span>{this.props.children}</span>;
+  }
+
+}
+
+export class ProfileBio extends ProfileById<undefined> {
+
+  renderElement(profile: Profile) {
+    return <div>{profile.attributes.bio}</div>
   }
 
   renderLoading() {

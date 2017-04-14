@@ -36,7 +36,7 @@ function* mockLoginHit(action: any) {
 }
 
 function* transferFlow(action: TransferRequestedAction) {
-  yield put({ type: Actions.Modals.Transfer.Show });
+  yield put({ type: Actions.Modals.Transfer.Show, workId: action.workId });
 
   const publicKey = yield select(currentPublicKey);
 

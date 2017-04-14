@@ -38,6 +38,46 @@ export class WorkNameById extends WorkById<undefined> {
   }
 }
 
+export class WorkAuthorById extends WorkById<undefined> {
+  renderElement(work: Work): JSX.Element {
+    return work && work.author ? (
+      <ProfileNameWithLink profileId={work.author.id}>
+        {work.author.displayName}
+      </ProfileNameWithLink>
+    ) : (
+      <span>{work && work.attributes && work.attributes.author || 'Unknown Author'}</span>
+    );
+  }
+}
+
+export class WorkContentById extends WorkById<undefined> {
+  renderElement(work: Work): JSX.Element {
+    return (
+      <span>{work && work.attributes && work.attributes.content || 'Unknown Author'}</span>
+    );
+  }
+}
+
+export class WorkNameWithLinkById extends WorkById<undefined> {
+
+  renderElement(work: Work): JSX.Element {
+    return <WorkNameWithLink work={work} />
+  }
+
+  renderLoading() {
+    return this.renderChildren() || super.renderLoading();
+  }
+
+  renderError(error: any) {
+    return this.renderChildren() || super.renderError(error);
+  }
+
+  renderChildren() {
+    return this.props.children && <span>{this.props.children}</span>;
+  }
+
+}
+
 export class WorksCounter extends PoetAPIResourceProvider<any, undefined, undefined> {
   poetURL(): string {
     return '/works'
@@ -86,30 +126,6 @@ export function WorkNameWithLink(props: WorkProps) {
     && props.work.attributes.name
     || '(untitled)'
   return <Link to={'/works/' + props.work.id}> { title }</Link>
-}
-
-export class WorkNameWithLinkById extends WorkById<undefined> {
-
-  renderElement(work: Work): JSX.Element {
-    return <WorkNameWithLink work={work} />
-  }
-
-  renderLoading() {
-    return this.renderChildren() || super.renderLoading();
-  }
-
-  renderError(error: any) {
-    return this.renderChildren() || super.renderError(error);
-  }
-
-  renderChildren() {
-    return this.props.children && <span>{this.props.children}</span>;
-  }
-
-}
-
-export function WorkName(props: WorkProps) {
-  return <span>{ props.work.attributes.name || '(untitled)' }</span>
 }
 
 export function WorkType(props: WorkProps) {

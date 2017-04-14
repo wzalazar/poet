@@ -17,9 +17,13 @@ export function modalsReducer(state: ModalStore, action: Action): ModalStore {
       return { ...state, signTx: false };
 
     case Actions.Modals.Transfer.Show:
-      return { ...state, transfer: true };
+      const transferShowAction = action as { workId: string } & Action;
+      return { ...state, transfer: {
+        visible: true,
+        workId: transferShowAction.workId
+      }};
     case Actions.Modals.Transfer.Hide:
-      return { ...state, transfer: false };
+      return { ...state, transfer: null };
 
     case Actions.Modals.PurchaseLicense.Show:
       const purchaseLicenseAction = action as { work: Work, offering: WorkOffering } & Action;
