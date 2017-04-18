@@ -101,7 +101,7 @@ function createServer (serverKey: string, port: number) {
     return createConnection({
       driver: {
         type: 'postgres',
-        host: 'localhost',
+        host: 'db',
         port: 5432,
         username: 'poet',
         password: 'poet',
