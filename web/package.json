@@ -21,7 +21,7 @@
     "@types/react-tabs": "^0.5.21",
     "@types/socket.io-client": "^1.4.29",
     "@types/uuid": "^2.0.29",
-    "bitcore-lib": "eordano/bitcore-lib#169e922",
+    "bitcore-lib": "eordano/bitcore-lib#f9c9876",
     "bundle-loader": "^0.5.5",
     "classnames": "^2.2.5",
     "isomorphic-fetch": "^2.2.1",
