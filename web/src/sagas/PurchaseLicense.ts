@@ -50,12 +50,12 @@ function* purchaseLicense(action: Action & { work: Work, offering: WorkOffering 
     if (result.payload.id !== action.offering.id)
       continue;
 
-    const { transaction, outputIndex } = result;
+    const { transaction, outputIndex, normalizedId } = result;
     const publicKey = yield select(currentPublicKey);
     const workOwner = action.work.title.attributes.owner;
 
     const targetFunction = action.offering.attributes.licenseType === 'for-sale' ? buyThroughOffering : submitLicense;
-    const createdClaims = yield call(targetFunction, reference, transaction, outputIndex, workOwner, publicKey, action.offering.id);
+    const createdClaims = yield call(targetFunction, reference, normalizedId, transaction, outputIndex, workOwner, publicKey, action.offering.id);
 
     yield put({ type: Actions.Modals.SignTransaction.Hide });
     yield put({ type: Actions.Licenses.Success, resultId: createdClaims[0].id });
@@ -66,10 +66,11 @@ function* purchaseLicense(action: Action & { work: Work, offering: WorkOffering 
 }
 
 function createHelperFunc(url: string) {
-  return async function (reference: string, txId: string, outputIndex: number, workOwner: string, publicKey: string, referenceOffering: string) {
+  return async function (reference: string, ntxId: string, txId: string, outputIndex: number, workOwner: string, publicKey: string, referenceOffering: string) {
     return await fetch(Configuration.api.user + url, {
       method: 'POST',
       body: JSON.stringify({
+        ntxId,
         txId,
         outputIndex: '' + outputIndex,
         referenceOwner: workOwner,

@@ -43,14 +43,16 @@ export default async function createServer(options?: TrustedPublisherOptions) {
     try {
       const id = await getHash(creator.serializeBlockForSave(block), block.id)
       const tx = await creator.createTransaction(id)
+      const ntxid = tx.nid
       console.log('Bitcoin transaction hash is', tx.hash)
+      console.log('Normalized transaction hash is', tx.nid)
       console.log('Torrent hash is', id)
 
       if (!options.broadcast) {
         return
       }
 
-      const txid = await ClaimBuilder.broadcastTx(tx)
+      await ClaimBuilder.broadcastTx(tx)
       ctx.body = JSON.stringify({
         createdClaims: block.claims
       })
@@ -69,6 +71,7 @@ export default async function createServer(options?: TrustedPublisherOptions) {
         [Fields.PROOF_TYPE]: "Bitcoin Transaction",
         [Fields.PROOF_VALUE]: JSON.stringify({
           txId: body.txId,
+          ntxId: body.ntxId,
           outputIndex: body.outputIndex
         }),
         [Fields.REFERENCE_OWNER]: body.referenceOwner,
@@ -88,6 +91,7 @@ export default async function createServer(options?: TrustedPublisherOptions) {
         [Fields.PROOF_TYPE]: "Bitcoin Transaction",
         [Fields.PROOF_VALUE]: JSON.stringify({
           txId: body.txId,
+          ntxId: body.ntxId,
           outputIndex: body.outputIndex
         }),
         [Fields.REFERENCE_OWNER]: body.referenceOwner,

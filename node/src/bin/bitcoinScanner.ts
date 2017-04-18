@@ -14,6 +14,16 @@ async function startup() {
   try {
     insight = new PoetInsightListener('https://test-insight.bitpay.com')
 
+    insight.subscribeBitcoinBlock(async (block) => {
+      // Store ntxid => txid info
+      for (let tx of block.transactions) {
+        await queue.announceNormalizedTransaction({
+          ntxId: tx.nid,
+          txId: tx.id
+        })
+      }
+    })
+
     insight.subscribeBlock(async (block) => {
       console.log('found block info', block)
       try {

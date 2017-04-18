@@ -11,6 +11,12 @@ const BITCOIN_BLOCK = 'bitcoinBlock'
 const BITCOIN_TRANSACTION = 'bitcoinTransaction'
 const BLOCK_READY = 'blockReady'
 const SEND_BLOCK = 'sendBlock'
+const NORMALIZED_TX = 'normalizedTx'
+
+export interface NormalizedData {
+  txId: string
+  ntxId: string
+}
 
 const amqpConnect = bluebird.promisify(amqp.connect, amqp) as any
 
@@ -45,6 +51,10 @@ export class Queue {
     return this.consume(BLOCK_READY) as Rx.Observable<Block>
   }
 
+  normalizedTransaction(): Rx.Observable<NormalizedData> {
+    return this.consume(NORMALIZED_TX) as Rx.Observable<NormalizedData>
+  }
+
   announceBitcoinBlock(bitcoinBlock: BitcoinBlockMetadata) {
     return this.publish(BITCOIN_BLOCK, bitcoinBlock)
   }
@@ -59,6 +69,10 @@ export class Queue {
 
   announceBitcoinTransaction(poetTx: BlockMetadata) {
     return this.publish(BITCOIN_TRANSACTION, poetTx)
+  }
+
+  announceNormalizedTransaction(normalizedData: NormalizedData) {
+    return this.publish(NORMALIZED_TX, normalizedData)
   }
 
   private consume(target: string) {

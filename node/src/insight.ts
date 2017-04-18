@@ -23,16 +23,30 @@ export interface BlockInfoListener {
   (block: BitcoinBlockMetadata): any
 }
 
+export interface BitcoinBlockListener {
+  (block: BitcoinBlock): any
+}
+
+export interface BitcoinBlock {
+  hash: string
+  transactions: any[]
+  header: {
+    time: number
+  }
+}
+
 export default class PoetInsightListener {
 
   insightUrl: string
   socket: SocketIOClient.Socket
   txListeners: TxInfoListener[]
-  bitcoinBlockListeners: BlockInfoListener[]
+  poetBlockListeners: BlockInfoListener[]
+  bitcoinBlockListeners: BitcoinBlockListener[]
 
   constructor(insightUrl: string) {
     this.insightUrl = insightUrl
     this.txListeners = []
+    this.poetBlockListeners = []
     this.bitcoinBlockListeners = []
 
     this.socket = socketIO(this.insightUrl)
@@ -68,13 +82,14 @@ export default class PoetInsightListener {
     try {
       const height = await this.fetchHeight(blockHash)
       const bitcoreBlock = await this.fetchBitcoreBlock(blockHash)
-      return this.scanBitcoreBlock(bitcoreBlock, height)
+      this.scanBitcoreBlock(bitcoreBlock, height)
+      this.notifyBitcoinBlock(bitcoreBlock)
     } catch (error) {
       console.log('Error handling block', error, error.stack)
     }
   }
 
-  scanBitcoreBlock(block: any, height: number) {
+  scanBitcoreBlock(block: BitcoinBlock, height: number) {
     const txs = block.transactions.map((tx: any, index: number): BlockMetadata | null => {
       const poetData = this.doesBitcoreTxContainPoetInfo(tx)
       if (!poetData) {
@@ -142,8 +157,12 @@ export default class PoetInsightListener {
       .then(turnToBitcoreTx)
   }
 
-  notifyPoetData(newState: BitcoinBlockMetadata) {
+  notifyBitcoinBlock(newState: BitcoinBlock) {
     this.bitcoinBlockListeners.forEach(listener => listener(newState))
+  }
+
+  notifyPoetData(newState: BitcoinBlockMetadata) {
+    this.poetBlockListeners.forEach(listener => listener(newState))
   }
 
   subscribeTx(listener: TxInfoListener) {
@@ -151,6 +170,10 @@ export default class PoetInsightListener {
   }
 
   subscribeBlock(listener: BlockInfoListener) {
+    this.poetBlockListeners.push(listener)
+  }
+
+  subscribeBitcoinBlock(listener: BitcoinBlockListener) {
     this.bitcoinBlockListeners.push(listener)
   }
 }

@@ -21,6 +21,15 @@ export interface SignSubmitRequestedAction extends Action {
   }
 }
 
+export function hintNormalized(txid: string, ntxid: string) {
+  return fetch(Configuration.api.explorer + '/normalized/hint', {
+    method: 'POST',
+    body: JSON.stringify({ txId: txid, ntxId: ntxid })
+  }).catch((error: any) => {
+    console.log(error)
+  })
+}
+
 export function signTransaction() {
   return function*() {
     yield takeEvery(Actions.Transactions.SignSubmitRequested, signTxCancellable);
@@ -61,11 +70,13 @@ function* signTx(action: SignSubmitRequestedAction) {
 
   applyHexSignaturesInOrder(tx, response.signatures, publicKey);
   const txId = yield call(submitTx, tx.toString());
+  yield call(hintNormalized, tx.id, tx.nid);
 
   yield put({
     type: action.payload.resultAction,
     payload: action.payload.resultPayload,
     transaction: txId,
+    normalizedId: tx.nid,
     outputIndex: 0 // TODO: Sort inputs according to BIP69 and change this.
   });
 

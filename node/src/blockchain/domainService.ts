@@ -16,6 +16,7 @@ import { EventService } from './eventService';
 import Event from './orm/events/events';
 import { EventType } from './orm/events/events';
 import NotificationRead from './orm/events/notification';
+import Normalized from './orm/bitcoin/normalized';
 
 export default class DomainService extends ClaimService {
 
@@ -213,6 +214,10 @@ export default class DomainService extends ClaimService {
     return this.db.getRepository(NotificationRead)
   }
 
+  get normalizedRepository(): Repository<Normalized> {
+    return this.db.getRepository(Normalized)
+  }
+
   storeWork(work: {id: string; author?: Profile, displayName?: string}) {
     return this.workRepository.persist(this.workRepository.create(work))
   }
@@ -261,6 +266,18 @@ export default class DomainService extends ClaimService {
     } catch (error) {
       console.log('Could not save event', error)
     }
+  }
+
+  async getTxId(ntxId: string): Promise<string> {
+    const confirmed = await this.normalizedRepository.findOne({ ntxId, confirmed: true })
+    if (confirmed) {
+      return confirmed.txId
+    }
+    const unconfirmed = await this.normalizedRepository.findOne({ ntxId })
+    if (unconfirmed) {
+      return unconfirmed.txId
+    }
+    return ''
   }
 
   async getOrCreateProfile(id: string) {

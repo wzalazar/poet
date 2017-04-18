@@ -78,6 +78,8 @@ interface ISighash {
 interface Transaction {
   inputs: Input[]
   outputs: Output[]
+  id: string
+  nid: string
   from(utxos: UTXO[]): Transaction
   to(address: Address, amount: number): Transaction
   to(address: string, amount: number): Transaction

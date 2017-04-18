@@ -20,6 +20,18 @@ async function startListening() {
     })
   }
 
+  queue.normalizedTransaction().subscribeOnNext(async (normalizedData) => {
+    console.log('Processing', normalizedData)
+    try {
+      const result = await blockchain.normalizedRepository.persist(blockchain.normalizedRepository.create({
+        ...normalizedData,
+        confirmed: true
+      }))
+    } catch (e) {
+      console.log('Could not process', normalizedData, e)
+    }
+  })
+
   setupWorker('blockRetry', async (block: Block) => {
     return await blockchain.blockSeen(block)
   })

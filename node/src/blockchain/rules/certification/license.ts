@@ -29,6 +29,10 @@ async function fetchTx(txId: string): Promise<any> {
     })
 }
 
+function resolveNormalizedId(service: BlockchainService, ntxid: string): Promise<string> {
+  return service.getTxId(ntxid)
+}
+
 interface Validation {
   ownerOnRecord: string
   referenceOffering: Offering
@@ -81,7 +85,12 @@ export async function validateBitcoinPayment(service: BlockchainService, claim: 
   if (proofType === 'Bitcoin Transaction') {
 
     try {
-      const tx = await fetchTx(proofValue.txId)
+      let txId = await resolveNormalizedId(service, proofValue.ntxId)
+      if (!txId) {
+        console.log('Txid resolution failed', proofValue.ntxId, proofValue.txId)
+        txId = proofValue.txId
+      }
+      const tx = await fetchTx(txId)
       if (!tx) {
         console.log('no tx found')
         return false
@@ -122,7 +131,7 @@ export async function validateBitcoinPaymentForLicense(service: BlockchainServic
 
   const holderId = claim.attributes[Holder]
   const holder = holderId
-    && await service.profileRepository.findOneById(holderId)
+    && await service.getOrCreateProfile(holderId)
 
   const owner = await service.getOrCreateProfile(ownerOnRecord)
   await service.saveEvent(claim.id, EventType.LICENSE_BOUGHT, work, holder, undefined, owner)
@@ -163,17 +172,28 @@ export async function validateSelfOwnedLicense(service: BlockchainService, claim
   const owner = await service.getOrCreateProfile(ownerOnRecord)
   await service.saveEvent(claim.id, EventType.SELF_LICENSE, work, owner)
 
-  const license = await service.licenseRepository.persist(service.licenseRepository.create({
-    id: claim.id,
-    reference: work,
-    licenseHolder: owner,
-    proofType: LicenseOwner,
-    licenseEmitter: owner
-  }))
-  work.publishers = work.publishers || []
-  work.publishers.push(owner)
-  await service.workRepository.persist(work)
-  return license
+  try {
+    const license = await service.licenseRepository.persist(service.licenseRepository.create({
+      id: claim.id,
+      reference: work,
+      licenseHolder: owner,
+      proofType: LicenseOwner,
+      licenseEmitter: owner
+    }))
+    work.publishers = work.publishers || []
+    work.publishers.push(owner)
+    await service.workRepository.persist(work)
+    return license
+  } catch (e) {
+    console.log('could not save', {
+      id: claim.id,
+      reference: work,
+      licenseHolder: owner,
+      proofType: LicenseOwner,
+      licenseEmitter: owner
+    })
+  }
+
 }
 
 export default {
