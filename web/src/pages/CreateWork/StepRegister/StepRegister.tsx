@@ -1,7 +1,6 @@
 import * as React from 'react';
 const bitcore = require('bitcore-lib');
 
-import { KeyValue } from '../../../common';
 import { wordCount } from '../../../helpers/StringHelper';
 import { MediaType } from './MediaType';
 import { Attributes } from './Attributes';
@@ -13,30 +12,27 @@ import './StepRegister.scss';
 export interface StepRegisterData {
   readonly articleType: string;
   readonly mediaType: string;
-  readonly attributes: ReadonlyArray<KeyValue>;
   readonly content: string;
+  readonly attributes: ReadonlyArray<AttributeData>;
 }
 
-export interface StepRegisterProps {
-  readonly onSubmit: (stepRegisterData: StepRegisterData) => void;
+export interface StepRegisterProps extends StepRegisterData {
+  readonly onSubmit: () => void;
+  readonly onMediaTypeChange: (_: string) => void;
+  readonly onArticleTypeChange: (_: string) => void;
+  readonly onContentChange: (_: string) => void;
+  readonly onAttributesChange: (_: ReadonlyArray<AttributeData>) => void;
 }
 
 interface StepRegisterState {
-  readonly mediaType?: string;
-  readonly articleType?: string;
-  readonly content?: string;
-  readonly attributes?: ReadonlyArray<AttributeData>;
   readonly displayErrors?: boolean;
 }
 
 export class StepRegister extends React.Component<StepRegisterProps, StepRegisterState> {
+
   constructor() {
     super(...arguments);
     this.state = {
-      mediaType: 'article',
-      articleType: 'news-article',
-      content: '',
-      attributes: ['name', 'author', 'dateCreated', 'datePublished'].map(keyName => ({keyName, value: '', keyNameReadOnly: true})),
       displayErrors: false
     }
   }
@@ -45,40 +41,44 @@ export class StepRegister extends React.Component<StepRegisterProps, StepRegiste
     return (
       <section className="step-1-register">
         <MediaType
-          mediaType={this.state.mediaType}
-          articleType={this.state.articleType}
-          onMediaTypeSelected={mediaType => this.setState({ mediaType })}
-          onArticleTypeSelected={articleType => this.setState({ articleType })}
+          mediaType={this.props.mediaType}
+          articleType={this.props.articleType}
+          onMediaTypeSelected={this.props.onMediaTypeChange}
+          onArticleTypeSelected={this.props.onArticleTypeChange}
         />
         <Attributes
-          attributes={this.state.attributes}
-          onChange={attributes => this.setState({ attributes })}
+          attributes={this.props.attributes}
+          onChange={this.props.onAttributesChange}
           displayErrors={this.state.displayErrors}/>
         <Content
-          content={this.state.content}
-          onChange={this.onContentChange.bind(this)}
-          onFileNameChange={this.onContentFileNameChange.bind(this)} />
-        <button
-          className="button-primary"
-          onClick={this.submit.bind(this)}
-          >
-          Next
-        </button>
+          content={this.props.content}
+          onChange={this.onContentChange}
+          onFileNameChange={this.onContentFileNameChange} />
+        <button className="button-primary" onClick={this.onSubmit}>Next</button>
       </section>
     );
   }
 
-  private onContentChange(content: string) {
-    this.setState({ content });
+  private onContentChange = (content: string) => {
+    this.props.onContentChange(content)
     this.contentToAttributes(content);
   }
 
-  private onContentFileNameChange(fileName: string) {
+  private onContentFileNameChange = (fileName: string) => {
     this.contentToAttributes(null, fileName);
   }
 
+  private onSubmit = () => {
+    if (this.gotInvalidFields()) {
+      this.setState({ displayErrors: true });
+      return;
+    }
+
+    this.props.onSubmit();
+  }
+
   private contentToAttributes(content?: string, fileName?: string) {
-    const attributes = [...this.state.attributes];
+    const attributes = [...this.props.attributes];
 
     const attributeByKey = (keyName: string) => attributes.find(attribute => attribute.keyName === keyName);
     const updateAttribute = (keyName: string, value: string) => attributeByKey(keyName).value = value;
@@ -96,24 +96,11 @@ export class StepRegister extends React.Component<StepRegisterProps, StepRegiste
       upsertAttribute('dateCreated', '' + new Date().getTime());
     }
 
-    this.setState({ attributes })
-  }
-
-  private submit(): void {
-    if (this.gotInvalidFields()) {
-      this.setState({ displayErrors: true });
-      return;
-    }
-
-    this.props.onSubmit({
-      attributes: this.state.attributes.map(attribute => ({key: attribute.keyName, value: attribute.value})),
-      mediaType: this.state.mediaType,
-      articleType: this.state.mediaType === 'article' && this.state.articleType,
-      content: this.state.content
-    });
+    this.props.onAttributesChange(attributes)
   }
 
   private gotInvalidFields() {
-    return this.state.attributes.some(attribute => !attribute.optional && !attribute.value);
+    return this.props.attributes.some(attribute => !attribute.optional && !attribute.value);
   }
+
 }
