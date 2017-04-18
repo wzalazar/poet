@@ -40,7 +40,7 @@
     "@types/webtorrent": "0.0.29",
     "amqplib": "^0.5.1",
     "bitcore-explorers": "eordano/bitcore-explorers",
-    "bitcore-lib": "eordano/bitcore-lib",
+    "bitcore-lib": "eordano/bitcore-lib#169e922",
     "bufferutil": "1.2.x",
     "bluebird": "^3.4.6",
     "body-parser": "^1.17.1",
