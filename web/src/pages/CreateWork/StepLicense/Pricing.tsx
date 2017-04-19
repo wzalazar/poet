@@ -47,12 +47,15 @@ export class Pricing extends React.Component<PricingProps, PricingState> {
           <div className="col-sm-8">
             <div className="input-group">
               <input
-                onChange={this.onAmountChange}
                 type="number"
-                className={classNames('form-control', this.isValueInvalid() && 'invalid')}
-                onBlur={this.onBlur}
+                min="0"
+                step={.1}
                 ref={valueInput => this.valueInput = valueInput}
-                min="0"/>
+                className={classNames('form-control', this.isValueInvalid() && 'invalid')}
+                value={this.props.pricing.price.amount}
+                onChange={this.onAmountChange}
+                onBlur={this.onBlur}
+                />
               <span className="input-group-addon">{ this.props.pricing.price.currency }</span>
             </div>
           </div>

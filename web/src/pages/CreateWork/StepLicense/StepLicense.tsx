@@ -9,16 +9,18 @@ import { LicenseTypeComponent } from './LicenseType';
 import './StepLicense.scss'
 
 export interface StepLicenseData {
-  readonly licenseType?: Common.LicenseType;
-  readonly pricing?: Common.Pricing;
+  readonly licenseType: Common.LicenseType;
+  readonly pricing: Common.Pricing;
 }
 
-export interface StepLicenseProps {
-  readonly onSubmit: (stepRegisterData: StepLicenseData) => void;
+export interface StepLicenseProps extends StepLicenseData {
+  readonly onSubmit: () => void;
   readonly onSkip: () => void;
+  readonly onLicenseTypeChange: (_: Common.LicenseType) => void;
+  readonly onPricingChange: (_: Common.Pricing) => void;
 }
 
-export interface StepLicenseState extends StepLicenseData {
+export interface StepLicenseState {
   readonly displayErrors?: boolean;
 }
 
@@ -26,17 +28,10 @@ export class StepLicense extends React.Component<StepLicenseProps, StepLicenseSt
   private pricingInput: Pricing;
 
   constructor() {
-    super(...arguments);
+    super(...arguments)
     this.state = {
-      licenseType: Common.LicenseTypes[0],
-      pricing: {
-        price: {
-          amount: 0,
-          currency: 'BTC'
-        },
-        frequency: 'oneTime'
-      }
-    };
+      displayErrors: false
+    }
   }
 
   render() {
@@ -46,11 +41,11 @@ export class StepLicense extends React.Component<StepLicenseProps, StepLicenseSt
           <div className="col-sm-6">
             <h2>License</h2>
             <LicenseTypeComponent
-              onSelectionChange={licenseType => this.setState({ licenseType })}
-              selectedLicenseTypeId={this.state.licenseType.id} />
+              onSelectionChange={this.props.onLicenseTypeChange}
+              selectedLicenseTypeId={this.props.licenseType.id} />
             <Pricing
-              pricing={this.state.pricing}
-              onChange={this.onPricingChange}
+              pricing={this.props.pricing}
+              onChange={this.props.onPricingChange}
               displayErrors={this.state.displayErrors}
               ref={pricingInput => this.pricingInput = pricingInput}
             />
@@ -59,29 +54,20 @@ export class StepLicense extends React.Component<StepLicenseProps, StepLicenseSt
               <button className="button-primary" onClick={this.submit}>Next</button>
             </nav>
           </div>
-          <LicensePreview licenseType={this.state.licenseType} className="col-sm-6"/>
+          <LicensePreview licenseType={this.props.licenseType} className="col-sm-6"/>
         </div>
       </section>
     )
   }
 
-  private onPricingChange = (pricing: Common.Pricing) => {
-    this.setState({
-      pricing
-    })
-  };
-
   private submit: () => void = () => {
-    if (!this.state.pricing || !this.state.pricing.price || !this.state.pricing.price.amount || this.state.pricing.price.amount < 0) {
+    if (!this.props.pricing || !this.props.pricing.price || !this.props.pricing.price.amount || this.props.pricing.price.amount < 0) {
       this.setState({ displayErrors: true });
       this.pricingInput && this.pricingInput.focus();
       return;
     }
 
-    this.props.onSubmit({
-      licenseType: this.state.licenseType,
-      pricing: this.state.pricing
-    });
+    this.props.onSubmit();
   };
 
 }

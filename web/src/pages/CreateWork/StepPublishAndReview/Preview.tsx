@@ -94,7 +94,7 @@ export class Preview extends React.Component<PreviewProps, undefined> {
     );
   }
 
-  private renderLicense = () => {{}
+  private renderLicense = () => {
     if (!this.props.licenseType) {
       return <section><h5>Unlicensed</h5></section>
     } else {

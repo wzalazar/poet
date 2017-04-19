@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import * as Common from '../../common';
 import { Configuration } from '../../configuration'
 import { publicKeyToAddress } from '../../bitcoin/addressHelpers'
 import { Work } from "../../Interfaces"
@@ -22,9 +23,9 @@ export interface CreateWorkActions {
   readonly createWorkRequested: (claims: any[]) => any // Actions.claimsSubmitRequested
 }
 
-interface CreateWorkLayoutState extends Partial<StepRegisterData> {
+interface CreateWorkLayoutState extends Partial<StepRegisterData>, Partial<StepLicenseData> {
   readonly selectedStep?: number;
-  readonly licenseData?: StepLicenseData;
+  readonly hasLicense?: boolean;
 }
 
 export class CreateWorkLayout extends React.Component<CreateWorkProps & CreateWorkActions, CreateWorkLayoutState> {
@@ -38,7 +39,17 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps & CreateWo
       mediaType: 'article',
       articleType: 'news-article',
       content: '',
-      attributes: [...this.defaultAttributes]
+      attributes: [...this.defaultAttributes],
+
+      hasLicense: false,
+      licenseType: Common.LicenseTypes[0],
+      pricing: {
+        price: {
+          amount: 0,
+          currency: 'BTC'
+        },
+        frequency: 'oneTime'
+      }
     }
   }
 
@@ -64,7 +75,14 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps & CreateWo
             attributes={this.state.attributes}
             onAttributesChange={attributes => this.setState({ attributes })}
           /> }
-        { this.state.selectedStep === 1 && <StepLicense onSubmit={this.onStepLicenseSubmit} onSkip={this.onStepLicenseSkip} /> }
+        { this.state.selectedStep === 1 &&
+          <StepLicense
+            onSubmit={this.onStepLicenseSubmit}
+            onSkip={this.onStepLicenseSkip}
+            licenseType={this.state.licenseType}
+            onLicenseTypeChange={licenseType => this.setState({ licenseType })}
+            pricing={this.state.pricing}
+            onPricingChange={pricing => this.setState({ pricing })} /> }
         { this.state.selectedStep === 2 &&
           <StepPublishAndReview
             onSubmit={this.onStepPublishAndReviewSubmit}
@@ -72,8 +90,8 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps & CreateWo
             contentHash={this.getAttributeValue('contentHash')}
             wordCount={this.getAttributeValue('wordCount')}
             authorName={this.getAttributeValue('author')}
-            price={this.state.licenseData && this.state.licenseData.pricing.price}
-            licenseType={this.state.licenseData && this.state.licenseData.licenseType}
+            price={this.state.hasLicense && this.state.pricing.price}
+            licenseType={this.state.hasLicense && this.state.licenseType}
             /> }
       </section>
 
@@ -102,17 +120,20 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps & CreateWo
     window.scrollTo(0, 0)
   }
 
-  private onStepLicenseSubmit = (licenseData: StepLicenseData) => {
+  private onStepLicenseSubmit = () => {
     this.setState({
       selectedStep: 2,
-      licenseData
+      hasLicense: true
     })
 
     window.scrollTo(0, 0)
   }
 
   private onStepLicenseSkip: (() => void) = () => {
-    this.setState({ selectedStep: 2 })
+    this.setState({
+      selectedStep: 2,
+      hasLicense: false
+    })
     window.scrollTo(0, 0)
   }
 
@@ -127,17 +148,17 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps & CreateWo
         { key: 'dateSubmitted', value: '' + new Date().getTime() }
       ]
     }]
-    if (this.state.licenseData) {
+    if (this.state.hasLicense) {
       request.push({
         type: 'Offering',
         attributes: {
-          'licenseType': this.state.licenseData.licenseType.id,
-          'licenseDescription': this.state.licenseData.licenseType.description,
-          'pricingFrequency': this.state.licenseData.pricing.frequency,
-          'pricingPriceAmount': '' + this.state.licenseData.pricing.price.amount,
-          'pricingPriceCurrency': this.state.licenseData.pricing.price.currency,
+          'licenseType': this.state.licenseType.id,
+          'licenseDescription': this.state.licenseType.description,
+          'pricingFrequency': this.state.pricing.frequency,
+          'pricingPriceAmount': '' + this.state.pricing.price.amount,
+          'pricingPriceCurrency': this.state.pricing.price.currency,
           'paymentAddress': publicKeyToAddress(this.props.userPublicKey),
-          'amountInSatoshis': (this.state.licenseData.pricing.price.amount * 1e8).toFixed(0)
+          'amountInSatoshis': (this.state.pricing.price.amount * 1e8).toFixed(0)
         } as any
       })
     }
@@ -150,34 +171,55 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps & CreateWo
   }
 
   private loadWork() {
-    const objectToKeyNameValue = (_: Object) => Object.entries(_).map(([keyName, value]) => ({keyName, value}))
+    const objectToKeyNameValue = (_: Object): ReadonlyArray<{readonly keyName: string, readonly value: any}> => Object.entries(_).map(([keyName, value]) => ({keyName, value}))
 
     /**
      * Attributes come from the API different to how we send them:
      * They are an object instead of a Key-Value array, don't have the optional and read-only fields, and aren't necessarily sorted correctly.
      * mergeDefaultAttributes takes the attributes object already converted to an array and ensures .
      */
-    const mergeDefaultAttributes = (attributes: ReadonlyArray<AttributeData>) => {
+    const mergeDefaultAttributes = (attributes: ReadonlyArray<AttributeData>): ReadonlyArray<AttributeData> => {
       const defaultAttributes = this.defaultAttributes.map(defaultAttribute => {
         const attribute = attributes.find(_ => _.keyName === defaultAttribute.keyName)
         if (!attribute && !defaultAttribute.optional)
-          console.warn(`The work we're editing is missing the ${defaultAttribute.keyName} attribute, which is mandatory.`)
+          console.warn(`The work we're editing is missing the %c${defaultAttribute.keyName}%c attribute, which is mandatory.`, 'font-style: italic', 'font-style: regular')
         return { ...defaultAttribute, ...(attribute || {})}
       })
 
       const customAttributes = attributes
         .filter(attribute => !this.defaultAttributes.some(defaultAttribute => defaultAttribute.keyName === attribute.keyName))
         .filter(attribute => !['articleType', 'mediaType', 'content', 'dateSubmitted'].includes(attribute.keyName))
+        .map(_ => ({..._, optional: true}))
 
       return [...defaultAttributes, ...customAttributes]
     }
 
     fetch(Configuration.api.explorer + '/works/' + this.props.workId).then(_ => _.json()).then((_: any) => {
+      const license = _.offerings && _.offerings[0] && _.offerings[0].attributes
+      const licenseType = license && Common.LicenseTypes.find(_ => _.id === license.licenseType)
+
+      if (license && !licenseType)
+        console.warn(
+          `The work we're editing has an invalid license type: '${license.licenseType}'.` +
+          `Valid license types are: ${Common.LicenseTypes.map(_ => `'${_.id}'`)}. ` +
+          `Defaulting to '${Common.LicenseTypes[0].id}'`)
+
       this.setState({
         mediaType: _.attributes.mediaType,
         articleType: _.attributes.articleType,
         content: _.attributes.content,
-        attributes: mergeDefaultAttributes(objectToKeyNameValue(_.attributes))
+        attributes: mergeDefaultAttributes(objectToKeyNameValue(_.attributes)),
+
+        hasLicense: license,
+        licenseType: licenseType || Common.LicenseTypes[0],
+        pricing: {
+          price: {
+            amount: license && license.pricingPriceAmount,
+            currency: license && license.pricingPriceCurrency
+          },
+          frequency: license && license.pricingFrequency
+        }
+
       })
     })
   }
