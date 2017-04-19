@@ -7,6 +7,7 @@ import Claim from "./orm/claim";
 import BlockInfo from "./orm/blockInfo";
 import ClaimInfo from "./orm/claimInfo";
 import Block from "./orm/block";
+import ClaimLink from './orm/claimLink';
 
 export class ClaimService {
 
@@ -285,6 +286,10 @@ export class ClaimService {
 
   get claimRepository(): Repository<Claim> {
     return this.db.getRepository(Claim)
+  }
+
+  get linkRepository(): Repository<ClaimLink> {
+    return this.db.getRepository(ClaimLink)
   }
 
   get claimInfoRepository(): Repository<ClaimInfo> {

@@ -5,7 +5,7 @@ import { Index } from 'typeorm/decorator/Index';
 export default class Normalized {
 
   @PrimaryGeneratedColumn()
-  id: string
+  id: number
 
   @Column({ nullable: false })
   txId: string

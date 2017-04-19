@@ -289,4 +289,9 @@ export default class DomainService extends ClaimService {
       this.profileRepository.create({ id })
     )
   }
+
+  async linkClaims(from: string, to: string) {
+    return await this.linkRepository.persist(this.linkRepository.create({ from, to }))
+
+  }
 }

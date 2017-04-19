@@ -1,5 +1,12 @@
-import {ClaimType, CERTIFICATE, REVOCATION} from "../../../claim";
-import {Hook, HookDescription} from "../hook";
+import { CERTIFICATE, ClaimType, LICENSE, OFFERING, REVOCATION, TITLE, WORK } from '../../../claim'
+import { HookDescription } from '../hook'
+import { default as certificateRule } from './certificate'
+import { default as revocationRule } from './revocation'
+
+import { default as licenseRule } from './license'
+import { default as offeringRule } from './offering'
+import { default as titleRule } from './title'
+import { default as workRule } from './work'
 
 const rules: { [key in ClaimType]: HookDescription[] } = {
   'Work'        : [] as HookDescription[],
@@ -11,11 +18,12 @@ const rules: { [key in ClaimType]: HookDescription[] } = {
   'Revocation'  : [] as HookDescription[],
 }
 
-import { default as certificateRule } from './certificate'
-import { default as revocationRule } from './revocation'
-
 rules[CERTIFICATE].push(certificateRule)
 rules[REVOCATION].push(revocationRule)
+rules[LICENSE].push(licenseRule)
+rules[OFFERING].push(offeringRule)
+rules[TITLE].push(titleRule)
+rules[WORK].push(workRule)
 
 export default rules
 
