@@ -59,7 +59,7 @@ export const Authentication = new class {
     }))], false);
 
   public getRequestIdForMultipleSigning(payload: string[], bitcoin: boolean, notifyPubkey?: string): Promise<string> {
-    return this.getRequestIdForMultipleSigningBuffers(payload.map(payload => new Buffer(payload)), bitcoin)
+    return this.getRequestIdForMultipleSigningBuffers(payload.map(payload => new Buffer(payload)), bitcoin, notifyPubkey)
   }
 
   public getRequestIdForMultipleSigningBuffers(payload: Buffer[], bitcoin: boolean, notifyPubkey?: string): Promise<string> {
