@@ -122,17 +122,15 @@ function createServer (serverKey: string, port: number) {
     })
   })
 
-  function buildNotification(device: Device, title: string, body: string) {
+  function buildNotification(device: Device, requestId: string, title: string = null, body: string = null) {
     return {
       to: device.registrationId,
-      // data: { //some data object (optional)
-      //     url: 'news',
-      //     foo:'fooooooooooooo',
-      //     bar:'bar bar bar'
-      // },
+      data: {
+        request_id: requestId,
+      },
       priority: 'high',
       content_available: true,
-      notification: { //notification object
+      notification: title && body && { //notification object
         title: title, body: body, sound : "default", badge: "1"
       }
     }
@@ -178,8 +176,7 @@ function createServer (serverKey: string, port: number) {
 
       fcmCli.send(buildNotification(
         device,
-        "Hi stranger!",
-        "Welcome to my house!"),
+        notification.requestId),
         function(err: any) {
           callbackLog('sendOK', err, undefined)
         }
