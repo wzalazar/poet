@@ -3,14 +3,24 @@ import Bluebird = require("bluebird")
 import PoetInsightListener from '../insight'
 import { Queue } from '../queue'
 
-const minimumHeight = 1088160
 
 async function startup() {
-  let insight
+  let insight: PoetInsightListener
 
   const queue = new Queue()
 
   console.log('Requesting blockchain info from insight...')
+
+  async function scanBlock(height: number) {
+    let block: any
+    try {
+      block = await insight.fetchBitcoreBlockByHeight(height)
+      insight.scanBitcoreBlock(block, height)
+    } catch (e) {
+      console.log(`Error trying to fetch block height ${height}`)
+    }
+  }
+
   try {
     insight = new PoetInsightListener('https://test-insight.bitpay.com')
 
@@ -22,6 +32,11 @@ async function startup() {
           txId: tx.id
         })
       }
+    })
+
+    queue.bitcoinBlockProcessed().subscribeOnNext(async (latest: number) => {
+      console.log('Scanning block', latest + 1)
+      scanBlock(latest + 1)
     })
 
     insight.subscribeBlock(async (block) => {

@@ -20,6 +20,7 @@ export interface BlockMetadata {
 export interface BitcoinBlockMetadata {
   blockHeight: number
   blockHash: string
+  parentHash: string
   timestamp: number
   poet: BlockMetadata[]
 }

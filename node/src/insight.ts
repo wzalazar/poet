@@ -32,6 +32,7 @@ export interface BitcoinBlock {
   transactions: any[]
   header: {
     time: number
+    prevHash: string
   }
 }
 
@@ -103,6 +104,7 @@ export default class PoetInsightListener {
     }).filter(notNull)
     const blockInfo: BitcoinBlockMetadata = {
       blockHeight : height,
+      parentHash  : bitcore.util.buffer.reverse(block.header.prevHash).toString('hex'),
       blockHash   : block.hash,
       timestamp   : block.header.time,
       poet        : txs
@@ -134,6 +136,10 @@ export default class PoetInsightListener {
     return this.fetchTxByHash(tx.txid).then(this.doesBitcoreTxContainPoetInfo)
   }
 
+  fetchBitcoreBlockByHeight(height: number) {
+    return this.fetchBlockHash(height).then(hash => this.fetchBitcoreBlock(hash))
+  }
+
   fetchBitcoreBlock(hash: string) {
     return fetch(`${this.insightUrl}/api/rawblock/${hash}`)
       .then(parseJson)
@@ -142,10 +148,16 @@ export default class PoetInsightListener {
       .then(turnToBitcoreBlock)
   }
 
-  fetchHeight(hash: string) {
+  fetchBlockHash(height: number): Promise<string> {
+    return fetch(`${this.insightUrl}/api/block-index/${height}`)
+      .then(parseJson)
+      .then(pluckMember('blockHash'))
+  }
+
+  fetchHeight(hash: string): Promise<number> {
     return fetch(`${this.insightUrl}/api/block/${hash}`)
       .then(parseJson)
-      .then(pluckMember('height'))
+      .then(pluckMember('hash'))
   }
 
   fetchTxByHash(txHash: string) {

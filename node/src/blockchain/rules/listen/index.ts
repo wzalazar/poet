@@ -26,4 +26,3 @@ rules[TITLE].push(titleRule)
 rules[WORK].push(workRule)
 
 export default rules
-

@@ -8,6 +8,7 @@ import { Block } from './claim'
 import { delay } from './common'
 
 const BITCOIN_BLOCK = 'bitcoinBlock'
+const BITCOIN_BLOCK_PROCESSED = 'bitcoinBlock processed'
 const BITCOIN_TRANSACTION = 'bitcoinTransaction'
 const BLOCK_READY = 'blockReady'
 const SEND_BLOCK = 'sendBlock'
@@ -37,6 +38,10 @@ export async function connect() {
 export class Queue {
   bitcoinBlock(): Rx.Observable<BitcoinBlockMetadata> {
     return this.consume(BITCOIN_BLOCK) as Rx.Observable<BitcoinBlockMetadata>
+  }
+
+  bitcoinBlockProcessed(): Rx.Observable<number> {
+    return this.consume(BITCOIN_BLOCK_PROCESSED) as Rx.Observable<number>
   }
 
   transactionHeard(): Rx.Observable<BlockMetadata> {
@@ -73,6 +78,10 @@ export class Queue {
 
   announceNormalizedTransaction(normalizedData: NormalizedData) {
     return this.publish(NORMALIZED_TX, normalizedData)
+  }
+
+  announceBitcoinBlockProcessed(blockHeight: number) {
+    return this.publish(BITCOIN_BLOCK_PROCESSED, blockHeight)
   }
 
   private consume(target: string) {

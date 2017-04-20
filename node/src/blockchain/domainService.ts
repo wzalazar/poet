@@ -11,12 +11,15 @@ import Attribute from "./orm/attribute";
 import {ClaimService} from "./claimService";
 import CertificationService from "./certificatonService";
 import {default as listenRules} from "./rules/listen";
-import {BlockMetadata} from "../events";
+import { BitcoinBlockMetadata, BlockMetadata } from "../events";
 import { EventService } from './eventService';
 import Event from './orm/events/events';
 import { EventType } from './orm/events/events';
 import NotificationRead from './orm/events/notification';
 import Normalized from './orm/bitcoin/normalized';
+import BlockProcessed from './orm/bitcoin/blockProcessed';
+
+const minimumHeight = 1118188
 
 export default class DomainService extends ClaimService {
 
@@ -218,6 +221,10 @@ export default class DomainService extends ClaimService {
     return this.db.getRepository(Normalized)
   }
 
+  get blockProcessedRepository(): Repository<BlockProcessed> {
+    return this.db.getRepository(BlockProcessed)
+  }
+
   storeWork(work: {id: string; author?: Profile, displayName?: string}) {
     return this.workRepository.persist(this.workRepository.create(work))
   }
@@ -288,6 +295,41 @@ export default class DomainService extends ClaimService {
     return await this.profileRepository.persist(
       this.profileRepository.create({ id })
     )
+  }
+
+  async getLastProcessedBlock(): Promise<number> {
+    const allBlocks = await this.blockProcessedRepository.createQueryBuilder('blocks')
+      .orderBy('height', 'ASC')
+      .getMany()
+    if (!allBlocks || !allBlocks.length) {
+      return minimumHeight
+    }
+    let lastBlock = allBlocks[0].height - 1
+    for (let block of allBlocks) {
+      if (block.height == lastBlock) {
+        continue;
+      }
+      if (block.height == lastBlock + 1) {
+        lastBlock = lastBlock + 1
+      } else {
+        return lastBlock
+      }
+    }
+    console.log('Weird result')
+    return minimumHeight
+  }
+
+  async storeBlockProcessed(block: BitcoinBlockMetadata) {
+    const existent = await this.blockProcessedRepository.findOne({ hash: block.blockHash })
+    if (!existent) {
+      await this.blockProcessedRepository.persist(this.blockProcessedRepository.create({
+        hash: block.blockHash,
+        parentHash: block.parentHash,
+        height: block.blockHeight,
+        transactionCount: block.poet.length,
+        timeProcessed: new Date().getTime(),
+      }))
+    }
   }
 
   async linkClaims(from: string, to: string) {

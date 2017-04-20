@@ -82,6 +82,7 @@ export class Queue {
             throw error
         }
     }
+
 }
 
 const queue = new Queue()

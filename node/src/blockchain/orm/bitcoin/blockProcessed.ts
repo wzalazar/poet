@@ -25,6 +25,6 @@ export default class BlockProcessed {
   @Column({ nullable: true })
   errorMessage: string
 
-  @Column({ nullable: false, default: false })
+  @Column({ nullable: true, default: false })
   orphaned: boolean
 }

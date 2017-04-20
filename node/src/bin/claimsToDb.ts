@@ -13,6 +13,11 @@ async function startListening() {
   try {
     await blockchain.start(() => getConnection('claimsToDb'), getBuilder)
 
+    console.log('Retrieving last block processed...')
+    const latest = await blockchain.getLastProcessedBlock()
+    console.log('Latest block was', latest, 'initializing scan')
+    queue.announceBitcoinBlockProcessed(latest)
+
     queue.blockDownloaded().subscribeOnNext(async (block: Block) => {
       console.log('Storing block', block.id)
       try {
@@ -50,6 +55,9 @@ async function startListening() {
           queue.dispatchWork('confirmRetry', poetTx)
         }
       }
+
+      blockchain.storeBlockProcessed(block)
+      queue.announceBitcoinBlockProcessed(block.blockHeight)
     })
   } catch (error) {
     console.log(error, error.stack)
