@@ -136,11 +136,11 @@ export default class PoetInsightListener {
     return this.fetchTxByHash(tx.txid).then(this.doesBitcoreTxContainPoetInfo)
   }
 
-  fetchBitcoreBlockByHeight(height: number) {
+  fetchBitcoreBlockByHeight(height: number): Promise<BitcoinBlock> {
     return this.fetchBlockHash(height).then(hash => this.fetchBitcoreBlock(hash))
   }
 
-  fetchBitcoreBlock(hash: string) {
+  fetchBitcoreBlock(hash: string): Promise<BitcoinBlock> {
     return fetch(`${this.insightUrl}/api/rawblock/${hash}`)
       .then(parseJson)
       .then(pluckMember('rawblock'))

@@ -298,14 +298,15 @@ export default class DomainService extends ClaimService {
   }
 
   async getLastProcessedBlock(): Promise<number> {
-    const allBlocks = await this.blockProcessedRepository.createQueryBuilder('blocks')
-      .orderBy('height', 'ASC')
+    const allBlocks = await this.blockProcessedRepository.createQueryBuilder('blocks_processed')
+      .orderBy('blocks_processed.height', 'ASC')
       .getMany()
-    if (!allBlocks || !allBlocks.length) {
+    if (!allBlocks) {
       return minimumHeight
     }
-    let lastBlock = allBlocks[0].height - 1
+    let lastBlock = allBlocks[0].height
     for (let block of allBlocks) {
+      console.log('block', lastBlock)
       if (block.height == lastBlock) {
         continue;
       }
@@ -315,8 +316,7 @@ export default class DomainService extends ClaimService {
         return lastBlock
       }
     }
-    console.log('Weird result')
-    return minimumHeight
+    return lastBlock
   }
 
   async storeBlockProcessed(block: BitcoinBlockMetadata) {
