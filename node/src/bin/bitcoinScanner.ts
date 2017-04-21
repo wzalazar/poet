@@ -26,12 +26,12 @@ async function startup() {
 
     queue.bitcoinBlockProcessed().subscribeOnNext(async (latest: number) => {
       console.log('Scanning block', latest + 1)
-      const height = latest + 1
+      const height = parseInt('' + latest, 10) + 1
       try {
         const block = await insight.fetchBitcoreBlockByHeight(height)
         insight.scanBitcoreBlock(block, height)
       } catch (e) {
-        queue.dispatchWork('tryScan', `${latest}`)
+        queue.dispatchWork('tryScan', height - 1)
       }
     })
 

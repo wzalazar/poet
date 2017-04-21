@@ -301,16 +301,16 @@ export default class DomainService extends ClaimService {
     const allBlocks = await this.blockProcessedRepository.createQueryBuilder('blocks_processed')
       .orderBy('blocks_processed.height', 'ASC')
       .getMany()
-    if (!allBlocks) {
+    if (!allBlocks || !allBlocks.length) {
       return minimumHeight
     }
-    let lastBlock = allBlocks[0].height
+    let lastBlock = parseInt('' + allBlocks[0].height, 10)
     for (let block of allBlocks) {
       console.log('block', lastBlock)
-      if (block.height == lastBlock) {
+      if (block.height === lastBlock) {
         continue;
       }
-      if (block.height == lastBlock + 1) {
+      if (block.height === lastBlock + 1) {
         lastBlock = lastBlock + 1
       } else {
         return lastBlock
