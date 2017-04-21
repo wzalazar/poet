@@ -1,7 +1,7 @@
 import * as bluebird from 'bluebird'
 import * as amqp from 'amqplib/callback_api'
 import * as Rx from 'rx'
-import { Channel } from "amqplib"
+import { Channel, Connection } from "amqplib"
 
 import { BitcoinBlockMetadata, BlockMetadata } from './events'
 import { Block } from './claim'
@@ -23,12 +23,14 @@ const amqpConnect = bluebird.promisify(amqp.connect, amqp) as any
 
 export async function connect() {
   let attempts = 30
+  let delayInMillis = 1000
   while (attempts--) {
     try {
       return (await amqpConnect('amqp://rabbit:rabbit@rabbitmq:5672')) as amqp.Connection
     } catch (error) {
       console.log('Reconnecting...')
-      await delay(1000)
+      delayInMillis *= 1.5
+      await delay(delayInMillis)
     }
   }
   console.log('Never connected!!')
@@ -36,6 +38,19 @@ export async function connect() {
 }
 
 export class Queue {
+
+  pool: amqp.Connection[]
+  used: boolean[]
+  total: number
+  blocked: number
+
+  constructor() {
+    this.pool = []
+    this.used = []
+    this.blocked = 0
+    this.total = 0
+  }
+
   bitcoinBlock(): Rx.Observable<BitcoinBlockMetadata> {
     return this.consume(BITCOIN_BLOCK) as Rx.Observable<BitcoinBlockMetadata>
   }
@@ -89,10 +104,12 @@ export class Queue {
       let connection, channel: Channel
 
       try {
-        connection = await connect()
+        connection = await this.getConnection()
+        this.lockConnection(connection)
         channel = await bluebird.promisify(connection.createChannel.bind(connection))() as Channel
       } catch (error) {
         observer.onError(error)
+        this.unlockConnection(connection)
         return
       }
 
@@ -105,8 +122,11 @@ export class Queue {
         }, { noAck: true  })
       } catch (error) {
         observer.onError(error)
-        return
+        this.unlockConnection(connection)
+        return bluebird.reject(error)
       }
+
+      this.unlockConnection(connection)
       return bluebird.resolve()
     }).publish().refCount()
   }
@@ -114,29 +134,71 @@ export class Queue {
   private async publish(target: string, payload: any) {
     let connection, channel
     try {
-      connection = (await connect()) as amqp.Connection
+      connection = (await this.getConnection())
+      this.lockConnection(connection)
       channel = await bluebird.promisify(connection.createChannel.bind(connection))() as Channel
       await channel.assertExchange(target, 'fanout', { durable: true })
       await channel.publish(target, '', new Buffer(JSON.stringify(payload)))
-      return await channel.close()
+      await channel.close()
     } catch (error) {
       console.log('Error publishing', error, error.stack)
       throw error
+    } finally {
+      this.unlockConnection(connection)
     }
+  }
+
+  async getConnection() {
+    if (this.blocked === this.total) {
+      const connection = await connect()
+      this.pool[this.total] = connection
+      this.used[this.total] = false
+      this.total++
+      return connection
+    } else {
+      for (let i in this.pool) {
+        if (!this.used[i]) {
+          return this.pool[i]
+        }
+      }
+    }
+  }
+
+  lockConnection(connection: amqp.Connection) {
+    const index = this.pool.indexOf(connection)
+    if (this.used[index]) {
+      throw new Error('Queue is being used')
+    }
+    this.used[index] = true
+    this.blocked++
+  }
+
+  unlockConnection(connection: amqp.Connection) {
+    const index = this.pool.indexOf(connection)
+    if (!this.used[index]) {
+      throw new Error('Queue was not being used')
+    }
+    this.used[index] = false
+    this.blocked--
   }
 
   async dispatchWork(target: string, payload: any) {
     let connection, channel
     try {
-      connection = (await connect()) as amqp.Connection
+      connection = (await this.getConnection()) as amqp.Connection
+      this.lockConnection(connection)
       channel = await bluebird.promisify(connection.createChannel.bind(connection))() as Channel
 
       await channel.assertQueue(target, { durable: true })
       await channel.sendToQueue(target, new Buffer(JSON.stringify(payload)), { persistent: true })
-      return await channel.close()
+      await channel.close()
     } catch (error) {
       console.log('Error publishing', error, error.stack)
       throw error
+    } finally {
+      if (connection) {
+        this.unlockConnection(connection)
+      }
     }
   }
 
@@ -144,24 +206,26 @@ export class Queue {
     let connection, channel: Channel
 
     try {
-      connection = await connect()
+      connection = await this.getConnection()
+      this.lockConnection(connection)
+
+      channel = await bluebird.promisify(connection.createChannel.bind(connection))() as Channel
+      const queue = await channel.assertQueue(queueName, { durable: true })
+      channel.prefetch(1)
+
+      await channel.consume(queueName, (msg) => {
+        const payload = JSON.parse(msg.content.toString())
+        try {
+          handler(payload)
+          channel.ack(msg)
+        } catch (error) {
+          channel.nack(msg)
+        }
+      })
     } catch (error) {
       console.log('Error connecting', error)
-      return
+    } finally {
+      this.unlockConnection(connection)
     }
-
-    channel = await bluebird.promisify(connection.createChannel.bind(connection))() as Channel
-    const queue = await channel.assertQueue(queueName, { durable: true })
-    channel.prefetch(1)
-
-    await channel.consume(queueName, (msg) => {
-      const payload = JSON.parse(msg.content.toString())
-      try {
-        handler(payload)
-        channel.ack(msg)
-      } catch (error) {
-        channel.nack(msg)
-      }
-    })
   }
 }
