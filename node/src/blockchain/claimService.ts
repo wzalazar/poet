@@ -165,7 +165,7 @@ export class ClaimService {
   async getBlock(id: string) {
     const blockEntry = await this.fetchBlock(id)
 
-    if (!blockEntry) {
+    if (!blockEntry || !blockEntry.claims) {
       return null
     }
     const block = {id, claims: [] as PureClaim[]} as PureBlock

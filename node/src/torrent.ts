@@ -62,7 +62,9 @@ export default class TorrentSystem {
       hash
     )
 
+    console.log('Downloading', hash)
     download.subscribeOnCompleted(async () => {
+      console.log('Downladed', hash)
       try {
         const block = await this.getBlockFromFilesystem(hash)
         await this.queue.announceBlockReady(block)
