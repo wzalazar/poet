@@ -169,6 +169,15 @@ export default class PoetInsightListener {
       .then(turnToBitcoreTx)
   }
 
+  getCurrentHeight() {
+    const url = `${this.insightUrl}/api/status`
+
+    return fetch(url)
+      .then(parseJson)
+      .then(pluckMember('info'))
+      .then(pluckMember('blocks'))
+  }
+
   notifyBitcoinBlock(newState: BitcoinBlock) {
     this.bitcoinBlockListeners.forEach(listener => listener(newState))
   }
