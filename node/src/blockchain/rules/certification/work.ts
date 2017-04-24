@@ -33,7 +33,8 @@ export default {
     const work = await service.storeWork({
       id: claim.id,
       displayName: claim.attributes[Fields.WORK_NAME],
-      author: author
+      author: author,
+      supersedes: claim.attributes[Fields.SUPERSEDES]
     })
 
     await service.saveEvent(claim.id, EventType.WORK_CREATED, work, await service.profileRepository.findOneById(claim.publicKey))

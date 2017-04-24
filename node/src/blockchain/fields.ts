@@ -18,6 +18,7 @@ export default class Fields {
   static PAYMENT_ADDRESS = 'paymentAddress'
   static PAYMENT_AMOUNT = 'pricingPriceAmount'
   static WORK_NAME = 'name'
+  static SUPERSEDES = 'supersedes'
 
   // Certificate
   static CERTIFICATION_TIME = 'certificationTime'

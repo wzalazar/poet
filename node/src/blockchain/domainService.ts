@@ -66,21 +66,12 @@ export default class DomainService extends ClaimService {
       .leftJoinAndMapMany('work.offerings', 'work.offerings', 'offerings')
       .leftJoinAndMapMany('work.publishers', 'work.publishers', 'publishers')
       .where('work.id=:id')
-      .setParameters({id})
+      .setParameters({ id })
       .getOne()
   }
 
   async getWorkFull(id: string) {
-    const work = await this.workRepository.createQueryBuilder('work')
-      .leftJoinAndMapOne('work.title', 'work.title', 'title')
-      .leftJoinAndMapOne('work.owner', 'work.owner', 'owner')
-      .leftJoinAndMapOne('work.author', 'work.author', 'author')
-      .leftJoinAndMapMany('work.licenses', 'work.licenses', 'licenses')
-      .leftJoinAndMapMany('work.offerings', 'work.offerings', 'offerings')
-      .leftJoinAndMapMany('work.publishers', 'work.publishers', 'publishers')
-      .where('work.id=:id')
-      .setParameters({ id })
-      .getOne()
+    const work = await this.getWork(id)
     work.claimInfo = await this.getClaimInfo(id)
     return await this.augmentWork(work)
   }
@@ -225,7 +216,17 @@ export default class DomainService extends ClaimService {
     return this.db.getRepository(BlockProcessed)
   }
 
-  storeWork(work: {id: string; author?: Profile, displayName?: string}) {
+  async storeWork(work: {readonly id: string; readonly author?: Profile, readonly displayName?: string, readonly supersedes?: string}) {
+    if (work.supersedes) {
+      // TODO: require proper authorization for this operation
+      const result = await this.workRepository
+        .createQueryBuilder('work')
+        .update({ supersededby: work.id })
+        .where('id = :id', { id: work.supersedes })
+        .execute()
+      // TODO: assert result, console.error or throw...
+    }
+
     return this.workRepository.persist(this.workRepository.create(work))
   }
 

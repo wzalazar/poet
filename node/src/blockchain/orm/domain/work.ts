@@ -11,6 +11,12 @@ export default class Work {
   @PrimaryColumn()
   id: string
 
+  @Column({ nullable: true })
+  supersedes?: string
+
+  @Column({ nullable: true })
+  supersededby?: string
+
   claimInfo?: ClaimInfo
 
   @Column({ nullable: true })

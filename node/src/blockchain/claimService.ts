@@ -11,10 +11,10 @@ import ClaimLink from './orm/claimLink';
 
 export class ClaimService {
 
-  db: Connection
-  starting: boolean
-  started: boolean
-  creator: ClaimBuilder
+  protected db: Connection
+  private starting: boolean
+  private started: boolean
+  private creator: ClaimBuilder
 
   constructor() {
     this.starting = false
@@ -116,16 +116,11 @@ export class ClaimService {
 
   async storeClaim(claim: PureClaim) {
 
-    const attributeSet = []
-
-    for (let key in claim.attributes) {
-      const value: string = claim.attributes[key]
-      attributeSet.push({key, value, claim: claim.id})
-    }
+    const attributes = Object.keys(claim.attributes).map(key => ({key, value: claim.attributes[key], claim: claim.id}))
 
     return await this.claimRepository.persist(this.claimRepository.create({
       ...claim,
-      attributes: attributeSet
+      attributes
     }))
   }
 
@@ -193,22 +188,22 @@ export class ClaimService {
     return blockEntry
   }
 
-  public static transformEntityToPureClaim(claimEntry: Claim) {
-    if (!claimEntry) {
-      console.log('Asked to confirm for null entry', claimEntry)
+  public static transformEntityToPureClaim(claim: Claim): PureClaim {
+    if (!claim) {
+      console.log('Asked to confirm for null entry', claim)
       return
     }
     const attributes: {[key: string]: string} = {}
-    for (let attribute of claimEntry.attributes) {
+    for (let attribute of claim.attributes) {
       attributes[attribute.key] = attribute.value
     }
     return {
-      id: claimEntry.id,
-      publicKey: claimEntry.publicKey,
-      signature: claimEntry.signature,
-      type: claimEntry.type,
+      id: claim.id,
+      publicKey: claim.publicKey,
+      signature: claim.signature,
+      type: claim.type,
       attributes
-    } as PureClaim
+    }
   }
 
   async getBlockInfoByTorrentHash(torrentHash: string) {
@@ -299,4 +294,5 @@ export class ClaimService {
   get blockRepository(): Repository<Block> {
     return this.db.getRepository(Block)
   }
+
 }

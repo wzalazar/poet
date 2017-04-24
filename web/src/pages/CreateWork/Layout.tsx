@@ -141,12 +141,13 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps & CreateWo
     const request = [{
       type: 'Work',
       attributes: [
+        this.props.mode === 'edit' && { key: 'supersedes', value: this.props.workId },
         ...this.state.attributes.map(attribute => ({ key: attribute.keyName, value: attribute.value })),
         { key: 'mediaType', value: this.state.mediaType },
         { key: 'articleType', value: this.state.articleType },
         { key: 'content', value: this.state.content },
         { key: 'dateSubmitted', value: '' + new Date().getTime() }
-      ]
+      ].filterTruthy()
     }]
     if (this.state.hasLicense) {
       request.push({

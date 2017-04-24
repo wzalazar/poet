@@ -55,8 +55,8 @@ export default class WorkRoute extends Route<Work> {
   async getItem(id: string) {
     const work = await this.service.getWorkFull(id)
     const claim = await this.service.getClaim(id)
-    const info = await this.service.getClaimInfo(id)
-    return { claimInfo: info, ...claim, ...work }
+    const claimInfo = await this.service.getClaimInfo(id)
+    return { claimInfo, ...claim, ...work }
   }
 
   async getCollection(opts: QueryOptions) {
@@ -64,8 +64,8 @@ export default class WorkRoute extends Route<Work> {
     return await Promise.all(items.map(
       async (item) => {
         const work = await this.service.getWorkFull(item.id)
-        const info = await this.service.getClaimInfo(item.id)
-        return { claimInfo: info, ...work }
+        const claimInfo = await this.service.getClaimInfo(item.id)
+        return { claimInfo, ...work }
       }
     ))
   }
@@ -143,8 +143,8 @@ export default class WorkRoute extends Route<Work> {
   }
 
   getParamOpts(ctx: Context): WorkQueryOpts {
-    const result = super.getParamOpts(ctx)
-    return Object.assign(result, {
+    return {
+      ...super.getParamOpts(ctx),
       owner               : ctx.request.query[OWNER],
       query               : ctx.request.query[QUERY],
       author              : ctx.request.query[AUTHOR],
@@ -153,8 +153,8 @@ export default class WorkRoute extends Route<Work> {
       relatedTo           : ctx.request.query[RELATED_TO],
       attribute           : ctx.request.query[ATTRIBUTE],
       startPublicationDate: ctx.request.query[START_PUBLICATION_DATE],
-      endPublicationDate  : ctx.request.query[END_PUBLICATION_DATE],
-    }) as WorkQueryOpts
+      endPublicationDate  : ctx.request.query[END_PUBLICATION_DATE]
+    }
   }
 
   addRoutes(router: Router): any {

@@ -22,7 +22,7 @@ export default async function getConnection(purpose: string) {
           path.join(__dirname, 'orm', 'bitcoin', '*.ts'),
           path.join(__dirname, 'orm', 'events', '*.ts')
         ],
-        autoSchemaSync: purpose === 'claimsToDb'
+        autoSchemaSync: true || purpose === 'claimsToDb' // TODO: hard code
       })
     } catch (error) {
       lastError = error

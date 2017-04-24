@@ -34,9 +34,7 @@ function* submitRequested(action: SubmitRequestedAction) {
   if (!publicKey)
     throw new Error('Claim Sign Saga: cannot sign a claim without a public key.');
 
-  const serializedToSign = action.payload.map((template: any) => {
-    return builder.getEncodedForSigning(template, publicKey);
-  });
+  const serializedToSign = action.payload.map(builder.getEncodedForSigning.bind(null, publicKey)) as string[];
 
   const requestId = yield call(requestIdFromAuth, serializedToSign, publicKey);
   yield put({ type: Actions.Claims.IdReceived, payload: requestId.id });
@@ -69,8 +67,8 @@ function* fakeSign(action: any) {
 }
 
 const builder = new class {
-  attribute: any;
-  claim: any;
+  private readonly attribute: any;
+  private readonly claim: any;
 
   constructor() {
     const root = protobuf.Root.fromJSON(jsonClaims);
@@ -78,12 +76,12 @@ const builder = new class {
     this.claim = root.lookup('Poet.Claim');
   }
 
-  getAttributes(attributes: ReadonlyArray<KeyValue<string, string>> | {[index: string]: string}) {
+  private getAttributes(attributes: ReadonlyArray<KeyValue<string, string>> | {[index: string]: string}) {
     const attributesArray = attributes instanceof Array ? attributes : Object.entries(attributes).map(([key, value]) => ({key, value}));
     return attributesArray.map(this.attribute.create, this.attribute)
   }
 
-  getEncodedForSigning(data: Claim, publicKey: string): string {
+  getEncodedForSigning = (publicKey: string, data: Claim): string => {
     return new Buffer(this.claim.encode(this.claim.create({
       id: new Buffer(''),
       publicKey: new Buffer(publicKey, 'hex'),
