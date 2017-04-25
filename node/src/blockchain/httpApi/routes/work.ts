@@ -124,13 +124,14 @@ export default class WorkRoute extends Route<Work> {
       queryBuilder.andWhere('publisher.id=:licensedTo', { licensedTo: opts.licensedTo })
     }
     if (opts.relatedTo) {
-      queryBuilder.andWhere(`(publisher.id=:licensedTo)
+      queryBuilder.andWhere(`((publisher.id=:licensedTo)
                           OR (item.owner   =:owner)
-                          OR (item.author  =:author)`, {
+                          OR (item.author  =:author))`, {
       licensedTo: opts.relatedTo,
       owner     : opts.relatedTo,
       author    : opts.relatedTo })
     }
+    queryBuilder.andWhere(`item.supersededby is null`)
     // Temporary fix: Sort by id, descending.
     // Should be: JOIN with claimInfo, sort by BlockHeight:ClaimOrder,
     //            or id if this doesn't exist

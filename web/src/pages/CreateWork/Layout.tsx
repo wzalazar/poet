@@ -138,11 +138,16 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps & CreateWo
   }
 
   private onStepPublishAndReviewSubmit = () => {
+    const noReservedAttributes = (attribute: AttributeData) =>
+      !['supersedes', 'supersededby'].includes(attribute.keyName)
+    const attributeToKeyValue = (attribute: AttributeData) =>
+      ({ key: attribute.keyName, value: attribute.value })
+
     const request = [{
       type: 'Work',
       attributes: [
         this.props.mode === 'edit' && { key: 'supersedes', value: this.props.workId },
-        ...this.state.attributes.map(attribute => ({ key: attribute.keyName, value: attribute.value })),
+        ...this.state.attributes.filter(noReservedAttributes).map(attributeToKeyValue),
         { key: 'mediaType', value: this.state.mediaType },
         { key: 'articleType', value: this.state.articleType },
         { key: 'content', value: this.state.content },
