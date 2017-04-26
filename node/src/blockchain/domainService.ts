@@ -109,13 +109,16 @@ export default class DomainService extends ClaimService {
   }
 
   async augmentWork(work: Work) {
-    const ids = [work.id]
-    if (work.title) ids.push(work.title.id)
-    if (work.owner) ids.push(work.owner.id)
-    if (work.author) ids.push(work.author.id)
-    if (work.licenses) for (let license of work.licenses) ids.push(license.id)
-    if (work.offerings) for (let offering of work.offerings) ids.push(offering.id)
-    if (work.publishers) for (let publisher of work.publishers) ids.push(publisher.id)
+    const ids: ReadonlyArray<string> = [
+      work.claimId || work.id,
+      work.title && work.title.id,
+      work.owner && work.owner.id,
+      work.author && work.author.id,
+      ...(work.licenses ? work.licenses.map(_ => _.id) : []),
+      ...(work.offerings ? work.offerings.map(_ => _.id) : []),
+      ...(work.publishers ? work.publishers.map(_ => _.id) : []),
+    ].filter(_ => _)
+
     const attributeResults = await this.attributeRepository.createQueryBuilder('attribute')
       .where('attribute.claim IN (:ids)')
       .leftJoinAndMapOne('attribute.claim', 'attribute.claim', 'claim')
@@ -123,11 +126,13 @@ export default class DomainService extends ClaimService {
       .getMany()
     const mapAttributes: { [key: string]: { [key2: string]: string } } = {}
     for (let attribute of attributeResults) {
+      if (attribute.key === Fields.SUPERSEDES)
+        continue
       const id = attribute.claim.id
       mapAttributes[id] = mapAttributes[id] || {}
       mapAttributes[id][attribute.key] = attribute.value
     }
-    work.attributes = mapAttributes[work.id]
+    work.attributes = work.claimId ? mapAttributes[work.claimId] : mapAttributes[work.id]
     if (work.title) work.title.attributes = mapAttributes[work.title.id]
     if (work.owner) work.owner.attributes = mapAttributes[work.owner.id]
     if (work.author) work.author.attributes = mapAttributes[work.author.id]
@@ -208,12 +213,12 @@ export default class DomainService extends ClaimService {
     return this.db.getRepository(NotificationRead)
   }
 
-  get normalizedRepository(): Repository<Normalized> {
-    return this.db.getRepository(Normalized)
-  }
-
   get blockProcessedRepository(): Repository<BlockProcessed> {
     return this.db.getRepository(BlockProcessed)
+  }
+
+  get normalizedRepository(): Repository<Normalized> {
+    return this.db.getRepository(Normalized)
   }
 
   async storeWork(work: {readonly id: string; readonly author?: Profile, readonly displayName?: string, readonly supersedes?: string}) {
@@ -228,6 +233,36 @@ export default class DomainService extends ClaimService {
     }
 
     return this.workRepository.persist(this.workRepository.create(work))
+  }
+
+  async upsertWork(claimId: string, author?: Profile, displayName?: string, workId?: string) {
+    return workId
+      ? this.updateWork(claimId, displayName, workId)
+      : this.insertWork(claimId, author, displayName)
+  }
+
+  private async updateWork(claimId: string, displayName?: string, workId?: string) {
+    // TODO: require proper authorization for this operation
+    const work = await this.workRepository.findOneById(workId)
+
+    if (!work) {
+      console.error('Trying to update a work that doesn\' exist.')
+      return null
+    }
+
+    work.claimId = claimId
+    work.displayName = displayName
+
+    return this.workRepository.persist(work)
+  }
+
+  private async insertWork(claimId: string, author?: Profile, displayName?: string) {
+    return this.workRepository.persist(this.workRepository.create({
+      id: claimId,
+      claimId,
+      displayName,
+      author
+    }))
   }
 
   async saveEvent(id: string, type: EventType, work: Work, actor: Profile, payload?: string, extra?: any) {

@@ -77,7 +77,7 @@ export default class WorkRoute extends Route<Work> {
       + (opts.endPublicationDate ? 1 : 0)
     let iterAttrs = 0
     for (let i = 0; i < countAttrs; i++) {
-      queryBuilder.leftJoin('attribute', 'attr' + i, `attr${i}.claim=item.id`)
+      queryBuilder.leftJoin('attribute', 'attr' + i, `attr${i}.claim=item.claimId`)
     }
     if (opts.licensedTo || opts.relatedTo) {
       queryBuilder.leftJoinAndSelect('item.publishers', 'publisher')
@@ -131,7 +131,7 @@ export default class WorkRoute extends Route<Work> {
       owner     : opts.relatedTo,
       author    : opts.relatedTo })
     }
-    queryBuilder.andWhere(`item.supersededby is null`)
+
     // Temporary fix: Sort by id, descending.
     // Should be: JOIN with claimInfo, sort by BlockHeight:ClaimOrder,
     //            or id if this doesn't exist

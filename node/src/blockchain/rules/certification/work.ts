@@ -30,14 +30,17 @@ export default {
       ? await service.getOrCreateProfile(authorId)
       : undefined
 
-    const work = await service.storeWork({
-      id: claim.id,
-      displayName: claim.attributes[Fields.WORK_NAME],
-      author: author,
-      supersedes: claim.attributes[Fields.SUPERSEDES]
-    })
+    const work = await service.upsertWork(
+      claim.id,
+      author,
+      claim.attributes[Fields.WORK_NAME],
+      claim.attributes[Fields.SUPERSEDES])
 
-    await service.saveEvent(claim.id, EventType.WORK_CREATED, work, await service.profileRepository.findOneById(claim.publicKey))
+    await service.saveEvent(
+      claim.id,
+      !claim.attributes[Fields.SUPERSEDES] ? EventType.WORK_CREATED : EventType.WORK_MODIFIED,
+      work,
+      await service.profileRepository.findOneById(claim.publicKey))
 
     return work
   }

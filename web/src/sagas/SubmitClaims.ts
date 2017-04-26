@@ -53,7 +53,9 @@ function* submitRequested(action: SubmitRequestedAction) {
   const updatedProfile = postClaimsResult.createdClaims.find((claim: Claim) => claim.type === 'Profile');
 
   if (createdWorkClaim) {
-    browserHistory.push(`/works/` + createdWorkClaim.id);
+    const submittedWorkClaim = action.payload.find(_ => _.type === 'Work') as any
+    const supersedes = submittedWorkClaim && submittedWorkClaim.attributes.find((_: any) => _.key === 'supersedes')
+    browserHistory.push(`/works/` + (supersedes ? supersedes.value : createdWorkClaim.id));
   } else if (updatedProfile) {
     browserHistory.push(`/profiles/` + publicKey);
   } else {

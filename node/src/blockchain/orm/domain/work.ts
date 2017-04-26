@@ -12,10 +12,7 @@ export default class Work {
   id: string
 
   @Column({ nullable: true })
-  supersedes?: string
-
-  @Column({ nullable: true })
-  supersededby?: string
+  claimId?: string
 
   claimInfo?: ClaimInfo
 
