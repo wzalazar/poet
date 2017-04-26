@@ -8,10 +8,22 @@ import { currentPublicKey } from '../selectors/session';
 import { select } from 'redux-saga/effects';
 import { publicKeyToAddress } from '../bitcoin/addressHelpers';
 
+export function CacheInvalidationSaga() {
+  return function*() {
+    yield takeEvery(Actions.Claims.SubmittedSuccess, claimsSubmittedSuccess);
+    yield takeEvery(Actions.Transactions.SubmittedSuccess, invalidateBalance);
+    yield takeEvery(Actions.Licenses.Success, invalidateLicenses);
+    yield takeEvery(Actions.Transfer.Success, invalidateWorks);
+  }
+}
+
 function* claimsSubmittedSuccess(claimSubmittedAction: any) {
   for (let claim of claimSubmittedAction.claims) {
     if (claim.type === 'Work') {
       yield invalidateWorks();
+      const supersedes = claim.attributes.find((_: any) => _.key === 'supersedes');
+      if (supersedes)
+        yield invalidateWork(supersedes.value)
     }
     if (claim.type === 'Profile') {
       const publicKey = yield select(currentPublicKey);
@@ -46,11 +58,8 @@ function* invalidateWorks() {
   yield put({ type: `clear ${shortUrl}`, fetchType: FetchType.CLEAR, url });
 }
 
-export function CacheInvalidationSaga() {
-  return function*() {
-    yield takeEvery(Actions.Claims.SubmittedSuccess, claimsSubmittedSuccess);
-    yield takeEvery(Actions.Transactions.SubmittedSuccess, invalidateBalance);
-    yield takeEvery(Actions.Licenses.Success, invalidateLicenses);
-    yield takeEvery(Actions.Transfer.Success, invalidateWorks);
-  }
+function* invalidateWork(id: string) {
+  const shortUrl = `/works/${id}`;
+  const url = Configuration.api.explorer + shortUrl;
+  yield put({ type: `clear ${shortUrl}`, fetchType: FetchType.CLEAR, url });
 }
