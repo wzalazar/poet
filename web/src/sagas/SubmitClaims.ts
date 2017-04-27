@@ -83,15 +83,14 @@ const builder = new class {
     return attributesArray.map(this.attribute.create, this.attribute)
   }
 
-  getEncodedForSigning = (publicKey: string, data: Claim): string => {
-    return new Buffer(this.claim.encode(this.claim.create({
+  getEncodedForSigning = (publicKey: string, data: Claim): string =>
+    new Buffer(this.claim.encode(this.claim.create({
       id: new Buffer(''),
       publicKey: new Buffer(publicKey, 'hex'),
       signature: new Buffer(''),
       type: data.type,
       attributes: this.getAttributes(data.attributes)
     })).finish()).toString('hex')
-  }
 };
 
 async function requestIdFromAuth(dataToSign: string[], notifyPubkey: string) {

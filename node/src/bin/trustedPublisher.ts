@@ -16,16 +16,16 @@ export interface TrustedPublisherOptions {
   broadcast: boolean
 }
 
-export default async function createServer(options?: TrustedPublisherOptions) {
+async function createServer(options?: TrustedPublisherOptions) {
   const koa = new Koa()
   const creator = await getCreator()
   const queue = new Queue()
 
   koa.use(Body({ textLimit: 1000000 }))
 
-  const createBlock = async (claims: Claim[], ctx: any) => {
+  const createBlock = async (claims: ReadonlyArray<Claim>, ctx: any) => {
 
-    const certificates = claims.map(claim => creator.createSignedClaim({
+    const certificates: ReadonlyArray<Claim> = claims.map(claim => creator.createSignedClaim({
       type: CERTIFICATE,
       attributes: {
         [Fields.REFERENCE]: claim.id,
@@ -33,7 +33,7 @@ export default async function createServer(options?: TrustedPublisherOptions) {
       }
     }, privKey))
 
-    const block: Block = creator.createBlock(claims.concat(certificates))
+    const block: Block = creator.createBlock([...claims, ...certificates])
     try {
       await queue.announceBlockToSend(block)
     } catch (error) {
@@ -102,36 +102,54 @@ export default async function createServer(options?: TrustedPublisherOptions) {
   }))
 
   koa.use(Route.post('/claims', async (ctx: any) => {
-    var sigs = JSON.parse(ctx.request.body).signatures
-    const originalClaims: Claim[] = []
-    for (let sig of sigs) {
+    const sigs = JSON.parse(ctx.request.body).signatures
+
+    const claims: ReadonlyArray<Claim> = sigs.map((sig: any) => {
       const claim = creator.serializedToClaim(
         new Buffer(new Buffer(sig.message, 'hex').toString(), 'hex')
       )
       claim.signature = sig.signature
       claim.id = new Buffer(creator.getId(claim)).toString('hex')
-      console.log(claim)
-      originalClaims.push(claim)
+      return claim
+    })
+
+    const workClaims: ReadonlyArray<Claim> = claims.filter(_ => _.type === WORK)
+
+    console.log('POST /claims', claims)
+
+    // Hack to use the Work's signature for the Offering
+    for (const claim of claims.filter(_ => _.type === OFFERING)) {
+      const workClaim = workClaims && workClaims.length && workClaims[0]
+
+      if (!workClaim)
+        throw new Error(`Unsupported: an OFFERING claim was POSTed without any WORK claim`)
+
+      claim.attributes[Fields.REFERENCE] = workClaim.id
     }
-    const claims: any[] = []
-    let reference: any
-    for (let claim of originalClaims) {
-      if (claim.type === OFFERING) {
-        claim.attributes[Fields.REFERENCE] = reference
-      }
-      claims.push(claim)
-      if (claim.type === WORK) {
-        reference = claim.id
-        claims.push(creator.createSignedClaim({
-          type: TITLE,
-          attributes: {
-            reference: claim.id,
-            owner: claim.publicKey,
-          }
-        }, privKey))
-      }
+
+    const titleClaims: ReadonlyArray<Claim> = workClaims.map(claim =>
+      creator.createSignedClaim({
+        type: TITLE,
+        attributes: {
+          reference: claim.id,
+          owner: claim.publicKey,
+        }
+      }, privKey)
+    )
+
+    const editWorkClaims = workClaims.filter(_ => _.attributes.supersedes)
+
+    for (const claim of editWorkClaims) {
+      // TODO: ideally, assert that claim.owner === claim.supersedes.owner
+      // certification/work.ts has the final say on this
+
     }
-    await createBlock(claims, ctx)
+
+    await createBlock([
+      ...claims,
+      ...titleClaims
+    ], ctx)
+
   }))
 
   koa.use(async (ctx: any, next: Function) => {
