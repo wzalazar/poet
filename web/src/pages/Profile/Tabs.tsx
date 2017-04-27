@@ -45,4 +45,4 @@ const mapDispatch: {} & DispatchesTransferRequested = {
   transferRequested: (workId: string) => ({ type: Actions.Transfer.TransferRequested, workId })
 };
 
-export const ProfileTabs = connect(mapStateToProps, mapDispatch)(ProfileTabsComponent);
+export const ProfileTabs = (connect as any)(mapStateToProps, mapDispatch)(ProfileTabsComponent);

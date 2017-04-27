@@ -6,7 +6,7 @@ const QR = require('react-qr');
 import { Images } from '../../images/Images';
 import { PoetAppState, SignTransactionStore } from '../../store/PoetAppState'
 import { Actions } from '../../actions/index'
-import { ModalAction, ModalProps, ModalVisible } from './Modal'
+import { ModalAction, ModalVisible } from './Modal'
 
 import './Modal.scss'
 import './SignTx.scss'
@@ -18,10 +18,10 @@ interface SignActions extends ModalAction {
 }
 
 function mapStateToProps(state: PoetAppState): SignProps {
-  return {
-    visible: state.modals.signTx,
-    ...state.signTx
-  }
+  return Object.assign({},
+    state.signTx,
+    { visible: state.modals.signTx }
+  )
 }
 
 const mapDispatch: {} & SignActions = {
@@ -29,7 +29,7 @@ const mapDispatch: {} & SignActions = {
   mockSign: (id: string) => ({ type: Actions.Transactions.FakeSign, payload: id })
 };
 
-export const SignTransaction = connect(mapStateToProps, mapDispatch)(
+export const SignTransaction = (connect as any)(mapStateToProps, mapDispatch)(
   class extends React.Component<SignProps & SignActions, undefined> {
 
     render() {

@@ -59,4 +59,4 @@ const mapDispatch = {
   logout: () => ({ type: Actions.Session.LogoutButtonClicked })
 };
 
-export const AccountDropdown = connect(mapStateToProps, mapDispatch)(AccountDropdownComponent);
+export const AccountDropdown = (connect as any)(mapStateToProps, mapDispatch)(AccountDropdownComponent);
