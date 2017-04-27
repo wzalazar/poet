@@ -1,7 +1,6 @@
 const express  = require('express')
 const bodyParser = require('body-parser')
 const logger = require('morgan')
-//var io = require('socket.io')
 const fcm = require('fcm-node')
 
 import "reflect-metadata"
@@ -12,7 +11,6 @@ import { Queue, Notification } from './queue'
 import { verifies, doubleSha } from '../authentication/helpers'
 
 const SERVER_API_KEY='YOUR_SERVER_API_KEY'
-const registrationToken = 'FIREBASE_EXAMPLE_REGISTRATION_TOKEN'
 
 function createServer (serverKey: string, port: number) {
   const fcmCli = new fcm(serverKey)
@@ -23,31 +21,8 @@ function createServer (serverKey: string, port: number) {
   app.use(bodyParser.json())
   app.use(logger('dev'))
 
-  const listen = app.listen(port)
+  app.listen(port)
   console.log('The App runs on port ' + port)
-
-  var payloadOK = {
-    to: registrationToken,
-    data: { //some data object (optional)
-      url: 'news',
-      foo:'fooooooooooooo',
-      bar:'bar bar bar'
-    },
-    priority: 'high',
-    content_available: true,
-    notification: { //notification object
-      title: 'HELLO', body: 'World!', sound : "default", badge: "1"
-    }
-  }
-
-  const callbackLog = function (sender: string, err: any, res: any) {
-    console.log("\n__________________________________")
-    console.log("\t" + sender)
-    console.log("----------------------------------")
-    console.log("err=" + err)
-    console.log("res=" + res)
-    console.log("----------------------------------\n>>>")
-  }
 
   app.post('/register', async function(req: any, res: any) {
 
@@ -103,23 +78,6 @@ function createServer (serverKey: string, port: number) {
         res.status(400)
         res.end("It didn't work :(!!")
     }
-  })
-
-  app.post('/send', function(req: any, res: any) {
-    
-    var message = req.body.message
-    var registrationId = req.body.registrationId
-
-    console.log("message=" + message)
-    console.log("registrationId=" + registrationId)
-
-    payloadOK.to = registrationId
-    payloadOK.notification.body = message
-
-    fcmCli.send(payloadOK, function(err: any, res: any) {
-      callbackLog('sendOK', err, res)
-      res.end("It works!!")
-    })
   })
 
   function buildNotification(device: Device, requestId: string, title: string = null, body: string = null) {
@@ -178,9 +136,10 @@ function createServer (serverKey: string, port: number) {
         device,
         notification.requestId),
         function(err: any) {
-          callbackLog('sendOK', err, undefined)
-        }
-      )
+            console.log("----------------------------------")
+            console.log("err=" + err)
+            console.log("----------------------------------")
+      })
     })
   }
 
