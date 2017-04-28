@@ -13,7 +13,7 @@ const pluckMember = (name: string) => (obj: any) => obj[name]
 const getTransaction = pluckMember('rawtx')
 const getBuffer = (data: string) => new Buffer(data, 'hex')
 const turnToBitcoreTx = bitcore.Transaction
-const turnToBitcoreBlock = bitcore.Block
+const turnToBitcoreBlock: (something: Buffer) => BitcoinBlock = bitcore.Block
 
 export interface TxInfoListener {
   (txInfo: BlockMetadata): any
@@ -145,7 +145,7 @@ export default class PoetInsightListener {
       .then(parseJson)
       .then(pluckMember('rawblock'))
       .then(getBuffer)
-      .then(turnToBitcoreBlock)
+      .then(turnToBitcoreBlock) as Promise<BitcoinBlock>
   }
 
   fetchBlockHash(height: number): Promise<string> {

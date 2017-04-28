@@ -30,7 +30,7 @@ export default class BlockRoute extends Route<BlockInfo> {
     })
     const block = await this.service.getBlock(id)
 
-    return { ...blockInfo, ...block}
+    return { ...block, ...blockInfo }
   }
 
   ownFilter(queryBuilder: QueryBuilder<BlockInfo>, opts: QueryOptions): QueryBuilder<BlockInfo> {
