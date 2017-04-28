@@ -84,11 +84,3 @@ export class Queue {
     }
 
 }
-
-const queue = new Queue()
-for (let i in [1,2,3,4,5,6]) {
-    let notification = new Notification()
-    notification.requestId = "sdsdsd"
-    notification.pubKey = "0440121ce9ea2ed8cbab98f652daaabb35fa550dff5a2b1b4f53cf3e81093b86c34899294c2fd7bc0026ed9e6f16336e9e79f984c1373a4cfd26ba96251f0fa125"
-    queue.publishNotification(notification)
-}
