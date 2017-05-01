@@ -151,7 +151,7 @@ export default class PoetInsightListener {
   fetchBlockHash(height: number): Promise<string> {
     return fetch(`${this.insightUrl}/api/block-index/${height}`)
       .then(parseJson)
-      .then(pluckMember('blockHash'))
+      .then(pluckMember('blockHash')) as Promise<string>
   }
 
   fetchHeight(hash: string): Promise<number> {
