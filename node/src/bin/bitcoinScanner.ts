@@ -33,6 +33,7 @@ async function startup() {
       } catch (e) {
         const latestHeight = await insight.getCurrentHeight()
         if (latestHeight === height) {
+          console.log(latestHeight, height)
           return
         }
         queue.dispatchWork('tryScan', height - 1)
