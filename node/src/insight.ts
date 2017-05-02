@@ -8,10 +8,26 @@ import {VERSION} from "./common";
 const bitcore = require('bitcore-lib')
 
 const notNull = (x: any) => !!x
-const parseJson = (x: any) => x.json()
+const parseJson = (x: any) => {
+  return x.text().then((text: any) => {
+    try {
+      return JSON.parse(text)
+    } catch (e) {
+      console.log('Could not parse', text)
+      throw e
+    }
+  })
+}
 const pluckMember = (name: string) => (obj: any) => obj[name]
 const getTransaction = pluckMember('rawtx')
-const getBuffer = (data: string) => new Buffer(data, 'hex')
+const getBuffer = (data: string) => {
+  try {
+    return new Buffer(data, 'hex')
+  } catch (e) {
+    console.log('Error processing', data)
+    throw e
+  }
+}
 const turnToBitcoreTx = bitcore.Transaction
 const turnToBitcoreBlock: (something: Buffer) => BitcoinBlock = bitcore.Block
 
