@@ -12,6 +12,7 @@ export enum EventType {
   LICENSE_OFFERED,
   LICENSE_BOUGHT,
   LICENSE_SOLD,
+  SELF_LICENSE,
   WORK_MODIFIED,
   WORK_TRANSFERRED,
   BLOCKCHAIN_STAMP,
@@ -29,6 +30,8 @@ export const renderEventMessage = (event: NotificationEvent) => {
       return <span>License offered for <WorkNameWithLinkById workId={event.workId} >{event.workDisplayName}</WorkNameWithLinkById> by <ProfileNameWithLink profileId={event.actorId} >{event.actorDisplayName}</ProfileNameWithLink></span>;
     case EventType.LICENSE_BOUGHT:
       return <span>License bought for <WorkNameWithLinkById workId={event.workId} >{event.workDisplayName}</WorkNameWithLinkById> by <ProfileNameWithLink profileId={event.actorId} >{event.actorDisplayName}</ProfileNameWithLink></span>;
+    case EventType.WORK_MODIFIED:
+      return <span>Work <WorkNameWithLinkById workId={event.workId} /> modified by <ProfileNameWithLink profileId={event.actorId} /></span>;
     default:
       return null
   }

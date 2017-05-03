@@ -30,6 +30,7 @@ export default {
       ? await service.getOrCreateProfile(authorId)
       : undefined
     const supersedes = claim.attributes[Fields.SUPERSEDES]
+    let previousWork
 
     if (supersedes) {
       const supersededWorkOwner = await service.getOwnerPublicKey(supersedes)
@@ -37,6 +38,8 @@ export default {
         console.log('User does not control the superseded work', claim)
         return
       }
+
+      previousWork = await service.getWork(supersedes)
     }
 
     const work = await service.upsertWork(
@@ -49,7 +52,9 @@ export default {
       claim.id,
       supersedes ? EventType.WORK_MODIFIED : EventType.WORK_CREATED,
       work,
-      await service.profileRepository.findOneById(claim.publicKey))
+      await service.profileRepository.findOneById(claim.publicKey),
+      supersedes && previousWork.claimId
+    )
 
     return work
   }

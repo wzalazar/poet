@@ -13,6 +13,7 @@ import './Layout.scss';
 export interface WorkProps {
   readonly id: HexString,
   readonly purchase: (work: Work, offering: WorkOffering) => void;
+  readonly historical: boolean
 }
 
 export class WorkLayout extends React.Component<WorkProps, undefined> {

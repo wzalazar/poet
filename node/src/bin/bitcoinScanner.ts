@@ -32,8 +32,7 @@ async function startup() {
         insight.scanBitcoreBlock(block, height)
       } catch (e) {
         const latestHeight = await insight.getCurrentHeight()
-        if (latestHeight === height) {
-          console.log(latestHeight, height)
+        if (latestHeight === height - 1) {
           return
         }
         queue.dispatchWork('tryScan', height - 1)

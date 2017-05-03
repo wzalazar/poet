@@ -23,7 +23,7 @@ export default {
       console.log('Odd title: no owner', claim)
       return
     }
-    const work = await service.workRepository.findOneById(referenceId)
+    const work = await service.getWork(referenceId)
 
     const offeringId = claim.attributes[ReferenceOffering]
     if (offeringId) {
