@@ -10,3 +10,10 @@ COPY ./web/devServer.js /web
 
 RUN npm install
 
+COPY ../poet-js /poet-js
+WORKDIR /poet-js
+RUN npm install
+RUN npm link
+
+WORKDIR /poet
+RUN npm link poet-js
