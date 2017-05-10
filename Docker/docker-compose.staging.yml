@@ -1,0 +1,11 @@
+version: "2"
+
+services:
+  nginx:
+    build:
+      dockerfile: ./Docker/nginx-staging.dockerfile
+    volumes:
+      - ../web/src:/images
+    ports:
+      - "80:80"
+      - "443:443"

@@ -110,21 +110,18 @@ services:
   nginx:
     build:
       context: ..
-      dockerfile: ./Docker/nginx-staging.dockerfile
+      dockerfile: ./Docker/nginx-development.dockerfile
     volumes:
       - ./letsencrypt:/etc/letsencrypt
-      - ../web/src:/images
     networks:
       - outside
       - http
     ports:
-      - "80:80"
-      - "443:443"
       - "5000:5000"
   web:
     build:
       context: ..
-      dockerfile: ./Docker/web.dockerfile
+      dockerfile: ./Docker/web-poet-js-remote.dockerfile
     volumes:
       - ../web/src:/web/src
     networks:
