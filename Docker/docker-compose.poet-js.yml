@@ -4,6 +4,6 @@ services:
   web:
     build:
       context: ../..
-      dockerfile: ./Docker/web-poet-js-local.dockerfile
+      dockerfile: ./poet/Docker/web-poet-js-local.dockerfile
     volumes:
       - ../../poet-js:/external/poet-js
