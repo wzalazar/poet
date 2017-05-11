@@ -4,6 +4,9 @@ development: base-images
 poet-js:
 	cd Docker && docker-compose -f docker-compose.yml -f docker-compose.poet-js.yml build
 
+poet-js-only:
+	cd Docker && docker-compose -f docker-compose.yml -f docker-compose.poet-js.yml build web
+
 staging: base-images
 	cd Docker && docker-compose -f docker-compose.yml -f docker-compose.staging.yml build
 

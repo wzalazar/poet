@@ -5,5 +5,3 @@ services:
     build:
       context: ../..
       dockerfile: ./poet/Docker/web-poet-js-local.dockerfile
-    volumes:
-      - ../../poet-js:/external/poet-js
