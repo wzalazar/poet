@@ -18,6 +18,9 @@ start: prepare
 	cd Docker && docker-compose up
 
 stop:
+	cd Docker && docker-compose stop
+
+down:
 	cd Docker && docker-compose down
 
 daemon: prepare
