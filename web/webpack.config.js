@@ -55,7 +55,13 @@ module.exports = {
 
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.json']
+    extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.json'],
+    fallback: path.join(__dirname, "node_modules")
+  },
+
+  resolveLoader: {
+    // modulesDirectories: ['node_modules'],
+    fallback: path.join(__dirname, 'node_modules')
   },
 
   module: {
