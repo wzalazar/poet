@@ -80,7 +80,8 @@ function createServer (serverKey: string, port: number) {
     }
   })
 
-  function buildNotification(device: Device, requestId: string, title: string = null, body: string = null) {
+  function buildNotification(device: Device, requestId: string,
+                             title: string = "Signature Request", body: string = "Do you want to authorize it?") {
     return {
       to: device.registrationId,
       data: {
@@ -89,7 +90,7 @@ function createServer (serverKey: string, port: number) {
       priority: 'high',
       content_available: true,
       notification: title && body && { //notification object
-        title: title, body: body, sound : "default", badge: "1"
+        title: title, body: body, sound : "default", badge: "1", click_action: "sign_request_notification"
       }
     }
   }
