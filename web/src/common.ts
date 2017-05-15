@@ -1,10 +1,5 @@
 export type HexString = string;
 
-export interface KeyValue {
-  readonly key: string;
-  readonly value: string;
-}
-
 export interface Price {
   readonly amount?: number;
   readonly currency?: string;

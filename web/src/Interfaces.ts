@@ -1,3 +1,5 @@
+import { Claim, TitleClaim } from 'poet-js'
+
 type HexString = string;
 
 export interface Profile {
@@ -14,26 +16,6 @@ export interface ProfileAttributes {
   readonly email?: string;
   readonly location?: string;
   readonly imageData?: string;
-}
-
-// TODO: lacks a "type" field, duplicated declaration! See Claim.ts
-export interface Claim {
-  readonly id: HexString
-  readonly publicKey: HexString
-  readonly signature: HexString
-
-  readonly attributes: { // TODO: should be ReadonlyArray<Attribute>
-    readonly [key: string]: string
-  }
-}
-
-export interface TitleClaim extends Claim {
-  readonly attributes: {
-    readonly [key: string]: string;
-    readonly owner: string;
-    readonly typeOfOwnership: string;
-    readonly status: string;
-  }
 }
 
 export interface ClaimInfo {

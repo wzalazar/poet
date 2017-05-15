@@ -1,6 +1,6 @@
 import { takeEvery } from 'redux-saga'
 import { call, put, select, take, race } from 'redux-saga/effects'
-import * as protobuf from 'protobufjs'
+import { Claim, ClaimBuilder, ClaimTypes, ClaimAttributes } from 'poet-js';
 
 import { Configuration } from '../configuration';
 import { Actions } from '../actions/index'
@@ -9,9 +9,7 @@ import { Authentication } from '../authentication'
 import { currentPublicKey } from '../selectors/session'
 import { getMockPrivateKey } from '../helpers/mockKey'
 
-const jsonClaims = require('../claim.json');
-
-interface TransferAttributes {
+interface TransferAttributes extends ClaimAttributes {
   readonly currentOwner: string
   readonly reference: string
   readonly owner: string
@@ -43,13 +41,17 @@ function* transferFlow(action: TransferRequestedAction) {
   const setTransferAction = yield take(Actions.Transfer.SetTransferTarget);
   const selectedOwner = setTransferAction.payload;
 
-  const payload: TransferAttributes = {
-    currentOwner: publicKey,
-    reference: action.workId,
-    owner: selectedOwner
+  const claim: Claim<TransferAttributes> = {
+    publicKey,
+    type: ClaimTypes.TITLE,
+    attributes: {
+      currentOwner: publicKey,
+      reference: action.workId,
+      owner: selectedOwner
+    }
   };
 
-  const serializedToSign = [ builder.getEncodedForSigning(payload, publicKey) ];
+  const serializedToSign = [ ClaimBuilder.getEncodedForSigning(claim) ];
 
   const requestId = yield call(requestIdFromAuth, serializedToSign, publicKey);
   yield put({ type: Actions.Transfer.TransferIdReceived, payload: requestId.id });
@@ -74,43 +76,6 @@ async function requestIdFromAuth(dataToSign: string[], publicKey: string) {
 async function bindAuthResponse(request: any) {
   return await Authentication.onResponse(request.id) as any;
 }
-
-const builder = new class {
-  private attribute: any;
-  private claim: any;
-
-  constructor() {
-    const root = protobuf.Root.fromJSON(jsonClaims);
-    this.attribute = root.lookup('Poet.Attribute');
-    this.claim = root.lookup('Poet.Claim');
-  }
-
-  public getEncodedForSigning(data: TransferAttributes, publicKey: string): string {
-    return new Buffer(this.claim.encode(this.claim.create({
-      id: new Buffer(''),
-      publicKey: new Buffer(publicKey, 'hex'),
-      signature: new Buffer(''),
-      type: 'Title',
-      attributes: this.getAttributes(data)
-    })).finish()).toString('hex')
-  }
-
-  private getAttributes(attrs: any) {
-    if (attrs instanceof Array) {
-      return attrs.map(attr => {
-        return this.attribute.create(attr)
-      })
-    } else {
-      return Object.keys(attrs).map(attr => {
-        return this.attribute.create({
-          key: attr,
-          value: attrs[attr]
-        })
-      })
-    }
-  }
-
-};
 
 async function submitClaims(data: any) {
   return await fetch(Configuration.api.user + '/claims', {

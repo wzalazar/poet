@@ -59,7 +59,7 @@
     "sass-loader": "^4.1.1",
     "source-map-loader": "^0.1.5",
     "style-loader": "^0.13.1",
-    "typescript": "^2.2.0-dev.20170105",
+    "typescript": "^2.3.2",
     "webpack": "^1.14.0",
     "webpack-dev-middleware": "^1.9.0",
     "webpack-hot-middleware": "^2.14.0"

@@ -1,5 +1,6 @@
+import { Claim } from 'poet-js';
+
 import { FetchStatus } from '../enums/FetchStatus'
-import { Claim } from '../Claim';
 import { WorkOffering, Work } from '../Interfaces';
 
 export interface PoetAppState {

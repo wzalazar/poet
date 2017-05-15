@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as moment from 'moment';
+import { Claim } from 'poet-js';
 
 import { ClassNameProps } from '../../common';
-import { Claim } from '../../Claim';
 
 interface WorkDetailsProps extends ClassNameProps {
   readonly work: Claim;

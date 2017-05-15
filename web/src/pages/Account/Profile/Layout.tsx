@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Action } from 'redux';
 import * as classNames from 'classnames';
+import { Claim, ClaimTypes } from 'poet-js'
 
 import { Configuration } from '../../../configuration';
 
 import { ClassNameProps } from "../../../common";
 import { ProfileAttributes } from '../../../Interfaces';
-import { PROFILE, Claim } from '../../../Claim';
 import { ImageUpload } from '../../../components/molecules/ImageUpload';
 import { Images } from '../../../images/Images';
 
@@ -128,7 +128,7 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
 
   private onSubmit = () => {
     this.props.submitProfileRequested({
-      type: PROFILE,
+      type: ClaimTypes.PROFILE,
       attributes: {
         displayName: this.state.displayName,
         name: this.state.name,

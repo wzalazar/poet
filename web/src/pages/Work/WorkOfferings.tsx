@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
+import { ClaimTypes } from 'poet-js'
 
 import { Work, WorkOffering } from "../../Interfaces";
 import { PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
@@ -44,6 +45,7 @@ export class WorkOfferings extends PoetAPIResourceProvider<Work, WorkOfferingsPr
       },
       offerings: [{
         id: 'id',
+        type: ClaimTypes.OFFERING,
         owner: '',
         publicKey: '',
         signature: '',
