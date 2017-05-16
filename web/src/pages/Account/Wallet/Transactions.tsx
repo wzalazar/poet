@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { UrlObject } from 'poet-js';
 
-import { UrlObject } from '../../../common';
 import { publicKeyToAddress } from '../../../bitcoin/addressHelpers';
 import { SelectProfileById } from '../../../components/atoms/Arguments';
 import { PoetAPIResourceProvider } from '../../../components/atoms/base/PoetApiResource';

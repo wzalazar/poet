@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { Link } from 'react-router';
-import { Work } from 'poet-js';
+import { Work, UrlObject } from 'poet-js';
 
 import { Images } from '../../images/Images';
-import { UrlObject } from '../../common';
 import { DispatchesTransferRequested } from '../../actions/requests';
 import { HEADER_X_TOTAL_COUNT, PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
 import { SelectProfileById } from '../../components/atoms/Arguments';

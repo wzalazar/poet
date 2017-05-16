@@ -1,5 +1,5 @@
 import { Configuration } from '../../../configuration';
-import { UrlObject, isUrlObject, urlObjectToUrl } from '../../../common';
+import { UrlObject, isUrlObject, urlObjectToUrl } from 'poet-js';
 import { ResourceProvider } from '../../ResourceProvider';
 
 export abstract class PoetAPIResourceProvider<Resource, PropTypes, State> extends ResourceProvider<Resource, PropTypes, State> {
