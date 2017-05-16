@@ -1,13 +1,11 @@
 import * as React from 'react';
 import moment = require('moment');
 import * as classNames from 'classnames';
+import { Headers } from 'poet-js'
 
 import { Configuration } from '../../../configuration';
 import { NotificationsStore, Notification } from '../../../store/PoetAppState';
-import {
-  HEADER_X_TOTAL_COUNT, HEADER_X_UNREAD,
-  PoetAPIResourceProvider
-} from '../../../components/atoms/base/PoetApiResource';
+import { PoetAPIResourceProvider } from '../../../components/atoms/base/PoetApiResource';
 import { Pagination } from '../../../components/molecules/Pagination';
 import { renderEventMessage } from './Model';
 
@@ -48,8 +46,8 @@ export class NotificationsLayout extends PoetAPIResourceProvider<ReadonlyArray<N
   }
 
   renderElement(notifications: ReadonlyArray<Notification>, headers: Headers) {
-    const totalCount = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
-    const unread = headers.get(HEADER_X_UNREAD) && parseInt(headers.get(HEADER_X_UNREAD));
+    const totalCount = headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount));
+    const unread = headers.get(Headers.Unread) && parseInt(headers.get(Headers.Unread));
 
     this.latestNotifications = notifications;
     this.latestNotificationCount = totalCount;

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 import * as moment from 'moment';
-import { Work, Profile } from 'poet-js';
+import { Work, Profile, Headers } from 'poet-js';
 
-import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from './base/PoetApiResource';
+import { PoetAPIResourceProvider } from './base/PoetApiResource';
 import { SelectWorkById } from './Arguments';
 import { ProfileNameWithLink } from './Profile';
 
@@ -85,7 +85,7 @@ export class WorksCounter extends PoetAPIResourceProvider<any, undefined, undefi
 
   renderElement(works: any, headers: Headers) {
     return (<span>
-      {headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT))}
+      {headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount))}
     </span>)
   }
 }
@@ -97,7 +97,7 @@ export class BlocksCounter extends PoetAPIResourceProvider<any, undefined, undef
 
   renderElement(blocks: any, headers: Headers) {
     return (<span>
-      {headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT))}
+      {headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount))}
     </span>)
   }
 }

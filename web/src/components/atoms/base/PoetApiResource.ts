@@ -17,6 +17,3 @@ export abstract class PoetAPIResourceProvider<Resource, PropTypes, State> extend
     }
   }
 }
-
-export const HEADER_X_TOTAL_COUNT = 'X-Total-Count';
-export const HEADER_X_UNREAD = 'X-Unread';

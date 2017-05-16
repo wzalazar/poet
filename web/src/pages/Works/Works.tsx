@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import * as classNames from 'classnames';
-import { Work, LicenseType } from 'poet-js';
+import { Work, LicenseType, Headers } from 'poet-js';
 
 import { Configuration } from '../../configuration';
-import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../../components/atoms/base/PoetApiResource';
+import { PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
 import { WorkNameWithLink, AuthorWithLink } from '../../components/atoms/Work';
 import { TimeElapsedSinceTimestamp } from '../../components/atoms/Claim';
 import { Pagination } from '../../components/molecules/Pagination';
@@ -48,7 +48,7 @@ export class Works extends PoetAPIResourceProvider<WorksResource, WorksProps, un
   }
 
   renderElement(works: WorksResource, headers: Headers) {
-    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+    const count = headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount));
     return this.renderWorks(works, count);
   }
 
@@ -64,7 +64,7 @@ export class Works extends PoetAPIResourceProvider<WorksResource, WorksProps, un
   }
 
   componentDidFetch(works: WorksResource, headers: Headers) {
-    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+    const count = headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount));
     this.lastFetchedWorks = works;
     this.lastFetchedCount = count;
   }

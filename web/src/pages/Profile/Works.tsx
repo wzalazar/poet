@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Link } from 'react-router';
-import { Work, UrlObject } from 'poet-js';
+import { Work, UrlObject, Headers } from 'poet-js';
 
 import { Images } from '../../images/Images';
 import { DispatchesTransferRequested } from '../../actions/requests';
-import { HEADER_X_TOTAL_COUNT, PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
+import { PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
 import { SelectProfileById } from '../../components/atoms/Arguments';
 import { SearchInput } from '../../components/atoms/SearchInput';
 import { ProfileNameWithLink } from '../../components/atoms/Profile';
@@ -42,7 +42,7 @@ export class WorksTab extends PoetAPIResourceProvider<Work[], WorksTabProps, Wor
   }
 
   renderElement(works: Work[], headers: Headers) {
-    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+    const count = headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount));
     return count ? this.renderWorks() : this.renderNoWorks();
   }
 

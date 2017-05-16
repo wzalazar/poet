@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { browserHistory } from 'react-router';
 import * as classNames from 'classnames';
-import { Work, UrlObject } from 'poet-js';
+import { Work, UrlObject, Headers } from 'poet-js';
 
 import { Images } from '../../images/Images';
 import { Configuration } from '../../configuration';
 import { DispatchesTransferRequested } from '../../actions/requests';
-import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../atoms/base/PoetApiResource';
-import { WorkNameWithLink, WorkType, WorkPublishedDate } from '../atoms/Work';
+import { PoetAPIResourceProvider } from '../atoms/base/PoetApiResource';
+import { WorkNameWithLink, WorkType } from '../atoms/Work';
 import { SelectWorksByOwner } from '../atoms/Arguments';
 import { Hash } from '../atoms/Hash';
 import { Pagination } from '../molecules/Pagination';
@@ -65,7 +65,7 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
   }
 
   renderElement(works: Work[], headers: Headers) {
-    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+    const count = headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount));
 
     if (!count)
       return this.renderNoWorks();
@@ -79,7 +79,7 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
   }
 
   componentDidFetch(works: Work[], headers: Headers) {
-    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+    const count = headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount));
 
     this.lastFetchedWorks = works;
     this.lastFetchedCount = count;

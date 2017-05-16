@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 import * as classNames from 'classnames';
-import { License } from 'poet-js';
+import { License, Headers } from 'poet-js';
 
 import '../../extensions/String';
 
 import { Images } from '../../images/Images';
 import { Configuration } from '../../configuration';
 import { OwnerName } from '../atoms/Work';
-import { TimeSinceIssueDate, ReferencedWorkNameWithLink, ReferencedWorkName } from '../atoms/License';
+import { TimeSinceIssueDate, ReferencedWorkName } from '../atoms/License';
 import { OfferingType } from '../atoms/Offering';
-import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../atoms/base/PoetApiResource';
+import { PoetAPIResourceProvider } from '../atoms/base/PoetApiResource';
 import { DropdownMenu } from '../DropdownMenu';
 import { Pagination } from '../molecules/Pagination';
 
@@ -63,7 +63,7 @@ export class LicensesByProfile extends PoetAPIResourceProvider<LicensesResource,
   }
 
   renderElement(licenses: LicensesResource, headers: Headers) {
-    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+    const count = headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount));
     return (licenses && licenses.length) ? this.renderLicenses(licenses, count) : this.renderNoLicenses();
   }
 
@@ -72,7 +72,7 @@ export class LicensesByProfile extends PoetAPIResourceProvider<LicensesResource,
   }
 
   componentDidFetch(licenses: LicensesResource, headers: Headers) {
-    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+    const count = headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount));
     this.lastFetchedLicenses = licenses;
     this.lastFetchedCount = count;
   }
