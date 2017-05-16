@@ -105,8 +105,7 @@ export class ProfileLayout extends React.Component<UserProfileProps & ProfileAtt
               <div className="col-sm-4 col-md-3 flex-xs-first flex-sm-last">
                 <div className="profile-picture field">
                   <ImageUpload
-                    className="image-upload"
-                    classNames={[this.state.imageData && 'loaded']}
+                    className={classNames('image-upload', this.state.imageData && 'loaded')}
                     buttonClassName="button-secondary"
                     imageWidthLimit={Configuration.imageUpload.maxWidth}
                     imageHeightLimit={Configuration.imageUpload.maxHeight}

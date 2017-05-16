@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as classNames from 'classnames';
 
 import { ClassNameProps } from '../../common';
 
@@ -33,7 +32,7 @@ export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadSt
 
   render() {
     return (
-      <section className={classNames(this.props.className, ...this.props.classNames)} >
+      <section className={this.props.className} >
         <input
           type="file"
           ref={fileInput => this.fileInput = fileInput}

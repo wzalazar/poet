@@ -29,7 +29,6 @@ export const LicenseTypes: ReadonlyArray<LicenseType> = [
 
 export interface ClassNameProps {
   readonly className?: string;
-  readonly classNames?: ReadonlyArray<string>;
 }
 
 export interface UrlObject {
