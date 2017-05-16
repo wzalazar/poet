@@ -1,7 +1,5 @@
 import * as React from 'react';
-
-import { HexString } from '../../common';
-import { WorkOffering, Work } from '../../Interfaces';
+import { HexString, WorkOffering, Work } from 'poet-js';
 
 import { Overview } from './Overview';
 import { WorkOfferings } from './WorkOfferings';

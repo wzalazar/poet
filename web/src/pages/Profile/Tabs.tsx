@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { connect } from 'react-redux';
+import { HexString } from 'poet-js';
 
-import { HexString } from '../../common';
 import { Actions } from '../../actions/index';
 import { DispatchesTransferRequested } from '../../actions/requests';
 import { WorksTab } from './Works';

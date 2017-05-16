@@ -1,9 +1,9 @@
 import * as React from 'react';
+import { Work } from 'poet-js';
 
 import '../../extensions/String';
 
 import { Images } from '../../images/Images';
-import { Work } from '../../Interfaces';
 import { ProfileNameWithLink, ProfilePictureById } from '../../components/atoms/Profile';
 import { WorkById } from '../../components/atoms/Work';
 

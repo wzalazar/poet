@@ -1,8 +1,7 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
-import { ClaimTypes } from 'poet-js'
+import { ClaimTypes, Work, WorkOffering } from 'poet-js'
 
-import { Work, WorkOffering } from "../../Interfaces";
 import { PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
 
 import './WorkOfferings.scss';

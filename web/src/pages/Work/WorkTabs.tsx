@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+import { HexString } from 'poet-js';
 
 import '../../extensions/Array'
-
-import { HexString } from '../../common';
 
 import { ContentTab } from './Tabs/ContentTab';
 import HistoryTab from './Tabs/HistoryTab';

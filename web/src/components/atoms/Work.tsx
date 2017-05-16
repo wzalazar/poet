@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 import * as moment from 'moment';
+import { Work, Profile } from 'poet-js';
 
 import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from './base/PoetApiResource';
-import { Work, Profile } from '../../Interfaces';
 import { SelectWorkById } from './Arguments';
 import { ProfileNameWithLink } from './Profile';
 

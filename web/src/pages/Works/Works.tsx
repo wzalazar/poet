@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import * as classNames from 'classnames';
+import { Work } from 'poet-js';
 
 import { Configuration } from '../../configuration';
 import { LicenseType } from '../../common';
-import { Work } from '../../Interfaces';
 import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../../components/atoms/base/PoetApiResource';
 import { WorkNameWithLink, AuthorWithLink } from '../../components/atoms/Work';
 import { TimeElapsedSinceTimestamp } from '../../components/atoms/Claim';

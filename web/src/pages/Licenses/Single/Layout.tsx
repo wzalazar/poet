@@ -1,14 +1,16 @@
 import * as React from 'react';
-import './Layout.scss';
-import { License } from '../../../Interfaces';
+import * as moment from 'moment'
+import { License } from 'poet-js';
+
+import { Configuration } from '../../../configuration';
 import { SelectLicenseById } from '../../../components/atoms/Arguments';
 import { ReferencedWorkNameWithLink } from '../../../components/atoms/License';
 import { PoetAPIResourceProvider } from '../../../components/atoms/base/PoetApiResource';
 import { LicenseOwnerNameWithLink, LicenseEmitterNameWithLink, LicenseEmittedDate } from '../../../components/atoms/Profile';
 import { WorkHashById } from '../../../components/atoms/Work';
-import moment = require('moment');
-import { Configuration } from '../../../configuration';
 import { badge } from '../../../helpers/LicenseBadge';
+
+import './Layout.scss';
 
 export class SingleLicense extends PoetAPIResourceProvider<License, SelectLicenseById, undefined> {
 

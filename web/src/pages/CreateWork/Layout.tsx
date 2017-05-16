@@ -1,9 +1,10 @@
 import * as React from 'react'
+import { Work } from 'poet-js'
 
 import * as Common from '../../common';
+
 import { Configuration } from '../../configuration'
 import { publicKeyToAddress } from '../../bitcoin/addressHelpers'
-import { Work } from "../../Interfaces"
 
 import { StepRegister, StepRegisterData } from './StepRegister/StepRegister'
 import { AttributeData } from './StepRegister/Attribute'

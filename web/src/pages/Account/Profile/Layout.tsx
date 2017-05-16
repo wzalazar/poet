@@ -1,29 +1,28 @@
 import * as React from 'react';
 import { Action } from 'redux';
 import * as classNames from 'classnames';
-import { Claim, ClaimTypes } from 'poet-js'
+import { Claim, ClaimTypes, ProfileAttributes } from 'poet-js'
 
 import { Configuration } from '../../../configuration';
 
 import { ClassNameProps } from "../../../common";
-import { ProfileAttributes } from '../../../Interfaces';
 import { ImageUpload } from '../../../components/molecules/ImageUpload';
 import { Images } from '../../../images/Images';
 
 import './Layout.scss';
 
-export interface UserProfileProps extends ProfileAttributes {
+export interface UserProfileProps {
   readonly submitProfileRequested?: (payload: Claim) => Action;
 }
 
-export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttributes> {
+export class ProfileLayout extends React.Component<UserProfileProps & ProfileAttributes, ProfileAttributes> {
 
-  constructor(props: UserProfileProps) {
+  constructor(props: UserProfileProps & ProfileAttributes) {
     super(...arguments);
     this.state = ProfileLayout.propsToState(props)
   }
 
-  componentWillReceiveProps(props: UserProfileProps) {
+  componentWillReceiveProps(props: UserProfileProps & ProfileAttributes) {
     const propsChanged = () => {
       return !(
         this.props.displayName === props.displayName &&
@@ -40,7 +39,7 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
     this.setState(ProfileLayout.propsToState(props))
   }
 
-  private static propsToState(props: UserProfileProps) {
+  private static propsToState(props: ProfileAttributes) {
     return {
       displayName: props.displayName,
       name: props.name,

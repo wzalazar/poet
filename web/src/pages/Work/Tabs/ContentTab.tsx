@@ -1,10 +1,9 @@
 import * as React from 'react';
+import { Work } from 'poet-js';
 
-import { Work } from '../../../Interfaces';
-import WorkComponent from '../../../components/hocs/WorkComponent';
+import { WorkById } from '../../../components/atoms/Work';
 
 import './ContentTab.scss';
-import { WorkById } from '../../../components/atoms/Work';
 
 export class ContentTab extends WorkById<undefined> {
 

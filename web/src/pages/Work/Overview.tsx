@@ -1,12 +1,11 @@
 import * as React from 'react'
 import * as moment from 'moment'
 import * as classNames from 'classnames'
-import { ClaimTypes } from 'poet-js'
+import { ClaimTypes, Work } from 'poet-js'
 
 import '../../extensions/Map'
 
 import { Configuration } from '../../configuration'
-import { Work } from '../../Interfaces'
 import { AuthorWithLink, WorkById } from '../../components/atoms/Work'
 
 import './Overview.scss'

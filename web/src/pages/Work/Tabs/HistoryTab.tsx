@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as moment from 'moment';
+import { Work } from 'poet-js';
 
 import { Images } from '../../../images/Images';
-import { Work } from '../../../Interfaces';
 import { NotificationEvent } from '../../../store/PoetAppState';
 import WorkComponent from '../../../components/hocs/WorkComponent';
 import { PoetAPIResourceProvider } from '../../../components/atoms/base/PoetApiResource';

@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 import * as classNames from 'classnames';
+import { License } from 'poet-js';
 
 import '../../extensions/String';
 
 import { Images } from '../../images/Images';
 import { Configuration } from '../../configuration';
 import { OwnerName } from '../atoms/Work';
-import { License } from '../../Interfaces';
 import { TimeSinceIssueDate, ReferencedWorkNameWithLink, ReferencedWorkName } from '../atoms/License';
 import { OfferingType } from '../atoms/Offering';
 import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../atoms/base/PoetApiResource';

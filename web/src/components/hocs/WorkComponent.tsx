@@ -1,5 +1,6 @@
+import { Work } from 'poet-js';
+
 import { Configuration } from '../../configuration';
-import { Work } from '../../Interfaces';
 
 import FetchComponent from './FetchComponent';
 

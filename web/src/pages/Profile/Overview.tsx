@@ -1,14 +1,14 @@
-import * as React from 'react';
-import { Link, browserHistory } from "react-router";
-import * as classNames from 'classnames';
+import * as React from 'react'
+import { Link, browserHistory } from "react-router"
+import * as classNames from 'classnames'
+import { ClaimTypes, Profile } from 'poet-js'
 
-import { Images } from '../../images/Images';
-import { Profile } from '../../Interfaces';
-import { Hash } from '../../components/atoms/Hash';
-import { PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
-import { SelectProfileById } from '../../components/atoms/Arguments';
+import { Images } from '../../images/Images'
+import { Hash } from '../../components/atoms/Hash'
+import { PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource'
+import { SelectProfileById } from '../../components/atoms/Arguments'
 
-import './Overview.scss';
+import './Overview.scss'
 
 interface OverviewProps extends SelectProfileById {
   readonly sessionPublicKey: string;
@@ -17,37 +17,38 @@ interface OverviewProps extends SelectProfileById {
 export class Overview extends PoetAPIResourceProvider<any, OverviewProps, undefined> {
 
   poetURL() {
-    return '/profiles/' + this.props.profileId;
+    return '/profiles/' + this.props.profileId
   }
 
   renderElement(profile: Profile) {
-    const isAuthorized = this.props.sessionPublicKey && (this.props.sessionPublicKey === this.props.profileId);
+    const isAuthorized = this.props.sessionPublicKey && (this.props.sessionPublicKey === this.props.profileId)
 
     if (profile) {
-      return this.renderProfile(profile, isAuthorized);
+      return this.renderProfile(profile, isAuthorized)
     } else {
-      return this.renderNoProfile(isAuthorized);
+      return this.renderNoProfile(isAuthorized)
     }
   }
 
   renderLoading() {
     return this.renderProfile({
       id: 'Id',
+      type: ClaimTypes.PROFILE,
       displayName: 'Name',
       attributes: {
         bio: 'Bio',
         email: 'Email',
         displayName: 'Name'
       }
-    }, false, true);
+    }, false, true)
   }
 
   componentWillUnmount() {
-    document.title = 'Poet';
+    document.title = 'Poet'
   }
 
   private renderProfile(profile: Profile, isAuthorized: boolean, isLoading?: boolean) {
-    document.title = profile.displayName || 'Profile';
+    document.title = profile.displayName || 'Profile'
     return (
       <div className={classNames('overview', 'col-sm-3', isLoading && 'loading')}>
         <div className={classNames('avatar', isAuthorized && 'authorized')} onClick={isAuthorized && this.onAvatarClick}>
@@ -80,6 +81,6 @@ export class Overview extends PoetAPIResourceProvider<any, OverviewProps, undefi
   }
 
   private onAvatarClick = () => {
-    browserHistory.push('/account/profile');
+    browserHistory.push('/account/profile')
   }
 }

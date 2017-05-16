@@ -1,8 +1,8 @@
 import * as React from 'react';
+import { BlockInfo } from 'poet-js';
 
 import LatestWorks from '../../components/molecules/LatestWorks'
 import BlockHeader from './components/Header'
-import { BlockInfo } from '../../Interfaces';
 import { Blocks } from './Blocks';
 
 import './Layout.scss'

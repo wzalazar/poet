@@ -1,7 +1,7 @@
 import { Claim } from 'poet-js';
+import { WorkOffering, Work } from 'poet-js';
 
 import { FetchStatus } from '../enums/FetchStatus'
-import { WorkOffering, Work } from '../Interfaces';
 
 export interface PoetAppState {
   readonly session: SessionStore
