@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
 const Autocomplete = require('react-autocomplete');
+import { ClassNameProps } from 'poet-js';
 
 import { PoetAPIResourceProvider } from './base/PoetApiResource';
-import { ClassNameProps } from '../../common';
 
 interface ProfileAutocompleteResource {
   readonly id: string;

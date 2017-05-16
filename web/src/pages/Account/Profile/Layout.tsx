@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { Action } from 'redux';
 import * as classNames from 'classnames';
-import { Claim, ClaimTypes, ProfileAttributes } from 'poet-js'
+import { Claim, ClaimTypes, ProfileAttributes, ClassNameProps } from 'poet-js'
 
 import { Configuration } from '../../../configuration';
-
-import { ClassNameProps } from "../../../common";
 import { ImageUpload } from '../../../components/molecules/ImageUpload';
 import { Images } from '../../../images/Images';
 

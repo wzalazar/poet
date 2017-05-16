@@ -1,8 +1,8 @@
-import * as React from 'react';
-const classNames = require('classnames');
+import * as React from 'react'
+import * as classNames from 'classnames'
+import { ClassNameProps } from 'poet-js'
 
-import { ClassNameProps } from '../../common';
-import { Configuration } from '../../configuration';
+import { Configuration } from '../../configuration'
 
 export interface PaginationProps extends ClassNameProps {
   readonly offset: number;

@@ -1,9 +1,9 @@
-import * as React from 'react';
-const classNames = require('classnames');
+import * as React from 'react'
+import * as classNames from 'classnames'
 
-import { LicenseType, ClassNameProps } from '../../../common';
+import { LicenseType, ClassNameProps } from 'poet-js'
 
-import './LicensePreview.scss';
+import './LicensePreview.scss'
 
 export interface LicensePreviewProps extends ClassNameProps {
   readonly licenseType?: LicenseType;

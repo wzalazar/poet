@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 
-import { Images } from '../../images/Images';
 import { SearchInput } from '../../components/atoms/SearchInput';
 import { HEADER_X_TOTAL_COUNT, PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
 import { ProfileNameWithLink } from '../../components/atoms/Profile';

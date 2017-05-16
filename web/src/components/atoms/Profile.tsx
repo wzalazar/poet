@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 import * as moment from 'moment';
-import { Profile, License } from 'poet-js';
+import { Profile, License, ClassNameProps } from 'poet-js';
 
 import { Configuration } from '../../configuration';
 import { Images } from '../../images/Images';
-import { ClassNameProps } from "../../common";
 import { PoetAPIResourceProvider } from './base/PoetApiResource';
 import { SelectProfileById } from './Arguments';
 

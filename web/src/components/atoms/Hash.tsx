@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { ClassNameProps } from 'poet-js';
 
-import { ClassNameProps } from '../../common';
 import { CopyableText } from './CopyableText';
 
 import './Hash.scss';

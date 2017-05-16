@@ -1,13 +1,13 @@
-import * as React from 'react';
-const classNames = require('classnames');
+import * as React from 'react'
+import * as classNames from 'classnames'
+import { ClassNameProps } from 'poet-js'
 
-import { ClassNameProps } from '../../common';
-import { Images } from '../../images/Images';
+import { Images } from '../../images/Images'
 
 interface SearchInputProps extends ClassNameProps {
-  readonly value: string;
-  readonly onChange: (value: string) => void;
-  readonly placeholder: string;
+  readonly value: string
+  readonly onChange: (value: string) => void
+  readonly placeholder: string
 }
 
 export class SearchInput extends React.Component<SearchInputProps, undefined> {

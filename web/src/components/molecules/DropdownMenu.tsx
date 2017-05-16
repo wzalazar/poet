@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
-
-import { ClassNameProps } from '../../common';
+import { ClassNameProps } from 'poet-js';
 
 export interface DropdownMenuProps extends ClassNameProps {
   readonly openClassName?: string;

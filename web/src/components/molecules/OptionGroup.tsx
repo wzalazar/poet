@@ -1,7 +1,6 @@
-import * as React from 'react';
-const classNames = require('classnames');
-
-import { ClassNameProps } from '../../common';
+import * as React from 'react'
+import * as classNames from 'classnames'
+import { ClassNameProps } from 'poet-js'
 
 export interface OptionGroupProps extends ClassNameProps {
   readonly selectedId: any;
