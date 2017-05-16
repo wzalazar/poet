@@ -1,4 +1,9 @@
 development: base-images
+	cd Docker && cp docker-compose.development.yml docker-compose.yml
+	cd Docker && docker-compose build
+
+staging: base-images
+	cd Docker && cp docker-compose.staging.yml docker-compose.yml
 	cd Docker && docker-compose build
 
 poet-js:
@@ -6,9 +11,6 @@ poet-js:
 
 poet-js-only:
 	cd Docker && docker-compose -f docker-compose.yml -f docker-compose.poet-js.yml build web
-
-staging: base-images
-	cd Docker && docker-compose -f docker-compose.yml -f docker-compose.staging.yml build
 
 base-images: prepare
 	docker build --file Docker/poet-base.dockerfile --tag poet-base:latest .
