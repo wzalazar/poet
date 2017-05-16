@@ -26,6 +26,7 @@ interface TryItOutProps {
 interface TryItOutState {
   readonly selectedTab?: Tabs;
   readonly text?: string;
+  readonly title?: string;
   readonly fileContent?: string;
   readonly fileName?: string;
   readonly isSubmitting?: boolean;
@@ -64,9 +65,9 @@ class TryItOutComponent extends React.Component<TryItOutProps, TryItOutState> {
             Timestamping into the blockchain is a permanent action — it cannot be reverted or undone
           </p>
           <small>
-            (this is how poet proves your ownership of intellectual property)
+            Po.et will include this information as soon as the Bitcoin network accepts the transaction
           </small>
-          <button className="button-primary" onClick={this.onSubmit} disabled={!this.canSubmit()}>Timestamp to the blockchain at  03-28-17 at 12:30:93</button>
+          <button className="button-primary" onClick={this.onSubmit} disabled={!this.canSubmit()}>Timestamp using Poet</button>
         </section>
       </Overlays.Modal>
     )
@@ -88,11 +89,19 @@ class TryItOutComponent extends React.Component<TryItOutProps, TryItOutState> {
   }
 
   private renderText() {
-    return <textarea
-      value={this.state.text}
-      onChange={(event: React.FormEvent<HTMLTextAreaElement>) => this.setState({ text: event.currentTarget.value })}
-      placeholder="Start typing..."
-    />;
+    return (<div>
+      <input
+        className="title-input"
+        type="text"
+        placeholder="Set a title for your work"
+        onChange={(event: React.FormEvent<HTMLInputElement>) => this.setState({ title: event.currentTarget.value })}
+      />
+      <textarea
+        value={this.state.text}
+        onChange={(event: React.FormEvent<HTMLTextAreaElement>) => this.setState({ text: event.currentTarget.value })}
+        placeholder="Start typing..."
+      />
+    </div>);
   }
 
   private renderUpload() {
@@ -119,7 +128,7 @@ class TryItOutComponent extends React.Component<TryItOutProps, TryItOutState> {
     this.props.submit([{
       type: 'Work',
       attributes: [
-        { key: 'name', value: this.state.selectedTab === Tabs.UploadFile && this.state.fileName },
+        { key: 'name', value: this.state.selectedTab === Tabs.UploadFile ? this.state.fileName : this.state.title },
         { key: 'mediaType', value: 'article' },
         { key: 'articleType', value: 'news-article' },
         { key: 'content', value: this.state.selectedTab === Tabs.Text ? this.state.text : this.state.fileContent },
