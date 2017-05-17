@@ -31,12 +31,13 @@ function render(props: RootLayoutProps) {
   const worksUrl = 'works';
   const loginUrl = 'login';
   const marketingLandingUrl = 'marketing-landing';
+  const isLoggedIn = props.loggedIn || !location;
 
   const navbarShadow = ![worksUrl, ''].includes(location);
-  const navbarTransparent = [''].includes(location) && props.loggedIn;
+  const navbarTransparent = ([''].includes(location)) && isLoggedIn;
   const navbarMargin = ![worksUrl].includes(location);
-  const displayNavbarLogo = ![''].includes(location) || !props.loggedIn;
-  const displayNavbarSearch = ![''].includes(location) || !props.loggedIn;
+  const displayNavbarLogo = ![''].includes(location) || !isLoggedIn;
+  const displayNavbarSearch = ![''].includes(location) || !isLoggedIn;
   const searchShadow = [worksUrl].includes(location);
   const displayNavbar = ![loginUrl, marketingLandingUrl].includes(location);
 

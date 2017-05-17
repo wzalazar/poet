@@ -44,15 +44,10 @@ export const LandingLoggedIn = connect(() => ({}), mapDispatch)(
               </form>
             </section>
           </div>
-          <div className="latest-blocks-and-works">
-            <div className="container">
-              <div className="row">
-                <div className="col-sm-6">
-                  <LatestBlocks/>
-                </div>
-                <div className="col-sm-6">
-                  <LatestWorks showLink={true} />
-                </div>
+          <div className="container">
+            <div className="row">
+              <div className="col-sm-8 offset-sm-2">
+                <LatestWorks showLink={true} />
               </div>
             </div>
           </div>
