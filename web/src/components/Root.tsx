@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Tabs } from 'react-tabs';
+import * as classNames from 'classnames'
 
 import '../extensions/String';
 import Constants from '../constants';
+import { Alpha } from './molecules/Alpha'
 import { Navbar } from "./organisms/Navbar";
 import { Footer } from './organisms/Footer';
 import { Modals } from './modals';
@@ -40,6 +42,7 @@ function render(props: RootLayoutProps) {
   const displayNavbarSearch = ![''].includes(location) || !isLoggedIn;
   const searchShadow = [worksUrl].includes(location);
   const displayNavbar = ![loginUrl, marketingLandingUrl].includes(location);
+  const displayAlpha = location !== '';
 
   return (
     <div className="root-layout">
@@ -50,8 +53,12 @@ function render(props: RootLayoutProps) {
         displaySearch={displayNavbarSearch}
         transparent={navbarTransparent}
         searchShadow={searchShadow}
-        margin={navbarMargin}
       /> }
+      { displayAlpha && <section className={classNames('alpha', navbarMargin && 'margin')}>
+        <div className="container">
+          <Alpha />
+        </div>
+      </section> }
       { props.children }
       { location !== loginUrl && <Footer/> }
     </div>
