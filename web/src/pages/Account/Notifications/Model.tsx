@@ -1,24 +1,11 @@
 import * as React from 'react';
 
-import { NotificationEvent } from '../../../store/PoetAppState';
+import { Api } from 'poet-js';
 import { WorkNameWithLinkById } from '../../../components/atoms/Work';
 import { ProfileNameWithLink } from '../../../components/atoms/Profile';
+import EventType = Api.Events.EventType
 
-export enum EventType {
-  WORK_CREATED,
-  PROFILE_CREATED,
-  TITLE_ASSIGNED,
-  TITLE_REVOKED,
-  LICENSE_OFFERED,
-  LICENSE_BOUGHT,
-  LICENSE_SOLD,
-  SELF_LICENSE,
-  WORK_MODIFIED,
-  WORK_TRANSFERRED,
-  BLOCKCHAIN_STAMP,
-}
-
-export const renderEventMessage = (event: NotificationEvent) => {
+export const renderEventMessage = (event: Api.Events.Resource) => {
   switch (event.type) {
     case EventType.WORK_CREATED:
       return <span>Creative work registered by <ProfileNameWithLink profileId={event.actorId} >{event.actorDisplayName}</ProfileNameWithLink></span>;

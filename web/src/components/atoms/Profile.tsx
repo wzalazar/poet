@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 import * as moment from 'moment';
-import { Profile, License, ClassNameProps } from 'poet-js';
+import { Api, License, ClassNameProps } from 'poet-js';
 
 import { Configuration } from '../../configuration';
 import { Images } from '../../images/Images';
 import { PoetAPIResourceProvider } from './base/PoetApiResource';
 import { SelectProfileById } from './Arguments';
 
-export abstract class ProfileById<Props> extends PoetAPIResourceProvider<Profile, SelectProfileById & Props, undefined> {
+export abstract class ProfileById<Props> extends PoetAPIResourceProvider<Api.Profile.Resource, SelectProfileById & Props, undefined> {
 
-  poetURL(): string {
-    return '/profiles/' + this.props.profileId;
+  poetURL() {
+    return Api.Profile.url(this.props.profileId)
   }
 
 }
@@ -22,7 +22,7 @@ interface ProfileNameProps {
 
 export class ProfileName extends ProfileById<ProfileNameProps> {
 
-  renderElement(profile: Profile) {
+  renderElement(profile: Api.Profile.Resource) {
     return profile
       ? <span>{ profile.displayName || 'Anonymous' }</span>
       : this.renderError(null);
@@ -47,7 +47,7 @@ export class ProfileName extends ProfileById<ProfileNameProps> {
 
 export class ProfileNameWithLink extends ProfileById<ClassNameProps> {
 
-  renderElement(profile: Profile) {
+  renderElement(profile: Api.Profile.Resource) {
     return <Link to={"/profiles/" + profile.id} className={this.props.className}>{ profile.displayName || 'Anonymous' }</Link>
   }
 
@@ -67,7 +67,7 @@ export class ProfileNameWithLink extends ProfileById<ClassNameProps> {
 
 export class ProfileBio extends ProfileById<undefined> {
 
-  renderElement(profile: Profile) {
+  renderElement(profile: Api.Profile.Resource) {
     return <div>{profile.attributes.bio}</div>
   }
 
@@ -106,7 +106,7 @@ export function LicenseEmittedDate(props: { license: License }) {
 
 export class ProfilePictureById extends ProfileById<ClassNameProps> {
 
-  renderElement(resource: Profile): JSX.Element {
+  renderElement(resource: Api.Profile.Resource): JSX.Element {
     if (!resource.attributes || !resource.attributes.imageData) {
       return <img src={Images.Anon} />
     }

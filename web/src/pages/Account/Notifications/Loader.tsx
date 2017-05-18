@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Route } from 'react-router';
+import { Api } from 'poet-js'
 
 import PageLoader, { ReducerDescription } from '../../../components/PageLoader';
-import { NotificationsStore, Notification, PoetAppState } from '../../../store/PoetAppState';
+import { NotificationsStore, PoetAppState } from '../../../store/PoetAppState';
 import { Actions } from '../../../actions/index';
 import { NotificationsActions, NotificationsLayout } from './Layout';
 import { currentPublicKey } from '../../../selectors/session';
-
 
 export class NotificationsPage extends PageLoader<NotificationsStore, Object> {
 
@@ -14,7 +14,7 @@ export class NotificationsPage extends PageLoader<NotificationsStore, Object> {
 
   initialState(): NotificationsStore {
     return {
-      notifications: [] as ReadonlyArray<Notification>,
+      notifications: [] as ReadonlyArray<Api.Notifications.Resource>,
       unreadCount: 0,
       totalCount: 0
     };

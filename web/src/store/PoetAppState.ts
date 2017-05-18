@@ -1,5 +1,4 @@
-import { Claim } from 'poet-js';
-import { WorkOffering, Work } from 'poet-js';
+import { Claim, WorkOffering, Work, Api } from 'poet-js';
 
 import { FetchStatus } from '../enums/FetchStatus'
 
@@ -29,27 +28,9 @@ export interface ProfileStore {
 }
 
 export interface NotificationsStore {
-  readonly notifications: ReadonlyArray<Notification>;
+  readonly notifications: ReadonlyArray<Api.Notifications.Resource>;
   readonly unreadCount: number
   readonly totalCount: number
-}
-
-export interface Notification {
-  readonly id: number,
-  readonly user: string,
-  readonly read: boolean,
-  readonly event: NotificationEvent
-}
-
-export interface NotificationEvent {
-  readonly id: number,
-  readonly type: number,
-  readonly timestamp: number,
-  readonly claimReference: string,
-  readonly workId: string,
-  readonly workDisplayName?: string,
-  readonly actorId: string,
-  readonly actorDisplayName?: string
 }
 
 export interface FetchStore {
