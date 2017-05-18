@@ -5,7 +5,7 @@
   @include modal;
   font-family: "Roboto Slab";
   color: #413D3B;
-  width: 420px;
+  width: 480px;
   padding: 30px 25px 20px;
   align-items: center;
   text-align: center;
@@ -42,6 +42,10 @@
     li {
       flex: 1 1 auto;
     }
+  }
+
+  .text {
+    width: 100%;
   }
 
   .title-input {
@@ -99,6 +103,10 @@
     font-size: 12px;
     line-height: 18px;
     margin-bottom: 20px;
+  }
+
+  strong {
+    color: #DD5943;
   }
 
   small {

@@ -42,7 +42,7 @@ function render(props: RootLayoutProps) {
   const displayNavbarSearch = ![''].includes(location) || !isLoggedIn;
   const searchShadow = [worksUrl].includes(location);
   const displayNavbar = ![loginUrl, marketingLandingUrl].includes(location);
-  const displayAlpha = location !== '';
+  const displayAlpha = location !== '' && location !== 'login';
 
   return (
     <div className="root-layout">

@@ -54,7 +54,7 @@ class TryItOutComponent extends React.Component<TryItOutProps, TryItOutState> {
       >
         <section className="modal-try-it-out">
           <h1>Try Out Poet</h1>
-          <h2>This  explains  how your intellectual property is embedded in blockchain, it is also the quick and easiest way to timestamp if you dont need it attached to your profile  </h2>
+          <h2>Curious to see how Poet works? Write a quick message below to timestamp into the blockchain anonymously. As soon as the bitcoin network verifies your timestamp, your message will be securely embedded into the blockchain and relayed across the network. </h2>
           <OptionGroup selectedId={this.state.selectedTab} onOptionSelected={selectedTab => this.setState({ selectedTab })} className="option-group tab-option-group" >
             <Option id={Tabs.Text}>Text</Option>
             <Option id={Tabs.UploadFile}>Upload File</Option>
@@ -62,11 +62,7 @@ class TryItOutComponent extends React.Component<TryItOutProps, TryItOutState> {
           { this.state.selectedTab === Tabs.Text && this.renderText() }
           { this.state.selectedTab === Tabs.UploadFile && this.renderUpload() }
           <p>
-            Timestamping into the blockchain is a permanent action — it cannot be reverted or undone
-          </p>
-          <small>
-            Po.et will include this information as soon as the Bitcoin network accepts the transaction
-          </small>
+            <strong>Alpha Disclaimer</strong>: Poet is current in Alpha release, the current blockchain is for demoing purposes only and will be reset in the next phase.          </p>
           <button className="button-primary" onClick={this.onSubmit} disabled={!this.canSubmit()}>Timestamp using Poet</button>
         </section>
       </Overlays.Modal>
@@ -89,7 +85,7 @@ class TryItOutComponent extends React.Component<TryItOutProps, TryItOutState> {
   }
 
   private renderText() {
-    return (<div>
+    return (<div className="text">
       <input
         className="title-input"
         type="text"
