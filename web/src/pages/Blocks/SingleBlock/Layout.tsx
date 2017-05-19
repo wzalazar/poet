@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import { Api, Claim, ClaimTypes } from 'poet-js'
 
 import { Configuration } from '../../../configuration';
-import BlockHeader from '../components/Header'
+import { Header } from '../components/Header'
 import { normalizeToMillis } from '../../../components/atoms/Work';
 import { PoetAPIResourceProvider } from '../../../components/atoms/base/PoetApiResource'
 
@@ -24,7 +24,7 @@ export class Layout extends PoetAPIResourceProvider<Api.Blocks.Resource, LayoutP
     return (
       <div className="container">
         <section className="blocks">
-          <BlockHeader title={`Block #${block.id}`} />
+          <Header title={`Block #${block.id}`} />
           <div className="row">
             <div className="leftCol col-sm-6 col-md-4">
               <BlockInfo {...block} />
