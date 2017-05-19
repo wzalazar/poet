@@ -1,17 +1,12 @@
 import * as React from 'react'
 import { Route } from 'react-router'
 
-import { Configuration } from '../../../configuration';
 import PageLoader, { ReducerDescription } from '../../../components/PageLoader'
-import BlockLayout from './Layout'
-
-async function fetchBlocks() {
-  return await (await fetch(Configuration.api.explorer + '/blocks')).json()
-}
+import { Layout } from './Layout'
 
 export class SingleBlock extends PageLoader<Object, Object> {
 
-  component = BlockLayout;
+  component = Layout;
 
   initialState() {
     return {};
@@ -36,4 +31,5 @@ export class SingleBlock extends PageLoader<Object, Object> {
   mapDispatchToProps(): Object {
     return null;
   }
+
 }

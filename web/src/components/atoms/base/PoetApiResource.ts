@@ -2,7 +2,7 @@ import { Configuration } from '../../../configuration';
 import { UrlObject, isUrlObject, urlObjectToUrl } from 'poet-js';
 import { ResourceProvider } from '../../ResourceProvider';
 
-export abstract class PoetAPIResourceProvider<Resource, PropTypes, State> extends ResourceProvider<Resource, PropTypes, State> {
+export abstract class PoetAPIResourceProvider<Resource, PropTypes, State = undefined> extends ResourceProvider<Resource, PropTypes, State> {
   abstract poetURL(): string | UrlObject
 
   resourceLocator() {

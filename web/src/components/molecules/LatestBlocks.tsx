@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 import * as moment from 'moment';
-import { ClassNameProps } from 'poet-js';
+import { Api, ClassNameProps } from 'poet-js';
 
 import '../../extensions/String';
 
-import { Configuration } from '../../configuration';
-
-import { ResourceProvider } from '../ResourceProvider';
+import { PoetAPIResourceProvider } from '../atoms/base/PoetApiResource'
 
 import './LatestBlocks.scss';
 
@@ -24,13 +22,18 @@ export interface LatestBlocksProps extends ClassNameProps {
   readonly limit?: number;
 }
 
-export default class LatestBlocks extends ResourceProvider<LatestBlocksResource, LatestBlocksProps, undefined> {
+export class LatestBlocks extends PoetAPIResourceProvider<LatestBlocksResource, LatestBlocksProps, undefined> {
   static defaultProps: LatestBlocksProps = {
     limit: 5
   };
 
-  renderElement(blocks: LatestBlocksResource) {
+  poetURL() {
+    return Api.Blocks.url({
+      limit: this.props.limit
+    })
+  }
 
+  renderElement(blocks: LatestBlocksResource) {
     return (
       <table className={`latest-blocks ${this.props.className}`}>
         <thead>
@@ -44,10 +47,6 @@ export default class LatestBlocks extends ResourceProvider<LatestBlocksResource,
         </tbody>
       </table>
     );
-  }
-
-  resourceLocator() {
-    return { url: `${Configuration.api.explorer}/blocks?limit=${this.props.limit}` }
   }
 
   private renderBlock(props: Block) {

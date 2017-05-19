@@ -2,11 +2,11 @@ import * as React from 'react'
 import { Route } from 'react-router'
 
 import PageLoader, { ReducerDescription } from '../../../components/PageLoader'
-import ClaimLayout from './Layout'
+import { Layout } from './Layout'
 
 export class Claim extends PageLoader<Object, Object> {
 
-  component = ClaimLayout;
+  component = Layout;
 
   initialState() {
     return {};
