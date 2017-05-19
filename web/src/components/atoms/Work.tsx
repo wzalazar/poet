@@ -11,14 +11,14 @@ interface WorkProps {
   readonly work: Work;
 }
 
-abstract class ProfileByWorkOwner<State> extends PoetAPIResourceProvider<Api.Profile.Resource, SelectWorkById, State> {
+abstract class ProfileByWorkOwner<State> extends PoetAPIResourceProvider<Api.Profiles.Resource, SelectWorkById, State> {
   poetURL() {
     return `/profiles/ownerOf/${this.props.workId}`
   }
 }
 
 export class OwnerName extends ProfileByWorkOwner<undefined> {
-  renderElement(resource: Api.Profile.Resource) {
+  renderElement(resource: Api.Profiles.Resource) {
     return <span>{resource.attributes && resource.attributes.displayName || 'Anonymous'}</span>
   }
 }
@@ -79,26 +79,30 @@ export class WorkNameWithLinkById extends WorkById<undefined> {
 }
 
 export class WorksCounter extends PoetAPIResourceProvider<any, undefined, undefined> {
-  poetURL(): string {
-    return '/works'
+  poetURL() {
+    return Api.Works.Path
   }
 
   renderElement(works: any, headers: Headers) {
-    return (<span>
-      {headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount))}
-    </span>)
+    return (
+      <span>
+        {headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount))}
+      </span>
+    )
   }
 }
 
 export class BlocksCounter extends PoetAPIResourceProvider<any, undefined, undefined> {
-  poetURL(): string {
-    return '/blocks'
+  poetURL() {
+    return Api.Blocks.Path
   }
 
   renderElement(blocks: any, headers: Headers) {
-    return (<span>
-      {headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount))}
-    </span>)
+    return (
+      <span>
+        {headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount))}
+      </span>
+    )
   }
 }
 

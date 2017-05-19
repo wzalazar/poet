@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router';
-import { Work, UrlObject, Headers } from 'poet-js';
+import { Api, Headers } from 'poet-js';
 
 import { Images } from '../../images/Images';
 import { DispatchesTransferRequested } from '../../actions/requests';
@@ -21,7 +21,7 @@ interface WorksTabState {
   readonly profileId?: string;
 }
 
-export class WorksTab extends PoetAPIResourceProvider<Work[], WorksTabProps, WorksTabState> {
+export class WorksTab extends PoetAPIResourceProvider<ReadonlyArray<Api.Works.Resource>, WorksTabProps, WorksTabState> {
   private didLoading: boolean;
 
   constructor() {
@@ -31,17 +31,14 @@ export class WorksTab extends PoetAPIResourceProvider<Work[], WorksTabProps, Wor
     }
   }
 
-  poetURL(): UrlObject {
-    return {
-      url: `/works`,
-      query: {
-        relatedTo: this.props.profileId,
-        limit: 1,
-      }
-    }
+  poetURL() {
+    return Api.Works.url({
+      relatedTo: this.props.profileId,
+      limit: 1,
+    })
   }
 
-  renderElement(works: Work[], headers: Headers) {
+  renderElement(works: ReadonlyArray<Api.Works.Resource>, headers: Headers) {
     const count = headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount));
     return count ? this.renderWorks() : this.renderNoWorks();
   }

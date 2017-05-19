@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { browserHistory } from 'react-router';
 import * as classNames from 'classnames';
-import { Work, UrlObject, Headers } from 'poet-js';
+import { Api, Headers } from 'poet-js';
 
 import { Images } from '../../images/Images';
 import { Configuration } from '../../configuration';
@@ -32,8 +32,8 @@ interface WorksByProfileState {
   readonly offset?: number;
 }
 
-export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfileProps, WorksByProfileState> {
-  private lastFetchedWorks: Work[];
+export class WorksByProfile extends PoetAPIResourceProvider<ReadonlyArray<Api.Works.Resource>, WorksByProfileProps, WorksByProfileState> {
+  private lastFetchedWorks: ReadonlyArray<Api.Works.Resource>;
   private lastFetchedCount: number;
 
   static defaultProps: Partial<WorksByProfileProps> = {
@@ -47,16 +47,13 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
     }
   }
 
-  poetURL(): UrlObject {
-    return {
-      url: `/works`,
-      query: {
-        [this.props.relationship]: this.props.owner,
-        limit: this.props.limit,
-        offset: this.state.offset,
-        query: this.props.searchQuery
-      }
-    }
+  poetURL() {
+    return Api.Works.url({
+      [this.props.relationship]: this.props.owner,
+      limit: this.props.limit,
+      offset: this.state.offset,
+      query: this.props.searchQuery
+    })
   }
 
   componentWillReceiveProps(props: WorksByProfileProps) {
@@ -64,7 +61,7 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
       this.setState({ offset: 0 })
   }
 
-  renderElement(works: Work[], headers: Headers) {
+  renderElement(works: ReadonlyArray<Api.Works.Resource>, headers: Headers) {
     const count = headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount));
 
     if (!count)
@@ -78,14 +75,14 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
     return this.renderWorks(this.lastFetchedWorks, this.lastFetchedCount, true);
   }
 
-  componentDidFetch(works: Work[], headers: Headers) {
+  componentDidFetch(works: ReadonlyArray<Api.Works.Resource>, headers: Headers) {
     const count = headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount));
 
     this.lastFetchedWorks = works;
     this.lastFetchedCount = count;
   }
 
-  private renderWorks(works: Work[], count: number, isLoading?: boolean) {
+  private renderWorks(works: ReadonlyArray<Api.Works.Resource>, count: number, isLoading?: boolean) {
     return (
       <section className={classNames('works-by-profile', isLoading && 'loading', !works && 'no-content')}>
         <table className="works">
@@ -118,7 +115,7 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
     )
   }
 
-  private renderWork(work: Work) {
+  private renderWork(work: Api.Works.Resource) {
     return (
       <tr key={work.id}>
         <td className="name">
@@ -157,7 +154,7 @@ export class WorksByProfile extends PoetAPIResourceProvider<Work[], WorksByProfi
 
   private onOffset = (offset: number) => this.setState({ offset });
 
-  private optionSelected(work: Work, action: string) {
+  private optionSelected(work: Api.Works.Resource, action: string) {
     switch (action) {
       case EDIT:
         browserHistory.push('/works/' + work.id + '/edit');

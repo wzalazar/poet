@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 import * as classNames from 'classnames';
-import { License, Headers } from 'poet-js';
+import { Api, Headers } from 'poet-js';
 
 import '../../extensions/String';
 
@@ -16,7 +16,7 @@ import { Pagination } from '../molecules/Pagination';
 
 import './LicensesByProfile.scss';
 
-export type LicensesResource = ReadonlyArray<License>;
+export type LicensesResource = ReadonlyArray<Api.Licenses.Resource>;
 
 export type LicenseToProfileRelationship = 'relatedTo' | 'emitter' | 'holder';
 
@@ -51,15 +51,12 @@ export class LicensesByProfile extends PoetAPIResourceProvider<LicensesResource,
   }
 
   poetURL() {
-    return {
-      url: `/licenses`,
-      query: {
-        limit: this.props.limit,
-        offset: this.state.offset,
-        [this.props.relationship]: this.props.publicKey,
-        query: this.props.searchQuery
-      }
-    }
+    return Api.Licenses.url({
+      limit: this.props.limit,
+      offset: this.state.offset,
+      [this.props.relationship]: this.props.publicKey,
+      query: this.props.searchQuery
+    })
   }
 
   renderElement(licenses: LicensesResource, headers: Headers) {
@@ -105,7 +102,7 @@ export class LicensesByProfile extends PoetAPIResourceProvider<LicensesResource,
     )
   }
 
-  private renderLicense(license: License) {
+  private renderLicense(license: Api.Licenses.Resource) {
     return (
       <li key={license.id}>
         <header>
@@ -121,7 +118,7 @@ export class LicensesByProfile extends PoetAPIResourceProvider<LicensesResource,
     )
   }
 
-  private renderLicenseDropdownMenu(license: License) {
+  private renderLicenseDropdownMenu(license: Api.Licenses.Resource) {
     return (
       <div className="menu">
         <DropdownMenu options={['Revoke']} onOptionSelected={this.optionSelected.bind(this, license)}>

@@ -8,10 +8,10 @@ import { Images } from '../../images/Images';
 import { PoetAPIResourceProvider } from './base/PoetApiResource';
 import { SelectProfileById } from './Arguments';
 
-export abstract class ProfileById<Props> extends PoetAPIResourceProvider<Api.Profile.Resource, SelectProfileById & Props, undefined> {
+export abstract class ProfileById<Props> extends PoetAPIResourceProvider<Api.Profiles.Resource, SelectProfileById & Props, undefined> {
 
   poetURL() {
-    return Api.Profile.url(this.props.profileId)
+    return Api.Profiles.url(this.props.profileId)
   }
 
 }
@@ -22,7 +22,7 @@ interface ProfileNameProps {
 
 export class ProfileName extends ProfileById<ProfileNameProps> {
 
-  renderElement(profile: Api.Profile.Resource) {
+  renderElement(profile: Api.Profiles.Resource) {
     return profile
       ? <span>{ profile.displayName || 'Anonymous' }</span>
       : this.renderError(null);
@@ -47,7 +47,7 @@ export class ProfileName extends ProfileById<ProfileNameProps> {
 
 export class ProfileNameWithLink extends ProfileById<ClassNameProps> {
 
-  renderElement(profile: Api.Profile.Resource) {
+  renderElement(profile: Api.Profiles.Resource) {
     return <Link to={"/profiles/" + profile.id} className={this.props.className}>{ profile.displayName || 'Anonymous' }</Link>
   }
 
@@ -67,7 +67,7 @@ export class ProfileNameWithLink extends ProfileById<ClassNameProps> {
 
 export class ProfileBio extends ProfileById<undefined> {
 
-  renderElement(profile: Api.Profile.Resource) {
+  renderElement(profile: Api.Profiles.Resource) {
     return <div>{profile.attributes.bio}</div>
   }
 
@@ -106,7 +106,7 @@ export function LicenseEmittedDate(props: { license: License }) {
 
 export class ProfilePictureById extends ProfileById<ClassNameProps> {
 
-  renderElement(resource: Api.Profile.Resource): JSX.Element {
+  renderElement(resource: Api.Profiles.Resource): JSX.Element {
     if (!resource.attributes || !resource.attributes.imageData) {
       return <img src={Images.Anon} />
     }

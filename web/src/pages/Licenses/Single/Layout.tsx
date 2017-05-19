@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as moment from 'moment'
-import { License } from 'poet-js';
+import { Api } from 'poet-js';
 
 import { Configuration } from '../../../configuration';
 import { SelectLicenseById } from '../../../components/atoms/Arguments';
@@ -12,15 +12,15 @@ import { badge } from '../../../helpers/LicenseBadge';
 
 import './Layout.scss';
 
-export class SingleLicense extends PoetAPIResourceProvider<License, SelectLicenseById, undefined> {
+export class SingleLicense extends PoetAPIResourceProvider<Api.Licenses.Resource, SelectLicenseById, undefined> {
 
   textarea: HTMLTextAreaElement;
 
-  poetURL(): string {
-    return '/licenses/' + this.props.licenseId;
+  poetURL() {
+    return Api.Licenses.url(this.props.licenseId)
   }
 
-  renderElement(resource: License, headers: Headers): JSX.Element {
+  renderElement(resource: Api.Licenses.Resource, headers: Headers): JSX.Element {
     return (
       <section className="container page-licenses">
         <header>

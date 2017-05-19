@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link, browserHistory } from "react-router"
 import * as classNames from 'classnames'
-import { ClaimTypes, Profile } from 'poet-js'
+import { Api, ClaimTypes } from 'poet-js'
 
 import { Images } from '../../images/Images'
 import { Hash } from '../../components/atoms/Hash'
@@ -14,13 +14,13 @@ interface OverviewProps extends SelectProfileById {
   readonly sessionPublicKey: string;
 }
 
-export class Overview extends PoetAPIResourceProvider<any, OverviewProps, undefined> {
+export class Overview extends PoetAPIResourceProvider<Api.Profiles.Resource, OverviewProps, undefined> {
 
   poetURL() {
-    return '/profiles/' + this.props.profileId
+    return Api.Profiles.url(this.props.profileId)
   }
 
-  renderElement(profile: Profile) {
+  renderElement(profile: Api.Profiles.Resource) {
     const isAuthorized = this.props.sessionPublicKey && (this.props.sessionPublicKey === this.props.profileId)
 
     if (profile) {
@@ -47,7 +47,7 @@ export class Overview extends PoetAPIResourceProvider<any, OverviewProps, undefi
     document.title = 'Poet'
   }
 
-  private renderProfile(profile: Profile, isAuthorized: boolean, isLoading?: boolean) {
+  private renderProfile(profile: Api.Profiles.Resource, isAuthorized: boolean, isLoading?: boolean) {
     document.title = profile.displayName || 'Profile'
     return (
       <div className={classNames('overview', 'col-sm-3', isLoading && 'loading')}>

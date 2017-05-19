@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import * as classNames from 'classnames';
-import { Work, LicenseType, Headers } from 'poet-js';
+import { Api, LicenseType, Headers } from 'poet-js';
 
 import { Configuration } from '../../configuration';
 import { PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
@@ -11,7 +11,7 @@ import { Pagination } from '../../components/molecules/Pagination';
 
 import './Works.scss';
 
-type WorksResource = ReadonlyArray<Work>;
+type WorksResource = ReadonlyArray<Api.Works.Resource>;
 
 export interface WorksProps {
   readonly offset?: number;
@@ -33,18 +33,15 @@ export class Works extends PoetAPIResourceProvider<WorksResource, WorksProps, un
   };
 
   poetURL() {
-    return {
-      url: '/works',
-      query: {
-        offset: this.props.offset,
-        limit: this.props.limit,
-        dateFrom: this.props.dateFrom && this.props.dateFrom.toDate().getTime(),
-        dateTo: this.props.dateTo && this.props.dateTo.toDate().getTime(),
-        query: this.props.query,
-        sortBy: this.props.sortBy,
-        licenseType: this.props.licenseType && this.props.licenseType.id
-      }
-    }
+    return Api.Works.url({
+      offset: this.props.offset,
+      limit: this.props.limit,
+      dateFrom: this.props.dateFrom && this.props.dateFrom.toDate().getTime(),
+      dateTo: this.props.dateTo && this.props.dateTo.toDate().getTime(),
+      query: this.props.query,
+      sortBy: this.props.sortBy,
+      licenseType: this.props.licenseType && this.props.licenseType.id
+    })
   }
 
   renderElement(works: WorksResource, headers: Headers) {
@@ -92,7 +89,7 @@ export class Works extends PoetAPIResourceProvider<WorksResource, WorksProps, un
     )
   }
 
-  private renderWork(props: Work) {
+  private renderWork(props: Api.Works.Resource) {
     return (
       <li key={props.id} className="work-item">
         <div className="name"><WorkNameWithLink work={props} /></div>

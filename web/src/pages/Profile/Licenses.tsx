@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router';
-import { Headers } from 'poet-js'
+import { Api, Headers } from 'poet-js'
 
 import { SearchInput } from '../../components/atoms/SearchInput';
 import { PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
@@ -33,13 +33,10 @@ export class Licenses extends PoetAPIResourceProvider<LicensesResource, Licenses
   }
 
   poetURL() {
-    return {
-      url: `/licenses`,
-      query: {
-        limit: 1,
-        relatedTo: this.props.profileId
-      }
-    }
+    return Api.Licenses.url({
+      limit: 1,
+      relatedTo: this.props.profileId
+    })
   }
 
   renderElement(licenses: LicensesResource, headers: Headers) {
