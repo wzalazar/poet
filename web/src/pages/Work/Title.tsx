@@ -9,7 +9,7 @@ import { WorkById } from '../../components/atoms/Work';
 
 import './Title.scss';
 
-export class Title extends WorkById<undefined> {
+export class Title extends WorkById {
 
   renderElement(work: Work) {
     const owner = work.title && work.title.attributes && work.title.attributes.owner;

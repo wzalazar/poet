@@ -5,7 +5,7 @@ import { WorkById } from '../../../components/atoms/Work'
 
 import './TechnicalTab.scss';
 
-export class TechnicalTab extends WorkById<undefined> {
+export class TechnicalTab extends WorkById {
 
   poetURL() {
     return Api.Works.url(this.props.workId)

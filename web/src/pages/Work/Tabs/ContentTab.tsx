@@ -5,7 +5,7 @@ import { WorkById } from '../../../components/atoms/Work';
 
 import './ContentTab.scss';
 
-export class ContentTab extends WorkById<undefined> {
+export class ContentTab extends WorkById {
 
   renderElement(work?: Work) {
     return (

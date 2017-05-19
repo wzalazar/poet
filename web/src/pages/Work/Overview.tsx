@@ -10,7 +10,7 @@ import { AuthorWithLink, WorkById } from '../../components/atoms/Work'
 
 import './Overview.scss'
 
-export class Overview extends WorkById<undefined> {
+export class Overview extends WorkById {
 
   renderElement(work: Work, headers: Headers) {
     return this.renderOverview(work)

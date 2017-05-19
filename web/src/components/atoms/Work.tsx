@@ -23,13 +23,13 @@ export class OwnerName extends ProfileByWorkOwner<undefined> {
   }
 }
 
-export abstract class WorkById<State> extends PoetAPIResourceProvider<Api.Works.Resource, SelectWorkById, State> {
+export abstract class WorkById<State = undefined> extends PoetAPIResourceProvider<Api.Works.Resource, SelectWorkById, State> {
   poetURL() {
     return Api.Works.url(this.props.workId)
   }
 }
 
-export class WorkNameById extends WorkById<undefined> {
+export class WorkNameById extends WorkById {
   renderElement(resource: Api.Works.Resource) {
     const title = resource.attributes
       && resource.attributes.name
@@ -38,7 +38,7 @@ export class WorkNameById extends WorkById<undefined> {
   }
 }
 
-export class WorkAuthorById extends WorkById<undefined> {
+export class WorkAuthorById extends WorkById {
   renderElement(work: Work) {
     return work && work.author ? (
       <ProfileNameWithLink profileId={work.author.id}>
@@ -50,7 +50,7 @@ export class WorkAuthorById extends WorkById<undefined> {
   }
 }
 
-export class WorkContentById extends WorkById<undefined> {
+export class WorkContentById extends WorkById {
   renderElement(work: Work) {
     return (
       <span>{work && work.attributes && work.attributes.content || 'Unknown Author'}</span>
@@ -58,7 +58,7 @@ export class WorkContentById extends WorkById<undefined> {
   }
 }
 
-export class WorkNameWithLinkById extends WorkById<undefined> {
+export class WorkNameWithLinkById extends WorkById {
 
   renderElement(work: Api.Works.Resource) {
     return <WorkNameWithLink work={work} />
@@ -106,7 +106,7 @@ export class BlocksCounter extends PoetAPIResourceProvider<any, undefined, undef
   }
 }
 
-export class WorkHashById extends WorkById<undefined> {
+export class WorkHashById extends WorkById {
   renderElement(resource: Work): JSX.Element {
     const hash = resource.attributes
       && resource.attributes.contentHash
