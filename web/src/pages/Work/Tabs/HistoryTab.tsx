@@ -1,17 +1,16 @@
 import * as React from 'react';
 import * as moment from 'moment';
-import { Work, Api } from 'poet-js';
+import { Api } from 'poet-js';
 
 import { Images } from '../../../images/Images';
 import { Configuration } from '../../../configuration';
-import WorkComponent from '../../../components/hocs/WorkComponent';
 import { PoetAPIResourceProvider } from '../../../components/atoms/base/PoetApiResource';
 import { SelectWorkById } from '../../../components/atoms/Arguments';
 import { renderEventMessage } from '../../Account/Notifications/Model';
 
 import './HistoryTab.scss';
 
-class HistoryList extends PoetAPIResourceProvider<ReadonlyArray<Api.Events.Resource>, SelectWorkById, undefined> {
+export class HistoryTab extends PoetAPIResourceProvider<ReadonlyArray<Api.Events.Resource>, SelectWorkById, undefined> {
 
   poetURL() {
     return Api.Events.url({
@@ -21,13 +20,15 @@ class HistoryList extends PoetAPIResourceProvider<ReadonlyArray<Api.Events.Resou
 
   renderElement(resource: ReadonlyArray<Api.Events.Resource>, headers: Headers) {
     return (
+    <div className="history-tab">
       <ul>
         { resource.map(this.renderItem) }
       </ul>
+    </div>
     )
   }
 
-  renderItem = (event: Api.Events.Resource) => {
+  private renderItem = (event: Api.Events.Resource) => {
     const text = renderEventMessage(event);
     return text && (
       <li key={event.id}>
@@ -41,13 +42,3 @@ class HistoryList extends PoetAPIResourceProvider<ReadonlyArray<Api.Events.Resou
   }
 
 }
-
-function render(props: Work) {
-  return (
-    <div className= "history-tab">
-      <HistoryList workId={props.id} />
-    </div>
-  )
-}
-
-export default WorkComponent(render);
