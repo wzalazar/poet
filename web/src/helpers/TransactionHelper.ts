@@ -1,5 +1,4 @@
 import * as bitcore from 'bitcore-lib'
-import { Transaction, Address, PublicKey } from 'bitcore-lib'
 
 export function getSighash(tx: Transaction, address: Address) {
   return tx.inputs.map(

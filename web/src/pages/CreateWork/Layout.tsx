@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Work, LicenseTypes } from 'poet-js'
 
 import { Configuration } from '../../configuration'
-import { publicKeyToAddress } from '../../bitcoin/addressHelpers'
+import { publicKeyToAddress } from '../../helpers/AddressHelper'
 
 import { StepRegister, StepRegisterData } from './StepRegister/StepRegister'
 import { AttributeData } from './StepRegister/Attribute'

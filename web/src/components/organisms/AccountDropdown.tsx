@@ -9,7 +9,7 @@ import { DropdownMenu } from '../molecules/DropdownMenu';
 
 import { WalletBalance } from '../atoms/WalletBalance';
 import { countUnreadNotifications, currentPublicKey } from '../../selectors/session';
-import { publicKeyToAddress } from '../../bitcoin/addressHelpers';
+import { publicKeyToAddress } from '../../helpers/AddressHelper';
 
 import './AccountDropDown.scss';
 
