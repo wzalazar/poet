@@ -81,7 +81,7 @@ function createServer (serverKey: string, port: number) {
   })
 
   function buildNotification(device: Device, requestId: string,
-                             title: string = "Signature Request", body: string = "Do you want to authorize it?") {
+                             title: string = "Signature Request", body: string = "Open authenticator for more details") {
     return {
       to: device.registrationId,
       data: {
