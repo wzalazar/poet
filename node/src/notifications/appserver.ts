@@ -85,7 +85,10 @@ function createServer (serverKey: string, port: number) {
     return {
       to: device.registrationId,
       data: {
-        request_id: requestId,
+          request_id: requestId,
+          notification: {
+              title: title, body: 'Do you want yo authorize it?'
+          }
       },
       priority: 'high',
       content_available: true,
