@@ -1,8 +1,8 @@
 import { Configuration } from '../../../configuration';
-import { UrlObject, isUrlObject, urlObjectToUrl } from '../../../common';
+import { UrlObject, isUrlObject, urlObjectToUrl } from 'poet-js';
 import { ResourceProvider } from '../../ResourceProvider';
 
-export abstract class PoetAPIResourceProvider<Resource, PropTypes, State> extends ResourceProvider<Resource, PropTypes, State> {
+export abstract class PoetAPIResourceProvider<Resource, PropTypes, State = undefined> extends ResourceProvider<Resource, PropTypes, State> {
   abstract poetURL(): string | UrlObject
 
   resourceLocator() {
@@ -17,6 +17,3 @@ export abstract class PoetAPIResourceProvider<Resource, PropTypes, State> extend
     }
   }
 }
-
-export const HEADER_X_TOTAL_COUNT = 'X-Total-Count';
-export const HEADER_X_UNREAD = 'X-Unread';

@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { Link } from 'react-router';
+import { Api, Headers } from 'poet-js';
 
 import { Images } from '../../images/Images';
-import { Work } from "../../Interfaces";
-import { UrlObject } from '../../common';
 import { DispatchesTransferRequested } from '../../actions/requests';
-import { HEADER_X_TOTAL_COUNT, PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
+import { PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
 import { SelectProfileById } from '../../components/atoms/Arguments';
 import { SearchInput } from '../../components/atoms/SearchInput';
 import { ProfileNameWithLink } from '../../components/atoms/Profile';
@@ -22,7 +21,7 @@ interface WorksTabState {
   readonly profileId?: string;
 }
 
-export class WorksTab extends PoetAPIResourceProvider<Work[], WorksTabProps, WorksTabState> {
+export class WorksTab extends PoetAPIResourceProvider<ReadonlyArray<Api.Works.Resource>, WorksTabProps, WorksTabState> {
   private didLoading: boolean;
 
   constructor() {
@@ -32,18 +31,15 @@ export class WorksTab extends PoetAPIResourceProvider<Work[], WorksTabProps, Wor
     }
   }
 
-  poetURL(): UrlObject {
-    return {
-      url: `/works`,
-      query: {
-        relatedTo: this.props.profileId,
-        limit: 1,
-      }
-    }
+  poetURL() {
+    return Api.Works.url({
+      relatedTo: this.props.profileId,
+      limit: 1,
+    })
   }
 
-  renderElement(works: Work[], headers: Headers) {
-    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+  renderElement(works: ReadonlyArray<Api.Works.Resource>, headers: Headers) {
+    const count = headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount));
     return count ? this.renderWorks() : this.renderNoWorks();
   }
 

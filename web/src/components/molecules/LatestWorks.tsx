@@ -1,27 +1,31 @@
 import * as React from 'react';
 import { Link } from 'react-router';
+import { Api, Work, ClassNameProps } from 'poet-js';
 
 import '../../extensions/String';
 
-import { Configuration } from '../../configuration';
-import { ClassNameProps } from '../../common';
-import { ResourceProvider } from '../ResourceProvider';
-import { Work } from '../../Interfaces';
+import { PoetAPIResourceProvider } from '../atoms/base/PoetApiResource'
 import { WorkNameWithLink, WorkStampedDate } from '../atoms/Work';
 
 import './LatestWorks.scss';
 
-type LatestWorksResource = ReadonlyArray<Work>;
+type LatestWorksResource = ReadonlyArray<Api.Works.Resource>;
 
 export interface LatestWorksProps extends ClassNameProps {
   readonly limit?: number;
   readonly showLink?: boolean;
 }
 
-export default class LatestBlocks extends ResourceProvider<LatestWorksResource, LatestWorksProps, undefined> {
+export default class LatestBlocks extends PoetAPIResourceProvider<LatestWorksResource, LatestWorksProps, undefined> {
   static defaultProps: LatestWorksProps = {
     limit: 5
   };
+
+  poetURL() {
+    return Api.Works.url({
+      limit: this.props.limit
+    })
+  }
 
   renderElement(works: LatestWorksResource) {
     return (
@@ -37,17 +41,13 @@ export default class LatestBlocks extends ResourceProvider<LatestWorksResource, 
           </tr>
         </thead>
         <tbody>
-          { works.map(this.renderWork.bind(this)) }
+          { works.map(this.renderWork) }
         </tbody>
       </table>
     );
   }
 
-  resourceLocator() {
-    return { url: `${Configuration.api.explorer}/works?limit=${this.props.limit}` }
-  }
-
-  private renderWork(props: Work) {
+  private renderWork = (props: Work) => {
     return (
       <tr key={props.id}>
         <td className="work-name">

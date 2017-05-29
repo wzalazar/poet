@@ -1,15 +1,15 @@
 import * as React from 'react';
+import { Work } from 'poet-js';
 
 import '../../extensions/String';
 
 import { Images } from '../../images/Images';
-import { Work } from '../../Interfaces';
 import { ProfileNameWithLink, ProfilePictureById } from '../../components/atoms/Profile';
 import { WorkById } from '../../components/atoms/Work';
 
 import './Title.scss';
 
-export class Title extends WorkById<undefined> {
+export class Title extends WorkById {
 
   renderElement(work: Work) {
     const owner = work.title && work.title.attributes && work.title.attributes.owner;

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
+import { ClassNameProps } from 'poet-js';
 
 import { Images } from '../../images/Images';
-import { ClassNameProps } from '../../common';
 
 import './DatePickerInput.scss';
 

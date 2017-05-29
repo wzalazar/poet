@@ -1,10 +1,10 @@
 import * as React from "react";
 import {connect} from "react-redux";
 const QR = require('react-qr');
+import { Claim, ClaimTypes } from 'poet-js';
 
 import { Images } from '../../images/Images';
 import { Actions } from "../../actions/index";
-import { Claim, WORK, PROFILE } from '../../Claim';
 import { WorkDetails } from '../atoms/WorkDetails';
 import Modal, {ModalProps} from "./Modal";
 
@@ -57,8 +57,8 @@ export const SignWork = connect(mapStateToProps, mapDispatch)(
     }
 
     private renderSignRequest() {
-      const workClaim = this.props.claims.find(claim => claim.type === WORK);
-      const profileClaim = this.props.claims.find(claim => claim.type === PROFILE);
+      const workClaim = this.props.claims.find(claim => claim.type === ClaimTypes.WORK);
+      const profileClaim = this.props.claims.find(claim => claim.type === ClaimTypes.PROFILE);
 
       return (
         <section className="modal-sign-work">

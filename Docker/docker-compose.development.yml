@@ -117,12 +117,12 @@ services:
       - outside
       - http
     ports:
-      - "10000:10000"
       - "5000:5000"
+      - "10000:10000"
   web:
     build:
       context: ..
-      dockerfile: ./Docker/web.dockerfile
+      dockerfile: ./Docker/web-poet-js-remote.dockerfile
     volumes:
       - ../web/src:/web/src
     networks:

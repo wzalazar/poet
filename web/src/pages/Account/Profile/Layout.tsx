@@ -1,29 +1,26 @@
 import * as React from 'react';
 import { Action } from 'redux';
 import * as classNames from 'classnames';
+import { Claim, ClaimTypes, ProfileAttributes, ClassNameProps } from 'poet-js'
 
 import { Configuration } from '../../../configuration';
-
-import { ClassNameProps } from "../../../common";
-import { ProfileAttributes } from '../../../Interfaces';
-import { PROFILE, Claim } from '../../../Claim';
 import { ImageUpload } from '../../../components/molecules/ImageUpload';
 import { Images } from '../../../images/Images';
 
 import './Layout.scss';
 
-export interface UserProfileProps extends ProfileAttributes {
+export interface UserProfileProps {
   readonly submitProfileRequested?: (payload: Claim) => Action;
 }
 
-export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttributes> {
+export class ProfileLayout extends React.Component<UserProfileProps & ProfileAttributes, ProfileAttributes> {
 
-  constructor(props: UserProfileProps) {
+  constructor(props: UserProfileProps & ProfileAttributes) {
     super(...arguments);
     this.state = ProfileLayout.propsToState(props)
   }
 
-  componentWillReceiveProps(props: UserProfileProps) {
+  componentWillReceiveProps(props: UserProfileProps & ProfileAttributes) {
     const propsChanged = () => {
       return !(
         this.props.displayName === props.displayName &&
@@ -40,7 +37,7 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
     this.setState(ProfileLayout.propsToState(props))
   }
 
-  private static propsToState(props: UserProfileProps) {
+  private static propsToState(props: ProfileAttributes) {
     return {
       displayName: props.displayName,
       name: props.name,
@@ -106,8 +103,7 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
               <div className="col-sm-4 col-md-3 flex-xs-first flex-sm-last">
                 <div className="profile-picture field">
                   <ImageUpload
-                    className="image-upload"
-                    classNames={[this.state.imageData && 'loaded']}
+                    className={classNames('image-upload', this.state.imageData && 'loaded')}
                     buttonClassName="button-secondary"
                     imageWidthLimit={Configuration.imageUpload.maxWidth}
                     imageHeightLimit={Configuration.imageUpload.maxHeight}
@@ -128,7 +124,7 @@ export class ProfileLayout extends React.Component<UserProfileProps, ProfileAttr
 
   private onSubmit = () => {
     this.props.submitProfileRequested({
-      type: PROFILE,
+      type: ClaimTypes.PROFILE,
       attributes: {
         displayName: this.state.displayName,
         name: this.state.name,

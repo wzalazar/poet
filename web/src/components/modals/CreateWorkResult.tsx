@@ -1,10 +1,10 @@
 import * as React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
+import { Claim } from 'poet-js';
 
 import { Images } from '../../images/Images';
 import { PoetAppState } from '../../store/PoetAppState';
 import { Actions } from "../../actions/index";
-import { Claim } from '../../Claim';
 import { WorkDetails } from '../atoms/WorkDetails';
 import Modal, {ModalProps} from "./Modal";
 

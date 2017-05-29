@@ -1,37 +1,34 @@
 import * as React from 'react';
 import * as moment from 'moment';
+import { Api } from 'poet-js';
 
 import { Images } from '../../../images/Images';
-import { Work } from '../../../Interfaces';
-import { NotificationEvent } from '../../../store/PoetAppState';
-import WorkComponent from '../../../components/hocs/WorkComponent';
+import { Configuration } from '../../../configuration';
 import { PoetAPIResourceProvider } from '../../../components/atoms/base/PoetApiResource';
 import { SelectWorkById } from '../../../components/atoms/Arguments';
 import { renderEventMessage } from '../../Account/Notifications/Model';
 
 import './HistoryTab.scss';
-import { Configuration } from '../../../configuration';
 
-class HistoryList extends PoetAPIResourceProvider<NotificationEvent[], SelectWorkById, undefined> {
+export class HistoryTab extends PoetAPIResourceProvider<ReadonlyArray<Api.Events.Resource>, SelectWorkById, undefined> {
 
   poetURL() {
-    return {
-      url: '/events',
-      query: {
-        work: this.props.workId
-      }
-    }
+    return Api.Events.url({
+      work: this.props.workId
+    })
   }
 
-  renderElement(resource: NotificationEvent[], headers: Headers) {
+  renderElement(resource: ReadonlyArray<Api.Events.Resource>, headers: Headers) {
     return (
+    <div className="history-tab">
       <ul>
         { resource.map(this.renderItem) }
       </ul>
+    </div>
     )
   }
 
-  renderItem = (event: NotificationEvent) => {
+  private renderItem = (event: Api.Events.Resource) => {
     const text = renderEventMessage(event);
     return text && (
       <li key={event.id}>
@@ -45,13 +42,3 @@ class HistoryList extends PoetAPIResourceProvider<NotificationEvent[], SelectWor
   }
 
 }
-
-function render(props: Work) {
-  return (
-    <div className="history-tab">
-      <HistoryList workId={props.id} />
-    </div>
-  )
-}
-
-export default WorkComponent(render);

@@ -5,8 +5,8 @@ import { Images } from '../../images/Images';
 
 import { Actions } from '../../actions/index';
 import { WorkSearchAction } from '../../sagas/NavbarSaga';
-import LatestWorks from '../../components/molecules/LatestWorks';
-import LatestBlocks from '../../components/molecules/LatestBlocks';
+import LatestWorks from '../../components/molecules/LatestWorks'
+import { LatestBlocks } from '../../components/molecules/LatestBlocks'
 import { Alpha } from '../../components/molecules/Alpha'
 
 import './LandingLoggedIn.scss';

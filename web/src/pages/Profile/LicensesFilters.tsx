@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
+import { ClassNameProps } from 'poet-js';
 
 import { OptionGroup, Option } from '../../components/molecules/OptionGroup';
-import { ClassNameProps } from '../../common';
 
 import './LicensesFilters.scss';
 

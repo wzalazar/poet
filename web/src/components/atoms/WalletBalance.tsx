@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { ClassNameProps } from 'poet-js';
 
 import { Configuration } from '../../configuration';
-import { ClassNameProps } from '../../common';
 import { ResourceProvider, ResourceLocator } from '../ResourceProvider';
 import { BitcoinToCurrency } from '../../pages/Account/Wallet/BitcoinToCurrency';
 

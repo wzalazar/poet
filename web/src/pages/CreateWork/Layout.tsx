@@ -1,9 +1,8 @@
 import * as React from 'react'
+import { Work, LicenseTypes } from 'poet-js'
 
-import * as Common from '../../common';
 import { Configuration } from '../../configuration'
-import { publicKeyToAddress } from '../../bitcoin/addressHelpers'
-import { Work } from "../../Interfaces"
+import { publicKeyToAddress } from '../../helpers/AddressHelper'
 
 import { StepRegister, StepRegisterData } from './StepRegister/StepRegister'
 import { AttributeData } from './StepRegister/Attribute'
@@ -42,7 +41,7 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps & CreateWo
       attributes: [...this.defaultAttributes],
 
       hasLicense: false,
-      licenseType: Common.LicenseTypes[0],
+      licenseType: LicenseTypes[0],
       pricing: {
         price: {
           amount: 0,
@@ -202,13 +201,13 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps & CreateWo
 
     fetch(Configuration.api.explorer + '/works/' + this.props.workId).then(_ => _.json()).then((_: any) => {
       const license = _.offerings && _.offerings[0] && _.offerings[0].attributes
-      const licenseType = license && Common.LicenseTypes.find(_ => _.id === license.licenseType)
+      const licenseType = license && LicenseTypes.find(_ => _.id === license.licenseType)
 
       if (license && !licenseType)
         console.warn(
           `The work we're editing has an invalid license type: '${license.licenseType}'.` +
-          `Valid license types are: ${Common.LicenseTypes.map(_ => `'${_.id}'`)}. ` +
-          `Defaulting to '${Common.LicenseTypes[0].id}'`)
+          `Valid license types are: ${LicenseTypes.map(_ => `'${_.id}'`)}. ` +
+          `Defaulting to '${LicenseTypes[0].id}'`)
 
       this.setState({
         mediaType: _.attributes.mediaType,
@@ -217,7 +216,7 @@ export class CreateWorkLayout extends React.Component<CreateWorkProps & CreateWo
         attributes: mergeDefaultAttributes(objectToKeyNameValue(_.attributes)),
 
         hasLicense: license,
-        licenseType: licenseType || Common.LicenseTypes[0],
+        licenseType: licenseType || LicenseTypes[0],
         pricing: {
           price: {
             amount: license && license.pricingPriceAmount,

@@ -8,7 +8,7 @@ import { Actions } from '../actions/index';
 import { Authentication } from '../authentication'
 import { getMockPrivateKey } from '../helpers/mockKey';
 import { getUtxos, submitTx } from '../bitcoin/insight';
-import { getSighash, applyHexSignaturesInOrder } from '../bitcoin/txHelpers';
+import { getSighash, applyHexSignaturesInOrder } from '../helpers/TransactionHelper';
 import { currentPublicKey } from '../selectors/session';
 
 export interface SignSubmitRequestedAction extends Action {

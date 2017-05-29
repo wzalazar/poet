@@ -1,13 +1,10 @@
 import * as React from 'react';
-import moment = require('moment');
+import * as moment from 'moment';
 import * as classNames from 'classnames';
+import { Headers, Api } from 'poet-js'
 
 import { Configuration } from '../../../configuration';
-import { NotificationsStore, Notification } from '../../../store/PoetAppState';
-import {
-  HEADER_X_TOTAL_COUNT, HEADER_X_UNREAD,
-  PoetAPIResourceProvider
-} from '../../../components/atoms/base/PoetApiResource';
+import { PoetAPIResourceProvider } from '../../../components/atoms/base/PoetApiResource';
 import { Pagination } from '../../../components/molecules/Pagination';
 import { renderEventMessage } from './Model';
 
@@ -25,9 +22,9 @@ interface NotificationsLayoutState {
   readonly paginationOffset?: number;
 }
 
-export class NotificationsLayout extends PoetAPIResourceProvider<ReadonlyArray<Notification>, NotificationsLayoutProps & NotificationsActions, NotificationsLayoutState> {
+export class NotificationsLayout extends PoetAPIResourceProvider<ReadonlyArray<Api.Notifications.Resource>, NotificationsLayoutProps & NotificationsActions, NotificationsLayoutState> {
   private readonly paginationLimit = Configuration.pagination.limit;
-  private latestNotifications: ReadonlyArray<Notification>;
+  private latestNotifications: ReadonlyArray<Api.Notifications.Resource>;
   private latestNotificationCount: number;
 
   constructor() {
@@ -38,18 +35,15 @@ export class NotificationsLayout extends PoetAPIResourceProvider<ReadonlyArray<N
   }
 
   poetURL() {
-    return {
-      url: '/notifications/' + this.props.sessionPublicKey,
-      query: {
-        limit: this.paginationLimit,
-        offset: this.state.paginationOffset
-      }
-    };
+    return Api.Notifications.url(this.props.sessionPublicKey, {
+      limit: this.paginationLimit,
+      offset: this.state.paginationOffset
+    })
   }
 
-  renderElement(notifications: ReadonlyArray<Notification>, headers: Headers) {
-    const totalCount = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
-    const unread = headers.get(HEADER_X_UNREAD) && parseInt(headers.get(HEADER_X_UNREAD));
+  renderElement(notifications: ReadonlyArray<Api.Notifications.Resource>, headers: Headers) {
+    const totalCount = headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount));
+    const unread = headers.get(Headers.Unread) && parseInt(headers.get(Headers.Unread));
 
     this.latestNotifications = notifications;
     this.latestNotificationCount = totalCount;
@@ -69,11 +63,11 @@ export class NotificationsLayout extends PoetAPIResourceProvider<ReadonlyArray<N
     document.title = 'Poet'
   }
 
-  componentDidFetch(notifications: ReadonlyArray<Notification>, headers: Headers) {
+  componentDidFetch(notifications: ReadonlyArray<Api.Notifications.Resource>, headers: Headers) {
     this.props.markRead(notifications.map(_ => _.id));
   }
 
-  private renderNotifications(notifications: ReadonlyArray<Notification>, totalCount: number, isLoading: boolean = false) {
+  private renderNotifications(notifications: ReadonlyArray<Api.Notifications.Resource>, totalCount: number, isLoading: boolean = false) {
     return (
       <section className={classNames('container', 'page-account-notifications', isLoading && 'loading')}>
         <h1>Notifications</h1>
@@ -94,7 +88,7 @@ export class NotificationsLayout extends PoetAPIResourceProvider<ReadonlyArray<N
     );
   }
 
-  private renderNotification = (notification: Notification) => {
+  private renderNotification = (notification: Api.Notifications.Resource) => {
     return (
       <tr key={notification.id} className={ notification.read && 'read'} >
         <td className="message">{ renderEventMessage(notification.event) }</td>

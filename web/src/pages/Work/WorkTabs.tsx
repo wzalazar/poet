@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+import { HexString } from 'poet-js';
 
 import '../../extensions/Array'
 
-import { HexString } from '../../common';
-
 import { ContentTab } from './Tabs/ContentTab';
-import HistoryTab from './Tabs/HistoryTab';
-import TechnicalTab from './Tabs/TechnicalTab';
+import { HistoryTab } from './Tabs/HistoryTab';
+import { TechnicalTab } from './Tabs/TechnicalTab';
 
 interface WorkTabProps {
   readonly id: HexString;
@@ -24,10 +23,10 @@ export const WorkTabs = (props: WorkTabProps) => (
       <ContentTab workId={props.id} />
     </TabPanel>
     <TabPanel>
-      <HistoryTab id={props.id} />
+      <HistoryTab workId={props.id} />
     </TabPanel>
     <TabPanel>
-      <TechnicalTab id={props.id} />
+      <TechnicalTab workId={props.id} />
     </TabPanel>
   </Tabs>
 );

@@ -8,5 +8,6 @@ COPY ./web/tsconfig.json /web
 COPY ./web/webpack.config.js /web
 COPY ./web/devServer.js /web
 
-RUN npm install
+RUN npm install > /dev/null
 
+CMD [ "npm", "start" ]

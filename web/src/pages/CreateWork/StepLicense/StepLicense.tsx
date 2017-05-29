@@ -1,6 +1,6 @@
-import * as React from 'react';
+import * as React from 'react'
 
-import * as Common from '../../../common';
+import { Pricing as IPricing, LicenseType } from 'poet-js'
 
 import { Pricing } from './Pricing';
 import { LicensePreview } from './LicensePreview';
@@ -9,15 +9,15 @@ import { LicenseTypeComponent } from './LicenseType';
 import './StepLicense.scss'
 
 export interface StepLicenseData {
-  readonly licenseType: Common.LicenseType;
-  readonly pricing: Common.Pricing;
+  readonly licenseType: LicenseType;
+  readonly pricing: IPricing;
 }
 
 export interface StepLicenseProps extends StepLicenseData {
   readonly onSubmit: () => void;
   readonly onSkip: () => void;
-  readonly onLicenseTypeChange: (_: Common.LicenseType) => void;
-  readonly onPricingChange: (_: Common.Pricing) => void;
+  readonly onLicenseTypeChange: (_: LicenseType) => void;
+  readonly onPricingChange: (_: IPricing) => void;
 }
 
 export interface StepLicenseState {

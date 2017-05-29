@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 import * as moment from 'moment';
+import { Api, Work, Headers } from 'poet-js';
 
-import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from './base/PoetApiResource';
-import { Work, Profile } from '../../Interfaces';
+import { PoetAPIResourceProvider } from './base/PoetApiResource';
 import { SelectWorkById } from './Arguments';
 import { ProfileNameWithLink } from './Profile';
 
@@ -11,26 +11,26 @@ interface WorkProps {
   readonly work: Work;
 }
 
-abstract class ProfileByWorkOwner<State> extends PoetAPIResourceProvider<Profile, SelectWorkById, State> {
+abstract class ProfileByWorkOwner<State> extends PoetAPIResourceProvider<Api.Profiles.Resource, SelectWorkById, State> {
   poetURL() {
     return `/profiles/ownerOf/${this.props.workId}`
   }
 }
 
 export class OwnerName extends ProfileByWorkOwner<undefined> {
-  renderElement(resource: Profile): JSX.Element {
-    return (<span>{resource.attributes && resource.attributes.displayName || 'Anonymous'}</span>);
+  renderElement(resource: Api.Profiles.Resource) {
+    return <span>{resource.attributes && resource.attributes.displayName || 'Anonymous'}</span>
   }
 }
 
-export abstract class WorkById<State> extends PoetAPIResourceProvider<Work, SelectWorkById, State> {
+export abstract class WorkById<State = undefined> extends PoetAPIResourceProvider<Api.Works.Resource, SelectWorkById, State> {
   poetURL() {
-    return `/works/${this.props.workId}`
+    return Api.Works.url(this.props.workId)
   }
 }
 
-export class WorkNameById extends WorkById<undefined> {
-  renderElement(resource: Work): JSX.Element {
+export class WorkNameById extends WorkById {
+  renderElement(resource: Api.Works.Resource) {
     const title = resource.attributes
       && resource.attributes.name
       || '(untitled)';
@@ -38,8 +38,8 @@ export class WorkNameById extends WorkById<undefined> {
   }
 }
 
-export class WorkAuthorById extends WorkById<undefined> {
-  renderElement(work: Work): JSX.Element {
+export class WorkAuthorById extends WorkById {
+  renderElement(work: Work) {
     return work && work.author ? (
       <ProfileNameWithLink profileId={work.author.id}>
         {work.author.displayName}
@@ -50,17 +50,17 @@ export class WorkAuthorById extends WorkById<undefined> {
   }
 }
 
-export class WorkContentById extends WorkById<undefined> {
-  renderElement(work: Work): JSX.Element {
+export class WorkContentById extends WorkById {
+  renderElement(work: Work) {
     return (
       <span>{work && work.attributes && work.attributes.content || 'Unknown Author'}</span>
     );
   }
 }
 
-export class WorkNameWithLinkById extends WorkById<undefined> {
+export class WorkNameWithLinkById extends WorkById {
 
-  renderElement(work: Work): JSX.Element {
+  renderElement(work: Api.Works.Resource) {
     return <WorkNameWithLink work={work} />
   }
 
@@ -79,30 +79,34 @@ export class WorkNameWithLinkById extends WorkById<undefined> {
 }
 
 export class WorksCounter extends PoetAPIResourceProvider<any, undefined, undefined> {
-  poetURL(): string {
-    return '/works'
+  poetURL() {
+    return Api.Works.Path
   }
 
   renderElement(works: any, headers: Headers) {
-    return (<span>
-      {headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT))}
-    </span>)
+    return (
+      <span>
+        {headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount))}
+      </span>
+    )
   }
 }
 
 export class BlocksCounter extends PoetAPIResourceProvider<any, undefined, undefined> {
-  poetURL(): string {
-    return '/blocks'
+  poetURL() {
+    return Api.Blocks.Path
   }
 
   renderElement(blocks: any, headers: Headers) {
-    return (<span>
-      {headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT))}
-    </span>)
+    return (
+      <span>
+        {headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount))}
+      </span>
+    )
   }
 }
 
-export class WorkHashById extends WorkById<undefined> {
+export class WorkHashById extends WorkById {
   renderElement(resource: Work): JSX.Element {
     const hash = resource.attributes
       && resource.attributes.contentHash

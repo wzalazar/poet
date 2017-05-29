@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import './LandingLoggedOut.scss';
 
-import LatestBlocks from '../../components/molecules/LatestBlocks';
 import LatestWorks from '../../components/molecules/LatestWorks';
 import { Reviews } from './Reviews';
 import { Partners } from './Partners';
