@@ -5,8 +5,9 @@ import { Images } from '../../images/Images';
 
 import { Actions } from '../../actions/index';
 import { WorkSearchAction } from '../../sagas/NavbarSaga';
-import LatestWorks from '../../components/molecules/LatestWorks';
-import { LatestBlocks } from '../../components/molecules/LatestBlocks';
+import LatestWorks from '../../components/molecules/LatestWorks'
+import { LatestBlocks } from '../../components/molecules/LatestBlocks'
+import { Alpha } from '../../components/molecules/Alpha'
 
 import './LandingLoggedIn.scss';
 
@@ -44,18 +45,12 @@ export const LandingLoggedIn = connect(() => ({}), mapDispatch)(
               </form>
             </section>
           </div>
-          <div className="latest-blocks-and-works">
+          <section className="latest-blocks-and-works">
             <div className="container">
-              <div className="row">
-                <div className="col-sm-6">
-                  <LatestBlocks/>
-                </div>
-                <div className="col-sm-6">
-                  <LatestWorks showLink={true} />
-                </div>
-              </div>
+              <Alpha />
+              <LatestWorks showLink={true} />
             </div>
-          </div>
+          </section>
         </section>
       )
     }

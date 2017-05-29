@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Tabs } from 'react-tabs';
+import * as classNames from 'classnames'
 
 import '../extensions/String';
 import Constants from '../constants';
+import { Alpha } from './molecules/Alpha'
 import { Navbar } from "./organisms/Navbar";
 import { Footer } from './organisms/Footer';
 import { Modals } from './modals';
@@ -31,14 +33,16 @@ function render(props: RootLayoutProps) {
   const worksUrl = 'works';
   const loginUrl = 'login';
   const marketingLandingUrl = 'marketing-landing';
+  const isLoggedIn = props.loggedIn || !location;
 
   const navbarShadow = ![worksUrl, ''].includes(location);
-  const navbarTransparent = [''].includes(location) && props.loggedIn;
+  const navbarTransparent = ([''].includes(location)) && isLoggedIn;
   const navbarMargin = ![worksUrl].includes(location);
-  const displayNavbarLogo = ![''].includes(location) || !props.loggedIn;
-  const displayNavbarSearch = ![''].includes(location) || !props.loggedIn;
+  const displayNavbarLogo = ![''].includes(location) || !isLoggedIn;
+  const displayNavbarSearch = ![''].includes(location) || !isLoggedIn;
   const searchShadow = [worksUrl].includes(location);
   const displayNavbar = ![loginUrl, marketingLandingUrl].includes(location);
+  const displayAlpha = location !== '' && location !== 'login';
 
   return (
     <div className="root-layout">
@@ -49,8 +53,12 @@ function render(props: RootLayoutProps) {
         displaySearch={displayNavbarSearch}
         transparent={navbarTransparent}
         searchShadow={searchShadow}
-        margin={navbarMargin}
       /> }
+      { displayAlpha && <section className={classNames('alpha', navbarMargin && 'margin')}>
+        <div className="container">
+          <Alpha />
+        </div>
+      </section> }
       { props.children }
       { location !== loginUrl && <Footer/> }
     </div>
