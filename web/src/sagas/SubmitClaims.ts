@@ -1,16 +1,13 @@
 import { browserHistory } from 'react-router'
 import { takeEvery } from 'redux-saga'
 import { call, put, select } from 'redux-saga/effects'
-import * as protobuf from 'protobufjs'
+import { Claim, ClaimBuilder } from 'poet-js';
 
 import { Configuration } from '../configuration';
 import { Actions } from '../actions/index'
 import { Authentication } from '../authentication'
 import { currentPublicKey } from '../selectors/session'
 import { getMockPrivateKey } from '../helpers/mockKey'
-import { Claim } from '../Claim';
-
-const jsonClaims = require('../claim.json');
 
 export interface SubmitRequestedAction {
   readonly publicKey: string;
@@ -34,7 +31,11 @@ function* submitRequested(action: SubmitRequestedAction) {
   if (!publicKey)
     throw new Error('Claim Sign Saga: cannot sign a claim without a public key.');
 
-  const serializedToSign = action.payload.map(builder.getEncodedForSigning.bind(null, publicKey)) as string[];
+  // TODO: should claims already come with their publicKey set?
+  for (const claim of action.payload)
+    claim.publicKey = publicKey
+
+  const serializedToSign = action.payload.map(ClaimBuilder.getEncodedForSigning);
 
   const requestId = yield call(requestIdFromAuth, serializedToSign, publicKey);
   yield put({ type: Actions.Claims.IdReceived, payload: requestId.id });
@@ -67,31 +68,6 @@ function* submitRequested(action: SubmitRequestedAction) {
 function* fakeSign(action: any) {
   yield call(fetch, Configuration.api.mockApp + '/' + getMockPrivateKey() + '/' + action.payload, { method: 'POST' })
 }
-
-const builder = new class {
-  private readonly attribute: any;
-  private readonly claim: any;
-
-  constructor() {
-    const root = protobuf.Root.fromJSON(jsonClaims);
-    this.attribute = root.lookup('Poet.Attribute');
-    this.claim = root.lookup('Poet.Claim');
-  }
-
-  private getAttributes(attributes: ReadonlyArray<KeyValue<string, string>> | {[index: string]: string}) {
-    const attributesArray = attributes instanceof Array ? attributes : Object.entries(attributes).map(([key, value]) => ({key, value}));
-    return attributesArray.map(this.attribute.create, this.attribute)
-  }
-
-  getEncodedForSigning = (publicKey: string, data: Claim): string =>
-    new Buffer(this.claim.encode(this.claim.create({
-      id: new Buffer(''),
-      publicKey: new Buffer(publicKey, 'hex'),
-      signature: new Buffer(''),
-      type: data.type,
-      attributes: this.getAttributes(data.attributes)
-    })).finish()).toString('hex')
-};
 
 async function requestIdFromAuth(dataToSign: string[], notifyPubkey: string) {
   return await Authentication.getRequestIdForMultipleSigning(dataToSign, false, notifyPubkey)

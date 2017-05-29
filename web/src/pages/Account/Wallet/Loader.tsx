@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { Route } from 'react-router';
 
-const Bitcore = require('bitcore-lib');
-
 import PageLoader, { ReducerDescription } from '../../../components/PageLoader';
 import { currentPublicKey } from '../../../selectors/session'
-import { publicKeyToAddress } from '../../../bitcoin/addressHelpers'
+import { publicKeyToAddress } from '../../../helpers/AddressHelper'
 import { Actions } from '../../../actions/index'
 import { WalletLayout } from './Layout';
 import { WalletOperationWithdrawState } from './WalletOperationWithdraw';

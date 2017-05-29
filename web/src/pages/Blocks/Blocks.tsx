@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { Link } from 'react-router';
 import * as moment from 'moment';
-const classNames = require('classnames');
-
-import { ClassNameProps } from '../../common';
-import { BlockInfo } from '../../Interfaces';
+import * as classNames from 'classnames'
+import { BlockInfo, ClassNameProps } from 'poet-js';
 
 import './Blocks.scss';
 

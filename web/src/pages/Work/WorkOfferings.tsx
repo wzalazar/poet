@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as classNames from 'classnames';
+import { Api, ClaimTypes, Work, WorkOffering } from 'poet-js'
 
-import { Work, WorkOffering } from "../../Interfaces";
 import { PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
 
 import './WorkOfferings.scss';
@@ -11,13 +11,13 @@ interface WorkOfferingsProps {
   readonly onPurchaseRequest: (work: Work, workOffering: WorkOffering) => void;
 }
 
-export class WorkOfferings extends PoetAPIResourceProvider<Work, WorkOfferingsProps, undefined> {
+export class WorkOfferings extends PoetAPIResourceProvider<Api.Works.Resource, WorkOfferingsProps, undefined> {
 
   poetURL() {
-    return `/works/${this.props.workId}`;
+    return Api.Works.url(this.props.workId)
   }
 
-  renderElement(work: Work) {
+  renderElement(work: Api.Works.Resource) {
     if (!work || !work.offerings || !work.offerings.length)
       return null;
 
@@ -44,6 +44,7 @@ export class WorkOfferings extends PoetAPIResourceProvider<Work, WorkOfferingsPr
       },
       offerings: [{
         id: 'id',
+        type: ClaimTypes.OFFERING,
         owner: '',
         publicKey: '',
         signature: '',
@@ -59,7 +60,7 @@ export class WorkOfferings extends PoetAPIResourceProvider<Work, WorkOfferingsPr
     } as any, true);
   }
 
-  private renderOfferings(work: Work, isLoading?: boolean) {
+  private renderOfferings(work: Api.Works.Resource, isLoading?: boolean) {
     return (
       <section className={classNames('offerings', isLoading && 'loading')}>
         { work.offerings.map(this.renderOffering.bind(this, work)) }
@@ -67,7 +68,7 @@ export class WorkOfferings extends PoetAPIResourceProvider<Work, WorkOfferingsPr
     )
   }
 
-  private renderOffering(work: Work, workOffering: WorkOffering) {
+  private renderOffering(work: Api.Works.Resource, workOffering: WorkOffering) {
     return (
       <section className="offering" key={workOffering.id} >
         <h3>License</h3>

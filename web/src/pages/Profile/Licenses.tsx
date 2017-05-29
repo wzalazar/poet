@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Link } from 'react-router';
+import { Api, Headers } from 'poet-js'
 
-import { Images } from '../../images/Images';
 import { SearchInput } from '../../components/atoms/SearchInput';
-import { HEADER_X_TOTAL_COUNT, PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
+import { PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
 import { ProfileNameWithLink } from '../../components/atoms/Profile';
 import { SelectProfileById } from '../../components/atoms/Arguments';
 import {
@@ -33,17 +33,14 @@ export class Licenses extends PoetAPIResourceProvider<LicensesResource, Licenses
   }
 
   poetURL() {
-    return {
-      url: `/licenses`,
-      query: {
-        limit: 1,
-        relatedTo: this.props.profileId
-      }
-    }
+    return Api.Licenses.url({
+      limit: 1,
+      relatedTo: this.props.profileId
+    })
   }
 
   renderElement(licenses: LicensesResource, headers: Headers) {
-    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+    const count = headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount));
     return count ? this.renderLicenses() : this.renderNoLicenses();
   }
 

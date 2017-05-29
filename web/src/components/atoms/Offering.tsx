@@ -1,6 +1,5 @@
 import * as React from 'react';
-
-import { Offering } from '../../Interfaces';
+import { Offering } from 'poet-js';
 
 export function OfferingType(props: { offering: Offering }) {
   const type = props.offering

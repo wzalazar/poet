@@ -1,12 +1,11 @@
 import { Action } from 'redux';
 import { takeEvery } from 'redux-saga'
 import { put, select, take, call, race } from 'redux-saga/effects'
-import { browserHistory } from 'react-router';
+import { WorkOffering, Work } from 'poet-js';
 
 import { Configuration } from '../configuration';
 import { Actions } from '../actions'
 import { currentPublicKey } from '../selectors/session'
-import { WorkOffering, Work } from '../Interfaces';
 
 const submitLicense = createHelperFunc('/licenses')
 const buyThroughOffering = createHelperFunc('/titles')

@@ -1,6 +1,5 @@
 import * as React from 'react';
-
-import { ClassNameProps } from '../../common';
+import { ClassNameProps } from 'poet-js';
 
 export interface TextUploadProps extends ClassNameProps {
   readonly text?: string;

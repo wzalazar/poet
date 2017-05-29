@@ -1,14 +1,14 @@
-import * as React from 'react';
-import * as classNames from 'classnames';
+import * as React from 'react'
+import * as classNames from 'classnames'
+import { Pricing as IPricing, PricingFrequency} from 'poet-js'
 
-import * as Common from '../../../common';
 import { OptionGroup, Option } from '../../../components/molecules/OptionGroup';
 
 import './Pricing.scss';
 
 export interface PricingProps {
-  readonly pricing: Common.Pricing;
-  readonly onChange: (pricing: Common.Pricing) => void;
+  readonly pricing: IPricing;
+  readonly onChange: (pricing: IPricing) => void;
   readonly displayErrors?: boolean;
 }
 
@@ -74,7 +74,7 @@ export class Pricing extends React.Component<PricingProps, PricingState> {
     });
   };
 
-  private onFrequencyChange = (frequency: Common.PricingFrequency) => {
+  private onFrequencyChange = (frequency: PricingFrequency) => {
     this.props.onChange({
       ...this.props.pricing,
       frequency

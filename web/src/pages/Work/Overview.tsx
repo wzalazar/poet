@@ -1,24 +1,25 @@
-import * as React from 'react';
-import * as moment from 'moment';
-import * as classNames from 'classnames';
+import * as React from 'react'
+import * as moment from 'moment'
+import * as classNames from 'classnames'
+import { ClaimTypes, Work } from 'poet-js'
 
-import '../../extensions/Map';
+import '../../extensions/Map'
 
-import { Configuration } from '../../configuration';
-import { Work } from '../../Interfaces';
-import { AuthorWithLink, WorkById } from '../../components/atoms/Work';
+import { Configuration } from '../../configuration'
+import { AuthorWithLink, WorkById } from '../../components/atoms/Work'
 
-import './Overview.scss';
+import './Overview.scss'
 
-export class Overview extends WorkById<undefined> {
+export class Overview extends WorkById {
 
   renderElement(work: Work, headers: Headers) {
-    return this.renderOverview(work);
+    return this.renderOverview(work)
   }
 
   renderLoading() {
     return this.renderOverview({
       id: '',
+      type: ClaimTypes.WORK,
       publicKey: '',
       signature: '',
       attributes: {
@@ -34,30 +35,30 @@ export class Overview extends WorkById<undefined> {
         tags: '',
         type: ''
       }
-    }, true);
+    }, true)
   }
 
   private renderOverview(work: Work, isLoading?: boolean) {
     if (!work) {
-      return null;
+      return null
     }
 
-    document.title = work.attributes.name || '(Untitled Work)';
+    document.title = work.attributes.name || '(Untitled Work)'
 
-    const tableData = new Map<string, any>();
+    const tableData = new Map<string, any>()
 
     work.attributes.datePublished &&
-    tableData.set('Published', moment(parseInt(work.attributes.datePublished, 10)).format(Configuration.dateFormat));
+    tableData.set('Published', moment(parseInt(work.attributes.datePublished, 10)).format(Configuration.dateFormat))
 
     work.attributes.dateModified &&
-    tableData.set('Last Modified', moment(parseInt(work.attributes.dateModified, 10)).format(Configuration.dateFormat));
+    tableData.set('Last Modified', moment(parseInt(work.attributes.dateModified, 10)).format(Configuration.dateFormat))
 
-    work.attributes.tags && tableData.set('Tags', work.attributes.tags || []);
+    work.attributes.tags && tableData.set('Tags', work.attributes.tags || [])
 
-    tableData.set('Type', work.attributes.mediaType || 'Unknown');
+    tableData.set('Type', work.attributes.mediaType || 'Unknown')
 
     work.attributes.articleType &&
-    tableData.set('Article type', work.attributes.articleType || 'Unknown');
+    tableData.set('Article type', work.attributes.articleType || 'Unknown')
 
     return (
       <div className={classNames('overview', isLoading && 'loading')}>
@@ -81,6 +82,6 @@ export class Overview extends WorkById<undefined> {
         <td>{key}</td>
         <td>{value}</td>
       </tr>
-    );
+    )
   }
 }

@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { Action } from 'redux';
 import * as moment from 'moment';
+import { LicenseType, LicenseTypes } from 'poet-js';
 
-import './Layout.scss';
 import { Works } from './Works';
 import { FiltersComponent } from './Filters';
-import { LicenseType, LicenseTypes } from '../../common';
+
+import './Layout.scss';
 
 interface WorksLayoutProps {
   readonly location?: {

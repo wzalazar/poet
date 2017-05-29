@@ -1,7 +1,6 @@
-import * as React from 'react';
-const classNames = require('classnames'); // TODO: we have typings for this...
-
-import { ClassNameProps } from '../../common';
+import * as React from 'react'
+import * as classNames from 'classnames'
+import { ClassNameProps } from 'poet-js'
 
 enum StepState {
   NotDone, Selected, Done

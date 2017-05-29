@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as ReactDatePicker from 'react-datepicker';
 import * as moment from 'moment';
+import { LicenseTypes, LicenseType } from 'poet-js';
 
-import { LicenseTypes, LicenseType } from "../../common";
 import { DatePickerInput } from '../../components/atoms/DatePickerInput';
 
 import './Filters.scss';

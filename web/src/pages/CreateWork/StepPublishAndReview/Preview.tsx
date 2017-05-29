@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as moment from 'moment';
+import { Price, LicenseType, ClassNameProps } from 'poet-js'
 
-import { Price, LicenseType, ClassNameProps } from '../../../common';
 import { Hash } from '../../../components/atoms/Hash';
 import { ProfileName } from '../../../components/atoms/Profile';
 

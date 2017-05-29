@@ -1,12 +1,11 @@
 import { takeEvery } from 'redux-saga'
-import { put } from 'redux-saga/effects'
+import { put, select } from 'redux-saga/effects'
 
 import { Configuration } from '../configuration';
 import { Actions } from '../actions/index'
 import { FetchType } from '../reducers/FetchReducer';
 import { currentPublicKey } from '../selectors/session';
-import { select } from 'redux-saga/effects';
-import { publicKeyToAddress } from '../bitcoin/addressHelpers';
+import { publicKeyToAddress } from '../helpers/AddressHelper';
 
 export function CacheInvalidationSaga() {
   return function*() {

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Action } from 'redux';
 const Overlays = require('react-overlays');
+import { Claim } from 'poet-js';
 
 import { Images } from '../../images/Images';
 import { Actions } from '../../actions/index';
@@ -11,7 +12,6 @@ import { Option, OptionGroup } from '../molecules/OptionGroup';
 import { TextUpload, TextUploadButton } from '../molecules/TextUpload';
 
 import './TryItOut.scss';
-import { Claim } from '../../Claim';
 
 enum Tabs {
   Text, UploadFile

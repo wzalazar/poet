@@ -1,18 +1,17 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import * as classNames from 'classnames';
+import { Api, LicenseType, Headers } from 'poet-js';
 
 import { Configuration } from '../../configuration';
-import { LicenseType } from '../../common';
-import { Work } from '../../Interfaces';
-import { PoetAPIResourceProvider, HEADER_X_TOTAL_COUNT } from '../../components/atoms/base/PoetApiResource';
+import { PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
 import { WorkNameWithLink, AuthorWithLink } from '../../components/atoms/Work';
 import { TimeElapsedSinceTimestamp } from '../../components/atoms/Claim';
 import { Pagination } from '../../components/molecules/Pagination';
 
 import './Works.scss';
 
-type WorksResource = ReadonlyArray<Work>;
+type WorksResource = ReadonlyArray<Api.Works.Resource>;
 
 export interface WorksProps {
   readonly offset?: number;
@@ -34,22 +33,19 @@ export class Works extends PoetAPIResourceProvider<WorksResource, WorksProps, un
   };
 
   poetURL() {
-    return {
-      url: '/works',
-      query: {
-        offset: this.props.offset,
-        limit: this.props.limit,
-        dateFrom: this.props.dateFrom && this.props.dateFrom.toDate().getTime(),
-        dateTo: this.props.dateTo && this.props.dateTo.toDate().getTime(),
-        query: this.props.query,
-        sortBy: this.props.sortBy,
-        licenseType: this.props.licenseType && this.props.licenseType.id
-      }
-    }
+    return Api.Works.url({
+      offset: this.props.offset,
+      limit: this.props.limit,
+      dateFrom: this.props.dateFrom && this.props.dateFrom.toDate().getTime(),
+      dateTo: this.props.dateTo && this.props.dateTo.toDate().getTime(),
+      query: this.props.query,
+      sortBy: this.props.sortBy,
+      licenseType: this.props.licenseType && this.props.licenseType.id
+    })
   }
 
   renderElement(works: WorksResource, headers: Headers) {
-    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+    const count = headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount));
     return this.renderWorks(works, count);
   }
 
@@ -65,7 +61,7 @@ export class Works extends PoetAPIResourceProvider<WorksResource, WorksProps, un
   }
 
   componentDidFetch(works: WorksResource, headers: Headers) {
-    const count = headers.get(HEADER_X_TOTAL_COUNT) && parseInt(headers.get(HEADER_X_TOTAL_COUNT));
+    const count = headers.get(Headers.TotalCount) && parseInt(headers.get(Headers.TotalCount));
     this.lastFetchedWorks = works;
     this.lastFetchedCount = count;
   }
@@ -93,7 +89,7 @@ export class Works extends PoetAPIResourceProvider<WorksResource, WorksProps, un
     )
   }
 
-  private renderWork(props: Work) {
+  private renderWork(props: Api.Works.Resource) {
     return (
       <li key={props.id} className="work-item">
         <div className="name"><WorkNameWithLink work={props} /></div>

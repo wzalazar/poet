@@ -1,6 +1,5 @@
 import * as React from 'react'
-
-import { Price, LicenseType } from '../../../common';
+import { Price, LicenseType } from 'poet-js';
 
 import { TermsOfUse } from './TermsOfUse'
 import { Preview } from './Preview'

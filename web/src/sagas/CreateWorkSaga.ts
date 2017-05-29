@@ -1,11 +1,11 @@
 import { takeEvery } from 'redux-saga'
 import { put } from 'redux-saga/effects'
+import { ClaimTypes } from 'poet-js'
 
 import { Actions } from '../actions/index'
-import { WORK } from '../Claim';
 
 function* claimSubmittedSuccess(action: any) {
-  const workClaim = action.claims.find((claim: any) => claim.type === WORK);
+  const workClaim = action.claims.find((claim: any) => claim.type === ClaimTypes.WORK);
 
   if (!workClaim)
     return;

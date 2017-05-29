@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as moment from 'moment';
+import { License } from 'poet-js';
 
 import { Configuration } from '../../configuration';
-import { License } from '../../Interfaces';
 import { WorkNameById, WorkNameWithLinkById } from './Work';
 
 

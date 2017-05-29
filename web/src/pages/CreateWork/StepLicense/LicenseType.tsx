@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { LicenseType, LicenseTypes } from '../../../common';
+import { LicenseType, LicenseTypes } from 'poet-js';
 import { OptionGroup, Option } from '../../../components/molecules/OptionGroup';
 
 import './LicenseType.scss';

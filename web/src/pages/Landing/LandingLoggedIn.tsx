@@ -6,7 +6,7 @@ import { Images } from '../../images/Images';
 import { Actions } from '../../actions/index';
 import { WorkSearchAction } from '../../sagas/NavbarSaga';
 import LatestWorks from '../../components/molecules/LatestWorks';
-import LatestBlocks from '../../components/molecules/LatestBlocks';
+import { LatestBlocks } from '../../components/molecules/LatestBlocks';
 
 import './LandingLoggedIn.scss';
 

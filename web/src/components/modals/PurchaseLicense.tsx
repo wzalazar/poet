@@ -9,7 +9,7 @@ import { Configuration } from '../../configuration';
 import { Actions } from '../../actions/index'
 import { Images } from '../../images/Images';
 import { currentPublicKey } from '../../selectors/session';
-import { publicKeyToAddress } from '../../bitcoin/addressHelpers';
+import { publicKeyToAddress } from '../../helpers/AddressHelper';
 import { WalletBalance, UnspentTransactionOutput } from '../atoms/WalletBalance';
 import { ModalAction } from './Modal'
 

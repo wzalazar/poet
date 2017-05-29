@@ -1,8 +1,8 @@
 import * as React from 'react';
+import { BlockInfo } from 'poet-js';
 
 import LatestWorks from '../../components/molecules/LatestWorks'
-import BlockHeader from './components/Header'
-import { BlockInfo } from '../../Interfaces';
+import { Header } from './components/Header'
 import { Blocks } from './Blocks';
 
 import './Layout.scss'
@@ -17,7 +17,7 @@ export class BlocksLayout extends React.Component<BlocksLayoutProps, undefined> 
     return (
       <div className="container">
         <section className="blocks">
-          <BlockHeader />
+          <Header />
           <div className="row">
             <div className="col-sm-6 col-md-4">
               <Blocks blocks={this.props.blocks} />
