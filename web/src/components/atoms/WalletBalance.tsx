@@ -1,9 +1,10 @@
-import * as React from 'react';
-import { ClassNameProps } from 'poet-js';
+import * as React from 'react'
+import { ClassNameProps } from 'poet-js'
+import { UtxosByAddressResponse } from 'insight-client-js'
 
-import { Configuration } from '../../configuration';
-import { ResourceProvider, ResourceLocator } from '../ResourceProvider';
-import { BitcoinToCurrency } from '../../pages/Account/Wallet/BitcoinToCurrency';
+import { InsightClient } from 'Insight'
+import { ResourceProvider, ResourceLocator } from 'components/ResourceProvider'
+import { BitcoinToCurrency } from 'pages/Account/Wallet/BitcoinToCurrency'
 
 export interface WalletBalanceProps extends ClassNameProps {
   readonly address: string;
@@ -14,18 +15,7 @@ export interface WalletBalanceState {
   readonly btcFirst: boolean;
 }
 
-export interface UnspentTransactionOutput {
-  readonly txid: string;
-  readonly vout: number;
-  readonly satoshis: number;
-  readonly confirmations: number;
-  readonly ts: number;
-  readonly amount: number;
-}
-
-type UnspentTransactionOutputs = ReadonlyArray<UnspentTransactionOutput>;
-
-export class WalletBalance extends ResourceProvider<UnspentTransactionOutputs, WalletBalanceProps, WalletBalanceState> {
+export class WalletBalance extends ResourceProvider<UtxosByAddressResponse, WalletBalanceProps, WalletBalanceState> {
 
   constructor() {
     super(...arguments);
@@ -36,11 +26,11 @@ export class WalletBalance extends ResourceProvider<UnspentTransactionOutputs, W
 
   resourceLocator(): ResourceLocator {
     return {
-      url: Configuration.api.insight + '/addr/' + this.props.address + '/utxo'
+      url: InsightClient.Address.Utxos.url(this.props.address)
     }
   }
 
-  renderElement(unspentTransactionOutputs: UnspentTransactionOutputs) {
+  renderElement(unspentTransactionOutputs: UtxosByAddressResponse) {
     const satoshis = unspentTransactionOutputs.map(a => a.satoshis).reduce((a, b) => a + b, 0);
     const btc = satoshis / 100000000;
 

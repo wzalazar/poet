@@ -1,6 +1,7 @@
 import { takeEvery } from 'redux-saga'
 import { put, select } from 'redux-saga/effects'
 
+import { InsightClient } from 'Insight'
 import { Configuration } from '../configuration';
 import { Actions } from '../actions/index'
 import { FetchType } from '../reducers/FetchReducer';
@@ -36,12 +37,12 @@ function* invalidateBalance() {
   yield put({
     type: 'clear balance',
     fetchType: FetchType.CLEAR,
-    url: Configuration.api.insight + '/addr/' + address + '/utxo'
+    url: InsightClient.Address.Utxos.url(address)
   });
   yield put({
     type: 'clear tx history',
     fetchType: FetchType.CLEAR,
-    url: `${Configuration.api.insight}/txs`
+    url: InsightClient.Transactions.byBlockOrAddress.path
   });
 }
 

@@ -4,30 +4,32 @@ import { Action } from 'redux'
 import { browserHistory } from 'react-router';
 import * as moment from 'moment'
 const Overlays = require('react-overlays');
+import { UtxoByAddress } from 'insight-client-js'
 
-import { Configuration } from '../../configuration';
-import { Actions } from '../../actions/index'
-import { Images } from '../../images/Images';
-import { currentPublicKey } from '../../selectors/session';
-import { publicKeyToAddress } from '../../helpers/AddressHelper';
-import { WalletBalance, UnspentTransactionOutput } from '../atoms/WalletBalance';
+import { InsightClient } from 'Insight'
+import { Configuration } from 'configuration'
+import { Actions } from 'actions/index'
+import { Images } from 'images/Images'
+import { currentPublicKey } from 'selectors/session'
+import { publicKeyToAddress } from 'helpers/AddressHelper'
+import { badge } from 'helpers/LicenseBadge';
+import { PoetAppState, PurchaseLicenseStore } from 'store/PoetAppState'
+import { WalletBalance } from '../atoms/WalletBalance'
+import { AuthorWithLink } from '../atoms/Work'
 import { ModalAction } from './Modal'
 
 import './PurchaseLicense.scss'
-import { AuthorWithLink } from '../atoms/Work';
-import { badge } from '../../helpers/LicenseBadge';
-import { PoetAppState, PurchaseLicenseStore } from '../../store/PoetAppState'
 
 interface PurchaseLicenseProps extends PurchaseLicenseStore {
   readonly acceptAction?: () => Action;
   readonly address: string;
-  readonly utxos: ReadonlyArray<UnspentTransactionOutput>;
+  readonly utxos: ReadonlyArray<UtxoByAddress>;
 }
 
 function mapStateToProps(state: PoetAppState): PurchaseLicenseProps {
   const publicKey = currentPublicKey(state);
   const address = publicKey && publicKeyToAddress(publicKey);
-  const fetchUtxo = state.fetch[`${Configuration.api.insight}/addr/${address}/utxo`];
+  const fetchUtxo = state.fetch[InsightClient.Address.Utxos.url(address)]; // TODO: have the modal extend from PoetAPIResource instead
 
   return {
     address,
