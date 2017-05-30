@@ -54,7 +54,10 @@ module.exports = {
   devtool: production ? 'cheap-module-source-map' : 'eval',
 
   resolve: {
-    // Add '.ts' and '.tsx' as resolvable extensions.
+    root: [
+      path.resolve('./src/'),
+      path.resolve('./node_modules/'),
+    ],
     extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.json'],
     fallback: path.join(__dirname, "node_modules")
   },
