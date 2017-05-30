@@ -11,7 +11,6 @@ export const Configuration = {
     user: '/api/user',
     auth: 'ws://localhost:5000',
     mockApp: '/api/mockApp',
-    insight: 'https://test-insight.bitpay.com/api',
     blockchain: 'https://blockchain.info'
   },
   imageUpload: {
