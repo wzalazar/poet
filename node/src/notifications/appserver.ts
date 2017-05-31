@@ -50,33 +50,36 @@ function createServer (serverKey: string, port: number) {
             res.end()
         } else if (!verifies(doubleSha, new Buffer(deviceId + timestamp, 'utf8'), signature, pubKey)) {
             console.log("Invalid signature")
-            res.json("Invalid signature")
+            res.json({ success: false , error : "Invalid signature"})
             res.status(400)
             res.end()
         } else {
 
-                if (connection == undefined) {
-                    connection = await getConnection()
-                }
+            if (connection == undefined) {
+                connection = await getConnection()
+            }
 
-                let device = new Device()
-                device.deviceId = deviceId
-                device.deviceName = deviceName
-                device.platform = platform
-                device.publicKey = pubKey
-                device.registrationId = registrationId
+            let device = new Device()
+            device.deviceId = deviceId
+            device.deviceName = deviceName
+            device.platform = platform
+            device.publicKey = pubKey
+            device.registrationId = registrationId
 
-                let deviceRepository = connection.getRepository(Device)
-                await deviceRepository.persist(device)
+            let deviceRepository = connection.getRepository(Device)
+            await deviceRepository.persist(device)
 
-                res.end("It works!!")
-                console.log("Device has been saved")
+            res.json({ success: true })
+            res.status(200)
+            res.end()
+            console.log("Device has been saved")
 
         }
     } catch (error) {
         console.log(error)
+        res.json({ success: false , error : error.toString() })
         res.status(400)
-        res.end("It didn't work :(!!")
+        res.end()
     }
   })
 
