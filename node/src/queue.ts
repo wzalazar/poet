@@ -1,11 +1,11 @@
 import * as bluebird from 'bluebird'
 import * as amqp from 'amqplib/callback_api'
 import * as Rx from 'rx'
-import { Channel, Connection } from "amqplib"
+import { Channel } from "amqplib"
+import { delay } from 'poet-js'
 
 import { BitcoinBlockMetadata, BlockMetadata } from './events'
 import { Block } from './claim'
-import { delay } from './common'
 
 const BITCOIN_BLOCK = 'bitcoinBlock'
 const BITCOIN_BLOCK_PROCESSED = 'bitcoinBlock processed'

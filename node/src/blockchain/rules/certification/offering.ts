@@ -1,17 +1,14 @@
+import { Fields, ClaimTypes } from 'poet-js'
+
 import BlockchainService from '../../domainService'
 import { BlockMetadata } from '../../../events'
-import { Claim, OFFERING } from '../../../claim'
-import Fields from '../../fields'
+import { Claim } from '../../../claim'
 import { EventType } from '../../orm/events/events';
 
-const Reference = Fields.REFERENCE
-const OfferingType = Fields.OFFERING_TYPE
-const OfferingInfo = Fields.OFFERING_INFO
-
 export default {
-  type: OFFERING,
+  type: ClaimTypes.OFFERING,
   hook: async (service: BlockchainService, claim: Claim, txInfo: BlockMetadata) => {
-    const referenceId = claim.attributes[Reference]
+    const referenceId = claim.attributes[Fields.REFERENCE]
     if (!referenceId) {
       console.log('Received weird license with no "reference" field', claim)
       return
@@ -30,8 +27,8 @@ export default {
         id: claim.id,
         reference: reference,
         owner: owner,
-        offeringType: claim.attributes[OfferingType],
-        offeringInfo: claim.attributes[OfferingInfo],
+        offeringType: claim.attributes[Fields.OFFERING_TYPE],
+        offeringInfo: claim.attributes[Fields.OFFERING_INFO],
       }
     ))
   }

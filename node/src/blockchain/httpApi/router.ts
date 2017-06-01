@@ -4,7 +4,7 @@ import { Repository } from 'typeorm'
 import BlockchainService from '../domainService'
 import Route from './route'
 import WorkRoute from './routes/work'
-import getConnection from '../connection'
+import { getConnection } from '../connection'
 import getBuilder from '../../serialization/builder'
 import BlockRoute from './routes/blocks'
 import ProfileRoute from './routes/profile'
@@ -14,8 +14,8 @@ import EventRoute from './routes/events';
 import NotificationsRoute from './routes/notifications';
 import BitcoinMalleabilityRoute from './routes/bitcoin';
 
-export default class BlockchainRouter {
-  service: BlockchainService
+export class BlockchainRouter {
+  private readonly service: BlockchainService
 
   constructor(service: BlockchainService) {
     this.service = service
