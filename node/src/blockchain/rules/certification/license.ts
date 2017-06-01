@@ -1,33 +1,15 @@
-import BlockchainService from "../../domainService";
-import {BlockMetadata} from "../../../events";
-import {Claim, LICENSE} from "../../../claim";
-import Fields from "../../fields";
-import { EventType } from '../../orm/events/events';
-import * as fetch from 'isomorphic-fetch'
-import Work from '../../orm/domain/work';
-import Offering from '../../orm/domain/offering';
-import Profile from '../../orm/domain/profile';
+import { Fields, ClaimTypes } from 'poet-js'
 
-const Reference = Fields.REFERENCE
-const ReferenceOffering = Fields.REFERENCE_OFFERING
-const Holder = Fields.LICENSE_HOLDER
-const ProofValue = Fields.PROOF_VALUE
-const ProofType = Fields.PROOF_TYPE
+import { InsightClient } from '../../../insight'
+import BlockchainService from "../../domainService"
+import {BlockMetadata} from "../../../events"
+import { Claim } from "../../../claim"
+import { EventType } from '../../orm/events/events'
+import Work from '../../orm/domain/work'
+import Offering from '../../orm/domain/offering'
 
 const BitcoinPayment = 'Bitcoin Transaction'
 const LicenseOwner = 'License Owner'
-
-async function fetchTx(txId: string): Promise<any> {
-  return await fetch(`https://test-insight.bitpay.com/api/tx/${txId}`)
-    .then(res => res.text())
-    .then(text => {
-      try {
-        return JSON.parse(text)
-      } catch(error) {
-        return null
-      }
-    })
-}
 
 function resolveNormalizedId(service: BlockchainService, ntxid: string): Promise<string> {
   return service.getTxId(ntxid)
@@ -44,8 +26,8 @@ interface Validation {
 }
 
 export async function validateBitcoinPayment(service: BlockchainService, claim: Claim, txInfo: BlockMetadata, work: Work): Promise<false | Validation> {
-  const workId = claim.attributes[Reference]
-  const referenceOfferingId = claim.attributes[ReferenceOffering]
+  const workId = claim.attributes[Fields.REFERENCE]
+  const referenceOfferingId = claim.attributes[Fields.REFERENCE_OFFERING]
   const referenceOffering = referenceOfferingId
     && await service.getOffering(referenceOfferingId)
   if (!referenceOffering) {
@@ -70,10 +52,10 @@ export async function validateBitcoinPayment(service: BlockchainService, claim: 
     return false
   }
 
-  const proofType = claim.attributes[ProofType]
+  const proofType = claim.attributes[Fields.PROOF_TYPE]
   let proofValue
   try {
-    proofValue = JSON.parse(claim.attributes[ProofValue])
+    proofValue = JSON.parse(claim.attributes[Fields.PROOF_VALUE])
   } catch(err) {
     console.log('invalid json for proof value', claim)
     return false
@@ -90,7 +72,7 @@ export async function validateBitcoinPayment(service: BlockchainService, claim: 
         console.log('Txid resolution failed', proofValue.ntxId, proofValue.txId)
         txId = proofValue.txId
       }
-      const tx = await fetchTx(txId)
+      const tx = await InsightClient.Transactions.byId.get(txId)
       if (!tx) {
         console.log('no tx found')
         return false
@@ -129,7 +111,7 @@ export async function validateBitcoinPaymentForLicense(service: BlockchainServic
   }
   const { ownerOnRecord, referenceOffering, proofType, proofValue } = validation
 
-  const holderId = claim.attributes[Holder]
+  const holderId = claim.attributes[Fields.LICENSE_HOLDER]
   const holder = holderId
     && await service.getOrCreateProfile(holderId)
 
@@ -154,7 +136,7 @@ export async function validateBitcoinPaymentForLicense(service: BlockchainServic
 }
 
 export async function validateSelfOwnedLicense(service: BlockchainService, claim: Claim, txInfo: BlockMetadata, work: Work) {
-  const workId = claim.attributes[Reference]
+  const workId = claim.attributes[Fields.REFERENCE]
 
   const ownerStated = claim.attributes[Fields.REFERENCE_OWNER]
   const ownerOnRecord = await service.getOwnerPublicKey(workId)
@@ -164,7 +146,7 @@ export async function validateSelfOwnedLicense(service: BlockchainService, claim
     return
   }
 
-  const holderId = claim.attributes[Holder]
+  const holderId = claim.attributes[Fields.LICENSE_HOLDER]
   if (holderId !== ownerStated) {
     return
   }
@@ -197,9 +179,9 @@ export async function validateSelfOwnedLicense(service: BlockchainService, claim
 }
 
 export default {
-  type: LICENSE,
+  type: ClaimTypes.LICENSE,
   hook: async (service: BlockchainService, claim: Claim, txInfo: BlockMetadata) => {
-    const workId = claim.attributes[Reference]
+    const workId = claim.attributes[Fields.REFERENCE]
     if (!workId) {
       console.log('Received weird license with no "reference" field', claim)
       return
@@ -209,10 +191,10 @@ export default {
       console.log('Could not find referred work', claim)
       return
     }
-    if (claim.attributes[ProofType] === BitcoinPayment) {
+    if (claim.attributes[Fields.PROOF_TYPE] === BitcoinPayment) {
       return validateBitcoinPaymentForLicense(service, claim, txInfo, work)
     }
-    if (claim.attributes[ProofType] === LicenseOwner) {
+    if (claim.attributes[Fields.PROOF_TYPE] === LicenseOwner) {
       return validateSelfOwnedLicense(service, claim, txInfo, work)
     }
   }

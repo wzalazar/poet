@@ -1,13 +1,11 @@
 import * as Bluebird from 'bluebird'
-
-import { Claim, Block } from '../claim'
-import * as common from '../common'
-import { hex } from '../common'
-import { default as loadBuilders, Builders } from './loaders'
-import {BARD, VERSION} from "../common";
-
 const bitcore = require('bitcore-lib')
 const explorers = require('bitcore-explorers')
+import { sha256, sign, hex, VERSION, BARD } from 'poet-js'
+
+import { Claim, Block } from '../claim'
+import { default as loadBuilders, Builders } from './loaders'
+
 bitcore.Networks.defaultNetwork = bitcore.Networks.testnet
 
 const insightInstance = new explorers.Insight()
@@ -45,7 +43,7 @@ export class ClaimBuilder {
               ? new bitcore.PrivateKey(privateKey)
               : privateKey
     const id = this.getId(data, key)
-    const signature = common.sign(key, id)
+    const signature = sign(key, id)
 
     return {
         id: hex(id),
@@ -66,11 +64,11 @@ export class ClaimBuilder {
   }
 
   getId(data: any, key?: Object): Uint8Array {
-    return common.sha256(this.getEncodedForSigning(data, key))
+    return sha256(this.getEncodedForSigning(data, key))
   }
 
   getIdForBlock(block: any): string {
-    return common.sha256(this.block.encode(block).finish()).toString('hex')
+    return sha256(this.block.encode(block).finish()).toString('hex')
   }
 
   getAttributes(attrs: any) {

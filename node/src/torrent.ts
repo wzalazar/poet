@@ -1,14 +1,16 @@
 import * as fs from 'fs'
-import { ReadStream } from 'fs'
+const { promisify } = require('util') // TODO: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/16860
 import * as path from 'path'
 const WebTorrent = require('webtorrent')
+import { noop, assert } from 'poet-js'
 
 import { Block } from './claim'
 import { default as getBuilder } from './serialization/builder'
 import { Queue } from './queue'
 import { getCreateOpts, getHash, createObservableDownload } from './helpers/torrentHash'
-import { noop, readdir, assert } from './common'
 import { BlockMetadata, BitcoinBlockMetadata } from './events'
+
+const readdir = promisify(fs.readdir)
 
 async function readBlock(blockFile: string) {
   const builder = await getBuilder()
@@ -144,7 +146,7 @@ export default class TorrentSystem {
     }
   }
 
-  private seedBlockFromFile(file: ReadStream, torrentId: string, blockHash: string) {
+  private seedBlockFromFile(file: fs.ReadStream, torrentId: string, blockHash: string) {
     this.client.seed(file, this.makeSeedOptions(torrentId, blockHash), noop)
   }
 

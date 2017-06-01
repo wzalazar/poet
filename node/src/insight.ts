@@ -1,11 +1,12 @@
 import * as socketIO from 'socket.io-client'
 import * as fetch from 'isomorphic-fetch'
+import { BARD, VERSION } from 'poet-js';
+import { InsightClient as Client, ApiMode } from 'insight-client-js'
+const bitcore = require('bitcore-lib')
 
 import { BitcoinBlockMetadata, BlockMetadata } from './events'
-import {BARD} from "./common";
-import {VERSION} from "./common";
 
-const bitcore = require('bitcore-lib')
+export const InsightClient = new Client(ApiMode.Test, fetch)
 
 const notNull = (x: any) => !!x
 const parseJson = (x: any) => {

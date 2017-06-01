@@ -1,8 +1,8 @@
 import * as path from 'path'
 import { createConnection } from 'typeorm'
-import { delay } from '../common'
+import { delay } from 'poet-js'
 
-export default async function getConnection(purpose: string) {
+export async function getConnection(purpose: string) {
   let attempts = 30
   let lastError
   while (attempts--) {

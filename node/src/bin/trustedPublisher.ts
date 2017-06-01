@@ -1,9 +1,10 @@
-import * as Koa from "koa";
-import {Claim, Block, WORK, TITLE, OFFERING, LICENSE, CERTIFICATE} from "../claim";
-import {default as getCreator, ClaimBuilder} from "../serialization/builder";
-import {getHash} from "../helpers/torrentHash";
-import {Queue} from "../queue";
-import Fields from "../blockchain/fields";
+import * as Koa from "koa"
+import { Fields, ClaimTypes } from 'poet-js'
+
+import { Claim, Block } from "../claim"
+import { default as getCreator, ClaimBuilder } from "../serialization/builder"
+import { getHash } from "../helpers/torrentHash"
+import { Queue } from "../queue"
 
 const bitcore = require('bitcore-lib')
 const Body = require('koa-body')
@@ -26,7 +27,7 @@ async function createServer(options?: TrustedPublisherOptions) {
   const createBlock = async (claims: ReadonlyArray<Claim>, ctx: any) => {
 
     const certificates: ReadonlyArray<Claim> = claims.map(claim => creator.createSignedClaim({
-      type: CERTIFICATE,
+      type: ClaimTypes.CERTIFICATE,
       attributes: {
         [Fields.REFERENCE]: claim.id,
         [Fields.CERTIFICATION_TIME]: '' + Date.now()
@@ -64,7 +65,7 @@ async function createServer(options?: TrustedPublisherOptions) {
   koa.use(Route.post('/titles', async (ctx: any) => {
     const body = JSON.parse(ctx.request.body)
     const claims = [creator.createSignedClaim({
-      type: TITLE,
+      type: ClaimTypes.TITLE,
       attributes: {
         [Fields.REFERENCE]: body.reference,
         [Fields.REFERENCE_OFFERING]: body.referenceOffering,
@@ -84,7 +85,7 @@ async function createServer(options?: TrustedPublisherOptions) {
   koa.use(Route.post('/licenses', async (ctx: any) => {
     const body = JSON.parse(ctx.request.body)
     const claims = [creator.createSignedClaim({
-      type: LICENSE,
+      type: ClaimTypes.LICENSE,
       attributes: {
         [Fields.REFERENCE]: body.reference,
         [Fields.REFERENCE_OFFERING]: body.referenceOffering,
@@ -113,12 +114,12 @@ async function createServer(options?: TrustedPublisherOptions) {
       return claim
     })
 
-    const workClaims: ReadonlyArray<Claim> = claims.filter(_ => _.type === WORK)
+    const workClaims: ReadonlyArray<Claim> = claims.filter(_ => _.type === ClaimTypes.WORK)
 
     console.log('POST /claims', claims)
 
     // Hack to use the Work's signature for the Offering
-    for (const claim of claims.filter(_ => _.type === OFFERING)) {
+    for (const claim of claims.filter(_ => _.type === ClaimTypes.OFFERING)) {
       const workClaim = workClaims && workClaims.length && workClaims[0]
 
       if (!workClaim)
@@ -129,7 +130,7 @@ async function createServer(options?: TrustedPublisherOptions) {
 
     const titleClaims: ReadonlyArray<Claim> = workClaims.map(claim =>
       creator.createSignedClaim({
-        type: TITLE,
+        type: ClaimTypes.TITLE,
         attributes: {
           reference: claim.id,
           owner: claim.publicKey,

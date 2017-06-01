@@ -1,6 +1,4 @@
-import { Table, Column, PrimaryColumn, OneToMany, JoinTable, PrimaryGeneratedColumn } from 'typeorm'
-import Attribute from './attribute'
-import { ClaimType } from '../../claim'
+import { Table, Column, PrimaryGeneratedColumn } from 'typeorm'
 
 @Table()
 export default class ClaimLink {
