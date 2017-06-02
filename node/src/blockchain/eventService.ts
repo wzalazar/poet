@@ -1,6 +1,6 @@
-import { DatabaseConnection } from 'typeorm/driver/DatabaseConnection';
-import Event from './orm/events/events';
 import { Repository, Connection } from "typeorm";
+
+import Event from './orm/events/events';
 
 export class EventService {
   private db: Connection;

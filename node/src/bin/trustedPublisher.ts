@@ -1,14 +1,13 @@
 import * as Koa from "koa"
 import { Fields, ClaimTypes } from 'poet-js'
+const bitcore = require('bitcore-lib')
+const Body = require('koa-body')
+const Route = require('koa-route')
 
 import { Claim, Block } from "../claim"
 import { default as getCreator, ClaimBuilder } from "../serialization/builder"
 import { getHash } from "../helpers/torrentHash"
 import { Queue } from "../queue"
-
-const bitcore = require('bitcore-lib')
-const Body = require('koa-body')
-const Route = require('koa-route')
 
 const privKey = 'cf5bd2d3d179493adfc41da206adb2ffd212ea34870722bc92655f8c8fd2ef33'
 

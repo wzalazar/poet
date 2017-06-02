@@ -1,13 +1,13 @@
 import {Claim as PureClaim} from "../claim";
 import {BlockMetadata} from "../events";
 import { CertificationRules } from "./rules/certification";
-import DomainService from "./domainService";
+import { BlockchainService } from "./domainService";
 
-export default class CertificationService {
+export class CertificationService {
 
-  private domainService: DomainService;
+  private domainService: BlockchainService;
 
-  constructor(domainService: DomainService) {
+  constructor(domainService: BlockchainService) {
     this.domainService = domainService
   }
 

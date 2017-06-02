@@ -1,6 +1,6 @@
 import { ClaimTypes } from 'poet-js'
 
-import BlockchainService from "../domainService"
+import { BlockchainService } from "../domainService"
 import { Claim } from "../../claim"
 import { BlockMetadata } from "../../events"
 

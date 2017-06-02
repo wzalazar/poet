@@ -1,12 +1,9 @@
 import 'reflect-metadata'
-import * as Koa from 'koa'
 
-import BlockchainService from '../../domainService'
-import Route, { QueryOptions } from '../route'
+import { BlockchainService } from '../../domainService'
+import { Route, QueryOptions } from '../route'
 import ClaimInfo from '../../orm/claimInfo'
 import Claim from '../../orm/claim'
-import Router = require('koa-router')
-import Context = Koa.Context
 
 export default class ClaimRoute extends Route<Claim> {
   service: BlockchainService

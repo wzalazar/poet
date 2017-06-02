@@ -12,7 +12,7 @@ export interface QueryOptions {
   limit: number
 }
 
-export default class Route<T> {
+export class Route<T> {
   protected idKey: string
   protected repository: TypeORM.Repository<T>
   protected resourcePath: string
