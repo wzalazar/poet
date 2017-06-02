@@ -1,6 +1,6 @@
 import { Fields, ClaimTypes, looksLikePublicKey } from 'poet-js'
 
-import BlockchainService from '../../domainService'
+import { BlockchainService } from '../../domainService'
 import { BlockMetadata } from '../../../events'
 import { Claim } from '../../../claim'
 import { EventType } from '../../orm/events/events'

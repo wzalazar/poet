@@ -15,7 +15,7 @@ const privateKey2 = new bitcore.PrivateKey(myPrivateKey2)
 const publicKey2 = privateKey2.publicKey
 
 import { publish as confirm } from './fakeBlock'
-import { getHash } from '../src/helpers/torrentHash'
+import { getHash } from '../helpers/torrentHash'
 
 const fakeBlock = async (claim: Claim, creator: ClaimBuilder) => {
   const block = creator.createBlock([claim])

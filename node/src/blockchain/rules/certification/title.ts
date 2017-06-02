@@ -1,10 +1,10 @@
 import { Fields, ClaimTypes } from 'poet-js'
 
-import BlockchainService from '../../domainService'
+import { BlockchainService } from '../../domainService'
 import { BlockMetadata } from '../../../events'
 import { Claim } from '../../../claim'
-import { EventType } from '../../orm/events/events';
-import { validateBitcoinPayment } from './license';
+import { EventType } from '../../orm/events/events'
+import { validateBitcoinPayment } from './license'
 
 export default {
   type: ClaimTypes.TITLE,

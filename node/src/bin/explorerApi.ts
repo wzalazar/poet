@@ -1,6 +1,6 @@
 import * as Koa from 'koa'
 import * as Router from 'koa-router'
-import BlockchainService from '../blockchain/domainService'
+import { BlockchainService } from '../blockchain/domainService'
 import { BlockchainRouter } from '../blockchain/httpApi/router'
 
 const Body = require('koa-body')

@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 
-import BlockchainService from '../../domainService'
-import Route from '../route'
+import { BlockchainService } from '../../domainService'
+import { Route } from '../route'
 import BlockInfo from '../../orm/blockInfo'
 import { QueryBuilder } from 'typeorm'
 import { QueryOptions } from '../route'

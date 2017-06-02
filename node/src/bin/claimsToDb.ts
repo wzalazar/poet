@@ -1,4 +1,4 @@
-import { default as BlockchainService } from '../blockchain/domainService'
+import { BlockchainService } from '../blockchain/domainService'
 import { Queue } from '../queue'
 import { Block } from '../claim'
 import { BitcoinBlockMetadata } from '../events'

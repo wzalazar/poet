@@ -1,13 +1,9 @@
-import 'reflect-metadata';
-import * as Koa from 'koa';
-import BlockchainService from '../../domainService';
-import Route, { QueryOptions } from '../route';
-import { QueryBuilder } from 'typeorm';
-import Event from '../../orm/events/events';
-import Router = require('koa-router')
-import Context = Koa.Context
-import NotificationRead from '../../orm/events/notification';
+import 'reflect-metadata'
+import * as Router from 'koa-router'
 
+import { BlockchainService } from '../../domainService'
+import { Route, QueryOptions } from '../route'
+import NotificationRead from '../../orm/events/notification'
 
 export default class NotificationsRoute extends Route<NotificationRead> {
   service: BlockchainService

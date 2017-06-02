@@ -10,7 +10,7 @@ import Title from "./orm/domain/title";
 import Work from "./orm/domain/work";
 import Attribute from "./orm/attribute";
 import {ClaimService} from "./claimService";
-import CertificationService from "./certificatonService";
+import { CertificationService } from "./certificatonService";
 import { ListenRules } from "./rules/listen";
 import { BitcoinBlockMetadata, BlockMetadata } from "../events";
 import { EventService } from './eventService';
@@ -22,7 +22,7 @@ import BlockProcessed from './orm/bitcoin/blockProcessed';
 
 const minimumHeight = 1118188
 
-export default class DomainService extends ClaimService {
+export class BlockchainService extends ClaimService {
 
   public certificationService: CertificationService;
   private eventService: EventService;
