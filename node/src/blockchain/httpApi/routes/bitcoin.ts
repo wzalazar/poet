@@ -5,8 +5,8 @@ import { BlockchainService } from '../../domainService'
 import { Route } from '../route'
 import Normalized from '../../orm/bitcoin/normalized'
 
-export default class BitcoinMalleabilityRoute extends Route<Normalized> {
-  service: BlockchainService
+export class BitcoinMalleabilityRoute extends Route<Normalized> {
+  private readonly service: BlockchainService
 
   constructor(service: BlockchainService) {
     super(service.normalizedRepository, 'normalized')

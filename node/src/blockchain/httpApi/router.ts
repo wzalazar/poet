@@ -1,18 +1,18 @@
 import * as Router from 'koa-router'
 import { Repository } from 'typeorm'
 
+import getBuilder from '../../serialization/builder'
+import { getConnection } from '../connection'
 import { BlockchainService } from '../domainService'
 import { Route } from './route'
-import WorkRoute from './routes/work'
-import { getConnection } from '../connection'
-import getBuilder from '../../serialization/builder'
-import BlockRoute from './routes/blocks'
-import ProfileRoute from './routes/profile'
-import ClaimRoute from "./routes/claim";
-import LicenseRoute from './routes/license'
-import EventRoute from './routes/events';
-import NotificationsRoute from './routes/notifications';
-import BitcoinMalleabilityRoute from './routes/bitcoin';
+import { WorkRoute } from './routes/work'
+import { BlockRoute } from './routes/blocks'
+import { ProfileRoute } from './routes/profile'
+import { ClaimRoute } from "./routes/claim"
+import { LicenseRoute } from './routes/license'
+import { EventRoute } from './routes/events'
+import { NotificationsRoute } from './routes/notifications'
+import { BitcoinMalleabilityRoute } from './routes/bitcoin'
 
 export class BlockchainRouter {
   private readonly service: BlockchainService

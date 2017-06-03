@@ -14,8 +14,8 @@ interface EventQueryOpts extends QueryOptions {
 const PROFILE = 'profile'
 const WORK = 'work'
 
-export default class EventRoute extends Route<Event> {
-  service: BlockchainService
+export class EventRoute extends Route<Event> {
+  private readonly service: BlockchainService
 
   constructor(service: BlockchainService) {
     super(service.eventRepository, 'events')

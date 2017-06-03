@@ -5,15 +5,15 @@ import { BlockchainService } from '../../domainService'
 import { Route, QueryOptions } from '../route'
 import NotificationRead from '../../orm/events/notification'
 
-export default class NotificationsRoute extends Route<NotificationRead> {
-  service: BlockchainService
+export class NotificationsRoute extends Route<NotificationRead> {
+  private readonly service: BlockchainService
 
   constructor(service: BlockchainService) {
     super(service.notificationRepository, 'notifications')
     this.service = service
   }
 
-  async getUserCount(ctx: any, opts: QueryOptions): Promise<number> {
+  private async getUserCount(ctx: any, opts: QueryOptions): Promise<number> {
     let queryBuilder = this.repository
       .createQueryBuilder('item')
       .where('item.user=:userId', { userId: ctx.params.userId })

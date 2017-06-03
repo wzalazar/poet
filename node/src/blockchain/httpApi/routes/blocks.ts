@@ -6,8 +6,8 @@ import BlockInfo from '../../orm/blockInfo'
 import { QueryBuilder } from 'typeorm'
 import { QueryOptions } from '../route'
 
-export default class BlockRoute extends Route<BlockInfo> {
-  service: BlockchainService
+export class BlockRoute extends Route<BlockInfo> {
+  private readonly service: BlockchainService
 
   constructor(service: BlockchainService) {
     super(service.blockInfoRepository, 'blocks')

@@ -16,8 +16,8 @@ interface LicenseQueryOptions extends QueryOptions {
 
 const PROFILE_ID = 'profileId'
 
-export default class LicenseRoute extends Route<License> {
-  service: BlockchainService
+export class LicenseRoute extends Route<License> {
+  private readonly service: BlockchainService
 
   constructor(service: BlockchainService) {
     super(service.licenseRepository, 'licenses')
@@ -70,7 +70,6 @@ export default class LicenseRoute extends Route<License> {
     }
     return queryBuilder
   }
-
 
   addRoutes(router: Router): any {
     super.addRoutes(router);
