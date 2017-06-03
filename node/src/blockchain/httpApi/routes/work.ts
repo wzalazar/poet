@@ -5,8 +5,8 @@ import { QueryBuilder } from 'typeorm'
 
 import { BlockchainService } from '../../domainService'
 import { Route, QueryOptions } from '../route'
+import { OfferingRoute } from './offerings'
 import Work from '../../orm/domain/work'
-import OfferingRoute from './offerings'
 
 interface WorkQueryOpts extends QueryOptions {
   owner?: string
@@ -41,14 +41,13 @@ const END_PUBLICATION_DATE = 'dateTo'
 
 const ONLY_LETTERS = '^[a-zA-Z]+$'
 
-export default class WorkRoute extends Route<Work> {
-  service: BlockchainService
-  offerings: OfferingRoute
+export class WorkRoute extends Route<Work> {
+  private readonly service: BlockchainService
+  private readonly offerings: OfferingRoute
 
   constructor(service: BlockchainService) {
     super(service.workRepository, 'works')
     this.service = service
-
     this.offerings = new OfferingRoute(service)
   }
 

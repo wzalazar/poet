@@ -5,8 +5,8 @@ import { Route, QueryOptions } from '../route'
 import ClaimInfo from '../../orm/claimInfo'
 import Claim from '../../orm/claim'
 
-export default class ClaimRoute extends Route<Claim> {
-  service: BlockchainService
+export class ClaimRoute extends Route<Claim> {
+  private readonly service: BlockchainService
 
   constructor(service: BlockchainService) {
     super(service.claimRepository, 'claims')
