@@ -10,6 +10,8 @@ import { getHash } from "../helpers/torrentHash"
 import { Queue } from "../queue"
 
 const privKey = 'cf5bd2d3d179493adfc41da206adb2ffd212ea34870722bc92655f8c8fd2ef33'
+const bitcoinPriv = new bitcore.PrivateKey('343689da46542f2af204a3ced0ce942af1c25476932aa3a48af5e683df93126b')
+const poetAddress = 'mg6CMr7TkeERALqxwPdqq6ksM2czQzKh5C'
 
 export interface TrustedPublisherOptions {
   port: number
@@ -42,7 +44,7 @@ async function createServer(options?: TrustedPublisherOptions) {
 
     try {
       const id = await getHash(creator.serializeBlockForSave(block), block.id)
-      const tx = await creator.createTransaction(id)
+      const tx = await creator.createTransaction(id, bitcoinPriv, poetAddress)
       const ntxid = tx.nid
       console.log('Bitcoin transaction hash is', tx.hash)
       console.log('Normalized transaction hash is', tx.nid)
