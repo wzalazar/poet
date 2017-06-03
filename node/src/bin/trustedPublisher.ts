@@ -8,6 +8,7 @@ import { Claim, Block } from "../claim"
 import { ClaimBuilder } from "../serialization/builder"
 import { getHash } from "../helpers/torrentHash"
 import { Queue } from "../queue"
+import { InsightClient } from '../insight'
 
 const privKey = 'cf5bd2d3d179493adfc41da206adb2ffd212ea34870722bc92655f8c8fd2ef33'
 const bitcoinPriv = new bitcore.PrivateKey('343689da46542f2af204a3ced0ce942af1c25476932aa3a48af5e683df93126b')
@@ -54,7 +55,8 @@ async function createServer(options?: TrustedPublisherOptions) {
         return
       }
 
-      await ClaimBuilder.broadcastTx(tx)
+      await InsightClient.Transactions.send.post(tx)
+
       ctx.body = JSON.stringify({
         createdClaims: block.claims
       })

@@ -1,21 +1,12 @@
-import * as Bluebird from 'bluebird'
 const bitcore = require('bitcore-lib')
 const explorers = require('bitcore-explorers')
+import { UtxosByAddressResponse } from 'insight-client-js'
 import { sha256, sign, hex, VERSION, BARD, ClaimProto, AttributeProto, BlockProto } from 'poet-js'
 
+import { InsightClient } from '../insight'
 import { Claim, Block } from '../claim'
 
 bitcore.Networks.defaultNetwork = bitcore.Networks.testnet
-
-const insightInstance = new explorers.Insight()
-function promisifyInsight(name: string) {
-  return Bluebird.promisify(insightInstance[name]).bind(insightInstance)
-}
-
-const insight = {
-  getUtxos  : promisifyInsight('getUnspentUtxos'),
-  broadcast : promisifyInsight('broadcast')
-}
 
 export class ClaimBuilder {
 
@@ -149,16 +140,13 @@ export class ClaimBuilder {
       VERSION,
       new Buffer(blockId, 'hex')
     ])
-    return insight.getUtxos(address)
-      .then((utxos: any) => new bitcore.Transaction()
-          .from(utxos)
-          .change(address)
-          .addData(data)
-          .sign(privateKey)
+    return InsightClient.Address.Utxos.get(address)
+      .then((utxos: UtxosByAddressResponse) => new bitcore.Transaction()
+        .from(utxos)
+        .change(address)
+        .addData(data)
+        .sign(privateKey)
       )
   }
 
-  static broadcastTx(tx: any) {
-    return insight.broadcast(tx)
-  }
 }
