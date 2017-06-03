@@ -2,14 +2,13 @@ import { BlockchainService } from '../blockchain/domainService'
 import { Queue } from '../queue'
 import { Block } from '../claim'
 import { BlockMetadata } from '../events'
-import getBuilder from '../serialization/builder'
 import { getConnection } from '../blockchain/connection'
 
 async function startListening() {
   const blockchain = new BlockchainService()
   const queue = new Queue()
 
-  await blockchain.start(() => getConnection('retryTxs'), getBuilder)
+  await blockchain.start(() => getConnection('retryTxs'))
 
   const setupWorker = (name: string, action: any) => {
     process.nextTick(() => {

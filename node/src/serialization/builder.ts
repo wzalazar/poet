@@ -1,10 +1,9 @@
 import * as Bluebird from 'bluebird'
 const bitcore = require('bitcore-lib')
 const explorers = require('bitcore-explorers')
-import { sha256, sign, hex, VERSION, BARD } from 'poet-js'
+import { sha256, sign, hex, VERSION, BARD, ClaimProto, AttributeProto, BlockProto } from 'poet-js'
 
 import { Claim, Block } from '../claim'
-import { default as loadBuilders, Builders } from './loaders'
 
 bitcore.Networks.defaultNetwork = bitcore.Networks.testnet
 
@@ -20,23 +19,9 @@ const insight = {
 
 const poetAddress = 'mg6CMr7TkeERALqxwPdqq6ksM2czQzKh5C'
 
-export default function getBuilder(): Promise<ClaimBuilder> {
-  return loadBuilders().then(loader => new ClaimBuilder(loader))
-}
+const bitcoinPriv = new bitcore.PrivateKey('343689da46542f2af204a3ced0ce942af1c25476932aa3a48af5e683df93126b')
 
 export class ClaimBuilder {
-
-  block: protobuf.Type
-  attribute : protobuf.Type
-  claim     : protobuf.Type
-
-  constructor(builders: Builders) {
-    this.block     = builders.block
-    this.attribute = builders.attribute
-    this.claim     = builders.claim
-  }
-
-  bitcoinPriv = new bitcore.PrivateKey('343689da46542f2af204a3ced0ce942af1c25476932aa3a48af5e683df93126b')
 
   createSignedClaim(data: any, privateKey: string): Claim {
     const key = typeof privateKey === 'string'
@@ -55,30 +40,22 @@ export class ClaimBuilder {
     }
   }
 
-  addSignature(data: any, signature: string): Claim {
-    const id = this.getId(data)
-    return {
-      ... data,
-      signature: new Buffer(signature, 'hex')
-    }
-  }
-
   getId(data: any, key?: Object): Uint8Array {
     return sha256(this.getEncodedForSigning(data, key))
   }
 
   getIdForBlock(block: any): string {
-    return sha256(this.block.encode(block).finish()).toString('hex')
+    return sha256(BlockProto.encode(block).finish()).toString('hex')
   }
 
   getAttributes(attrs: any) {
     if (attrs instanceof Array) {
       return attrs.map(attr => {
-        return this.attribute.create(attr)
+        return AttributeProto.create(attr)
       })
     } else {
       return Object.keys(attrs).map(attr => {
-        return this.attribute.create({
+        return AttributeProto.create({
           key: attr,
           value: attrs[attr]
         })
@@ -87,7 +64,7 @@ export class ClaimBuilder {
   }
 
   getEncodedForSigning(data: any, privateKey?: any): Uint8Array {
-    return this.claim.encode(this.claim.create({
+    return ClaimProto.encode(ClaimProto.create({
       id: new Buffer(''),
       publicKey: data.publicKey || privateKey['publicKey'].toBuffer(),
       signature: new Buffer(''),
@@ -105,7 +82,7 @@ export class ClaimBuilder {
 
   serializedToBlock(block: Buffer) {
     try {
-      const decoded = this.block.decode(block)
+      const decoded = BlockProto.decode(block)
       return this.protoToBlockObject(decoded)
     } catch (e) {
       console.log(e, e.stack)
@@ -113,19 +90,15 @@ export class ClaimBuilder {
   }
 
   serializeBlockForSave(block: Block) {
-    return new Buffer(this.block.encode(this.block.create({
+    return new Buffer(BlockProto.encode(BlockProto.create({
       id: new Buffer(block.id, 'hex'),
       claims: block.claims.map(this.claimToProto.bind(this))
     })).finish())
   }
 
-  serializeClaimForSave(claim: Claim) {
-    return new Buffer(this.claim.encode(this.claimToProto(claim)).finish())
-  }
-
   serializedToClaim(claim: Buffer) {
     try {
-      const decoded = this.claim.decode(claim)
+      const decoded = ClaimProto.decode(claim)
       return this.protoToClaimObject(decoded)
     } catch (e) {
       console.log(e, e.stack)
@@ -149,7 +122,7 @@ export class ClaimBuilder {
   }
 
   claimToProto(obj: Claim) {
-    return this.claim.create({
+    return ClaimProto.create({
       id: new Buffer(obj.id, 'hex'),
       publicKey: new Buffer(obj.publicKey, 'hex'),
       signature: new Buffer(obj.signature, 'hex'),
@@ -162,7 +135,7 @@ export class ClaimBuilder {
     const protoClaims = claims.map((claim: Claim) => {
       return this.claimToProto(claim)
     })
-    const block = this.block.create({
+    const block = BlockProto.create({
       id: new Buffer(''),
       claims: protoClaims
     })
@@ -185,7 +158,7 @@ export class ClaimBuilder {
           .from(utxos)
           .change(poetAddress)
           .addData(data)
-          .sign(this.bitcoinPriv)
+          .sign(bitcoinPriv)
       )
   }
 

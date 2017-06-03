@@ -5,7 +5,7 @@ const WebTorrent = require('webtorrent')
 import { noop, assert } from 'poet-js'
 
 import { Block } from './claim'
-import { default as getBuilder } from './serialization/builder'
+import { ClaimBuilder } from './serialization/builder'
 import { Queue } from './queue'
 import { getCreateOpts, getHash, createObservableDownload } from './helpers/torrentHash'
 import { BlockMetadata, BitcoinBlockMetadata } from './events'
@@ -13,7 +13,7 @@ import { BlockMetadata, BitcoinBlockMetadata } from './events'
 const readdir = promisify(fs.readdir)
 
 async function readBlock(blockFile: string) {
-  const builder = await getBuilder()
+  const builder = new ClaimBuilder()
   const buffer = await new Promise<Buffer>((resolve, reject) => {
     return fs.readFile(blockFile, (error, data) => {
       if (error) {
@@ -92,7 +92,7 @@ export default class TorrentSystem {
 
   async seedBlock(block: Block) {
     try {
-      const builder = await getBuilder()
+      const builder = new ClaimBuilder()
       const buffer = builder.serializeBlockForSave(block)
       const torrentId = await getHash(buffer, block.id)
 
@@ -180,7 +180,7 @@ export default class TorrentSystem {
       })
     })
 
-    const builder = await getBuilder()
+    const builder = new ClaimBuilder()
     return builder.serializedToBlock(data)
   }
 

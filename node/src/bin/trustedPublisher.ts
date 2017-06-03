@@ -5,7 +5,7 @@ const Body = require('koa-body')
 const Route = require('koa-route')
 
 import { Claim, Block } from "../claim"
-import { default as getCreator, ClaimBuilder } from "../serialization/builder"
+import { ClaimBuilder } from "../serialization/builder"
 import { getHash } from "../helpers/torrentHash"
 import { Queue } from "../queue"
 
@@ -18,7 +18,7 @@ export interface TrustedPublisherOptions {
 
 async function createServer(options?: TrustedPublisherOptions) {
   const koa = new Koa()
-  const creator = await getCreator()
+  const creator = new ClaimBuilder()
   const queue = new Queue()
 
   koa.use(Body({ textLimit: 1000000 }))
