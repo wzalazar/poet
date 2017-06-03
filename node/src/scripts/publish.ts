@@ -1,7 +1,7 @@
 import * as fetch from "isomorphic-fetch"
 import { Fields } from 'poet-js'
 
-import { default as getCreator, ClaimBuilder } from "../../src/serialization/builder"
+import { ClaimBuilder } from "../../src/serialization/builder"
 import { Claim } from '../../src/claim'
 
 const myPrivateKey = '2461d5dc1bf2c48b73d271375a11f853f92aca53d328f35af5cbaead016ebeb5'
@@ -28,7 +28,7 @@ export default async function create() {
   const host = 'localhost'
   const port = 3000
 
-  const creator = await getCreator()
+  const creator = new ClaimBuilder()
 
   const create = (data: any) => creator.createSignedClaim(data, myPrivateKey)
   const create2 = (data: any) => creator.createSignedClaim(data, myPrivateKey2)

@@ -1,5 +1,6 @@
 import { Block as PureBlock, Claim as PureClaim } from "../claim";
 import {Connection, Repository} from "typeorm";
+
 import {ClaimBuilder} from "../serialization/builder";
 import {getHash} from "../helpers/torrentHash";
 import {BlockMetadata} from "../events";
@@ -21,14 +22,13 @@ export class ClaimService {
     this.started = false
   }
 
-  async start(getConnection: () => Promise<Connection>,
-              getBuilder: () => Promise<ClaimBuilder>) {
+  async start(getConnection: () => Promise<Connection>) {
     if (this.starting) {
       return
     }
     this.starting = true
     this.db = await getConnection()
-    this.creator = await getBuilder()
+    this.creator = new ClaimBuilder()
     this.started = true
     return
   }
