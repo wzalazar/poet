@@ -17,10 +17,6 @@ const insight = {
   broadcast : promisifyInsight('broadcast')
 }
 
-const poetAddress = 'mg6CMr7TkeERALqxwPdqq6ksM2czQzKh5C'
-
-const bitcoinPriv = new bitcore.PrivateKey('343689da46542f2af204a3ced0ce942af1c25476932aa3a48af5e683df93126b')
-
 export class ClaimBuilder {
 
   createSignedClaim(data: any, privateKey: string): Claim {
@@ -146,19 +142,19 @@ export class ClaimBuilder {
     }
   }
 
-  createTransaction(blockId: string) {
+  createTransaction(blockId: string, privateKey: string, address: string) {
     console.log('Creating tx for', blockId)
     const data = Buffer.concat([
       BARD,
       VERSION,
       new Buffer(blockId, 'hex')
     ])
-    return insight.getUtxos(poetAddress)
+    return insight.getUtxos(address)
       .then((utxos: any) => new bitcore.Transaction()
           .from(utxos)
-          .change(poetAddress)
+          .change(address)
           .addData(data)
-          .sign(bitcoinPriv)
+          .sign(privateKey)
       )
   }
 
