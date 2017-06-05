@@ -1,10 +1,9 @@
 import * as Koa from "koa"
-import { Fields, ClaimTypes, Claim, Block } from 'poet-js'
+import { Fields, ClaimTypes, Claim, Block, ClaimBuilder } from 'poet-js'
 const bitcore = require('bitcore-lib')
 const Body = require('koa-body')
 const Route = require('koa-route')
 
-import { ClaimBuilder } from "../serialization/builder"
 import { getHash } from "../helpers/torrentHash"
 import { Queue } from "../queue"
 import { InsightClient } from '../insight'
@@ -20,14 +19,13 @@ export interface TrustedPublisherOptions {
 
 async function createServer(options?: TrustedPublisherOptions) {
   const koa = new Koa()
-  const creator = new ClaimBuilder()
   const queue = new Queue()
 
   koa.use(Body({ textLimit: 1000000 }))
 
   const createBlock = async (claims: ReadonlyArray<Claim>, ctx: any) => {
 
-    const certificates: ReadonlyArray<Claim> = claims.map(claim => creator.createSignedClaim({
+    const certificates: ReadonlyArray<Claim> = claims.map(claim => ClaimBuilder.createSignedClaim({
       type: ClaimTypes.CERTIFICATE,
       attributes: {
         [Fields.REFERENCE]: claim.id,
@@ -35,7 +33,7 @@ async function createServer(options?: TrustedPublisherOptions) {
       }
     }, privKey))
 
-    const block: Block = creator.createBlock([...claims, ...certificates])
+    const block: Block = ClaimBuilder.createBlock([...claims, ...certificates])
     try {
       await queue.announceBlockToSend(block)
     } catch (error) {
@@ -43,8 +41,10 @@ async function createServer(options?: TrustedPublisherOptions) {
     }
 
     try {
-      const id = await getHash(creator.serializeBlockForSave(block), block.id)
-      const tx = await creator.createTransaction(id, bitcoinPriv, poetAddress)
+      const id = await getHash(ClaimBuilder.serializeBlockForSave(block), block.id)
+      const utxo = await InsightClient.Address.Utxos.get(poetAddress)
+      const tx = await ClaimBuilder.createTransaction(id, utxo, poetAddress, bitcoinPriv)
+
       const ntxid = tx.nid
       console.log('Bitcoin transaction hash is', tx.hash)
       console.log('Normalized transaction hash is', tx.nid)
@@ -66,7 +66,7 @@ async function createServer(options?: TrustedPublisherOptions) {
 
   koa.use(Route.post('/titles', async (ctx: any) => {
     const body = JSON.parse(ctx.request.body)
-    const claims = [creator.createSignedClaim({
+    const claims = [ClaimBuilder.createSignedClaim({
       type: ClaimTypes.TITLE,
       attributes: {
         [Fields.REFERENCE]: body.reference,
@@ -86,7 +86,7 @@ async function createServer(options?: TrustedPublisherOptions) {
 
   koa.use(Route.post('/licenses', async (ctx: any) => {
     const body = JSON.parse(ctx.request.body)
-    const claims = [creator.createSignedClaim({
+    const claims = [ClaimBuilder.createSignedClaim({
       type: ClaimTypes.LICENSE,
       attributes: {
         [Fields.REFERENCE]: body.reference,
@@ -108,11 +108,11 @@ async function createServer(options?: TrustedPublisherOptions) {
     const sigs = JSON.parse(ctx.request.body).signatures
 
     const claims: ReadonlyArray<Claim> = sigs.map((sig: any) => {
-      const claim = creator.serializedToClaim(
+      const claim = ClaimBuilder.serializedToClaim(
         new Buffer(new Buffer(sig.message, 'hex').toString(), 'hex')
       )
       claim.signature = sig.signature
-      claim.id = new Buffer(creator.getId(claim)).toString('hex')
+      claim.id = new Buffer(ClaimBuilder.getId(claim)).toString('hex')
       return claim
     })
 
@@ -134,7 +134,7 @@ async function createServer(options?: TrustedPublisherOptions) {
     }
 
     const titleClaims: ReadonlyArray<Claim> = workClaims.map(claim =>
-      creator.createSignedClaim({
+      ClaimBuilder.createSignedClaim({
         type: ClaimTypes.TITLE,
         attributes: {
           reference: claim.id,

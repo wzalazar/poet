@@ -1,28 +1,23 @@
 const bitcore = require('bitcore-lib')
 const explorers = require('bitcore-explorers')
-import { UtxosByAddressResponse } from 'insight-client-js'
-import { Claim, Block, sha256, sign, hex, VERSION, BARD, ClaimProto, BlockProto, ClaimBuilder as ClaimBuilderPoet } from 'poet-js'
-
-import { InsightClient } from '../insight'
-
-bitcore.Networks.defaultNetwork = bitcore.Networks.testnet
+import { Claim, Block, sha256, sign, hex, ClaimProto, BlockProto, ClaimBuilder as ClaimBuilderPoet } from 'poet-js'
 
 export class ClaimBuilder {
 
-  createSignedClaim(data: any, privateKey: string): Claim {
+  createSignedClaim(claim: Claim, privateKey: string): Claim {
     const key = typeof privateKey === 'string'
               ? new bitcore.PrivateKey(privateKey)
               : privateKey
-    const id = this.getId(data, key)
+    const id = this.getId(claim, key)
     const signature = sign(key, id)
 
     return {
-        id: hex(id),
-        publicKey: key.publicKey.toString(),
-        signature: hex(signature),
+      id: hex(id),
+      publicKey: key.publicKey.toString(),
+      signature: hex(signature),
 
-        type: data.type,
-        attributes: data.attributes
+      type: claim.type,
+      attributes: claim.attributes
     }
   }
 
@@ -56,44 +51,16 @@ export class ClaimBuilder {
     })).finish())
   }
 
-  serializedToClaim(claim: Buffer) {
-    try {
-      const decoded = ClaimProto.decode(claim)
-      return ClaimBuilderPoet.protoToClaimObject(decoded)
-    } catch (e) {
-      console.log(e, e.stack)
-    }
-  }
-
   createBlock(claims: Claim[]): Block {
-    const protoClaims = claims.map((claim: Claim) => {
-      return ClaimBuilderPoet.claimToProto(claim)
-    })
     const block = BlockProto.create({
       id: new Buffer(''),
-      claims: protoClaims
+      claims: claims.map(ClaimBuilderPoet.claimToProto)
     })
     const id = ClaimBuilderPoet.getIdForBlock(block)
     return {
       id,
       claims
     }
-  }
-
-  createTransaction(blockId: string, privateKey: string, address: string) {
-    console.log('Creating tx for', blockId)
-    const data = Buffer.concat([
-      BARD,
-      VERSION,
-      new Buffer(blockId, 'hex')
-    ])
-    return InsightClient.Address.Utxos.get(address)
-      .then((utxos: UtxosByAddressResponse) => new bitcore.Transaction()
-        .from(utxos)
-        .change(address)
-        .addData(data)
-        .sign(privateKey)
-      )
   }
 
 }
