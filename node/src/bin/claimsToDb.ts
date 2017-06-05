@@ -1,6 +1,7 @@
+import { Block } from 'poet-js'
+
 import { BlockchainService } from '../blockchain/domainService'
 import { Queue } from '../queue'
-import { Block } from '../claim'
 import { BitcoinBlockMetadata } from '../events'
 import { getConnection } from '../blockchain/connection'
 

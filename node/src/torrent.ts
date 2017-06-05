@@ -2,9 +2,8 @@ import * as fs from 'fs'
 const { promisify } = require('util') // TODO: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/16860
 import * as path from 'path'
 const WebTorrent = require('webtorrent')
-import { noop, assert } from 'poet-js'
+import { Block, noop, assert } from 'poet-js'
 
-import { Block } from './claim'
 import { ClaimBuilder } from './serialization/builder'
 import { Queue } from './queue'
 import { getCreateOpts, getHash, createObservableDownload } from './helpers/torrentHash'

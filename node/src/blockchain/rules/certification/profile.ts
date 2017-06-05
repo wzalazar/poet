@@ -1,9 +1,8 @@
-import { Fields, ClaimTypes } from 'poet-js';
+import { Claim, Fields, ClaimTypes } from 'poet-js'
 
 import { BlockchainService } from '../../domainService'
 import { BlockMetadata } from '../../../events'
-import { Claim } from '../../../claim'
-import { EventType } from '../../orm/events/events';
+import { EventType } from '../../orm/events/events'
 
 export default {
   type: ClaimTypes.PROFILE,

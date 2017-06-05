@@ -1,8 +1,7 @@
-import * as fetch from "isomorphic-fetch"
-import { Fields } from 'poet-js'
+import * as fetch from 'isomorphic-fetch'
+import { Claim, Fields } from 'poet-js'
 
-import { ClaimBuilder } from "../../src/serialization/builder"
-import { Claim } from '../../src/claim'
+import { ClaimBuilder } from '../../src/serialization/builder'
 
 const myPrivateKey = '2461d5dc1bf2c48b73d271375a11f853f92aca53d328f35af5cbaead016ebeb5'
 const myPrivateKey2 = '2111d5dc1bf2c48b73d271375a11f853f92aca53d328f35af5cbaead016ebeb5'
