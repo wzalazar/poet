@@ -1,7 +1,5 @@
 import * as fetch from 'isomorphic-fetch'
-import { Claim, Fields } from 'poet-js'
-
-import { ClaimBuilder } from '../../src/serialization/builder'
+import { Claim, ClaimBuilder, Fields } from 'poet-js'
 
 const myPrivateKey = '2461d5dc1bf2c48b73d271375a11f853f92aca53d328f35af5cbaead016ebeb5'
 const myPrivateKey2 = '2111d5dc1bf2c48b73d271375a11f853f92aca53d328f35af5cbaead016ebeb5'
@@ -16,9 +14,9 @@ const publicKey2 = privateKey2.publicKey
 import { publish as confirm } from './fakeBlock'
 import { getHash } from '../helpers/torrentHash'
 
-const fakeBlock = async (claim: Claim, creator: ClaimBuilder) => {
-  const block = creator.createBlock([claim])
-  const buffer = creator.serializeBlockForSave(block)
+const fakeBlock = async (claim: Claim) => {
+  const block = ClaimBuilder.createBlock([claim])
+  const buffer = ClaimBuilder.serializeBlockForSave(block)
   const torrentHash = await getHash(buffer, block.id)
   return await confirm(torrentHash)
 }
@@ -27,12 +25,10 @@ export default async function create() {
   const host = 'localhost'
   const port = 3000
 
-  const creator = new ClaimBuilder()
+  const create = (data: any) => ClaimBuilder.createSignedClaim(data, myPrivateKey)
+  const create2 = (data: any) => ClaimBuilder.createSignedClaim(data, myPrivateKey2)
 
-  const create = (data: any) => creator.createSignedClaim(data, myPrivateKey)
-  const create2 = (data: any) => creator.createSignedClaim(data, myPrivateKey2)
-
-  const fakeIt = (untilYouMakeIt: Claim) => fakeBlock(untilYouMakeIt, creator)
+  const fakeIt = (untilYouMakeIt: Claim) => fakeBlock(untilYouMakeIt)
 
   const publish = async(claim: Claim) => {
     const response = await fetch(`http://${host}:${port}/claim`, {
