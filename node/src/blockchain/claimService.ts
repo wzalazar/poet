@@ -1,7 +1,6 @@
 import {Connection, Repository} from "typeorm";
-import { Block as PureBlock, Claim as PureClaim } from 'poet-js'
+import { ClaimBuilder, Block as PureBlock, Claim as PureClaim } from 'poet-js'
 
-import {ClaimBuilder} from "../serialization/builder";
 import {getHash} from "../helpers/torrentHash";
 import {BlockMetadata} from "../events";
 import Claim from "./orm/claim";
@@ -15,7 +14,6 @@ export class ClaimService {
   protected db: Connection
   private starting: boolean
   private started: boolean
-  private creator: ClaimBuilder
 
   constructor() {
     this.starting = false
@@ -28,7 +26,6 @@ export class ClaimService {
     }
     this.starting = true
     this.db = await getConnection()
-    this.creator = new ClaimBuilder()
     this.started = true
     return
   }
@@ -43,7 +40,7 @@ export class ClaimService {
 
     await this.saveBlock(block)
 
-    const id = await getHash(this.creator.serializeBlockForSave(block), block.id)
+    const id = await getHash(ClaimBuilder.serializeBlockForSave(block), block.id)
 
     const preliminarInfo = {
       hash: block.id,
