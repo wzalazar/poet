@@ -160,15 +160,13 @@ export class ClaimService {
   async getBlock(id: string) {
     const blockEntry = await this.fetchBlock(id)
 
-    if (!blockEntry || !blockEntry.claims) {
+    if (!blockEntry || !blockEntry.claims)
       return null
+
+    return {
+      id,
+      claims: blockEntry.claims.map(ClaimService.transformEntityToPureClaim)
     }
-    const block = {id, claims: [] as PureClaim[]} as PureBlock
-    for (let claimEntry of blockEntry.claims) {
-      const claim = ClaimService.transformEntityToPureClaim(claimEntry)
-      block.claims.push(claim)
-    }
-    return block
   }
 
   private async fetchBlock(id: string) {
