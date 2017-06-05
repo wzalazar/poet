@@ -1,9 +1,8 @@
-import { Fields, ClaimTypes } from 'poet-js'
+import { Claim, Fields, ClaimTypes } from 'poet-js'
 
 import { InsightClient } from '../../../insight'
 import { BlockchainService } from "../../domainService"
 import {BlockMetadata} from "../../../events"
-import { Claim } from "../../../claim"
 import { EventType } from '../../orm/events/events'
 import Work from '../../orm/domain/work'
 import Offering from '../../orm/domain/offering'

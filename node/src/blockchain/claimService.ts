@@ -1,5 +1,5 @@
-import { Block as PureBlock, Claim as PureClaim } from "../claim";
 import {Connection, Repository} from "typeorm";
+import { Block as PureBlock, Claim as PureClaim } from 'poet-js'
 
 import {ClaimBuilder} from "../serialization/builder";
 import {getHash} from "../helpers/torrentHash";

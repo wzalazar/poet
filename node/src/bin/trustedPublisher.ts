@@ -1,10 +1,9 @@
 import * as Koa from "koa"
-import { Fields, ClaimTypes } from 'poet-js'
+import { Fields, ClaimTypes, Claim, Block } from 'poet-js'
 const bitcore = require('bitcore-lib')
 const Body = require('koa-body')
 const Route = require('koa-route')
 
-import { Claim, Block } from "../claim"
 import { ClaimBuilder } from "../serialization/builder"
 import { getHash } from "../helpers/torrentHash"
 import { Queue } from "../queue"

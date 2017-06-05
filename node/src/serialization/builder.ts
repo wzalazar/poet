@@ -1,10 +1,9 @@
 const bitcore = require('bitcore-lib')
 const explorers = require('bitcore-explorers')
 import { UtxosByAddressResponse } from 'insight-client-js'
-import { sha256, sign, hex, VERSION, BARD, ClaimProto, AttributeProto, BlockProto } from 'poet-js'
+import { Claim, Block, sha256, sign, hex, VERSION, BARD, ClaimProto, AttributeProto, BlockProto } from 'poet-js'
 
 import { InsightClient } from '../insight'
-import { Claim, Block } from '../claim'
 
 bitcore.Networks.defaultNetwork = bitcore.Networks.testnet
 

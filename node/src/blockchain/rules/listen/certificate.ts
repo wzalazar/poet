@@ -1,8 +1,7 @@
-import { ClaimTypes, Fields } from 'poet-js'
+import { Claim, ClaimTypes, Fields } from 'poet-js'
 
 import { BlockchainService } from '../../domainService'
 import { BlockMetadata } from '../../../events'
-import { Claim } from "../../../claim" // TODO: Use poet-js' Claim (incompatible)
 
 export const CertificateRule = {
   type: ClaimTypes.CERTIFICATE,
