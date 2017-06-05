@@ -1,7 +1,7 @@
 const bitcore = require('bitcore-lib')
 const explorers = require('bitcore-explorers')
 import { UtxosByAddressResponse } from 'insight-client-js'
-import { Claim, Block, sha256, sign, hex, VERSION, BARD, ClaimProto, AttributeProto, BlockProto } from 'poet-js'
+import { Claim, Block, sha256, sign, hex, VERSION, BARD, ClaimProto, BlockProto, ClaimBuilder as ClaimBuilderPoet } from 'poet-js'
 
 import { InsightClient } from '../insight'
 
@@ -30,46 +30,20 @@ export class ClaimBuilder {
     return sha256(this.getEncodedForSigning(data, key))
   }
 
-  getIdForBlock(block: any): string {
-    return sha256(BlockProto.encode(block).finish()).toString('hex')
-  }
-
-  getAttributes(attrs: any) {
-    if (attrs instanceof Array) {
-      return attrs.map(attr => {
-        return AttributeProto.create(attr)
-      })
-    } else {
-      return Object.keys(attrs).map(attr => {
-        return AttributeProto.create({
-          key: attr,
-          value: attrs[attr]
-        })
-      })
-    }
-  }
-
   getEncodedForSigning(data: any, privateKey?: any): Uint8Array {
     return ClaimProto.encode(ClaimProto.create({
       id: new Buffer(''),
       publicKey: data.publicKey || privateKey['publicKey'].toBuffer(),
       signature: new Buffer(''),
       type: data.type,
-      attributes: this.getAttributes(data.attributes)
+      attributes: ClaimBuilderPoet.getAttributes(data.attributes)
     })).finish()
-  }
-
-  protoToBlockObject(proto: any): Block {
-    return {
-      id: proto.id.toString('hex'),
-      claims: proto.claims.map(this.protoToClaimObject.bind(this))
-    }
   }
 
   serializedToBlock(block: Buffer) {
     try {
       const decoded = BlockProto.decode(block)
-      return this.protoToBlockObject(decoded)
+      return ClaimBuilderPoet.protoToBlockObject(decoded)
     } catch (e) {
       console.log(e, e.stack)
     }
@@ -78,54 +52,28 @@ export class ClaimBuilder {
   serializeBlockForSave(block: Block) {
     return new Buffer(BlockProto.encode(BlockProto.create({
       id: new Buffer(block.id, 'hex'),
-      claims: block.claims.map(this.claimToProto.bind(this))
+      claims: block.claims.map(ClaimBuilderPoet.claimToProto)
     })).finish())
   }
 
   serializedToClaim(claim: Buffer) {
     try {
       const decoded = ClaimProto.decode(claim)
-      return this.protoToClaimObject(decoded)
+      return ClaimBuilderPoet.protoToClaimObject(decoded)
     } catch (e) {
       console.log(e, e.stack)
     }
   }
 
-  protoToClaimObject(proto: any): Claim {
-    const attributes: any = {}
-
-    proto.attributes.forEach((attr: any) => {
-      attributes[attr.key] = attr.value
-    })
-
-    return {
-      id: proto.id.toString('hex'),
-      publicKey: proto.publicKey.toString('hex'),
-      signature: proto.signature.toString('hex'),
-      type: proto.type,
-      attributes
-    }
-  }
-
-  claimToProto(obj: Claim) {
-    return ClaimProto.create({
-      id: new Buffer(obj.id, 'hex'),
-      publicKey: new Buffer(obj.publicKey, 'hex'),
-      signature: new Buffer(obj.signature, 'hex'),
-      type: obj.type,
-      attributes: this.getAttributes(obj.attributes)
-    })
-  }
-
   createBlock(claims: Claim[]): Block {
     const protoClaims = claims.map((claim: Claim) => {
-      return this.claimToProto(claim)
+      return ClaimBuilderPoet.claimToProto(claim)
     })
     const block = BlockProto.create({
       id: new Buffer(''),
       claims: protoClaims
     })
-    const id = this.getIdForBlock(block)
+    const id = ClaimBuilderPoet.getIdForBlock(block)
     return {
       id,
       claims
