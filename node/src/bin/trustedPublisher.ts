@@ -128,7 +128,10 @@ async function createServer(options?: TrustedPublisherOptions) {
       if (!workClaim)
         throw new Error(`Unsupported: an OFFERING claim was POSTed without any WORK claim`)
 
-      claim.attributes[Fields.REFERENCE] = workClaim.id
+      claim.attributes = {
+        ...claim.attributes,
+        [Fields.REFERENCE]: workClaim.id
+      }
     }
 
     const titleClaims: ReadonlyArray<Claim> = workClaims.map(claim =>
