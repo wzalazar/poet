@@ -114,7 +114,6 @@ Valid poet transactions need to follow these rules:
       the infohash of the torrent containing the claimset information,
       and the BEP009 Tagged Info Hash that is expected to replace the use of SHA1 for SHA256.
     \item One output paying at least 1000 satoshis to the Poet Foundation's bitcoin address
-
 \end{itemize}
 
 \section{Technical description}
@@ -132,13 +131,29 @@ The architecture of a poet node is comprised of:
 
 \subsection{Domain rules}
 
-So far, the described architecture is a general description of a system to exchange messages that are signed and timestamped. They are exchanged across the internet by piggybacking both the torrent DHT network and the bitcoin blockchain. We now set to describe how eacch node operates on them. 
+So far, the described architecture is a general description of a system to exchange messages that are signed and timestamped. They are exchanged across the internet by piggybacking both the torrent DHT network and the bitcoin blockchain. We now set to describe how each node operates on them. 
 
 \section{Copyright Domain}
 
-Creative Work
+We use the fields described in https://schema.org to describe metadata associated with each entity of the domain.
 
-License Offering
+\subsection{Creative Work}
+
+A Creative Work is the representation of the metadata associated with a copyrightable work. Some fields that we plan to use are:
+\begin{itemize}
+  \item \texttt{author}: Original author of the work. Might not be the same as "owner".
+  \item \texttt{name}: Display name or common name for the work.
+  \item \texttt{supersedes}: For future revisions of the metadata, this signals the client that the description of this creative work is a newer version of a previous one.
+\end{itemize}
+
+\subsection{License Offering}
+
+A Creative Work is the representation of the metadata associated with a copyrightable work. Some fields that we plan to use are:
+\begin{itemize}
+  \item \texttt{author}: Original author of the work. Might not be the same as "owner".
+  \item \texttt{name}: Display name or common name for the work.
+  \item \texttt{supersedes}: For future revisions of the metadata, this signals the client that the description of this creative work is a newer version of a previous one.
+\end{itemize}
 
 License
 
