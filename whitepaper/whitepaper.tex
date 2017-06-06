@@ -98,7 +98,7 @@ Claims are bundled together in a ClaimSet. The natural key of a ClaimSet is the 
 
 A Certification is a claim referring to another claim in the attribute "reference". It can be issued by anyone, but it will be useful only if the issuer is a trusted node. We'll refer to a notary as anyone that issues a certification.
 
-Revokations allow notaries to revert previous assesments. This allows correcting assesments over time, in light of new evidence, or caused due to a human or automated error.
+Revocations allow notaries to revert previous assesments. This allows correcting assesments over time, in light of new evidence, or caused due to a human or automated error.
 
 Nodes of the systems are expected to communicate over the torrent network to exchange information, submit bitcoin transactions and receive information of new claimsets by reading the bitcoin blockchain.
 
@@ -129,6 +129,10 @@ The architecture of a poet node is comprised of:
     \item Domain Subsystem: Applies the domain specific rules to the information gathered by the trusted claim system, and exposes the information with a RESTful API.
 \end{itemize}
 
+\subsection{Certifications and Revocations}
+
+Claims can be marked as certified by other 
+
 \subsection{Domain rules}
 
 So far, the described architecture is a general description of a system to exchange messages that are signed and timestamped. They are exchanged across the internet by piggybacking both the torrent DHT network and the bitcoin blockchain. We now set to describe how each node operates on them. 
@@ -155,9 +159,9 @@ A Creative Work is the representation of the metadata associated with a copyrigh
   \item \texttt{supersedes}: For future revisions of the metadata, this signals the client that the description of this creative work is a newer version of a previous one.
 \end{itemize}
 
-License
+\subsection{License}
 
-Title
+\subsection{Title}
 
 \section{Poet Foundation}
 
