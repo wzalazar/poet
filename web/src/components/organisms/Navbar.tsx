@@ -40,7 +40,7 @@ const mapDispatch = {
   dispatchShowTryItOut: () => ({ type: Actions.Modals.TryItOut.Show })
 };
 
-export const Navbar = connect(mapStateToProps, mapDispatch)(
+export const Navbar = (connect as any)(mapStateToProps, mapDispatch)(
   class extends React.Component<NavbarProps & NavbarActions, undefined> {
 
     static defaultProps: NavbarProps = {
