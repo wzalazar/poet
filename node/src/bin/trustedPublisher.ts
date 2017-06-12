@@ -153,7 +153,7 @@ async function createServer(options?: TrustedPublisherOptions) {
   }))
   
   koa.use(Route.post('/v2/claims', async (ctx: any) => {
-    const sigs = JSON.parse(ctx.request.body).signatures
+    const sigs = JSON.parse(ctx.request.body).claims
 
     const claims: ReadonlyArray<Claim> = sigs.map((sig: any) => {
       const claim = creator.serializedToClaim(
