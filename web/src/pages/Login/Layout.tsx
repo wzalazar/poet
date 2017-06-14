@@ -34,7 +34,9 @@ export class LoginLayout extends React.Component<LoginLayoutProps & LoginActions
           <section>
             <div className="qr">
               { this.props.requestId
-                ? <QR text={ (this.props.requestId && this.props.requestId.padEnd(50)) || ''} />
+                ? <a href="#" onClick={() => this.props.mockLoginRequest(this.props.requestId)}>
+                  <QR text={ (this.props.requestId && this.props.requestId.padEnd(50)) || ''} />
+                </a>
                 : <img src={Images.Quill} className="loading" />
               }
             </div>
