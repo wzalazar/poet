@@ -70,7 +70,7 @@ export function getPublicationDate(article: any): string {
 }
 
 export function getId(article: any): string {
-  return article.GUID[0]
+  return article.GUID[0].split('#')[1]
 }
 
 export function getLink(article: any): string {
@@ -121,6 +121,12 @@ export async function scanBTCMagazine(): Promise<any> {
   console.log(`The feed has ${feedEntries.length} articles.`)
   console.log(`Checking which articles are new...`)
   const newArticles = await filterNewArticles(feedEntries)
+
+  if (!newArticles.length) {
+    console.log('No new articles found.')
+    return
+  }
+
   console.log(`Found ${newArticles.length} new articles.`)
   console.log()
   console.log('Submitting articles...')
