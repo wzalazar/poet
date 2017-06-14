@@ -72,7 +72,9 @@ export const SignWork = connect(mapStateToProps, mapDispatch)(
             <div className="qr">
               { this.props.submitting || !this.props.requestId
                 ? <img src={Images.Quill} className="loading" />
-                : <QR text={this.props.requestId || ''} />
+                : <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
+                  <QR text={this.props.requestId || ''} />
+                </a>
               }
             </div>
             <h2>This will authorize the following transaction</h2>

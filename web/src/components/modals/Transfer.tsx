@@ -142,7 +142,9 @@ export const Transfer = connect(mapStateToProps, mapDispatch)(
             <div className="qr">
               { !this.props.requestId
                 ? <img src={Images.Quill} className="quill-loading" />
-                : <QR text={this.props.requestId || ''} />
+                : <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
+                    <QR text={this.props.requestId || ''} onClick={()=>console.log('ho')} />
+                  </a>
               }
             </div>
             <h2>This will authorize the following transaction:</h2>
