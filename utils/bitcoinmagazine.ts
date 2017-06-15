@@ -15,7 +15,7 @@ const targetURL = 'https://bitcoinmagazine.com/feed/'
 const explorerURL = 'https://poet.host/api/explorer'
 const publisherURL = 'https://poet.host/api/user'
 
-const rawKey = '4cbfeb0cbfa891148988a50b549c42309e088a7839dd14ab480f542286725d3a'
+const rawKey = '4649668598abd60749e10f54cf77c0f4ee5a315ae01117cca0831100a0311a04'
 
 const btcmediaPrivkey = bitcore.PrivateKey(rawKey)
 const btcmediaPubkey = btcmediaPrivkey.publicKey.toString()
