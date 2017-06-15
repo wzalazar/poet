@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:8.1.0
 
 RUN mkdir -p /web
 WORKDIR /web
