@@ -1,4 +1,4 @@
-FROM node:8.1.0
+FROM poet-typescript
 
 RUN mkdir -p /poet-js
 
@@ -12,7 +12,6 @@ COPY ./poet-js/tsconfig.json /poet-js
 COPY ./poet-js/src /poet-js/src
 
 WORKDIR /poet-js
-RUN npm i -g typescript
 RUN npm install
 RUN npm run build
 RUN npm link

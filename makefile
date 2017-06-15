@@ -16,6 +16,7 @@ poet-js-only:
 
 base-images: prepare
 	docker build --file Docker/poet-base.dockerfile --tag poet-base:latest .
+	docker build -f Docker/poet-typescript.dockerfile --tag poet-typescript:latest .
 
 prepare:
 	mkdir -p node/torrents
