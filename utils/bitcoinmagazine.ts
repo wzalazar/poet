@@ -12,8 +12,8 @@ declare var require: any
 const bitcore = require('bitcore-lib')
 
 const targetURL = 'https://bitcoinmagazine.com/feed/'
-const explorerURL = 'https://poet.host/api/explorer'
-const publisherURL = 'https://poet.host/api/user'
+const explorerURL = 'https://alpha.po.et/api/explorer'
+const publisherURL = 'https://alpha.po.et/api/user'
 
 const rawKey = '4cbfeb0cbfa891148988a50b549c42309e088a7839dd14ab480f542286725d3a'
 
