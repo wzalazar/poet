@@ -1,5 +1,4 @@
-import createServer from '../authentication/signer'
-import { MockSignerServerOptions } from '../authentication/signer'
+import { createServer, MockSignerServerOptions } from '../authentication/signer'
 
 export async function start(options?: MockSignerServerOptions) {
   options = Object.assign({}, {
