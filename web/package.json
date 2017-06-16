@@ -24,6 +24,7 @@
     "bitcore-lib": "eordano/bitcore-lib#f9c9876",
     "bundle-loader": "^0.5.5",
     "classnames": "^2.2.5",
+    "insight-client-js": "poetapp/insight-client-js",
     "isomorphic-fetch": "^2.2.1",
     "moment": "^2.17.1",
     "protobufjs": "=6.6.2",
