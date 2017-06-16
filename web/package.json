@@ -36,6 +36,7 @@
     "react-redux": "^5.0.1",
     "react-router": "^3.0.0",
     "react-tabs": "^0.8.2",
+    "poet-js": "poetapp/poet-js",
     "redux": "^3.6.0",
     "redux-devtools": "^3.3.1",
     "redux-saga": "^0.14.0",

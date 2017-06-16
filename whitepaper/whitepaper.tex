@@ -1,0 +1,183 @@
+\documentclass[12pt]{article}
+
+% \usepackage{ifpdf}
+% \usepackage[pdftex]{graphicx}
+% \usepackage[cmex10]{amsmath}
+% \usepackage{acronym}
+% \usepackage{algorithmic}
+% \usepackage{array}
+% \usepackage{mdwmath}
+% \usepackage{mdwtab}
+% \usepackage{eqparbox}
+% \usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+% \usepackage{fixltx2e}
+% \usepackage[nomarkers]{endfloat}
+% \usepackage{url}
+% 
+% \usepackage[pdftex]{thumbpdf}
+
+
+\begin{document}
+
+\title{A system for subjective evaluation of messages}
+
+\author{Esteban Ordano
+  Email: esteban@po.et}
+
+\begin{abstract}
+
+  Po.et is a system for keeping a record of claims sent by a set of users,
+  where some validated subset of them is trusted to certify the validity of others' claims.
+
+  Claims have different types, depending on the domain for which it is being used.
+  Claims can attest to another claim's validity or incorrectness.
+  They are timestamped using a Merkle tree construction on Bitcoin's blockchain.
+
+  From a set of timestamped claims and trusted users,
+  an ordered list of validated claims is generated.
+  Domain-specific rules applied on them allow for a registry to be created,
+  where each entry can be linked to a trusted user and a timestamp.
+
+  The system contains the property of trust agility: a change in the set of trusted
+  users causes claims to be reevaluated.
+
+\end{abstract}
+
+\section{Introduction}
+
+We introduce a system for broadcasting messages (claims) to a large peer-to-peer network,
+and a method to select a subset of those claims that are considered to be true and relevant,
+based on certifications by a group of trusted users (notaries).
+
+In our domain of interest, which is to keep track of copyright, licenses, 
+and attribution of creative works, there can be no single answer to who is the original
+owner of a certain work, based on differing legislation.
+
+The properties of copyright ownership and validity of licenses
+is subjective, and depends on the geopolitical context where it is evaluated.
+In this way, an American subject might see copyright for a creative work to belong to a particular person, but in the eyes of an European,
+it might fall into the public domain, due to differences on laws or customs.
+
+\subsection{Motivation}
+
+With the advent of the internet, the defensibility of established concepts
+such as copyright and intellectual property
+had to keep up with the cheap cost of information sharing.
+
+Right now, there's an opportunity to make an open protocol for establishing
+who is the rightful owner of a creative work, but this protocol has to allow
+for the inherently complexity of ownership models that exist and allow for new ones.
+
+In particular, attribution of content is an unsolved problem.
+For any given picture that a normal web browser downloads, a lot of metadata and information about that work is lost, if not included in the file, but that same information can be malleated or dropped at any step since it was deemed finished by the author, transferred to the cloud, resized or optimized for network performance. And the author might very well not be the rightful owner of the content; it might have been work made for hire, for example.
+
+Enforcing copyright ownership is a hard problem that might never be fully automated. Poet contributes a ground truth about what copyright claims have been made and provides timestamped evidence to settle disputes over authorship. 
+
+\subsection{Definitions}
+
+We define a claim as a combination of a message (an arbitrary binary string), a public key, and a signature covering both. The natural key of a claim is generated using the double SHA256 hash of all the content, serialized using protocol buffers.
+
+Claims are defined with the following protocol buffer specification:
+
+```
+message Claim {
+      optional bytes id = 1;
+      optional bytes publicKey = 2;
+      optional bytes signature = 3;
+      optional string type = 4;
+      repeated Attribute attributes = 5;
+}
+
+message Attribute {
+      optional string key = 1;
+      optional string value = 2;
+}
+```
+
+Claims are bundled together in a ClaimSet. The natural key of a ClaimSet is the merkle root hash of all claims in the set, padded with null hash elements as leaves. 
+
+A Certification is a claim referring to another claim in the attribute "reference". It can be issued by anyone, but it will be useful only if the issuer is a trusted node. We'll refer to a notary as anyone that issues a certification.
+
+Revocations allow notaries to revert previous assesments. This allows correcting assesments over time, in light of new evidence, or caused due to a human or automated error.
+
+Nodes of the systems are expected to communicate over the torrent network to exchange information, submit bitcoin transactions and receive information of new claimsets by reading the bitcoin blockchain.
+
+\subsection{Usage of the Bitcoin Network}
+
+The system makes uses of the bitcoin blockchain in order to notify other users of new information available for download.
+
+Valid poet transactions need to follow these rules:
+\begin{itemize}
+    \item Have at least two outputs
+    \item One of these outputs has to be a OP\_RETURN standard output, with
+      the "POET0001" prefix, written in ASCII encoding,
+      the infohash of the torrent containing the claimset information,
+      and the BEP009 Tagged Info Hash that is expected to replace the use of SHA1 for SHA256.
+    \item One output paying at least 1000 satoshis to the Poet Foundation's bitcoin address
+\end{itemize}
+
+\section{Technical description}
+
+The architecture of a poet node is comprised of:
+
+\begin{itemize}
+    \item Torrent subsystem: Responsible for downloading torrents and notifying other subsystems when new information is ready to be consumed.
+    \item Bitcoin scanner: Scans the bitcoin blockchain (both on an ongoing basis and retroactively) looking for valid poet transactions.
+    \item ClaimSet creator: debounces multiple claims created by users and creates a single ClaimSet over a period of time.
+    \item Claim processor: coordinates the bitcoin scanner and the torrent subsystem, enriches claimset information with blockchain confirmation information and stores the information in a database. 
+    \item Trusted claim system: Processes information from the claim processor and filters out only those claims that are certified by trusted notaries
+    \item Domain Subsystem: Applies the domain specific rules to the information gathered by the trusted claim system, and exposes the information with a RESTful API.
+\end{itemize}
+
+\subsection{Certifications and Revocations}
+
+Claims can be marked as certified by other 
+
+\subsection{Domain rules}
+
+So far, the described architecture is a general description of a system to exchange messages that are signed and timestamped. They are exchanged across the internet by piggybacking both the torrent DHT network and the bitcoin blockchain. We now set to describe how each node operates on them. 
+
+\section{Copyright Domain}
+
+We use the fields described in https://schema.org to describe metadata associated with each entity of the domain.
+
+\subsection{Creative Work}
+
+A Creative Work is the representation of the metadata associated with a copyrightable work. Some fields that we plan to use are:
+\begin{itemize}
+  \item \texttt{author}: Original author of the work. Might not be the same as "owner".
+  \item \texttt{name}: Display name or common name for the work.
+  \item \texttt{supersedes}: For future revisions of the metadata, this signals the client that the description of this creative work is a newer version of a previous one.
+\end{itemize}
+
+\subsection{License Offering}
+
+A Creative Work is the representation of the metadata associated with a copyrightable work. Some fields that we plan to use are:
+\begin{itemize}
+  \item \texttt{author}: Original author of the work. Might not be the same as "owner".
+  \item \texttt{name}: Display name or common name for the work.
+  \item \texttt{supersedes}: For future revisions of the metadata, this signals the client that the description of this creative work is a newer version of a previous one.
+\end{itemize}
+
+\subsection{License}
+
+\subsection{Title}
+
+\section{Poet Foundation}
+
+\section{Roadmap}
+
+\section{Conclusion}
+
+Poet is a system to reduce a large set of information to a trusted, timestamped set of accurate information about a domain. It is intended to revolutionize the copyright industry by securing the information using a blockchain. The system can be adapted to multiple use cases and the protocol can be used to determine attribution of content, fuel a decentralized ad exchange, and does not have the rigid nature of other smart-contract platforms like ethereum.
+
+References
+
+Trust agility: https://scholar.google.com.ar/scholar?cluster=6905070391665786097&hl=en&as_sdt=0,5&sciodt=0,5
+BitTorrent Enhancement Proposal 3: https://github.com/bittorrent/bittorrent.org/blob/master/beps/bep_0003.rst
+BitTorrent Enhancement Proposal 9: https://github.com/bittorrent/bittorrent.org/blob/master/beps/bep_0009.rst
+
+\end{document}
+
+
+

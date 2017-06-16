@@ -36,6 +36,14 @@ html, body, #app, .root-layout {
   >* {
     flex-shrink: 0;
   }
+
+  >.alpha {
+    background-color: white;
+
+    &.margin {
+      margin-bottom: 50px;
+    }
+  }
 }
 
 // TODO: remove this definition!

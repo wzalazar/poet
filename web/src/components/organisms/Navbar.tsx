@@ -40,7 +40,7 @@ const mapDispatch = {
   dispatchShowTryItOut: () => ({ type: Actions.Modals.TryItOut.Show })
 };
 
-export const Navbar = connect(mapStateToProps, mapDispatch)(
+export const Navbar = (connect as any)(mapStateToProps, mapDispatch)(
   class extends React.Component<NavbarProps & NavbarActions, undefined> {
 
     static defaultProps: NavbarProps = {
@@ -85,8 +85,6 @@ export const Navbar = connect(mapStateToProps, mapDispatch)(
 
     private renderNotLoggedInActions(): JSX.Element[] {
       return [
-        this.renderNavLink('network/about', 'About'),
-        this.renderNavLink('documentation/overview', 'Documentation'),
         this.renderNavLink('login', 'Login', 'login-button button-secondary'),
         <li key='try-it-out'>
           <button className="try-it-out" onClick={this.props.dispatchShowTryItOut}>

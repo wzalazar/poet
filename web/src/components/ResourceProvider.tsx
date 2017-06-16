@@ -69,7 +69,7 @@ const mapDispatch = {
   dispatchRequest: (payload: ResourceLocator) => ({ type: Actions.fetchRequest, payload })
 };
 
-const ConnectedResourceProvider = connect(mapStateToProps, mapDispatch)(ResourceProviderBase);
+const ConnectedResourceProvider = (connect as any)(mapStateToProps, mapDispatch)(ResourceProviderBase);
 
 interface Holder<T> {
   readonly resource?: T;

@@ -1,17 +1,22 @@
 development: base-images
+	cd Docker && cp docker-compose.development.yml docker-compose.yml
+	cd Docker && docker-compose build
+
+staging: base-images
+	cd Docker && cp docker-compose.staging.yml docker-compose.yml
 	cd Docker && docker-compose build
 
 poet-js:
+	cd Docker && cp docker-compose.development.yml docker-compose.yml
 	cd Docker && docker-compose -f docker-compose.yml -f docker-compose.poet-js.yml build
 
 poet-js-only:
+	cd Docker && cp docker-compose.development.yml docker-compose.yml
 	cd Docker && docker-compose -f docker-compose.yml -f docker-compose.poet-js.yml build web
-
-staging: base-images
-	cd Docker && docker-compose -f docker-compose.yml -f docker-compose.staging.yml build
 
 base-images: prepare
 	docker build --file Docker/poet-base.dockerfile --tag poet-base:latest .
+	docker build -f Docker/poet-typescript.dockerfile --tag poet-typescript:latest .
 
 prepare:
 	mkdir -p node/torrents

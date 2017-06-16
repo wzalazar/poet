@@ -1,4 +1,4 @@
-FROM node:latest
+FROM poet-typescript
 
 RUN mkdir -p /poet-js
 
@@ -12,8 +12,7 @@ COPY ./poet-js/tsconfig.json /poet-js
 COPY ./poet-js/src /poet-js/src
 
 WORKDIR /poet-js
-RUN npm i -g typescript
-RUN npm install > /dev/null
+RUN npm install
 RUN npm run build
 RUN npm link
 
@@ -25,12 +24,7 @@ COPY ./poet/web/tsconfig.json /web
 COPY ./poet/web/webpack.config.js /web
 COPY ./poet/web/devServer.js /web
 
-# Workaround for https://github.com/npm/npm/issues/9863
-RUN cd $(npm root -g)/npm \
-  && npm install fs-extra \
-  && sed -i -e s/graceful-fs/fs-extra/ -e s/fs\.rename/fs.move/ ./lib/utils/rename.js
-
+RUN npm install
 RUN npm link poet-js
-RUN npm install > /dev/null
 
 CMD [ "npm", "start" ]

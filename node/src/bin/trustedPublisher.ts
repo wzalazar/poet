@@ -157,6 +157,38 @@ async function createServer(options?: TrustedPublisherOptions) {
     ], ctx)
 
   }))
+  
+  koa.use(Route.post('/v2/claims', async (ctx: any) => {
+    const sigs = JSON.parse(ctx.request.body).claims
+
+    const claims: ReadonlyArray<Claim> = sigs.map((sig: any) => {
+      const claim = creator.serializedToClaim(
+        new Buffer(sig.claim, 'hex')
+      )
+      claim.signature = sig.signature
+      claim.id = new Buffer(creator.getId(claim)).toString('hex')
+      return claim
+    })
+
+    const workClaims: ReadonlyArray<Claim> = claims.filter(_ => _.type === WORK)
+
+    console.log('POST /claims', claims)
+    const titleClaims: ReadonlyArray<Claim> = workClaims.map(claim =>
+      creator.createSignedClaim({
+        type: TITLE,
+        attributes: {
+          reference: claim.id,
+          owner: claim.publicKey,
+        }
+      }, privKey)
+    )
+
+    await createBlock([
+      ...claims,
+      ...titleClaims
+    ], ctx)
+
+  }))
 
   koa.use(async (ctx: any, next: Function) => {
     try {

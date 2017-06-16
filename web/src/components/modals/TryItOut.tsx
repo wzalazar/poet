@@ -26,6 +26,7 @@ interface TryItOutProps {
 interface TryItOutState {
   readonly selectedTab?: Tabs;
   readonly text?: string;
+  readonly title?: string;
   readonly fileContent?: string;
   readonly fileName?: string;
   readonly isSubmitting?: boolean;
@@ -53,7 +54,7 @@ class TryItOutComponent extends React.Component<TryItOutProps, TryItOutState> {
       >
         <section className="modal-try-it-out">
           <h1>Try Out Poet</h1>
-          <h2>This  explains  how your intellectual property is embedded in blockchain, it is also the quick and easiest way to timestamp if you dont need it attached to your profile  </h2>
+          <h2>Curious to see how Poet works? Write a quick message below to timestamp into the blockchain anonymously. As soon as the bitcoin network verifies your timestamp, your message will be securely embedded into the blockchain and relayed across the network. </h2>
           <OptionGroup selectedId={this.state.selectedTab} onOptionSelected={selectedTab => this.setState({ selectedTab })} className="option-group tab-option-group" >
             <Option id={Tabs.Text}>Text</Option>
             <Option id={Tabs.UploadFile}>Upload File</Option>
@@ -61,12 +62,8 @@ class TryItOutComponent extends React.Component<TryItOutProps, TryItOutState> {
           { this.state.selectedTab === Tabs.Text && this.renderText() }
           { this.state.selectedTab === Tabs.UploadFile && this.renderUpload() }
           <p>
-            Timestamping into the blockchain is a permanent action — it cannot be reverted or undone
-          </p>
-          <small>
-            (this is how poet proves your ownership of intellectual property)
-          </small>
-          <button className="button-primary" onClick={this.onSubmit} disabled={!this.canSubmit()}>Timestamp to the blockchain at  03-28-17 at 12:30:93</button>
+            <strong>Alpha Disclaimer</strong>: Poet is current in Alpha release, the current blockchain is for demoing purposes only and will be reset in the next phase.          </p>
+          <button className="button-primary" onClick={this.onSubmit} disabled={!this.canSubmit()}>Timestamp using Poet</button>
         </section>
       </Overlays.Modal>
     )
@@ -88,11 +85,19 @@ class TryItOutComponent extends React.Component<TryItOutProps, TryItOutState> {
   }
 
   private renderText() {
-    return <textarea
-      value={this.state.text}
-      onChange={(event: React.FormEvent<HTMLTextAreaElement>) => this.setState({ text: event.currentTarget.value })}
-      placeholder="Start typing..."
-    />;
+    return (<div className="text">
+      <input
+        className="title-input"
+        type="text"
+        placeholder="Set a title for your work"
+        onChange={(event: React.FormEvent<HTMLInputElement>) => this.setState({ title: event.currentTarget.value })}
+      />
+      <textarea
+        value={this.state.text}
+        onChange={(event: React.FormEvent<HTMLTextAreaElement>) => this.setState({ text: event.currentTarget.value })}
+        placeholder="Start typing..."
+      />
+    </div>);
   }
 
   private renderUpload() {
@@ -119,7 +124,7 @@ class TryItOutComponent extends React.Component<TryItOutProps, TryItOutState> {
     this.props.submit([{
       type: 'Work',
       attributes: [
-        { key: 'name', value: this.state.selectedTab === Tabs.UploadFile && this.state.fileName },
+        { key: 'name', value: this.state.selectedTab === Tabs.UploadFile ? this.state.fileName : this.state.title },
         { key: 'mediaType', value: 'article' },
         { key: 'articleType', value: 'news-article' },
         { key: 'content', value: this.state.selectedTab === Tabs.Text ? this.state.text : this.state.fileContent },
