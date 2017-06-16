@@ -15,8 +15,8 @@ poet-js-only:
 	cd Docker && docker-compose -f docker-compose.yml -f docker-compose.poet-js.yml build web
 
 base-images: prepare
-	docker build --file Docker/poet-base.dockerfile --tag poet-base:latest .
 	docker build -f Docker/poet-typescript.dockerfile --tag poet-typescript:latest .
+	docker build --file Docker/poet-base.dockerfile --tag poet-base:latest .
 
 prepare:
 	mkdir -p node/torrents
