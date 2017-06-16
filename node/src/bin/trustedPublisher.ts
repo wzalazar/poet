@@ -162,20 +162,20 @@ async function createServer(options?: TrustedPublisherOptions) {
     const sigs = JSON.parse(ctx.request.body).claims
 
     const claims: ReadonlyArray<Claim> = sigs.map((sig: any) => {
-      const claim = creator.serializedToClaim(
+      const claim = ClaimBuilder.serializedToClaim(
         new Buffer(sig.claim, 'hex')
       )
       claim.signature = sig.signature
-      claim.id = new Buffer(creator.getId(claim)).toString('hex')
+      claim.id = new Buffer(ClaimBuilder.getId(claim)).toString('hex')
       return claim
     })
 
-    const workClaims: ReadonlyArray<Claim> = claims.filter(_ => _.type === WORK)
+    const workClaims: ReadonlyArray<Claim> = claims.filter(_ => _.type === ClaimTypes.WORK)
 
     console.log('POST /claims', claims)
     const titleClaims: ReadonlyArray<Claim> = workClaims.map(claim =>
-      creator.createSignedClaim({
-        type: TITLE,
+      ClaimBuilder.createSignedClaim({
+        type: ClaimTypes.TITLE,
         attributes: {
           reference: claim.id,
           owner: claim.publicKey,
