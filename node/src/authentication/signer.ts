@@ -14,7 +14,7 @@ export interface MockSignerServerOptions {
 
 const server = 'auth:5000'
 
-export default async function createServer(options: MockSignerServerOptions) {
+export async function createServer(options: MockSignerServerOptions) {
 
   const koa = new Koa() as any
   koa.use(Body())
