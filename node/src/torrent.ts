@@ -16,11 +16,11 @@ async function readBlock(blockFile: string) {
   return ClaimBuilder.serializedToBlock(buffer)
 }
 
-export default class TorrentSystem {
+export class TorrentSystem {
 
-  private client: any // TODO: upstream webtorrent needs a better definition file
-  private path: string
-  private queue: Queue
+  private readonly client: any // TODO: upstream webtorrent needs a better definition file
+  private readonly path: string
+  private readonly queue: Queue
 
   private static BITS_PER_HEX_BYTE = 4
   private static SHA256_LENGTH_IN_BITS = 256
