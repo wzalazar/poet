@@ -12,8 +12,8 @@ declare var require: any
 const bitcore = require('bitcore-lib')
 
 const targetURL = 'https://bitcoinmagazine.com/feed/'
-const explorerURL = 'https://poet.host/api/explorer'
-const publisherURL = 'https://poet.host/api/user'
+const explorerURL = 'https://alpha.po.et/api/explorer'
+const publisherURL = 'https://alpha.po.et/api/user'
 
 const rawKey = '4649668598abd60749e10f54cf77c0f4ee5a315ae01117cca0831100a0311a04'
 
@@ -41,8 +41,7 @@ export async function normalizeContent(article: any): Promise<string> {
       return resolve(res)
     })
   })
-
-  return (content as any).article._
+  return (content as any).article
     .replace(/<(\/)?p>/gi, '\n')
     .replace(/<br\/>/gi,   '\n')
     .replace(/<[^>]+>/gi,  '')
@@ -50,11 +49,12 @@ export async function normalizeContent(article: any): Promise<string> {
 
 export function getContent(article: any): string {
   const builder = new xml2js.Builder({ rootName: 'article' })
-  return builder.buildObject(article.CONTENT[0])
+  return builder.buildObject(article['CONTENT:ENCODED'][0])
 }
 
 export function getAuthor(article: any): string {
-  return article.AUTHOR.length > 1 ? article.AUTHOR.join(', ') : article.AUTHOR[0]
+  const authors = article['DC:CREATOR'];
+  return authors.length > 1 ? authors.join(', ') : authors[0]
 }
 
 export function getTags(article: any): string {
@@ -70,7 +70,7 @@ export function getPublicationDate(article: any): string {
 }
 
 export function getId(article: any): string {
-  return article.GUID[0]
+  return article.GUID[0].split('#')[1]
 }
 
 export function getLink(article: any): string {
@@ -92,12 +92,8 @@ export async function processItem(article: any): Promise<Article> {
   }
 }
 
-export async function mapProcessItem(items: any[]): Promise<Article[]> {
-  const result = []
-  for (const item of items) {
-    result.push(await processItem(item))
-  }
-  return result
+export function mapProcessItem(items: any[]): Promise<Article[]> {
+  return Promise.all(items.map(processItem))
 }
 
 export async function process(xmlResponse: any): Promise<Article[]> {
@@ -115,21 +111,32 @@ export async function process(xmlResponse: any): Promise<Article[]> {
   return await mapProcessItem(items as any[])
 }
 
+async function filterNewArticles(articles: Article[]): Promise<Article[]> {
+  const articlesExistence = await Promise.all(articles.map(exists))
+  return articles.filter((article: Article, index: number) => !articlesExistence[index])
+}
+
 export async function scanBTCMagazine(): Promise<any> {
-  fetch(targetURL).then(process).then(async (results) => {
-    try {
-      const newArticles = []
-      for (let article of results) {
-        if (!(await exists(article))) {
-          newArticles.push(article)
-        }
-      }
-      const submitedArticles = (await submitArticles(newArticles)) as any
-      const submitedLicenses = await submitLicenses(submitedArticles)
-    } catch (err) {
-      console.log(err, err.stack)
-    }
-  })
+  const feedEntries = await fetch(targetURL).then(process)
+  console.log(`The feed has ${feedEntries.length} articles.`)
+  console.log(`Checking which articles are new...`)
+  const newArticles = await filterNewArticles(feedEntries)
+
+  if (!newArticles.length) {
+    console.log('No new articles found.')
+    return
+  }
+
+  console.log(`Found ${newArticles.length} new articles.`)
+  console.log()
+  console.log('Submitting articles...')
+  const submitedArticles = (await submitArticles(newArticles)) as any
+  console.log('Articles submitted.')
+  console.log()
+  console.log('Submitting licenses...')
+  const submitedLicenses = await submitLicenses(submitedArticles)
+  console.log('Licenses submitted.')
+  console.log()
 }
 
 export function exists(article: Article): Promise<boolean> {
@@ -197,15 +204,14 @@ export async function postClaims(claims: any) {
 }
 
 export async function postProfile() {
-  const profile = {
-    displayName: "BTCMedia",
-    firstName: "BTC",
-    imageData: fs.readFileSync('./avatar.urlimage').toString(),
-    lastName: "Media"
-  }
   const data = {
     type: 'Profile',
-    attributes: profile
+    attributes: {
+      displayName: "BTCMedia",
+      firstName: "BTC",
+      imageData: fs.readFileSync('./avatar.urlimage').toString(),
+      lastName: "Media"
+    }
   }
   const builder = await getBuilder()
   const message = builder.getEncodedForSigning(data, btcmediaPrivkey)
@@ -217,7 +223,27 @@ export async function postProfile() {
   }])
 }
 
+async function main() {
+  console.log('Running Bitcoin Magazine Crawler')
+  console.log()
+  console.log('Feed URL:', targetURL)
+  console.log('Poet Explorer URL:', explorerURL)
+  console.log('Poet Publisher URL:', publisherURL)
+  console.log()
+  console.log('Posting BTCMedia Profile...')
+  await postProfile()
+  console.log('BTCMedia Profile posted.')
+  console.log()
+  console.log('Scanning BTC Magazine...')
+  try {
+    await scanBTCMagazine()
+  } catch (err) {
+    console.error('Uncaught error scanning BTC Magazine', err, err.stack)
+  }
+  console.log('Finished.')
+  console.log()
+}
+
 if (!module.parent) {
-  postProfile()
-  scanBTCMagazine()
+  main()
 }
