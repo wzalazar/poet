@@ -10,7 +10,7 @@ import Device from './device'
 import { Queue, Notification } from './queue'
 import { verifies, doubleSha } from '../authentication/helpers'
 
-const SERVER_API_KEY='YOUR_SERVER_API_KEY'
+const SERVER_API_KEY='56a75cc15cc842384321b5fe614d54d4238049c49dec61feaeed79968156a821'
 
 function createServer (serverKey: string, port: number) {
   const fcmCli = new fcm(serverKey)
