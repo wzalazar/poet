@@ -1,11 +1,10 @@
-import BlockchainService from '../../domainService';
-import { BlockMetadata } from '../../../events';
-import { Claim, WORK } from '../../../claim';
-import Fields from '../../fields';
-import { looksLikePublicKey } from '../../../common';
+import { Claim, ClaimTypes, looksLikePublicKey, Fields } from 'poet-js'
 
-export default {
-  type: WORK,
+import { BlockchainService } from '../../domainService'
+import { BlockMetadata } from '../../../events'
+
+export const WorkRule = {
+  type: ClaimTypes.WORK,
   hook: async (service: BlockchainService, claim: Claim, txInfo: BlockMetadata) => {
     const authorId = claim.attributes[Fields.AUTHOR]
     if (looksLikePublicKey(authorId)) {

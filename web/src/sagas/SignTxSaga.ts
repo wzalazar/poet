@@ -4,10 +4,10 @@ import { call, put, select, take, race } from 'redux-saga/effects';
 import * as bitcore from 'bitcore-lib';
 
 import { Configuration } from '../configuration';
+import { InsightClient } from '../Insight'
 import { Actions } from '../actions/index';
 import { Authentication } from '../authentication'
 import { getMockPrivateKey } from '../helpers/mockKey';
-import { getUtxos, submitTx } from '../bitcoin/insight';
 import { getSighash, applyHexSignaturesInOrder } from '../helpers/TransactionHelper';
 import { currentPublicKey } from '../selectors/session';
 
@@ -53,7 +53,7 @@ function* signTx(action: SignSubmitRequestedAction) {
 
   const myAddress = bitcore.Address(publicKey, bitcore.Networks.testnet);
   const myAddressString = myAddress.toString();
-  const utxos = yield call(getUtxos, myAddress);
+  const utxos = yield call(InsightClient.Address.Utxos.get, myAddress);
 
   const targetAddress = action.payload.paymentAddress;
   const amount = parseInt('' + action.payload.amountInSatoshis, 10);
@@ -69,7 +69,7 @@ function* signTx(action: SignSubmitRequestedAction) {
   yield put({ type: Actions.Transactions.Submitting });
 
   applyHexSignaturesInOrder(tx, response.signatures, publicKey);
-  const txId = yield call(submitTx, tx.toString());
+  const txId = yield call(InsightClient.Transactions.send.post, tx.toString());
   yield call(hintNormalized, tx.id, tx.nid);
 
   yield put({

@@ -1,6 +1,6 @@
-import { Block as PureBlock, Claim as PureClaim, WORK } from "../claim";
 import {Connection, Repository} from "typeorm";
-import {ClaimBuilder} from "../serialization/builder";
+import { ClaimBuilder, Block as PureBlock, Claim as PureClaim } from 'poet-js'
+
 import {getHash} from "../helpers/torrentHash";
 import {BlockMetadata} from "../events";
 import Claim from "./orm/claim";
@@ -14,21 +14,18 @@ export class ClaimService {
   protected db: Connection
   private starting: boolean
   private started: boolean
-  private creator: ClaimBuilder
 
   constructor() {
     this.starting = false
     this.started = false
   }
 
-  async start(getConnection: () => Promise<Connection>,
-              getBuilder: () => Promise<ClaimBuilder>) {
+  async start(getConnection: () => Promise<Connection>) {
     if (this.starting) {
       return
     }
     this.starting = true
     this.db = await getConnection()
-    this.creator = await getBuilder()
     this.started = true
     return
   }
@@ -43,7 +40,7 @@ export class ClaimService {
 
     await this.saveBlock(block)
 
-    const id = await getHash(this.creator.serializeBlockForSave(block), block.id)
+    const id = await getHash(ClaimBuilder.serializeBlockForSave(block), block.id)
 
     const preliminarInfo = {
       hash: block.id,
@@ -160,15 +157,13 @@ export class ClaimService {
   async getBlock(id: string) {
     const blockEntry = await this.fetchBlock(id)
 
-    if (!blockEntry || !blockEntry.claims) {
+    if (!blockEntry || !blockEntry.claims)
       return null
+
+    return {
+      id,
+      claims: blockEntry.claims.map(ClaimService.transformEntityToPureClaim)
     }
-    const block = {id, claims: [] as PureClaim[]} as PureBlock
-    for (let claimEntry of blockEntry.claims) {
-      const claim = ClaimService.transformEntityToPureClaim(claimEntry)
-      block.claims.push(claim)
-    }
-    return block
   }
 
   private async fetchBlock(id: string) {

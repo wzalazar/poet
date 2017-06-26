@@ -1,7 +1,6 @@
 import * as Koa from 'koa'
-import { sign, sha256 } from '../common'
-import { doubleSha, signMessage } from './helpers'
 import * as fetch from 'isomorphic-fetch'
+import { sha256, signMessage } from 'poet-js'
 
 const bitcore = require('bitcore-lib')
 const uuid = require('uuid')
@@ -15,7 +14,7 @@ export interface MockSignerServerOptions {
 
 const server = 'auth:5000'
 
-export default async function createServer(options: MockSignerServerOptions) {
+export async function createServer(options: MockSignerServerOptions) {
 
   const koa = new Koa() as any
   koa.use(Body())

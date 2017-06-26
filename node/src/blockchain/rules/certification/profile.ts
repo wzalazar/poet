@@ -1,11 +1,11 @@
-import BlockchainService from '../../domainService'
+import { Claim, Fields, ClaimTypes } from 'poet-js'
+
+import { BlockchainService } from '../../domainService'
 import { BlockMetadata } from '../../../events'
-import { Claim, PROFILE } from '../../../claim'
-import Fields from '../../fields';
-import { EventType } from '../../orm/events/events';
+import { EventType } from '../../orm/events/events'
 
 export default {
-  type: PROFILE,
+  type: ClaimTypes.PROFILE,
   hook: async (service: BlockchainService, claim: Claim, txInfo: BlockMetadata) => {
 
     const profile = service.profileRepository.create({

@@ -1,6 +1,7 @@
 import { Table, Column, PrimaryColumn, OneToMany, JoinTable } from 'typeorm'
+import { ClaimTypes } from 'poet-js'
+
 import Attribute from './attribute'
-import { ClaimType } from '../../claim'
 
 @Table()
 export default class Claim {
@@ -14,7 +15,7 @@ export default class Claim {
   signature: string
 
   @Column()
-  type: ClaimType
+  type: ClaimTypes.ClaimType
 
   @OneToMany((type => Attribute), attribute => attribute.claim, {
     cascadeInsert: true,

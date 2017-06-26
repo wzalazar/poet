@@ -1,33 +1,26 @@
 import * as fs from 'fs'
-import { ReadStream } from 'fs'
+const { promisify } = require('util') // TODO: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/16860
 import * as path from 'path'
 const WebTorrent = require('webtorrent')
+import { ClaimBuilder, Block, noop, assert } from 'poet-js'
 
-import { Block } from './claim'
-import { default as getBuilder } from './serialization/builder'
 import { Queue } from './queue'
 import { getCreateOpts, getHash, createObservableDownload } from './helpers/torrentHash'
-import { noop, readdir, assert } from './common'
 import { BlockMetadata, BitcoinBlockMetadata } from './events'
 
+const readdir = promisify(fs.readdir)
+const readFile = promisify(fs.readFile)
+
 async function readBlock(blockFile: string) {
-  const builder = await getBuilder()
-  const buffer = await new Promise<Buffer>((resolve, reject) => {
-    return fs.readFile(blockFile, (error, data) => {
-      if (error) {
-        return reject(error)
-      }
-      return resolve(data)
-    })
-  })
-  return builder.serializedToBlock(buffer)
+  const buffer = await readFile(blockFile)
+  return ClaimBuilder.serializedToBlock(buffer)
 }
 
-export default class TorrentSystem {
+export class TorrentSystem {
 
-  private client: any // TODO: upstream webtorrent needs a better definition file
-  private path: string
-  private queue: Queue
+  private readonly client: any // TODO: upstream webtorrent needs a better definition file
+  private readonly path: string
+  private readonly queue: Queue
 
   private static BITS_PER_HEX_BYTE = 4
   private static SHA256_LENGTH_IN_BITS = 256
@@ -90,8 +83,7 @@ export default class TorrentSystem {
 
   async seedBlock(block: Block) {
     try {
-      const builder = await getBuilder()
-      const buffer = builder.serializeBlockForSave(block)
+      const buffer = ClaimBuilder.serializeBlockForSave(block)
       const torrentId = await getHash(buffer, block.id)
 
       // Copy the buffer to seed and set a custom "name" field needed by WebTorrent
@@ -144,7 +136,7 @@ export default class TorrentSystem {
     }
   }
 
-  private seedBlockFromFile(file: ReadStream, torrentId: string, blockHash: string) {
+  private seedBlockFromFile(file: fs.ReadStream, torrentId: string, blockHash: string) {
     this.client.seed(file, this.makeSeedOptions(torrentId, blockHash), noop)
   }
 
@@ -178,8 +170,7 @@ export default class TorrentSystem {
       })
     })
 
-    const builder = await getBuilder()
-    return builder.serializedToBlock(data)
+    return ClaimBuilder.serializedToBlock(data)
   }
 
   /**

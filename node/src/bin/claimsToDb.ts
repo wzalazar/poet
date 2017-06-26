@@ -1,17 +1,16 @@
-import { default as BlockchainService } from '../blockchain/domainService'
-import { Queue } from '../queue'
-import { Block } from '../claim'
-import { BitcoinBlockMetadata } from '../events'
+import { Block } from 'poet-js'
 
-import getBuilder from '../serialization/builder'
-import getConnection from '../blockchain/connection'
+import { BlockchainService } from '../blockchain/domainService'
+import { Queue } from '../queue'
+import { BitcoinBlockMetadata } from '../events'
+import { getConnection } from '../blockchain/connection'
 
 async function startListening() {
   const blockchain = new BlockchainService()
   const queue = new Queue()
 
   try {
-    await blockchain.start(() => getConnection('claimsToDb'), getBuilder)
+    await blockchain.start(() => getConnection('claimsToDb'))
 
     console.log('Retrieving last block processed...')
     const latest = await blockchain.getLastProcessedBlock()

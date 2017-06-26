@@ -1,14 +1,15 @@
-const express  = require('express')
+import "reflect-metadata"
+import * as path from 'path'
+import { createConnection, Connection } from 'typeorm'
+import { doubleSha, verifies } from 'poet-js'
+
+const express = require('express')
 const bodyParser = require('body-parser')
 const logger = require('morgan')
 const fcm = require('fcm-node')
 
-import "reflect-metadata"
-import * as path from 'path'
-import { createConnection, Connection } from 'typeorm'
 import Device from './device'
 import { Queue, Notification } from './queue'
-import { verifies, doubleSha } from '../authentication/helpers'
 
 const SERVER_API_KEY='56a75cc15cc842384321b5fe614d54d4238049c49dec61feaeed79968156a821'
 

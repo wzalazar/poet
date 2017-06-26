@@ -1,15 +1,12 @@
 import 'reflect-metadata'
+import * as Router from 'koa-router'
 
-import * as Koa from 'koa'
-import Router = require('koa-router')
-import Context = Koa.Context
-
-import BlockchainService from '../../domainService'
-import Route from '../route'
+import { BlockchainService } from '../../domainService'
+import { Route } from '../route'
 import Normalized from '../../orm/bitcoin/normalized'
 
-export default class BitcoinMalleabilityRoute extends Route<Normalized> {
-  service: BlockchainService
+export class BitcoinMalleabilityRoute extends Route<Normalized> {
+  private readonly service: BlockchainService
 
   constructor(service: BlockchainService) {
     super(service.normalizedRepository, 'normalized')

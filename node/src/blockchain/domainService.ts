@@ -1,27 +1,27 @@
-import "reflect-metadata";
-import {Repository} from "typeorm";
-import Fields from "./fields";
-import {Claim as PureClaim} from "../claim";
-import Profile from "./orm/domain/profile";
-import License from "./orm/domain/license";
-import Offering from "./orm/domain/offering";
-import Title from "./orm/domain/title";
-import Work from "./orm/domain/work";
-import Attribute from "./orm/attribute";
-import {ClaimService} from "./claimService";
-import CertificationService from "./certificatonService";
-import {default as listenRules} from "./rules/listen";
-import { BitcoinBlockMetadata, BlockMetadata } from "../events";
-import { EventService } from './eventService';
-import Event from './orm/events/events';
-import { EventType } from './orm/events/events';
-import NotificationRead from './orm/events/notification';
-import Normalized from './orm/bitcoin/normalized';
-import BlockProcessed from './orm/bitcoin/blockProcessed';
+import 'reflect-metadata'
+import { Repository } from 'typeorm'
+import { Fields, Claim as PureClaim } from 'poet-js'
+
+import Profile from "./orm/domain/profile"
+import License from "./orm/domain/license"
+import Offering from "./orm/domain/offering"
+import Title from "./orm/domain/title"
+import Work from "./orm/domain/work"
+import Attribute from "./orm/attribute"
+import Event from './orm/events/events'
+import { EventType } from './orm/events/events'
+import NotificationRead from './orm/events/notification'
+import Normalized from './orm/bitcoin/normalized'
+import BlockProcessed from './orm/bitcoin/blockProcessed'
+import { BitcoinBlockMetadata, BlockMetadata } from "../events"
+import { ClaimService } from "./claimService"
+import { CertificationService } from "./certificatonService"
+import { ListenRules } from "./rules/listen"
+import { EventService } from './eventService'
 
 const minimumHeight = 1118188
 
-export default class DomainService extends ClaimService {
+export class BlockchainService extends ClaimService {
 
   public certificationService: CertificationService;
   private eventService: EventService;
@@ -35,7 +35,7 @@ export default class DomainService extends ClaimService {
   async createOrUpdateClaimInfo(claim: PureClaim, txInfo: BlockMetadata) {
     const storedClaim = await super.createOrUpdateClaimInfo(claim, txInfo)
     try {
-      await Promise.all(listenRules[claim.type].map(
+      await Promise.all(ListenRules[claim.type].map(
         rule => rule.hook(this, claim, txInfo)
       ))
     } catch (error) {

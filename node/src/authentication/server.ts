@@ -1,7 +1,6 @@
 import * as Koa from 'koa'
-import { sha256 } from '../common'
-import { Signature } from './interfaces'
-import { doubleSha, verifies } from './helpers'
+import { sha256, doubleSha, verifies, Signature } from 'poet-js'
+
 import { Queue } from '../notifications/queue';
 
 const bitcore = require('bitcore-lib')

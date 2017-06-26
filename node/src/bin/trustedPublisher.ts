@@ -1,15 +1,21 @@
-import * as Koa from "koa";
-import {Claim, Block, WORK, TITLE, OFFERING, LICENSE, CERTIFICATE} from "../claim";
-import {default as getCreator, ClaimBuilder} from "../serialization/builder";
-import {getHash} from "../helpers/torrentHash";
-import {Queue} from "../queue";
-import Fields from "../blockchain/fields";
-
+const { promisify } = require('util')
+import * as Koa from 'koa'
+import { Fields, ClaimTypes, Claim, Block, ClaimBuilder, VERSION, POET } from 'poet-js'
 const bitcore = require('bitcore-lib')
+const explorers = require('bitcore-explorers')
 const Body = require('koa-body')
 const Route = require('koa-route')
 
+import { getHash } from '../helpers/torrentHash'
+import { Queue } from '../queue'
+
 const privKey = 'cf5bd2d3d179493adfc41da206adb2ffd212ea34870722bc92655f8c8fd2ef33'
+const bitcoinPriv = new bitcore.PrivateKey('343689da46542f2af204a3ced0ce942af1c25476932aa3a48af5e683df93126b')
+const poetAddress = 'mg6CMr7TkeERALqxwPdqq6ksM2czQzKh5C'
+
+const insightInstance = new explorers.Insight(bitcore.Networks.testnet)
+const broadcastTx = promisify(insightInstance.broadcast.bind(insightInstance))
+const getUtxo = promisify(insightInstance.getUnspentUtxos.bind(insightInstance))
 
 export interface TrustedPublisherOptions {
   port: number
@@ -18,22 +24,21 @@ export interface TrustedPublisherOptions {
 
 async function createServer(options?: TrustedPublisherOptions) {
   const koa = new Koa()
-  const creator = await getCreator()
   const queue = new Queue()
 
   koa.use(Body({ textLimit: 1000000 }))
 
   const createBlock = async (claims: ReadonlyArray<Claim>, ctx: any) => {
 
-    const certificates: ReadonlyArray<Claim> = claims.map(claim => creator.createSignedClaim({
-      type: CERTIFICATE,
+    const certificates: ReadonlyArray<Claim> = claims.map(claim => ClaimBuilder.createSignedClaim({
+      type: ClaimTypes.CERTIFICATE,
       attributes: {
         [Fields.REFERENCE]: claim.id,
         [Fields.CERTIFICATION_TIME]: '' + Date.now()
       }
     }, privKey))
 
-    const block: Block = creator.createBlock([...claims, ...certificates])
+    const block: Block = ClaimBuilder.createBlock([...claims, ...certificates])
     try {
       await queue.announceBlockToSend(block)
     } catch (error) {
@@ -41,10 +46,17 @@ async function createServer(options?: TrustedPublisherOptions) {
     }
 
     try {
-      const id = await getHash(creator.serializeBlockForSave(block), block.id)
-      const tx = await creator.createTransaction(id)
+      const id = await getHash(ClaimBuilder.serializeBlockForSave(block), block.id)
+
+      // We're retrieving UTXO using bitcore's insight client rather than our own., but both work fine.
+      // const utxo = await InsightClient.Address.Utxos.get(poetAddress)
+      const utxoBitcore = await getUtxo(poetAddress)
+      console.log('\n\nutxoBitcore', JSON.stringify(utxoBitcore, null, 2))
+
+      const tx = await ClaimBuilder.createTransaction(id, utxoBitcore, poetAddress, bitcoinPriv)
+
       const ntxid = tx.nid
-      console.log('Bitcoin transaction hash is', tx.hash)
+      console.log('\nBitcoin transaction hash is', tx.hash)
       console.log('Normalized transaction hash is', tx.nid)
       console.log('Torrent hash is', id)
 
@@ -52,19 +64,26 @@ async function createServer(options?: TrustedPublisherOptions) {
         return
       }
 
-      await ClaimBuilder.broadcastTx(tx)
+      console.log('\nBroadcasting Tx...', JSON.stringify(tx, null, 2))
+
+      // We're using bitcore's insight client to broadcast transactions rather than our own, since bitcore handles serialization well
+      const txPostResponse = await broadcastTx(tx)
+
+      console.log('\nBroadcasted Tx:', txPostResponse)
+
       ctx.body = JSON.stringify({
         createdClaims: block.claims
       })
     } catch (error) {
+      console.log('\nError Creating Block:', error)
       ctx.body = JSON.stringify({ error })
     }
   }
 
   koa.use(Route.post('/titles', async (ctx: any) => {
     const body = JSON.parse(ctx.request.body)
-    const claims = [creator.createSignedClaim({
-      type: TITLE,
+    const claims = [ClaimBuilder.createSignedClaim({
+      type: ClaimTypes.TITLE,
       attributes: {
         [Fields.REFERENCE]: body.reference,
         [Fields.REFERENCE_OFFERING]: body.referenceOffering,
@@ -83,8 +102,8 @@ async function createServer(options?: TrustedPublisherOptions) {
 
   koa.use(Route.post('/licenses', async (ctx: any) => {
     const body = JSON.parse(ctx.request.body)
-    const claims = [creator.createSignedClaim({
-      type: LICENSE,
+    const claims = [ClaimBuilder.createSignedClaim({
+      type: ClaimTypes.LICENSE,
       attributes: {
         [Fields.REFERENCE]: body.reference,
         [Fields.REFERENCE_OFFERING]: body.referenceOffering,
@@ -105,31 +124,34 @@ async function createServer(options?: TrustedPublisherOptions) {
     const sigs = JSON.parse(ctx.request.body).signatures
 
     const claims: ReadonlyArray<Claim> = sigs.map((sig: any) => {
-      const claim = creator.serializedToClaim(
+      const claim = ClaimBuilder.serializedToClaim(
         new Buffer(new Buffer(sig.message, 'hex').toString(), 'hex')
       )
       claim.signature = sig.signature
-      claim.id = new Buffer(creator.getId(claim)).toString('hex')
+      claim.id = new Buffer(ClaimBuilder.getId(claim)).toString('hex')
       return claim
     })
 
-    const workClaims: ReadonlyArray<Claim> = claims.filter(_ => _.type === WORK)
+    const workClaims: ReadonlyArray<Claim> = claims.filter(_ => _.type === ClaimTypes.WORK)
 
     console.log('POST /claims', claims)
 
     // Hack to use the Work's signature for the Offering
-    for (const claim of claims.filter(_ => _.type === OFFERING)) {
+    for (const claim of claims.filter(_ => _.type === ClaimTypes.OFFERING)) {
       const workClaim = workClaims && workClaims.length && workClaims[0]
 
       if (!workClaim)
         throw new Error(`Unsupported: an OFFERING claim was POSTed without any WORK claim`)
 
-      claim.attributes[Fields.REFERENCE] = workClaim.id
+      claim.attributes = {
+        ...claim.attributes,
+        [Fields.REFERENCE]: workClaim.id
+      }
     }
 
     const titleClaims: ReadonlyArray<Claim> = workClaims.map(claim =>
-      creator.createSignedClaim({
-        type: TITLE,
+      ClaimBuilder.createSignedClaim({
+        type: ClaimTypes.TITLE,
         attributes: {
           reference: claim.id,
           owner: claim.publicKey,
@@ -156,20 +178,20 @@ async function createServer(options?: TrustedPublisherOptions) {
     const sigs = JSON.parse(ctx.request.body).claims
 
     const claims: ReadonlyArray<Claim> = sigs.map((sig: any) => {
-      const claim = creator.serializedToClaim(
+      const claim = ClaimBuilder.serializedToClaim(
         new Buffer(sig.claim, 'hex')
       )
       claim.signature = sig.signature
-      claim.id = new Buffer(creator.getId(claim)).toString('hex')
+      claim.id = new Buffer(ClaimBuilder.getId(claim)).toString('hex')
       return claim
     })
 
-    const workClaims: ReadonlyArray<Claim> = claims.filter(_ => _.type === WORK)
+    const workClaims: ReadonlyArray<Claim> = claims.filter(_ => _.type === ClaimTypes.WORK)
 
     console.log('POST /claims', claims)
     const titleClaims: ReadonlyArray<Claim> = workClaims.map(claim =>
-      creator.createSignedClaim({
-        type: TITLE,
+      ClaimBuilder.createSignedClaim({
+        type: ClaimTypes.TITLE,
         attributes: {
           reference: claim.id,
           owner: claim.publicKey,

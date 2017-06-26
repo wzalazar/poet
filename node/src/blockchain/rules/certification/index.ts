@@ -1,25 +1,20 @@
-import {ClaimType, WORK, OFFERING, TITLE, PROFILE, LICENSE} from "../../../claim";
-import work from "./work";
-import profile from "./profile";
-import title from "./title";
-import offering from "./offering";
-import license from "./license";
-import {Hook, HookDescription} from "../hook";
+import { ClaimTypes } from 'poet-js'
 
-const rules: { [key in ClaimType]: HookDescription[] } = {
-  'Work'        : [] as HookDescription[],
-  'Title'       : [] as HookDescription[],
-  'License'     : [] as HookDescription[],
-  'Offering'    : [] as HookDescription[],
-  'Profile'     : [] as HookDescription[],
-  'Certificate' : [] as HookDescription[],
-  'Revocation'  : [] as HookDescription[],
+import work from "./work"
+import profile from "./profile"
+import title from "./title"
+import offering from "./offering"
+import license from "./license"
+import { HookDescription } from "../hook"
+
+export const CertificationRules: {
+  readonly [key in ClaimTypes.ClaimType]: ReadonlyArray<HookDescription>
+} = {
+  'Work'        : [work],
+  'Title'       : [title],
+  'License'     : [license],
+  'Offering'    : [offering],
+  'Profile'     : [profile],
+  'Certificate' : [],
+  'Revocation'  : [],
 }
-
-rules[WORK].push(work)
-rules[PROFILE].push(profile)
-rules[TITLE].push(title)
-rules[OFFERING].push(offering)
-rules[LICENSE].push(license)
-
-export default rules

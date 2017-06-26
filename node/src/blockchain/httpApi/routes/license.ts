@@ -1,12 +1,11 @@
 import 'reflect-metadata'
 import * as Koa from 'koa'
-
-import BlockchainService from '../../domainService'
-import Route, { QueryOptions } from '../route'
-import License from '../../orm/domain/license'
 import Router = require('koa-router')
-import Context = Koa.Context
 import { QueryBuilder } from 'typeorm'
+
+import { BlockchainService } from '../../domainService'
+import { Route, QueryOptions } from '../route'
+import License from '../../orm/domain/license'
 
 interface LicenseQueryOptions extends QueryOptions {
   emitter?: string
@@ -17,8 +16,8 @@ interface LicenseQueryOptions extends QueryOptions {
 
 const PROFILE_ID = 'profileId'
 
-export default class LicenseRoute extends Route<License> {
-  service: BlockchainService
+export class LicenseRoute extends Route<License> {
+  private readonly service: BlockchainService
 
   constructor(service: BlockchainService) {
     super(service.licenseRepository, 'licenses')
@@ -42,7 +41,7 @@ export default class LicenseRoute extends Route<License> {
     ))
   }
 
-  getParamOpts(ctx: Context): LicenseQueryOptions {
+  getParamOpts(ctx: Koa.Context): LicenseQueryOptions {
     const options = super.getParamOpts(ctx) as LicenseQueryOptions;
     options.emitter = ctx.request.query['emitter']
     options.holder = ctx.request.query['holder']
@@ -71,7 +70,6 @@ export default class LicenseRoute extends Route<License> {
     }
     return queryBuilder
   }
-
 
   addRoutes(router: Router): any {
     super.addRoutes(router);

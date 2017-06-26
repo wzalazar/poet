@@ -1,13 +1,12 @@
-import 'reflect-metadata';
-import * as Koa from 'koa';
-import BlockchainService from '../../domainService';
-import Route, { QueryOptions } from '../route';
-import Profile from '../../orm/domain/profile';
-import Router = require('koa-router')
-import Context = Koa.Context
+import 'reflect-metadata'
+import * as Router from 'koa-router'
 
-export default class ProfileRoute extends Route<Profile> {
-  service: BlockchainService
+import { BlockchainService } from '../../domainService'
+import { Route, QueryOptions } from '../route'
+import Profile from '../../orm/domain/profile'
+
+export class ProfileRoute extends Route<Profile> {
+  private readonly service: BlockchainService
 
   constructor(service: BlockchainService) {
     super(service.profileRepository, 'profiles')

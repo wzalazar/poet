@@ -1,23 +1,19 @@
-import BlockchainService from '../../domainService'
-import { BlockMetadata } from '../../../events'
-import { Claim, TITLE } from '../../../claim'
-import Fields from '../../fields'
-import { EventType } from '../../orm/events/events';
-import { validateBitcoinPayment } from './license';
+import { Claim, Fields, ClaimTypes } from 'poet-js'
 
-const Reference = Fields.REFERENCE
-const Owner = Fields.OWNER_KEY
-const ReferenceOffering = Fields.REFERENCE_OFFERING
+import { BlockchainService } from '../../domainService'
+import { BlockMetadata } from '../../../events'
+import { EventType } from '../../orm/events/events'
+import { validateBitcoinPayment } from './license'
 
 export default {
-  type: TITLE,
+  type: ClaimTypes.TITLE,
   hook: async (service: BlockchainService, claim: Claim, txInfo: BlockMetadata) => {
-    const referenceId = claim.attributes[Reference]
+    const referenceId = claim.attributes[Fields.REFERENCE]
     if (!referenceId) {
       console.log('Odd title: no reference', claim)
       return
     }
-    const ownerId = claim.attributes[Owner]
+    const ownerId = claim.attributes[Fields.OWNER_KEY]
     console.log('owner is', ownerId, claim)
     if (!ownerId) {
       console.log('Odd title: no owner', claim)
@@ -25,7 +21,7 @@ export default {
     }
     const work = await service.getWork(referenceId)
 
-    const offeringId = claim.attributes[ReferenceOffering]
+    const offeringId = claim.attributes[Fields.REFERENCE_OFFERING]
     if (offeringId) {
       try {
         const validation = await validateBitcoinPayment(service, claim, txInfo, work)

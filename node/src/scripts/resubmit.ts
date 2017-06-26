@@ -1,5 +1,4 @@
 import { Queue } from '../queue'
-import { BitcoinBlockMetadata } from '../events'
 import { default as Insight } from '../insight'
 
 export async function publish(id: string) {

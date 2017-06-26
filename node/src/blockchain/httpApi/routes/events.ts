@@ -1,11 +1,10 @@
 import 'reflect-metadata';
 import * as Koa from 'koa';
-import BlockchainService from '../../domainService';
-import Route, { QueryOptions } from '../route';
 import { QueryBuilder } from 'typeorm';
+
+import { BlockchainService } from '../../domainService';
+import { Route, QueryOptions } from '../route';
 import Event from '../../orm/events/events';
-import Router = require('koa-router')
-import Context = Koa.Context
 
 interface EventQueryOpts extends QueryOptions {
   profile?: string
@@ -15,8 +14,8 @@ interface EventQueryOpts extends QueryOptions {
 const PROFILE = 'profile'
 const WORK = 'work'
 
-export default class EventRoute extends Route<Event> {
-  service: BlockchainService
+export class EventRoute extends Route<Event> {
+  private readonly service: BlockchainService
 
   constructor(service: BlockchainService) {
     super(service.eventRepository, 'events')
@@ -35,7 +34,7 @@ export default class EventRoute extends Route<Event> {
     return queryBuilder
   }
 
-  getParamOpts(ctx: Context): EventQueryOpts {
+  getParamOpts(ctx: Koa.Context): EventQueryOpts {
     const result = super.getParamOpts(ctx)
     return Object.assign(result, {
       profile: ctx.request.query[PROFILE],
