@@ -38,7 +38,7 @@
     "@types/socket.io-client": "^1.4.29",
     "@types/uuid": "^2.0.29",
     "amqplib": "^0.5.1",
-    "bitcore-explorers": "eordano/bitcore-explorers",
+    "bitcore-explorers": "eordano/bitcore-explorers#2148d2a",
     "bitcore-lib": "eordano/bitcore-lib#f9c9876",
     "bluebird": "^3.4.6",
     "body-parser": "^1.17.1",

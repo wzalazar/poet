@@ -1,16 +1,21 @@
-import * as Koa from "koa"
-import { Fields, ClaimTypes, Claim, Block, ClaimBuilder } from 'poet-js'
+const { promisify } = require('util')
+import * as Koa from 'koa'
+import { Fields, ClaimTypes, Claim, Block, ClaimBuilder, VERSION, POET } from 'poet-js'
 const bitcore = require('bitcore-lib')
+const explorers = require('bitcore-explorers')
 const Body = require('koa-body')
 const Route = require('koa-route')
 
-import { getHash } from "../helpers/torrentHash"
-import { Queue } from "../queue"
-import { InsightClient } from '../insight'
+import { getHash } from '../helpers/torrentHash'
+import { Queue } from '../queue'
 
 const privKey = 'cf5bd2d3d179493adfc41da206adb2ffd212ea34870722bc92655f8c8fd2ef33'
 const bitcoinPriv = new bitcore.PrivateKey('343689da46542f2af204a3ced0ce942af1c25476932aa3a48af5e683df93126b')
 const poetAddress = 'mg6CMr7TkeERALqxwPdqq6ksM2czQzKh5C'
+
+const insightInstance = new explorers.Insight(bitcore.Networks.testnet)
+const broadcastTx = promisify(insightInstance.broadcast.bind(insightInstance))
+const getUtxo = promisify(insightInstance.getUnspentUtxos.bind(insightInstance))
 
 export interface TrustedPublisherOptions {
   port: number
@@ -42,11 +47,16 @@ async function createServer(options?: TrustedPublisherOptions) {
 
     try {
       const id = await getHash(ClaimBuilder.serializeBlockForSave(block), block.id)
-      const utxo = await InsightClient.Address.Utxos.get(poetAddress)
-      const tx = await ClaimBuilder.createTransaction(id, utxo, poetAddress, bitcoinPriv)
+
+      // We're retrieving UTXO using bitcore's insight client rather than our own., but both work fine.
+      // const utxo = await InsightClient.Address.Utxos.get(poetAddress)
+      const utxoBitcore = await getUtxo(poetAddress)
+      console.log('\n\nutxoBitcore', JSON.stringify(utxoBitcore, null, 2))
+
+      const tx = await ClaimBuilder.createTransaction(id, utxoBitcore, poetAddress, bitcoinPriv)
 
       const ntxid = tx.nid
-      console.log('Bitcoin transaction hash is', tx.hash)
+      console.log('\nBitcoin transaction hash is', tx.hash)
       console.log('Normalized transaction hash is', tx.nid)
       console.log('Torrent hash is', id)
 
@@ -54,12 +64,18 @@ async function createServer(options?: TrustedPublisherOptions) {
         return
       }
 
-      await InsightClient.Transactions.send.post(tx)
+      console.log('\nBroadcasting Tx...', JSON.stringify(tx, null, 2))
+
+      // We're using bitcore's insight client to broadcast transactions rather than our own, since bitcore handles serialization well
+      const txPostResponse = await broadcastTx(tx)
+
+      console.log('\nBroadcasted Tx:', txPostResponse)
 
       ctx.body = JSON.stringify({
         createdClaims: block.claims
       })
     } catch (error) {
+      console.log('\nError Creating Block:', error)
       ctx.body = JSON.stringify({ error })
     }
   }
