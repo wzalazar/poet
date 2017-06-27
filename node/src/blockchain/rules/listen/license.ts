@@ -9,14 +9,14 @@ export const LicenseRule = {
     if (claim.attributes[Fields.REFERENCE]) {
       await service.linkClaims(claim.attributes[Fields.REFERENCE], claim.id)
     }
-    if (claim.attributes[Fields.REFERENCE]) {
-      await service.linkClaims(claim.attributes[Fields.REFERENCE], claim.id)
+    if (claim.attributes[Fields.REFERENCE_OWNER]) {
+      await service.linkClaims(claim.attributes[Fields.REFERENCE_OWNER], claim.id)
     }
-    if (claim.attributes[Fields.REFERENCE]) {
-      await service.linkClaims(claim.attributes[Fields.REFERENCE], claim.id)
+    if (claim.attributes[Fields.HOLDER]) {
+      await service.linkClaims(claim.attributes[Fields.HOLDER], claim.id)
     }
-    if (claim.attributes[Fields.REFERENCE]) {
-      await service.linkClaims(claim.attributes[Fields.REFERENCE], claim.id)
+    if (claim.attributes[Fields.REFERENCE_OFFERING]) {
+      await service.linkClaims(claim.attributes[Fields.REFERENCE_OFFERING], claim.id)
     }
   }
 }
