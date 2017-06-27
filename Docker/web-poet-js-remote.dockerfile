@@ -10,6 +10,4 @@ COPY ./web/devServer.js /web
 
 RUN npm i
 
-WORKDIR /web
-
 CMD [ "npm", "start" ]
