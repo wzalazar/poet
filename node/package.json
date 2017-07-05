@@ -47,7 +47,7 @@
     "chai-immutable": "^1.6.0",
     "express": "^4.15.2",
     "fcm-node": "^1.0.16",
-    "insight-client-js": "poetapp/insight-client-js",
+    "insight-client-js": "0.1.0",
     "ioredis": "^2.4.2",
     "isomorphic-fetch": "^2.2.1",
     "koa": "^2.0.0-alpha.7",
@@ -73,7 +73,7 @@
     "socket.io-client": "^1.7.2",
     "ts-node": "^2.0.0",
     "typeorm": "0.0.6",
-    "typescript": "^2.3.2",
+    "typescript": "2.3.4",
     "webtorrent-hybrid": "^1.0.5"
   },
   "devDependencies": {

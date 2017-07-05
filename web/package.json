@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/classnames": "0.0.32",
-    "@types/react": "^0.14.55",
+    "@types/react": "0.14.55",
     "@types/react-datepicker": "^0.40.1",
     "@types/react-dom": "^0.14.20",
     "@types/react-redux": "4.4.35",
@@ -44,7 +44,7 @@
     "socket.io-client": "^1.7.2"
   },
   "devDependencies": {
-    "awesome-typescript-loader": "^3.0.0-beta.17",
+    "awesome-typescript-loader": "3.0.0-beta.17",
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
     "css-loader": "^0.26.1",
@@ -61,7 +61,7 @@
     "sass-loader": "^4.1.1",
     "source-map-loader": "^0.1.5",
     "style-loader": "^0.13.1",
-    "typescript": "^2.3.2",
+    "typescript": "2.3.4",
     "webpack": "^1.14.0",
     "webpack-dev-middleware": "^1.9.0",
     "webpack-hot-middleware": "^2.14.0"
