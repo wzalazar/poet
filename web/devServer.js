@@ -65,7 +65,7 @@ function returnEmptyPoet() {
 <body> <div style=" width: 165px; height: 50px; background-color: white; font-family: Roboto; font-size: 12px; border: 1px solid #CDCDCD; border-radius: 4px; box-shadow: 0 2px 0 0 #F0F0F0;">
 <a href="https://alpha.po.et/" target="_blank" style=" color: #35393E; text-decoration: none; display: flex; flex-direction: row;  height: 50px">
 <img src="https://alpha.po.et/images/quill64.png" style=" width: 31px; height: 31px; margin-top: 8px; margin-left: 8px; margin-right: 8px; background-color: #393534; color: #35393E; font-family: Roboto;">
-<div><p style="padding-top: 15px; line-height: 15px; margin: 0; font-size: 10pt; font-weight: bold; text-align: left;">Licensed via po.et</p>
+<div><p style="padding-top: 15px; line-height: 15px; margin: 0; font-size: 10pt; font-weight: bold; text-align: left;">Pending on po.et</p>
 </div></a></div></body></html>`
   
 }
@@ -77,7 +77,7 @@ function returnPoetLink(article) {
 <body> <div style=" width: 165px; height: 50px; background-color: white; font-family: Roboto; font-size: 12px; border: 1px solid #CDCDCD; border-radius: 4px; box-shadow: 0 2px 0 0 #F0F0F0;">
 <a href="https://alpha.po.et/works/${article.id}" target="_blank" style=" color: #35393E; text-decoration: none; display: flex; flex-direction: row;  height: 50px">
  <img src="https://alpha.po.et/images/quill64.png" style=" width: 31px; height: 31px; margin-top: 8px; margin-left: 8px; margin-right: 8px; background-color: #393534; color: #35393E; font-family: Roboto;">
-  <div><p style="padding-top: 10px; line-height: 15px; margin: 0; font-size: 10pt; font-weight: bold; text-align: left;">Licensed via po.et</p>
+  <div><p style="padding-top: 10px; line-height: 15px; margin: 0; font-size: 10pt; font-weight: bold; text-align: left;">Verified on po.et</p>
   <p style="text-align: left; line-height: 15px; margin: 0; font-size: 10px; padding-top: 1px; font-size: 8px; font-family: Roboto; font-weight: bold; line-height: 13px; color: #707070;">${moment(parseInt(article.attributes.datePublished, 10)).format('MMMM Do YYYY, HH:mm')}</p>
   </div></a></div></body></html>`
   
