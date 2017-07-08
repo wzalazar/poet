@@ -1,48 +1,16 @@
-# poet
+# Po.et
 
-[Current Target: Alpha Release (March 10th)](https://github.com/poetapp/poet/milestone/2)
+This repository holds three different projects right now. 
 
-## About
+### Node 
+The backend. Will be split into its own repository, poet-node
 
-poet is a subjective trust engine used for copyright management.
+### Web 
 
-## Running a node
+This will be split into another repository, [poet-web](https://github.com/poetapp/web).
 
-1. Install `docker` (instructions vary according to your operating system).
-2. Install the latest version of `docker-compose` using `pip install docker-compose`.
-3. Build the system (you may need root access) with `make development`.
-5. Access `localhost:10000` for development or `https://localhost' for staging
+### Utils
 
-## Hacking
+Deprecated. Nothing's using this code anymore, it's to be deleted. Will be temporarily moved to another directory, kept as backup. 
 
-Everything is coded in `typescript`, but some types are missing.
-
-### Node
-
-The system sets up a couple of microservices that make the system behave correctly.
-
-1. `claims-to-db`: Processes all claims and stores them in the blockchain.
-  * TODO: Split "trusted" and "untrusted" claims
-2. `explorer-api`: Runs the REST API to query the trusted view of the Poet blockchain
-3. `auth-server`: Runs an authentication server
-1. `bitcoin-scanner`: Hooks to the bitcoin blockchain and notifies of new transactions and blocks.
-  * TODO: We need to stop using Insight and run a Bitcoin node.
-2. `torrent-system`: Receive orders to download new blocks and notifies when torrents are finished downloading.
-3. `mock-signer`: Development only, simulates a QR code scan by the app whenever a click in a QR is made.
-3. `trusted-publisher`: System that queues and generates new Poet blocks, and bitcoin transactions.
-  * TODO: Actually queue
-
-### Web interface
-
-TODO
-
-* Redux
-* Sagas
-* ResourceProvider
-* Login and singing model
-
-## Notaries
-
-TODO
-
-## License
+Partly superseded by [feed-consumer](https://github.com/poetapp/feed-consumer) and [feeds](https://github.com/poetapp/feeds).
