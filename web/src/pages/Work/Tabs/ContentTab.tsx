@@ -4,6 +4,8 @@ import { Work } from 'poet-js';
 import { WorkById } from '../../../components/atoms/Work';
 
 import './ContentTab.scss';
+import * as moment from 'moment';
+import { Configuration } from '../../../configuration'
 
 export class ContentTab extends WorkById {
 
@@ -17,7 +19,7 @@ export class ContentTab extends WorkById {
               work && Object.entries(work.attributes).filter(([key, value]) => key !== 'content').map(([key, value]) => (
                 <tr key={key}>
                   <td>{key}</td>
-                  <td>{value}</td>
+                  <td>{key === 'datePublished' ? moment(parseInt(value)).format(Configuration.dateTimeFormat) : value}</td>
                 </tr>
               ))
             }
