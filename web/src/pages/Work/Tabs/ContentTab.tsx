@@ -1,13 +1,25 @@
 import * as React from 'react';
+import * as moment from 'moment'
+
 import { Work } from 'poet-js';
-
 import { WorkById } from '../../../components/atoms/Work';
-
-import './ContentTab.scss';
-import * as moment from 'moment';
 import { Configuration } from '../../../configuration'
+import './ContentTab.scss';
 
 export class ContentTab extends WorkById {
+
+  private formatUnixDate(unixDate: string) {
+    return moment(parseInt(unixDate)).format(Configuration.dateTimeFormat)
+  }
+
+  private renderItem(attribute: string[]) {
+    return (
+      <tr key={attribute[0]}>
+        <td>{attribute[0]}</td>
+        <td>{ attribute[0].startsWith('date') ? moment(parseInt(attribute[1])).format(Configuration.dateTimeFormat) : attribute[1]}</td>
+      </tr>
+    )
+  }
 
   renderElement(work?: Work) {
     return (
@@ -16,12 +28,7 @@ export class ContentTab extends WorkById {
           <table>
             <tbody>
             {
-              work && Object.entries(work.attributes).filter(([key, value]) => key !== 'content').map(([key, value]) => (
-                <tr key={key}>
-                  <td>{key}</td>
-                  <td>{key === 'datePublished' || key === 'dateCreated' || key === 'dateSubmitted' ? moment(parseInt(value)).format(Configuration.dateTimeFormat) : value}</td>
-                </tr>
-              ))
+              work && Object.entries(work.attributes).filter(([key, value]) => key !== 'content').map(this.renderItem)
             }
             </tbody>
           </table>
