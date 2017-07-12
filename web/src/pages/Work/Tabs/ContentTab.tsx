@@ -19,7 +19,7 @@ export class ContentTab extends WorkById {
               work && Object.entries(work.attributes).filter(([key, value]) => key !== 'content').map(([key, value]) => (
                 <tr key={key}>
                   <td>{key}</td>
-                  <td>{key === 'datePublished' ? moment(parseInt(value)).format(Configuration.dateTimeFormat) : value}</td>
+                  <td>{key === 'datePublished' || key === 'dateCreated' || key === 'dateSubmitted' ? moment(parseInt(value)).format(Configuration.dateTimeFormat) : value}</td>
                 </tr>
               ))
             }
