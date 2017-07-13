@@ -1,25 +1,13 @@
-import * as React from 'react';
+import * as React from 'react'
 import * as moment from 'moment'
+import { Work } from 'poet-js'
 
-import { Work } from 'poet-js';
-import { WorkById } from '../../../components/atoms/Work';
-import { Configuration } from '../../../configuration'
-import './ContentTab.scss';
+import { WorkById } from 'components/atoms/Work'
+import { Configuration } from 'configuration'
+
+import './ContentTab.scss'
 
 export class ContentTab extends WorkById {
-
-  private formatUnixDate(unixDate: string) {
-    return moment(parseInt(unixDate)).format(Configuration.dateTimeFormat)
-  }
-
-  private renderItem(attribute: string[]) {
-    return (
-      <tr key={attribute[0]}>
-        <td>{attribute[0]}</td>
-        <td>{ attribute[0].startsWith('date') ? moment(parseInt(attribute[1])).format(Configuration.dateTimeFormat) : attribute[1]}</td>
-      </tr>
-    )
-  }
 
   renderElement(work?: Work) {
     return (
@@ -28,7 +16,9 @@ export class ContentTab extends WorkById {
           <table>
             <tbody>
             {
-              work && Object.entries(work.attributes).filter(([key, value]) => key !== 'content').map(this.renderItem)
+              work && Object.entries(work.attributes)
+                .filter(([key, value]) => key !== 'content')
+                .map(this.renderItem)
             }
             </tbody>
           </table>
@@ -39,7 +29,27 @@ export class ContentTab extends WorkById {
   }
 
   renderLoading() {
-    return this.renderElement();
+    return this.renderElement()
+  }
+
+  private renderItem = ([key, value]: [string, string]) => {
+    return (
+      <tr key={key}>
+        <td>{key}</td>
+        <td>{this.renderItemValue(key, value)}</td>
+      </tr>
+    )
+  }
+
+  private renderItemValue = (key: string, value: string) => {
+    if (this.isDateField(key))
+      return moment(parseInt(value)).format(Configuration.dateTimeFormat)
+    else
+      return value
+  }
+
+  private isDateField = (key: string) => {
+    return ['datePublished', 'dateCreated', 'dateSubmitted', 'dateModified'].includes(key)
   }
 
 }
