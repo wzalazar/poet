@@ -18,7 +18,7 @@ export class ContentTab extends WorkById {
             {
               work && Object.entries(work.attributes)
                 .filter(([key, value]) => key !== 'content')
-                .map(this.renderItem)
+                .map(this.renderItem, this)
             }
             </tbody>
           </table>
@@ -32,7 +32,7 @@ export class ContentTab extends WorkById {
     return this.renderElement()
   }
 
-  private renderItem = ([key, value]: [string, string]) => {
+  private renderItem([key, value]: [string, string]) {
     return (
       <tr key={key}>
         <td>{key}</td>
@@ -41,14 +41,14 @@ export class ContentTab extends WorkById {
     )
   }
 
-  private renderItemValue = (key: string, value: string) => {
+  private renderItemValue(key: string, value: string) {
     if (this.isDateField(key))
       return moment(parseInt(value)).format(Configuration.dateTimeFormat)
     else
       return value
   }
 
-  private isDateField = (key: string) => {
+  private isDateField(key: string) {
     return ['datePublished', 'dateCreated', 'dateSubmitted', 'dateModified'].includes(key)
   }
 
