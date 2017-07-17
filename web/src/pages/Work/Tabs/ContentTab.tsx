@@ -45,9 +45,7 @@ export class ContentTab extends WorkById {
     if (this.isDateField(key))
       return moment(parseInt(value)).format(Configuration.dateTimeFormat)
     else if (this.isLinkField(key, value))
-      return (
-        <a href={ value }>{ value }</a>
-      )
+      return <a href={ value }>{ value }</a>
     else
       return value
   }
