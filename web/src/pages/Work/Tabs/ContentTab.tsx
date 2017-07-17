@@ -44,6 +44,8 @@ export class ContentTab extends WorkById {
   private renderItemValue(key: string, value: string) {
     if (this.isDateField(key))
       return moment(parseInt(value)).format(Configuration.dateTimeFormat)
+    else if (this.isLinkField(key, value))
+      return <a href={ value }>{ value }</a>
     else
       return value
   }
@@ -52,4 +54,7 @@ export class ContentTab extends WorkById {
     return ['datePublished', 'dateCreated', 'dateSubmitted', 'dateModified'].includes(key)
   }
 
+  private isLinkField(key: string, value: string) {
+    return ['link'].includes(key) || value.startsWith('www') || value.startsWith('http')
+  }
 }
