@@ -4,6 +4,7 @@ import { Work } from 'poet-js'
 
 import { WorkById } from 'components/atoms/Work'
 import { Configuration } from 'configuration'
+import { ProfileNameWithLink } from 'components/atoms/Profile'
 
 import './ContentTab.scss'
 
@@ -46,12 +47,18 @@ export class ContentTab extends WorkById {
       return moment(parseInt(value)).format(Configuration.dateTimeFormat)
     else if (this.isLinkField(key, value))
       return <a href={ value }>{ value }</a>
+    else if (this.isAuthorField(key))
+      return <ProfileNameWithLink profileId={value}>{value}</ProfileNameWithLink>
     else
       return value
   }
 
   private isDateField(key: string) {
     return ['datePublished', 'dateCreated', 'dateSubmitted', 'dateModified'].includes(key)
+  }
+
+  private isAuthorField(key: string) {
+    return ['author'].includes(key)
   }
 
   private isLinkField(key: string, value: string) {
