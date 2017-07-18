@@ -1,17 +1,17 @@
-import * as React from "react";
+import * as React from "react"
 import { Action } from 'redux'
-import { connect } from "react-redux";
-const QR = require('react-qr');
-const Overlays = require('react-overlays');
+import { connect } from "react-redux"
+const QR = require('react-qr')
+const Overlays = require('react-overlays')
 
+import { Configuration } from '../../configuration'
 import { Images } from '../../images/Images'
-import { Actions } from "../../actions/index";
+import { Actions } from "../../actions/index"
 import { PoetAppState, TransferModalStore, TransferStore } from '../../store/PoetAppState'
 import { ProfileBio, ProfileNameWithLink, ProfilePictureById } from '../atoms/Profile'
 import { WorkAuthorById, WorkContentById, WorkNameWithLinkById } from '../atoms/Work'
 import { ProfileAutocomplete } from '../atoms/ProfileAutocomplete'
 import { ModalAction } from "./Modal"
-
 import "./Transfer.scss";
 
 interface TransferProps extends TransferStore, TransferModalStore {}
@@ -142,9 +142,7 @@ export const Transfer = connect(mapStateToProps, mapDispatch)(
             <div className="qr">
               { !this.props.requestId
                 ? <img src={Images.Quill} className="quill-loading" />
-                : <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
-                    <QR text={this.props.requestId || ''} onClick={()=>console.log('ho')} />
-                  </a>
+                : this.renderQR()
               }
             </div>
             <h2>This will authorize the following transaction:</h2>
@@ -157,6 +155,16 @@ export const Transfer = connect(mapStateToProps, mapDispatch)(
           </nav>
         </section>
       )
+    }
+
+    private renderQR() {
+      return Configuration.useMockSigner
+        ? (
+            <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
+              <QR text={this.props.requestId || ''} onClick={()=>console.log('ho')} />
+            </a>
+          )
+        : <QR text={this.props.requestId || ''} onClick={()=>console.log('ho')} />
     }
 
     private renderSuccess() {

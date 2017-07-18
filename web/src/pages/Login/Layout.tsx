@@ -1,13 +1,14 @@
-import * as React from 'react';
+const QR = require('react-qr')
+
+import * as React from 'react'
 import { Link } from 'react-router'
 import { Action } from 'redux'
-const QR = require('react-qr');
 
-import { Images } from '../../images/Images';
+import { Configuration } from '../../configuration'
+import { Images } from '../../images/Images'
 
-import '../../extensions/String';
-
-import './Layout.scss';
+import '../../extensions/String'
+import './Layout.scss'
 
 export interface LoginLayoutProps {
   readonly requestId: string;
@@ -34,9 +35,7 @@ export class LoginLayout extends React.Component<LoginLayoutProps & LoginActions
           <section>
             <div className="qr">
               { this.props.requestId
-                ? <a href="#" onClick={() => this.props.mockLoginRequest(this.props.requestId)}>
-                  <QR text={ (this.props.requestId && this.props.requestId.padEnd(50)) || ''} />
-                </a>
+                ? this.renderQR()
                 : <img src={Images.Quill} className="loading" />
               }
             </div>
@@ -51,6 +50,16 @@ export class LoginLayout extends React.Component<LoginLayoutProps & LoginActions
 
       </section>
     )
+  }
+
+  private renderQR() {
+    return Configuration.useMockSigner
+      ? (
+          <a href="#" onClick={() => this.props.mockLoginRequest(this.props.requestId)}>
+            <QR text={ (this.props.requestId && this.props.requestId.padEnd(50)) || ''} />
+          </a>
+      )
+      : <QR text={ (this.props.requestId && this.props.requestId.padEnd(50)) || ''} />
   }
 
   componentDidMount() {

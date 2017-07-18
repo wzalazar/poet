@@ -1,8 +1,10 @@
+const Overlays = require('react-overlays')
+const QR = require('react-qr')
+
 import * as React from 'react'
 import { connect } from 'react-redux'
-const Overlays = require('react-overlays');
-const QR = require('react-qr');
 
+import { Configuration } from '../../configuration'
 import { Images } from '../../images/Images';
 import { PoetAppState, SignTransactionStore } from '../../store/PoetAppState'
 import { Actions } from '../../actions/index'
@@ -54,9 +56,7 @@ export const SignTransaction = (connect as any)(mapStateToProps, mapDispatch)(
               <div className="qr">
                 { this.props.submitting || !this.props.requestId
                   ? <img src={Images.Quill} className="loading-quill" />
-                  : <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
-                      <QR text={this.props.requestId || ''} />
-                    </a>
+                  : this.renderQR()
                 }
               </div>
               <h2>This will authorize the following transaction</h2>
@@ -72,6 +72,16 @@ export const SignTransaction = (connect as any)(mapStateToProps, mapDispatch)(
           </section>
         </Overlays.Modal>
       )
+    }
+
+    private renderQR() {
+      return Configuration.useMockSigner
+        ? (
+          <a href="#" onClick={() => this.props.mockSign(this.props.requestId)}>
+            <QR text={this.props.requestId || ''} />
+          </a>
+        )
+        : <QR text={this.props.requestId || ''} />
     }
 
     private onHide = () => {

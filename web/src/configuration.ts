@@ -22,5 +22,6 @@ export const Configuration = {
   pagination: {
     limit: 10,
     visiblePageCount: 6
-  }
+  },
+  useMockSigner: true,
 };
