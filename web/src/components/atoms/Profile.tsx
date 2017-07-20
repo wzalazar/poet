@@ -48,7 +48,9 @@ export class ProfileName extends ProfileById<ProfileNameProps> {
 export class ProfileNameWithLink extends ProfileById<ClassNameProps> {
 
   renderElement(profile: Api.Profiles.Resource) {
-    return <Link to={"/profiles/" + profile.id} className={this.props.className}>{ profile.displayName || 'Anonymous' }</Link>
+    return profile
+      ? <Link to={"/profiles/" + profile.id} className={this.props.className}>{ profile.displayName || 'Anonymous' }</Link>
+      : this.renderError(null);
   }
 
   renderLoading() {
