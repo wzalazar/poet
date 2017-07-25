@@ -1,6 +1,6 @@
 import * as socketIO from 'socket.io-client'
 import * as fetch from 'isomorphic-fetch'
-import { BARD, VERSION } from 'poet-js';
+import { POET, VERSION } from 'poet-js';
 import { InsightClient as Client, ApiMode } from 'insight-client-js'
 const bitcore = require('bitcore-lib')
 
@@ -135,7 +135,7 @@ export default class PoetInsightListener {
       if (script.classify() !== bitcore.Script.types.DATA_OUT)
         return
       const data: Buffer = script.getData()
-      return data.indexOf(BARD) === 0
+      return data.indexOf(POET) === 0
           && data.indexOf(VERSION) === 4
           ? {
             transactionHash : tx.hash,
