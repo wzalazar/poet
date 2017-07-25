@@ -34,22 +34,22 @@ async function start(options?: TrustedPublisherOptions) {
     ...(options || {})
   }
 
-  const server = await createServer(mergedOptions)
+  const server = await createServer()
   await server.listen(mergedOptions.port)
 
   console.log('Server started successfully.')
 }
 
-async function createServer(options?: TrustedPublisherOptions) {
+async function createServer() {
   const koa = new Koa()
+
+  koa.use(handleErrors)
 
   koa.use(Body({ textLimit: 1000000 }))
   koa.use(Route.post('/titles', async (ctx: any) => postTitles(ctx)))
   koa.use(Route.post('/licenses', async (ctx: any) => postLicenses(ctx)))
   koa.use(Route.post('/claims', async (ctx: any) => postClaims(ctx)))
   koa.use(Route.post('/v2/claims', async (ctx: any) => postClaimsV2(ctx)))
-
-  koa.use(handleErrors)
 
   return koa
 }
@@ -59,6 +59,8 @@ async function handleErrors(ctx: any, next: Function) {
     await next()
   } catch (error) {
     console.log(`Error processing ${ctx.method} ${ctx.path}`, error, error.stack)
+    ctx.status = 503;
+    ctx.body = 'An error occurred when processing the transaction, please try again later.';
   }
 }
 
