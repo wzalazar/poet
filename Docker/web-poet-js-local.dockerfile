@@ -7,6 +7,7 @@ RUN mkdir -p /poet-js
 
 # docker-compose looks for .dockerignore files only in the root of the context,
 # so we need to manually COPY each file/folder instead of COPYing the entire poet-js directory
+COPY ./Docker/gitconfig /root/.gitconfig
 COPY ./poet-js/package.json /poet-js
 COPY ./poet-js/tsconfig.json /poet-js
 COPY ./poet-js/src /poet-js/src
