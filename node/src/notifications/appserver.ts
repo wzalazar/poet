@@ -25,6 +25,11 @@ function createServer (serverKey: string, port: number) {
   app.listen(port)
   console.log('The App runs on port ' + port)
 
+  app.get('/health', async function(req: any, res: any) {
+    res.status(200)
+    res.end()
+  })
+
   app.post('/register', async function(req: any, res: any) {
 
     const deviceName        = req.body.deviceName

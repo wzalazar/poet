@@ -156,6 +156,10 @@ export default async function createServer(options: AuthServerOptions) {
 
   koa.use(Body())
 
+  koa.use(Route.get('/health', async (ctx: any) => {
+    ctx.response.status = 200
+  }))
+
   koa.use(Route.post('/request', async (ctx: any) => {
     const id = uuid.v4()
     const request = makeRequest(id, ctx.request.body, false, !!ctx.params.bitcoin)
