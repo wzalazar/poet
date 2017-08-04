@@ -37,7 +37,7 @@ Redux-Saga sagas live here. Most of the application's logic, specifically all of
 
 ## Images
 
-All images used by the application. They are exposed as `static readonly` elements of a class in (images/Images.tsx)[./src/images/Images.tsx], using the File Loader Webpack plugin to load and bundle them.
+All images used by the application. They are exposed as `static readonly` elements of a class in [images/Images.tsx](./src/images/Images.tsx), using the File Loader Webpack plugin to load and bundle them.
 
 ## Extensions
 
