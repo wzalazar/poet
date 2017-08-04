@@ -10,10 +10,6 @@ To run a Po.et node in your local machine:
 
 ## Architecture
 
-Everything is coded in `typescript`, but some types are missing.
-
-### Node
-
 A Po.et Node is made up of several microservices that communicate with each other using RabbitMQ.
 
 #### explorer-api
