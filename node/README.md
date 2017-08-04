@@ -1,14 +1,14 @@
-# Po.et
+# Po.et Node
 
 Poet is a subjective trust engine used for copyright management.
 
-## Running a Node
-
+## Getting Started
+To run a Po.et node in your local machine:
 1. Install `docker` and `docker-compose`
-3. Build the system running `sudo make development` on Ubuntu or `make development` in OS X
-5. Access `localhost:10000` for development or `https://localhost` for staging
+2. Build the system running `sudo make development` on Ubuntu or `make development` in OS X
+3. Open a web browser to `localhost:3000` 
 
-## Hacking
+## Architecture
 
 Everything is coded in `typescript`, but some types are missing.
 

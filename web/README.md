@@ -25,7 +25,7 @@ That means atoms should have no dependencies on other components, mocules can on
 
 Pages are currently living outside `/components` for historic reasons, but they'll be moved into this folder in the future.
 
-The root component is [components/Root.tsx](./src/components/Root.tsx).
+The root component is [components/Root.tsx](./src/components/Root.tsx) and ReactDOM.render is called in [index.tsx](./src/index.tsx).
 
 ## Reducers
 
