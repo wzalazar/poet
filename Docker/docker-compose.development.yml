@@ -10,6 +10,9 @@ services:
     networks:
       - http
       - queue
+      - outside
+    ports:
+      - "5000:5000"
   notifications:
     build:
       context: ..
@@ -21,6 +24,8 @@ services:
       - queue
       - outside
       - db
+    ports:
+      - "5500:5500"
   mock-signer:
     build:
       context: ..
@@ -29,6 +34,9 @@ services:
       - ../node/src:/poet/src
     networks:
       - http
+      - outside
+    ports:
+      - "7000:7000"
   bitcoin-scanner:
     build:
       context: ..
@@ -107,18 +115,6 @@ services:
       - ./postgres:/var/lib/postgresql/data
     networks:
       - db
-  nginx:
-    build:
-      context: ..
-      dockerfile: ./Docker/nginx-development.dockerfile
-    volumes:
-      - ./letsencrypt:/etc/letsencrypt
-    networks:
-      - outside
-      - http
-    ports:
-      - "5000:5000"
-      - "10000:10000"
   web:
     build:
       context: ..
@@ -127,6 +123,9 @@ services:
       - ../web/src:/web/src
     networks:
       - http
+      - outside
+    ports:
+      - "3000:3000"
 
 networks:
   db:
