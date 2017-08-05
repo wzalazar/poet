@@ -8,16 +8,24 @@ const Route = require('koa-route')
 
 import { getHash } from '../helpers/torrentHash'
 import { Queue } from '../queue'
-
-const privKey = 'cf5bd2d3d179493adfc41da206adb2ffd212ea34870722bc92655f8c8fd2ef33'
-const bitcoinPriv = new bitcore.PrivateKey('343689da46542f2af204a3ced0ce942af1c25476932aa3a48af5e683df93126b')
-const poetAddress = 'mg6CMr7TkeERALqxwPdqq6ksM2czQzKh5C'
+import { getConfiguration } from '../trusted-publisher/configuration'
 
 const insightInstance = new explorers.Insight(bitcore.Networks.testnet)
 const broadcastTx = promisify(insightInstance.broadcast.bind(insightInstance))
 const getUtxo = promisify(insightInstance.getUnspentUtxos.bind(insightInstance))
 
 const queue = new Queue()
+
+const command = process.argv[2]
+const commandArgument = process.argv[3]
+
+if ((command !== '--configuration' && command !== '-c') || !commandArgument) {
+  console.error('Usage: [--configuration <path>] [-c <path>]')
+  process.exit()
+}
+
+const configuration = getConfiguration(commandArgument)
+const bitcoinAddressPrivateKey = new bitcore.PrivateKey(configuration.bitcoinAddressPrivateKey)
 
 export interface TrustedPublisherOptions {
   port: number
@@ -80,7 +88,7 @@ async function postTitles(ctx: any) {
       [Fields.REFERENCE_OWNER]: body.referenceOwner,
       [Fields.OWNER]: body.owner
     }
-  }, privKey)]
+  }, configuration.notaryPrivateKey)]
 
   const blockClaims = await createBlock(claims)
   ctx.body = JSON.stringify({
@@ -104,7 +112,7 @@ async function postLicenses(ctx: any) {
       [Fields.REFERENCE_OWNER]: body.referenceOwner,
       [Fields.LICENSE_HOLDER]: body.owner
     }
-  }, privKey)]
+  }, configuration.notaryPrivateKey)]
   const blockClaims = await createBlock(claims)
   ctx.body = JSON.stringify({
     createdClaims: blockClaims
@@ -147,7 +155,7 @@ async function postClaims(ctx: any) {
         reference: claim.id,
         owner: claim.publicKey,
       }
-    }, privKey)
+    }, configuration.notaryPrivateKey)
   )
 
   const editWorkClaims = workClaims.filter(_ => _.attributes.supersedes)
@@ -189,7 +197,7 @@ async function postClaimsV2(ctx: any) {
         reference: claim.id,
         owner: claim.publicKey,
       }
-    }, privKey)
+    }, configuration.notaryPrivateKey)
   )
 
   const blockClaims = await createBlock([
@@ -209,7 +217,7 @@ async function createBlock(claims: ReadonlyArray<Claim>) {
       [Fields.REFERENCE]: claim.id,
       [Fields.CERTIFICATION_TIME]: '' + Date.now()
     }
-  }, privKey))
+  }, configuration.notaryPrivateKey))
 
   const block: Block = ClaimBuilder.createBlock([...claims, ...certificates])
 
@@ -229,10 +237,10 @@ async function timestampClaimBlock(block: Block): Promise<void> {
 
   // We're retrieving UTXO using bitcore's insight client rather than our own., but both work fine.
   // const utxo = await InsightClient.Address.Utxos.get(poetAddress)
-  const utxoBitcore = await getUtxo(poetAddress)
+  const utxoBitcore = await getUtxo(configuration.bitcoinAddress)
   console.log('\n\nutxoBitcore', JSON.stringify(utxoBitcore, null, 2))
 
-  const tx = await ClaimBuilder.createTransaction(id, utxoBitcore, poetAddress, bitcoinPriv)
+  const tx = await ClaimBuilder.createTransaction(id, utxoBitcore, configuration.bitcoinAddress, bitcoinAddressPrivateKey)
 
   console.log('\nBitcoin transaction hash is', tx.hash)
   console.log('Normalized transaction hash is', tx.nid)

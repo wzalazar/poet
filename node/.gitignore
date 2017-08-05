@@ -1,0 +1,11 @@
+config
+torrents
+dist
+node_modules
+npm-debug.log
+.idea
+*.js
+*.js.map
+*.sw[a-z]
+.vscode
+.DS_Store
