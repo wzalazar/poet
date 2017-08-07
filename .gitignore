@@ -9,3 +9,4 @@ torrents
 .vscode
 .DS_Store
 Docker/docker-compose.yaml
+Docker/node/config

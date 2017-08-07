@@ -2,8 +2,8 @@ development: base-images
 	cd Docker && cp docker-compose.development.yml docker-compose.yml
 	cd Docker && docker-compose build
 
-staging: base-images
-	cd Docker && cp docker-compose.staging.yml docker-compose.yml
+production: base-images
+	cd Docker && cp docker-compose.production.yml docker-compose.yml
 	cd Docker && docker-compose build
 
 poet-js:
