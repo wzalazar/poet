@@ -11,9 +11,7 @@ const fcm = require('fcm-node')
 import Device from './device'
 import { Queue, Notification } from './queue'
 
-const SERVER_API_KEY='56a75cc15cc842384321b5fe614d54d4238049c49dec61feaeed79968156a821'
-
-function createServer (serverKey: string, port: number) {
+export function createServer (serverKey: string, port: number) {
   const fcmCli = new fcm(serverKey)
 
   const app = express()
@@ -23,7 +21,7 @@ function createServer (serverKey: string, port: number) {
   app.use(logger('dev'))
 
   app.listen(port)
-  console.log('The App runs on port ' + port)
+  console.log('The App runs on port ', port)
 
   app.get('/health', async function(req: any, res: any) {
     res.status(200)
@@ -41,7 +39,6 @@ function createServer (serverKey: string, port: number) {
     const timestamp         = req.body.timestamp
 
     try {
-
         if (typeof pubKey  == 'undefined' || typeof deviceId == 'undefined' || typeof registrationId  == 'undefined') {
             //TODO error handling
             // console.log(constants.error.msg_invalid_param.message)
@@ -79,7 +76,6 @@ function createServer (serverKey: string, port: number) {
             res.status(200)
             res.end()
             console.log("Device has been saved")
-
         }
     } catch (error) {
         console.log(error)
@@ -159,10 +155,4 @@ function createServer (serverKey: string, port: number) {
   startListening().catch(error => {
     console.log(error, error.stack)
   })
-}
-
-export default createServer
-
-if (!module.parent) {
-  createServer(SERVER_API_KEY, 5500)
 }
