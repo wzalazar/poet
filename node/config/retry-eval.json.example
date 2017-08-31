@@ -1,0 +1,7 @@
+{
+  "db": {
+    "autoSchemaSync": false,
+    "retryDelay": 3000,
+    "maxRetry": 30
+  }
+}
