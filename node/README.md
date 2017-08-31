@@ -5,8 +5,9 @@ Poet is a subjective trust engine used for copyright management.
 ## Getting Started
 To run a Po.et node in your local machine:
 1. Install `docker` and `docker-compose`
-2. Build the system running `sudo make development` on Ubuntu or `make development` in OS X
-3. Open a web browser to `localhost:3000` 
+2. Create configuration files for the different services
+3. Build the system running `sudo make development` on Ubuntu or `make development` in OS X
+4. Open a web browser to `localhost:3000` 
 
 ## Architecture
 
@@ -42,7 +43,7 @@ Runs on `/api/user`. See [poet-feed-consumer](https://github.com/poetapp/feed-co
 
 #### claims-to-db
 
-Processes all claims and stores them in the blockchain.
+Processes all claims and stores them in the database.
 
 > TODO: Split "trusted" and "untrusted" claims
 
@@ -56,7 +57,7 @@ Hooks to the bitcoin blockchain and notifies of new transactions and blocks.
 
 #### torrent-system
 
-Receive orders to download new blocks and notifies when torrents are finished downloading.
+Receive orders to download new claim blocks and notifies when torrents are finished downloading.
 
 #### mock-signer
 

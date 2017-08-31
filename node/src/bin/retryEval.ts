@@ -1,46 +1,20 @@
-import { Block } from 'poet-js'
+import { getConfigurationPath } from '../helpers/CommandLineArgumentsHelper'
+import { loadRetryEvalConfiguration } from '../retry-eval/configuration'
+import { RetryEval } from '../retry-eval/retryEval'
 
-import { BlockchainService } from '../blockchain/domainService'
-import { Queue } from '../queue'
-import { BlockMetadata } from '../events'
-import { getConnection } from '../blockchain/connection'
+const configurationPath = getConfigurationPath()
+const configuration = loadRetryEvalConfiguration(configurationPath)
 
-async function startListening() {
-  const blockchain = new BlockchainService()
-  const queue = new Queue()
+console.log('Retry Eval Configuration: ', JSON.stringify(configuration, null, 2))
 
-  await blockchain.start(() => getConnection('retryTxs'))
-
-  const setupWorker = (name: string, action: any) => {
-    process.nextTick(() => {
-      queue.workThread(name, action).catch(error => {
-        console.log(error, error.stack)
-      })
-    })
+async function start() {
+  try {
+    const retryEval = new RetryEval(configuration)
+    await retryEval.start()
+    console.log('Retry Eval started successfully.')
+  } catch (error) {
+    console.log('Retry Eval failed to start. Error was:', error)
   }
-
-  queue.normalizedTransaction().subscribeOnNext(async (normalizedData) => {
-    console.log('Processing', normalizedData)
-    try {
-      const result = await blockchain.normalizedRepository.persist(blockchain.normalizedRepository.create({
-        ...normalizedData,
-        confirmed: true
-      }))
-    } catch (e) {
-      console.log('Could not process', normalizedData, e)
-    }
-  })
-
-  setupWorker('blockRetry', async (block: Block) => {
-    return await blockchain.blockSeen(block)
-  })
-  setupWorker('confirmRetry', async (block: BlockMetadata) => {
-    return await blockchain.blockConfirmed(block)
-  })
 }
 
-if (!module.parent) {
-  startListening().catch(error => {
-    console.log(error, error.stack)
-  })
-}
+start()

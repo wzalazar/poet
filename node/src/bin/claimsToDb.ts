@@ -1,70 +1,20 @@
-import { Block } from 'poet-js'
+import { ClaimsToDb } from '../claims-to-db/claimsToDb'
+import { loadClaimsToDBConfiguration } from '../claims-to-db/configuration'
+import { getConfigurationPath } from '../helpers/CommandLineArgumentsHelper'
 
-import { BlockchainService } from '../blockchain/domainService'
-import { Queue } from '../queue'
-import { BitcoinBlockMetadata } from '../events'
-import { getConnection } from '../blockchain/connection'
+const configurationPath = getConfigurationPath()
+const configuration = loadClaimsToDBConfiguration(configurationPath)
 
-async function startListening() {
-  const blockchain = new BlockchainService()
-  const queue = new Queue()
+console.log('Claims To DB Configuration: ', JSON.stringify(configuration, null, 2))
 
+async function start() {
   try {
-    await blockchain.start(() => getConnection('claimsToDb'))
-
-    console.log('Retrieving last block processed...')
-    const latest = await blockchain.getLastProcessedBlock()
-    console.log('Latest block was', latest, 'initializing scan')
-    queue.announceBitcoinBlockProcessed(latest)
-
-    queue.blockDownloaded().subscribeOnNext(async (block: Block) => {
-      console.log('Storing block', block.id)
-      try {
-        await blockchain.blockSeen(block)
-      } catch (error) {
-        console.log(error, error.stack)
-        queue.dispatchWork('blockRetry', block)
-      }
-    })
-
-    queue.blocksToSend().subscribeOnNext(async (block: Block) => {
-      console.log('Storing block', block.id)
-      try {
-        await blockchain.blockSeen(block)
-      } catch (error) {
-        console.log(error, error.stack)
-        queue.dispatchWork('blockRetry', block)
-      }
-    })
-
-    queue.bitcoinBlock().subscribeOnNext(async (block: BitcoinBlockMetadata) => {
-      for (let poetTx of block.poet) {
-        try {
-          poetTx.bitcoinHash = block.blockHash
-          poetTx.bitcoinHeight = block.blockHeight
-          poetTx.timestamp = block.timestamp
-          const blockInfo = (await blockchain.getBlockInfoByTorrentHash(poetTx.torrentHash))
-          if (blockInfo && blockInfo.timestamp) {
-            continue
-          }
-          console.log('Confirming block with torrent hash', poetTx.torrentHash)
-          await blockchain.blockConfirmed(poetTx)
-        } catch (error) {
-          console.log(error, error.stack)
-          queue.dispatchWork('confirmRetry', poetTx)
-        }
-      }
-
-      blockchain.storeBlockProcessed(block)
-      queue.announceBitcoinBlockProcessed(block.blockHeight)
-    })
+    const claimsToDb = new ClaimsToDb(configuration)
+    await claimsToDb.start()
+    console.log('Claims To DB started successfully.')
   } catch (error) {
-    console.log(error, error.stack)
+    console.log('Claims To DB failed to start. Error was:', error)
   }
 }
 
-if (!module.parent) {
-  startListening().catch(error => {
-    console.log(error, error.stack)
-  })
-}
+start()
