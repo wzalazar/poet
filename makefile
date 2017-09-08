@@ -32,7 +32,7 @@ down:
 	cd Docker && docker-compose down
 
 daemon: prepare
-	cd Docker && docker-compose up -d
+	cd Docker && docker-compose start rabbitmq && sleep 2 && docker-compose up -d
 
 psql:
 	cd Docker && docker-compose exec db /usr/bin/psql -U poet
