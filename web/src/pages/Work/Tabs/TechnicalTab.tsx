@@ -15,6 +15,9 @@ export class TechnicalTab extends WorkById {
     if (!resource)
       return <div className="technical-tab">Could not load technical information.</div>
 
+    if (!resource.claimInfo)
+      return <div className="technical-tab">Technical information not available. This work may be pending confirmation.</div>
+
     return (
       <div className="technical-tab">
         <table>
