@@ -1,103 +1,158 @@
-declare var bitcore: bitcoreLib;
-
 declare module 'bitcore-lib' {
-  export = bitcore;
+  export = bitcoreLib
+}
+
+declare namespace bitcoreLib {
+  export const Block: Block
+  export const Transaction: Transaction
+  export const util: Util
+  export const Script: Script
+  export const PrivateKey: PrivateKey
+
+  interface Transaction {
+    new (serialized?: any): this
+    (serialized?: any): this
+
+    inputs: Input[]
+    outputs: Output[]
+    readonly id: string
+    readonly hash: string
+    nid: string
+
+    from(utxos: UTXO[]): Transaction
+    to(address: Address, amount: number): Transaction
+    to(address: string, amount: number): Transaction
+    change(address: Address): Transaction
+    change(address: string): Transaction
+    sign(privateKey: PrivateKey): Transaction
+    sign(privateKey: string): Transaction
+    applySignature(sig: Signature): Transaction
+    addData(data: Buffer): this
+  }
+
+  interface Block {
+    new(data: Buffer | object): Block
+    (data: Buffer | object): Block
+
+    hash: string
+    transactions: any[]
+    header: {
+      time: number
+      prevHash: string
+    }
+  }
+
+  interface PrivateKey {
+    new(key: string): this
+    (source: string): this
+
+    publicKey: PublicKey
+  }
+
+  interface PublicKey {
+    (source: string): this
+  }
+
+  interface Output {
+    readonly script: any
+  }
+
+  interface Script {
+    buildPublicKeyHashOut(address: Address): Script
+    types: {
+      DATA_OUT: string
+    }
+  }
+
+  interface Util {
+    readonly buffer: {
+      reverse(a: any): any
+    }
+  }
+
+  interface UnspentOutput {
+    (data: object): this
+    new (data: object): this
+
+    inspect(): string
+    fromObject(o: object): this
+    toObject(): this
+
+    readonly address: Address
+    readonly txId: string
+    readonly outputIndex: number
+    readonly script: Script
+    readonly satoshis: number
+  }
+
+  export namespace Networks {
+
+    interface Network {
+      readonly name: string
+      readonly alias: string
+
+    }
+
+    export const livenet: Network
+    export const mainnet: Network
+    export const testnet: Network
+
+    export function add(data: any): Network
+    export function remove(network: Network): void
+    export function get(args: string | number | Network, keys: string | string[]): Network
+  }
+
 }
 
 type BN = any;
 
-interface bitcoreLib {
-  version: string
-  crypto: CryptoInterface
-  encoding: EncodingInterface
-  util: UtilsInterface
+//interface bitcoreLib {
+//  version: string
+//  crypto: CryptoInterface
+//  encoding: EncodingInterface
+//  util: UtilsInterface
+//
+//  Address: IAddress
+//  Block: Block
+//  MerkleBlock: IMerkleBlock
+//  BlockHeader: IBlockHeader
+//  HDPrivateKey: IHDPrivateKey
+//  HDPublicKey: IHDPublicKey
+//  Opcode: IOpcode
+//  PublicKey: IPublicKey
+//  Script: IScript
+//  URI: IURI
+//  Unit: IUnit
+//}
 
-  Address: IAddress
-  Block: IBlock
-  MerkleBlock: IMerkleBlock
-  BlockHeader: IBlockHeader
-  HDPrivateKey: IHDPrivateKey
-  HDPublicKey: IHDPublicKey
-  Networks: INetworks
-  Opcode: IOpcode
-  PrivateKey: IPrivateKey
-  PublicKey: IPublicKey
-  Script: IScript
-  Transaction: ITransaction
-  URI: IURI
-  Unit: IUnit
-}
-
-interface IAddress {
-  (source: string, network: Network): Address
-  (source: PublicKey, network: Network): Address
-
-  isValid(something: any): boolean
-}
+//interface IAddress {
+//  (source: string, network: Network): Address
+//  (source: PublicKey, network: Network): Address
+//
+//  isValid(something: any): boolean
+//}
 interface Address {
 
 }
-interface IBlock {}
 interface IMerkleBlock {}
 interface IBlockHeader {}
 interface IHDPrivateKey {}
 interface IHDPublicKey {}
-interface INetworks {
-  defaultNetwork: Network
-  testnet: Network
-  livenet: Network
-  mainnet: Network
-}
-interface Network {
-}
 interface IOpcode {}
-interface IPrivateKey {
-  new(key: string): IPrivateKey
-  (source: string): PrivateKey
-}
-interface PrivateKey {
 
-}
-interface IPublicKey {
-  (source: string): PublicKey
-}
-interface PublicKey {}
-
-interface IScript {
-  buildPublicKeyHashOut(address: Address): Script
-}
 interface Script {}
-interface ITransaction {
-  new (): Transaction
-  (): Transaction
-  UTXO: IUTOX
-  Sighash: ISighash
-}
-interface ISighash {
-  sighashPreimage(tx: Transaction, sighash: number, index: number, script: Script): Buffer
-}
-interface Transaction {
-  inputs: Input[]
-  outputs: Output[]
-  readonly id: string
-  readonly hash: string
-  nid: string
-  from(utxos: UTXO[]): Transaction
-  to(address: Address, amount: number): Transaction
-  to(address: string, amount: number): Transaction
-  change(address: Address): Transaction
-  change(address: string): Transaction
-  sign(privateKey: PrivateKey): Transaction
-  sign(privateKey: string): Transaction
-  applySignature(sig: Signature): Transaction
-  addData(data: Buffer): this
-}
+//interface ITransaction {
+//  UTXO: IUTOX
+//  Sighash: ISighash
+//}
+//interface ISighash {
+//  sighashPreimage(tx: Transaction, sighash: number, index: number, script: Script): Buffer
+//}
+
 interface Input {
 
 }
-interface Output {
 
-}
 interface IUTOX {
   (source: any): UTXO
 }
@@ -139,9 +194,3 @@ interface Signature {}
  */
 interface EncodingInterface {
 }
-
-
-/**
- * Utils
- */
-interface UtilsInterface {}

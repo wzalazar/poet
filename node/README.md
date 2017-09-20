@@ -1,13 +1,55 @@
 # Po.et Node
 
-Poet is a subjective trust engine used for copyright management.
+Po.et is a subjective trust engine used for copyright management.
 
 ## Getting Started
 To run a Po.et node in your local machine:
 1. Install `docker` and `docker-compose`
-2. Create configuration files for the different services
-3. Build the system running `sudo make development` on Ubuntu or `make development` in OS X
-4. Open a web browser to `localhost:3000` 
+2. Configure everything
+3. Build the system running `sudo make development` on Ubuntu or just `make development` in macOS
+4. Start the system running `sudo make daemon` on Ubuntu or just `make development` in macOS
+5. Open a web browser to `localhost:3000` 
+
+## Configuration
+The Po.et Node can be configured via configuration files.
+The individual services accept a `-c <path to configuration file` command-line argument, and the docker files pick these up from `node/configuration`.
+
+Example configuration files can be found under `node/config/*.json.example`. Most of these will Just Work™, and the Po.et Node has sensible defaults, so you can just `cd /node/config && cp explorer.json.example explorer.json`, etc., for the most part.
+
+> Note: although Po.et has defaults for all configurations, the configuration files _must_ exist, even if they only have an empty json object inside. This will be fixed in the future.
+
+There's only one service you _need_ to configure manually: Trusted Publisher. This is what Trusted Publisher's configuration looks like:
+
+```json
+{
+  "bitcoinAddress": "",
+  "bitcoinAddressPrivateKey": "",
+  "notaryPrivateKey": "",
+  "poetNetwork": "BARD",
+  "poetVersion": [0, 0, 0, 2]
+}
+```
+
+`bitcoinAddress` is the address of a bitcoin wallet you control and `bitcoinAddressPrivateKey` is its matching private key. Bitcoin transactions broadcasted by Po.et will come from this address and use its funds to pay transaction fees. See [our wiki](https://github.com/poetapp/poet/wiki/How-to-Create-a-Wallet) for info on how to create a wallet.
+
+`notaryPrivateKey` is the private key Trusted Publisher will use to sign some claims. It's unrelated to bitcoin and can be any value. For testing purposes, you can use any random number. In the future it may be removed entirely.
+
+We'll talk about `poetNetwork` and `poetVersion` in the following section.
+
+### Configuring Po.et Network and Version
+
+Since Po.et is completely decentralized, we can't really talk about production and testing _servers_ - we need production and testing _networks_.
+  
+Po.et offers two different networks: `POET` acts as Po.et's mainnet or "production", while `BARD` acts as Po.et's testnet or "testing environment".
+
+`poetVersion` could be used in the future to alter the data structures without breaking compatibility.
+
+These can be configured in Trusted Publisher's and Bitcoin Scanner's configuration files.
+
+If left out, they'll default to `BARD` and `[0, 0, 0, 2]`.
+
+If you're going to try out the Po.et Node, please make sure to use BARD rather than POET.
+  
 
 ## Architecture
 
@@ -15,13 +57,13 @@ A Po.et Node is made up of several microservices that communicate with each othe
 
 #### explorer-api
 
-Runs the REST API to query the Poet blockchain. This API is mainly read-only, and allows you to retrieve works, licences, profiles, etc.
+This API is mainly read-only, and allows you to search and retrieve works, licences, profiles, etc.
 
 All this information is read from the Postrgres database, which is fed by claims-to-db.
 
 [poet-js](https://github.com/poetapp/poet-js) has a client for this API with Typescript definitions.
 
-Runs on `/api/explorer`. For example: `http://localhost:10000/api/explorer/works`.
+Runs on `/api/explorer`. For example: `http://localhost:3000/api/explorer/works`.
 
 > The url `/api/explorer` is currently configured in the frontend's webpack [devServer](https://github.com/poetapp/poet/blob/master/web/devServer.js#L22). It will be moved in the future.
 

@@ -1,4 +1,3 @@
-import Bluebird = require('bluebird')
 import { BitcoinScannerConfiguration } from './configuration'
 import { Queue } from '../queue'
 import { PoetInsightListener } from '../insight'

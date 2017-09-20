@@ -15,10 +15,10 @@ export class TrustedPublisher {
   private readonly configuration: TrustedPublisherConfiguration
   private readonly queue: Queue
   private readonly koa: Koa
-  private readonly bitcoinAddressPrivateKey: IPrivateKey
+  private readonly bitcoinAddressPrivateKey: bitcore.PrivateKey
   private readonly insight: Insight
   private readonly broadcastTx: (tx: any) => Promise<any>
-  private readonly getUtxo: (address: any) => Promise<any>
+  private readonly getUtxo: (address: any) => Promise<ReadonlyArray<bitcore.UnspentOutput>>
 
   constructor(configuration: TrustedPublisherConfiguration) {
     this.configuration = configuration
@@ -213,10 +213,19 @@ export class TrustedPublisher {
   private timestampClaimBlock = async (block: Block): Promise<void> => {
     const id = await getHash(ClaimBuilder.serializeBlockForSave(block), block.id)
 
-    // We're retrieving UTXO using bitcore's insight client rather than our own, but both work fine.
-    // const utxo = await InsightClient.Address.Utxos.get(poetAddress)
-    const utxoBitcore = await this.getUtxo(this.configuration.bitcoinAddress)
-    console.log('\n\nutxoBitcore', JSON.stringify(utxoBitcore, null, 2))
+    // TODO: const rawutxo = await InsightClient.Address.Utxos.get(poetAddress); const utxo = rawutxo.map(bitcore.Transaction.Utxo)
+    const rawutxo = await this.getUtxo(this.configuration.bitcoinAddress)
+
+    if (!rawutxo)
+      throw new Error('Error retrieving UTXO')
+
+    if (!rawutxo || !rawutxo.length)
+      throw new Error(`Wallet seems to be empty. Check funds for ${this.configuration.bitcoinAddress}`)
+
+    // Use only up to 5 unused outputs to avoid large transactions, picking the ones with the most satoshis to ensure enough fee
+    const utxo = rawutxo.slice().sort((a, b) => b.satoshis - a.satoshis).slice(0, 5)
+
+    console.log('\n\nutxo', JSON.stringify(utxo, null, 2))
 
     const data = Buffer.concat([
       Buffer.from(this.configuration.poetNetwork),
@@ -224,7 +233,7 @@ export class TrustedPublisher {
       Buffer.from(id, 'hex')
     ])
     const tx = new bitcore.Transaction()
-      .from(utxoBitcore)
+      .from(utxo)
       .change(this.configuration.bitcoinAddress)
       .addData(data)
       .sign(this.bitcoinAddressPrivateKey)
@@ -233,9 +242,7 @@ export class TrustedPublisher {
     console.log('Normalized transaction hash is', tx.nid)
     console.log('Torrent hash is', id)
 
-    console.log('\nBroadcasting Tx...', JSON.stringify(tx, null, 2))
-
-    // We're using bitcore's insight client to broadcast transactions rather than our own, since bitcore handles serialization well
+    // TODO: const rawtx = tx.serialize(); const txPostResponse = await InsightClient.Transaction.send.post(rawtx)
     const txPostResponse = await this.broadcastTx(tx)
 
     console.log('\nBroadcasted Tx:', txPostResponse)

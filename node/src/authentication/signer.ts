@@ -1,15 +1,12 @@
-import * as Koa from 'koa'
+import * as bitcore from 'bitcore-lib'
 import * as fetch from 'isomorphic-fetch'
+import * as Koa from 'koa'
+import * as Body from 'koa-body'
+import * as Route from 'koa-route'
 import { sha256, signMessage } from 'poet-js'
 
-const bitcore = require('bitcore-lib')
-const uuid = require('uuid')
-const Body = require('koa-body')
-const Route = require('koa-route')
-const IO = require('koa-socket')
-
 export interface MockSignerServerOptions {
-  port: number
+  readonly port: number
 }
 
 const server = 'auth:5000'

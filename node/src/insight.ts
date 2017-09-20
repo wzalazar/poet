@@ -1,7 +1,13 @@
+/**
+ * This file is only used by Bitcoin Scanner and is a mix of business logic and lower level code.
+ * As such, it should be refactored: business logic should move to either poet-js or BitcoinScanner.ts
+ * and helper functions, interactions with insight, etc, should be moved to poet-js or poet-insight.
+ */
+
 import * as socketIO from 'socket.io-client'
 import * as fetch from 'isomorphic-fetch'
 import { InsightClient as Client, ApiMode } from 'insight-client-js'
-const bitcore = require('bitcore-lib')
+import * as bitcore from 'bitcore-lib'
 
 import { BitcoinBlockMetadata, BlockMetadata } from './events'
 
@@ -28,9 +34,6 @@ const getBuffer = (data: string) => {
     throw e
   }
 }
-const turnToBitcoreTx = bitcore.Transaction
-const turnToBitcoreBlock: (something: Buffer) => BitcoinBlock = bitcore.Block
-
 export interface TxInfoListener {
   (txInfo: BlockMetadata): any
 }
@@ -40,16 +43,7 @@ export interface BlockInfoListener {
 }
 
 export interface BitcoinBlockListener {
-  (block: BitcoinBlock): any
-}
-
-export interface BitcoinBlock {
-  hash: string
-  transactions: any[]
-  header: {
-    time: number
-    prevHash: string
-  }
+  (block: bitcore.Block): any
 }
 
 export class PoetInsightListener {
@@ -85,7 +79,7 @@ export class PoetInsightListener {
     this.socket.on('tx', this.manageNewTx.bind(this))
   }
 
-  async manageNewTx(tx: any) {
+  private async manageNewTx(tx: any) {
     try {
       const poetData = await this.doesSocketTxContainPoetInfo(tx);
       if (poetData) {
@@ -109,62 +103,72 @@ export class PoetInsightListener {
     }
   }
 
-  scanBitcoreBlock(block: BitcoinBlock, height: number) {
-    const txs = block.transactions.map((tx: any, index: number): BlockMetadata | null => {
-      const poetData = this.doesBitcoreTxContainPoetInfo(tx)
-      if (!poetData) {
-        return
+  scanBitcoreBlock(block: bitcore.Block, height: number) {
+    function bitcoreTransactionToPoetTransaction(tx: bitcore.Transaction, index: number): BlockMetadata {
+      const poetData = this.getPoetData(tx)
+      return poetData && {
+        ...poetData,
+        blockHeight: height,
+        blockHash: block.hash,
+        transactionOrder: index
       }
-      return Object.assign({}, poetData, {
-        blockHeight      : height,
-        blockHash        : block.hash,
-        transactionOrder : index
-      })
-    }).filter(notNull)
-    const blockInfo: BitcoinBlockMetadata = {
-      blockHeight : height,
-      parentHash  : bitcore.util.buffer.reverse(block.header.prevHash).toString('hex'),
-      blockHash   : block.hash,
-      timestamp   : block.header.time,
-      poet        : txs
     }
+
+    const txs = block.transactions
+      .map(bitcoreTransactionToPoetTransaction)
+      .filter(notNull)
+
+    const blockInfo: BitcoinBlockMetadata = {
+      blockHeight: height,
+      parentHash: bitcore.util.buffer.reverse(block.header.prevHash).toString('hex'),
+      blockHash: block.hash,
+      timestamp: block.header.time,
+      poet: txs
+    }
+
     this.notifyPoetData(blockInfo)
+
     return blockInfo
   }
 
-  doesBitcoreTxContainPoetInfo = (tx: any): BlockMetadata => {
-    const check = (script: any, index: number) => {
-      if (script.classify() !== bitcore.Script.types.DATA_OUT)
-        return
-      const data: Buffer = script.getData()
-      return data.indexOf(this.poetNetwork) === 0
-          && data.indexOf(this.poetVersion) === 4
-          ? {
-            transactionHash : tx.hash,
-            outputIndex     : index,
-            torrentHash     : data.slice(8).toString('hex')
-          }
-          : null
+  private getPoetData = (tx: bitcore.Transaction): BlockMetadata => {
+    function isOutputDataOut(output: bitcore.Output) {
+      return output.script.classify() === bitcore.Script.types.DATA_OUT
     }
-    return tx.outputs.reduce(
-      (prev: boolean, next: any, index: number) => prev || check(next.script, index), false
-    )
+
+    function isOutputCorrectNetworkAndVersion(output: bitcore.Output) {
+      const data: Buffer = output.script.getData()
+      return data.indexOf(this.poetNetwork) === 0
+        && data.indexOf(this.poetVersion) === 4
+    }
+
+    const output = tx.outputs
+      .filter(isOutputDataOut)
+      .find(isOutputCorrectNetworkAndVersion)
+
+    const data: Buffer = output && output.script.getData()
+
+    return data && {
+      transactionHash: tx.hash,
+      outputIndex: tx.outputs.indexOf(output),
+      torrentHash: data.slice(8).toString('hex')
+    }
   }
 
   doesSocketTxContainPoetInfo (tx: any) {
-    return this.fetchTxByHash(tx.txid).then(this.doesBitcoreTxContainPoetInfo)
+    return this.fetchTxByHash(tx.txid).then(this.getPoetData)
   }
 
-  fetchBitcoreBlockByHeight(height: number): Promise<BitcoinBlock> {
+  fetchBitcoreBlockByHeight(height: number): Promise<bitcore.Block> {
     return this.fetchBlockHash(height).then(hash => this.fetchBitcoreBlock(hash))
   }
 
-  fetchBitcoreBlock(hash: string): Promise<BitcoinBlock> {
+  fetchBitcoreBlock(hash: string): Promise<bitcore.Block> {
     return fetch(`${this.insightUrl}/api/rawblock/${hash}`)
       .then(parseJson)
       .then(pluckMember('rawblock'))
       .then(getBuffer)
-      .then(turnToBitcoreBlock) as Promise<BitcoinBlock>
+      .then(bitcore.Block)
   }
 
   fetchBlockHash(height: number): Promise<string> {
@@ -179,13 +183,13 @@ export class PoetInsightListener {
       .then(pluckMember('height'))
   }
 
-  fetchTxByHash(txHash: string) {
+  fetchTxByHash(txHash: string): Promise<bitcore.Transaction> {
     const url = `${this.insightUrl}/api/rawtx/${txHash}`
 
     return fetch(url)
       .then(parseJson)
       .then(getTransaction)
-      .then(turnToBitcoreTx)
+      .then(bitcore.Transaction)
   }
 
   getCurrentHeight() {
@@ -197,7 +201,7 @@ export class PoetInsightListener {
       .then(pluckMember('blocks'))
   }
 
-  notifyBitcoinBlock(newState: BitcoinBlock) {
+  notifyBitcoinBlock(newState: bitcore.Block) {
     this.bitcoinBlockListeners.forEach(listener => listener(newState))
   }
 

@@ -1,16 +1,14 @@
 import * as Koa from 'koa'
+import * as Body from 'koa-body'
+import * as Route from 'koa-route'
+import * as IO from 'koa-socket'
+import * as uuid from 'uuid'
 import { sha256, doubleSha, verifies, Signature } from 'poet-js'
 
 import { Queue } from '../notifications/queue';
 
-const bitcore = require('bitcore-lib')
-const uuid = require('uuid')
-const Body = require('koa-body')
-const Route = require('koa-route')
-const IO = require('koa-socket')
-
 export interface AuthServerOptions {
-  port: number
+  readonly port: number
 }
 
 export default async function createServer(options: AuthServerOptions) {
@@ -99,7 +97,7 @@ export default async function createServer(options: AuthServerOptions) {
   function validSignatures(id: string, payload: Signature[]): boolean {
     const request = JSON.parse(requests[id])
     const verifyHash = request.bitcoin ? doubleSha : sha256
-    for (var index in payload) {
+    for (const index in payload) {
       const encoded = new Buffer(request.message[index], 'hex')
       const signature = payload[index].signature
       const publicKey = payload[index].publicKey
@@ -118,19 +116,15 @@ export default async function createServer(options: AuthServerOptions) {
     const publicKey = payload.publicKey
     const verifyHash = request.bitcoin ? doubleSha : sha256
 
-    if (!verifies(verifyHash, encoded, signature, publicKey)) {
-      return false
-    }
-    return true
+    return verifies(verifyHash, encoded, signature, publicKey);
   }
 
-  const koa = new Koa() as any
-
+  const koa = new Koa() as any // TODO: remove as any
   const io = new IO()
 
   io.attach(koa)
 
-  koa._io.on('connection', (socket: any) => {
+  koa._io.on('connection', (socket: any) => { // TODO: use io.on rather than koa._io.on
     socket.on('request', async(msg: any) => {
       try {
         const payload = JSON.parse(msg)

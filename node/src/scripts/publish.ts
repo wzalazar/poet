@@ -1,18 +1,19 @@
+import * as bitcore from 'bitcore-lib'
 import * as fetch from 'isomorphic-fetch'
 import { Claim, ClaimBuilder, Fields } from 'poet-js'
+
+import { publish as confirm } from './fakeBlock'
+import { getHash } from '../helpers/torrentHash'
 
 const myPrivateKey = '2461d5dc1bf2c48b73d271375a11f853f92aca53d328f35af5cbaead016ebeb5'
 const myPrivateKey2 = '2111d5dc1bf2c48b73d271375a11f853f92aca53d328f35af5cbaead016ebeb5'
 
-const bitcore = require('bitcore-lib')
 const privateKey = new bitcore.PrivateKey(myPrivateKey)
 const publicKey = privateKey.publicKey
 
 const privateKey2 = new bitcore.PrivateKey(myPrivateKey2)
 const publicKey2 = privateKey2.publicKey
 
-import { publish as confirm } from './fakeBlock'
-import { getHash } from '../helpers/torrentHash'
 
 const fakeBlock = async (claim: Claim) => {
   const block = ClaimBuilder.createBlock([claim])
