@@ -5,6 +5,7 @@ import { Api, LicenseType, Headers } from 'poet-js';
 
 import { Configuration } from '../../configuration';
 import { PoetAPIResourceProvider } from '../../components/atoms/base/PoetApiResource';
+import { ProfileNameWithLink, ProfilePictureById } from '../../components/atoms/Profile';
 import { WorkNameWithLink, AuthorWithLink } from '../../components/atoms/Work';
 import { TimeElapsedSinceTimestamp } from '../../components/atoms/Claim';
 import { Pagination } from '../../components/molecules/Pagination';
@@ -95,7 +96,8 @@ export class Works extends PoetAPIResourceProvider<WorksResource, WorksProps, un
         <div className="name"><WorkNameWithLink work={props} /></div>
         <div className="info">
           <span className="timestamp">Timestamped <TimeElapsedSinceTimestamp claimInfo={props.claimInfo} />&nbsp;</span>
-          <span className="author">by <AuthorWithLink work={props}/> </span>
+          <span>by <ProfileNameWithLink profileId={props.owner.id}>{props.owner.displayName}</ProfileNameWithLink> </span>
+          <span className="author">, authored by <AuthorWithLink work={props}/> </span>
         </div>
         <div className="content">
           <pre>

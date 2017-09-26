@@ -237,11 +237,11 @@ export class BlockchainService extends ClaimService {
 
   async upsertWork(claimId: string, author?: Profile, displayName?: string, workId?: string) {
     return workId
-      ? this.updateWork(claimId, displayName, workId)
+      ? this.updateWork(claimId, author, displayName, workId)
       : this.insertWork(claimId, author, displayName)
   }
 
-  private async updateWork(claimId: string, displayName?: string, workId?: string) {
+  private async updateWork(claimId: string, author?: Profile, displayName?: string, workId?: string) {
     // TODO: require proper authorization for this operation
     const work = await this.workRepository.findOneById(workId)
 
@@ -250,6 +250,7 @@ export class BlockchainService extends ClaimService {
       return null
     }
 
+    work.author = author
     work.claimId = claimId
     work.displayName = displayName
 
@@ -259,9 +260,9 @@ export class BlockchainService extends ClaimService {
   private async insertWork(claimId: string, author?: Profile, displayName?: string) {
     return this.workRepository.persist(this.workRepository.create({
       id: claimId,
-      claimId,
-      displayName,
-      author
+      claimId: claimId,
+      displayName: displayName,
+      author: author
     }))
   }
 
