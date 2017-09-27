@@ -37,7 +37,7 @@ export class TrustedPublisher {
     this.koa.use(KoaRoute.post('/licenses', this.postLicenses))
     this.koa.use(KoaRoute.post('/claims', this.postClaims))
     this.koa.use(KoaRoute.post('/v2/claims', this.postClaimsV2))
-    this.koa.use(KoaRoute.post('/v32/claims', this.postClaimsV3))
+    this.koa.use(KoaRoute.post('/v3/claims', this.postClaimsV3))
     this.koa.listen(this.configuration.port)
   }
 
@@ -190,7 +190,11 @@ export class TrustedPublisher {
   }
 
   private postClaimsV3 = async (ctx: any) => {
+    console.log('body', ctx.request.body)
+
     const block = ClaimBuilder.serializedToBlock(ctx.request.body)
+
+    console.log('block', block)
 
     for (const claim of block.claims) {
       if (!verify(claim.publicKey, new Buffer(claim.signature, 'hex'), new Buffer(claim.id, 'hex')))
