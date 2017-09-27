@@ -2,14 +2,17 @@
  * This file contains configuration for the app.
  *
  * For simplicity and ease of use with an IDE, it's not a JSON file,
- * but in the future it could become one or load info from one.
+ * but in the future it'll be a Typescript interface and load the actual content from a JSON file
  */
 
 export const Configuration = {
   api: {
     explorer: '/api/explorer',
     user: '/api/user',
-    auth: 'ws://localhost:5000',
+    auth: {
+      host: 'http://localhost:3000',
+      path: '/api/auth'
+    },
     mockApp: '/api/mockApp',
     blockchain: 'https://blockchain.info'
   },
@@ -24,4 +27,4 @@ export const Configuration = {
     visiblePageCount: 6
   },
   useMockSigner: true,
-};
+}

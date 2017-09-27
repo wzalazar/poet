@@ -25,7 +25,7 @@ export class TrustedPublisher {
     this.queue = new Queue()
     this.koa = new Koa()
     this.bitcoinAddressPrivateKey = new bitcore.PrivateKey(configuration.bitcoinAddressPrivateKey)
-    this.insight = new explorers.Insight(bitcore.Networks.testnet) // TODO: configurable insight url & use poet-insight-client
+    this.insight = new explorers.Insight(this.configuration.insightApiAddress)
     this.broadcastTx = promisify(this.insight.broadcast.bind(this.insight) as (tx: any, cb: NodeCallback<any>) => void)
     this.getUtxo = promisify(this.insight.getUnspentUtxos.bind(this.insight) as (address: any, cb: NodeCallback<any>) => void)
   }

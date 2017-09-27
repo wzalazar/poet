@@ -8,12 +8,14 @@ export interface TrustedPublisherConfiguration {
   readonly port: number
   readonly poetNetwork: string
   readonly poetVersion: number[]
+  readonly insightApiAddress: string
 }
 
 const defaultOptions: Partial<TrustedPublisherConfiguration> = {
   port: 6000,
   poetNetwork: 'BARD',
-  poetVersion: [0, 0, 0, 2]
+  poetVersion: [0, 0, 0, 2],
+  insightApiAddress: 'https://test-insight.bitpay.com'
 }
 
 export function loadTrustedPublisherConfiguration(path: string): TrustedPublisherConfiguration {
