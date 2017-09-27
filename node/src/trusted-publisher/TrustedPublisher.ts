@@ -37,6 +37,7 @@ export class TrustedPublisher {
     this.koa.use(KoaRoute.post('/licenses', this.postLicenses))
     this.koa.use(KoaRoute.post('/claims', this.postClaims))
     this.koa.use(KoaRoute.post('/v2/claims', this.postClaimsV2))
+    this.koa.use(KoaRoute.post('/v32/claims', this.postClaimsV3))
     this.koa.listen(this.configuration.port)
   }
 
