@@ -20,6 +20,7 @@ base-images: prepare
 
 prepare:
 	mkdir -p node/torrents
+	mkdir -p node/dist
 	mkdir -p Docker/postgres
 
 start: prepare
