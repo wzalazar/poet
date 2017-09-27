@@ -5,7 +5,7 @@ import * as KoaBody from 'koa-body'
 import * as KoaRoute from 'koa-route'
 import * as bitcore from 'bitcore-lib'
 import * as explorers from 'bitcore-explorers'
-import { Fields, ClaimTypes, Claim, Block, ClaimBuilder, hex } from 'poet-js'
+import { Fields, ClaimTypes, Claim, Block, ClaimBuilder, hex, verify } from 'poet-js'
 
 import { getHash } from '../helpers/torrentHash' // TODO: use poet-js
 import { Queue } from '../queue'
@@ -188,6 +188,33 @@ export class TrustedPublisher {
     })
   }
 
+  private postClaimsV3 = async (ctx: any) => {
+    const block = ClaimBuilder.serializedToBlock(ctx.request.body)
+
+    for (const claim of block.claims) {
+      if (!verify(claim.publicKey, new Buffer(claim.signature, 'hex'), new Buffer(claim.id, 'hex')))
+        throw new Error(`Invalid signature`)
+    }
+
+    const blockClaims = await this.timestampBlock(block)
+
+    ctx.body = JSON.stringify({
+      createdClaims: blockClaims
+    })
+  }
+
+  private timestampBlock = async(block: Block) => {
+    await this.timestampClaimBlock(block)
+
+    try {
+      await this.queue.announceBlockToSend(block)
+    } catch (error) {
+      console.log('Could not announce block', error, error.stack)
+    }
+
+    return block.claims
+  }
+
   private createBlock = async (claims: ReadonlyArray<Claim>) => {
     const certificates: ReadonlyArray<Claim> = claims.map(claim => ClaimBuilder.createSignedClaim({
       type: ClaimTypes.CERTIFICATE,
@@ -247,5 +274,4 @@ export class TrustedPublisher {
 
     console.log('\nBroadcasted Tx:', txPostResponse)
   }
-
 }
