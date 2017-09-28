@@ -12,7 +12,7 @@ export interface ConnectionConfiguration {
 const defaultConfiguration: ConnectionConfiguration = {
   maxRetry: 30,
   retryDelay: 3000,
-  autoSchemaSync: false,
+  autoSchemaSync: true,
   driver: {
     type: 'postgres',
     host: 'db',
@@ -24,10 +24,10 @@ const defaultConfiguration: ConnectionConfiguration = {
 }
 
 const entities = [
-  path.join(__dirname, 'orm', '*.ts'),
-  path.join(__dirname, 'orm', 'domain', '*.ts'),
-  path.join(__dirname, 'orm', 'bitcoin', '*.ts'),
-  path.join(__dirname, 'orm', 'events', '*.ts')
+  path.join(__dirname, 'orm', '*.js'),
+  path.join(__dirname, 'orm', 'domain', '*.js'),
+  path.join(__dirname, 'orm', 'bitcoin', '*.js'),
+  path.join(__dirname, 'orm', 'events', '*.js')
 ]
 
 export async function getConnection(configuration?: Partial<ConnectionConfiguration>) {
