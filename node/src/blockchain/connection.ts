@@ -12,7 +12,7 @@ export interface ConnectionConfiguration {
 const defaultConfiguration: ConnectionConfiguration = {
   maxRetry: 30,
   retryDelay: 3000,
-  autoSchemaSync: true,
+  autoSchemaSync: false,
   driver: {
     type: 'postgres',
     host: 'db',
