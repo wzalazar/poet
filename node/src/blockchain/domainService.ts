@@ -335,6 +335,7 @@ export class BlockchainService extends ClaimService {
 
   async getLastProcessedBlock(): Promise<number> {
     const allBlocks = await this.blockProcessedRepository.createQueryBuilder('blocks_processed')
+      .select('blocks_processed.height')
       .orderBy('blocks_processed.height', 'ASC')
       .getMany()
     if (!allBlocks || !allBlocks.length) {

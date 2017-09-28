@@ -1,5 +1,4 @@
-import { Column, PrimaryColumn, PrimaryGeneratedColumn, Table } from 'typeorm';
-import { Index } from 'typeorm/decorator/Index';
+import { Column, Index, PrimaryGeneratedColumn, Table } from 'typeorm'
 
 @Table()
 export default class BlockProcessed {
@@ -14,6 +13,7 @@ export default class BlockProcessed {
   parentHash: string
 
   @Column({ nullable: true })
+  @Index()
   height: number
 
   @Column({ nullable: true })
