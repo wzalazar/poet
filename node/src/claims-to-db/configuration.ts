@@ -3,6 +3,7 @@ import { ConnectionConfiguration } from '../blockchain/connection'
 
 export interface ClaimsToDBConfiguration {
   readonly db: ConnectionConfiguration
+  readonly minimumHeight: number
 }
 
 export function loadClaimsToDBConfiguration(path: string): ClaimsToDBConfiguration {

@@ -3,8 +3,6 @@ import { v4 } from 'uuid'
 
 import { Configuration } from './configuration';
 
-const bitcore = require('bitcore-lib');
-
 export const Authentication = new class {
   private socket: any;
   private currentlyConnected: boolean = false;
@@ -12,7 +10,7 @@ export const Authentication = new class {
   private handler: (data: string) => void;
 
   constructor(handler?: (payload: string) => void) {
-    this.socket = SocketIO(Configuration.api.auth);
+    this.socket = SocketIO(Configuration.api.auth.host, {path: Configuration.api.auth.path + '/socket.io'});
     this.handler = handler;
     this.socket.on('connected', this.onConnected.bind(this));
     this.socket.on('disconnect', this.onDisconnect.bind(this));
