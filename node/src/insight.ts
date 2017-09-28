@@ -136,7 +136,7 @@ export class PoetInsightListener {
       return output.script.classify() === bitcore.Script.types.DATA_OUT
     }
 
-    function isOutputCorrectNetworkAndVersion(output: bitcore.Output) {
+    const isOutputCorrectNetworkAndVersion = (output: bitcore.Output) => {
       const data: Buffer = output.script.getData()
       return data.indexOf(this.poetNetwork) === 0
         && data.indexOf(this.poetVersion) === 4
