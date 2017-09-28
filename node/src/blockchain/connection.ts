@@ -70,6 +70,8 @@ function getConnectionOptions(configuration: ConnectionConfiguration): Connectio
     driver: {
       ...configuration.driver,
     },
+    name: 'poet-connection',
+    logging: { logQueries: true },
     entities,
     autoSchemaSync: configuration.autoSchemaSync
   }
