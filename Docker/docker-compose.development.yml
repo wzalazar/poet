@@ -1,6 +1,20 @@
 version: "2"
 
 services:
+  compile:
+    build:
+      context: ..
+      dockerfile: ./Docker/development/compile.dockerfile
+    volumes:
+      - ../node/src:/poet/src
+      - ../node/dist:/poet/dist
+  compile-watch:
+    build:
+      context: ..
+      dockerfile: ./Docker/development/compile-watch.dockerfile
+    volumes:
+      - ../node/src:/poet/src
+      - ../node/dist:/poet/dist
   auth:
     build:
       context: ..
@@ -15,6 +29,8 @@ services:
     ports:
       - "5000:5000"
       - "5850:5850"
+    depends_on:
+      - compile
   notifications:
     build:
       context: ..
@@ -30,6 +46,8 @@ services:
     ports:
       - "5500:5500"
       - "5855:5855"
+    depends_on:
+      - compile
   mock-signer:
     build:
       context: ..
@@ -43,6 +61,8 @@ services:
     ports:
       - "7000:7000"
       - "5854:5854"
+    depends_on:
+      - compile
   bitcoin-scanner:
     build:
       context: ..
@@ -55,6 +75,8 @@ services:
       - outside
     ports:
       - "5851:5851"
+    depends_on:
+      - compile
   claims-to-db:
     build:
       context: ..
@@ -68,6 +90,8 @@ services:
       - db
     ports:
       - "5852:5852"
+    depends_on:
+      - compile
   retry-eval:
     build:
       context: ..
@@ -81,6 +105,8 @@ services:
       - db
     ports:
       - "5856:5856"
+    depends_on:
+      - compile
   explorer:
     build:
       context: ..
@@ -95,6 +121,8 @@ services:
     ports:
       - "4000:4000"
       - "5853:5853"
+    depends_on:
+      - compile
   torrent-system:
     build:
       context: ..
@@ -111,6 +139,8 @@ services:
       - "15321:15321"
       - "7800:7800"
       - "5857:5857"
+    depends_on:
+      - compile
   trusted-publisher:
     build:
       context: ..
@@ -126,6 +156,7 @@ services:
       - "5858:5858"
     depends_on:
       - explorer
+      - compile
   rabbitmq:
     build:
       context: ..
