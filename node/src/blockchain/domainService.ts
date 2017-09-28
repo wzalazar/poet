@@ -19,17 +19,17 @@ import { CertificationService } from "./certificatonService"
 import { ListenRules } from "./rules/listen"
 import { EventService } from './eventService'
 
-const minimumHeight = 1118188
-
 export class BlockchainService extends ClaimService {
 
   public certificationService: CertificationService;
   private eventService: EventService;
+  private minimumHeight: number;
 
-  constructor() {
+  constructor(minimumHeight: number) {
     super()
     this.certificationService = new CertificationService(this)
     this.eventService = new EventService(this.db)
+    this.minimumHeight = minimumHeight
   }
 
   async createOrUpdateClaimInfo(claim: PureClaim, txInfo: BlockMetadata) {
@@ -338,7 +338,7 @@ export class BlockchainService extends ClaimService {
       .orderBy('blocks_processed.height', 'ASC')
       .getMany()
     if (!allBlocks || !allBlocks.length) {
-      return minimumHeight
+      return this.minimumHeight
     }
     let lastBlock = parseInt('' + allBlocks[0].height, 10)
     for (let block of allBlocks) {

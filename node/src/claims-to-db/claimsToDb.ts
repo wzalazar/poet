@@ -13,7 +13,7 @@ export class ClaimsToDb {
 
   constructor(configuration: ClaimsToDBConfiguration) {
     this.configuration = configuration
-    this.blockchain = new BlockchainService()
+    this.blockchain = new BlockchainService(this.configuration.minimumHeight)
     this.queue = new Queue()
   }
 
