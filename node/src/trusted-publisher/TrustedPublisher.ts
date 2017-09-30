@@ -5,7 +5,7 @@ import * as KoaBody from 'koa-body'
 import * as KoaRoute from 'koa-route'
 import * as bitcore from 'bitcore-lib'
 import * as explorers from 'bitcore-explorers'
-import { Fields, ClaimTypes, Claim, Block, ClaimBuilder, hex, verify } from 'poet-js'
+import { Fields, ClaimTypes, Claim, Block, ClaimBuilder, hex, verify, sha256, verifies } from 'poet-js'
 
 import { getHash } from '../helpers/torrentHash' // TODO: use poet-js
 import { Queue } from '../queue'
@@ -99,6 +99,9 @@ export class TrustedPublisher {
   }
 
   private postClaims = async (ctx: any) => {
+
+    console.log('postClaims normal', ctx.request.body)
+
     const signs = JSON.parse(ctx.request.body).signatures
 
     const claims: ReadonlyArray<Claim> = signs.map((sig: any) => {
@@ -190,13 +193,18 @@ export class TrustedPublisher {
   }
 
   private postClaimsV3 = async (ctx: any) => {
-    const block = ClaimBuilder.serializedToBlock(ctx.request.body)
-
-    //console.log('block', block)
+    //TODO: Receive this as plain text
+    const block = JSON.parse(ctx.request.body)
 
     for (const claim of block.claims) {
-      console.log('claim.id', claim.id)
-      //if (!verify(claim.publicKey, new Buffer(claim.signature, 'hex'), new Buffer(claim.id, 'hex')))
+      const message = ClaimBuilder.getEncodedForSigning(claim)
+      const encoded = new Buffer(message, 'hex')
+      const signature = claim.signature
+      const publicKey = claim.publicKey
+      const verifyHash = sha256
+
+      //TODO: The signature validation always fails for some reason
+      //if (!verifies(verifyHash, encoded, signature, publicKey))
       //  throw new Error(`Invalid signature`)
     }
 
@@ -228,7 +236,11 @@ export class TrustedPublisher {
       }
     }, this.configuration.notaryPrivateKey))
 
+    console.log('claims para crear block', claims)
+
     const block: Block = ClaimBuilder.createBlock([...claims, ...certificates])
+
+    console.log('block creado', block)
 
     await this.timestampClaimBlock(block)
 
