@@ -154,6 +154,7 @@ services:
       - outside
     ports:
       - "5858:5858"
+      - "3001:3001"
     depends_on:
       - explorer
       - compile

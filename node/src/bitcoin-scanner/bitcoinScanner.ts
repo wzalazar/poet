@@ -29,12 +29,13 @@ export class BitcoinScanner {
     })
 
     this.queue.bitcoinBlockProcessed().subscribeOnNext(async (latest: number) => {
-      console.log('Scanning block', latest + 1)
       const height = parseInt('' + latest, 10) + 1
+      console.log('Scanning block', height)
       try {
         const block = await this.insight.fetchBitcoreBlockByHeight(height)
         this.insight.scanBitcoreBlock(block, height)
       } catch (e) {
+        console.log(`Scanning block ${height} failed. Error was:`, e)
         const latestHeight = await this.insight.getCurrentHeight()
         if (latestHeight === height - 1) {
           return

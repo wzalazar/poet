@@ -6,6 +6,7 @@ export interface ConnectionConfiguration {
   readonly maxRetry: number
   readonly retryDelay: number
   readonly autoSchemaSync: boolean
+  readonly logQueries: boolean
   readonly driver: DriverOptions
 }
 
@@ -13,6 +14,7 @@ const defaultConfiguration: ConnectionConfiguration = {
   maxRetry: 30,
   retryDelay: 3000,
   autoSchemaSync: false,
+  logQueries: false,
   driver: {
     type: 'postgres',
     host: 'db',
@@ -70,6 +72,7 @@ function getConnectionOptions(configuration: ConnectionConfiguration): Connectio
     driver: {
       ...configuration.driver,
     },
+    logging: configuration.logQueries && { logQueries: true },
     entities,
     autoSchemaSync: configuration.autoSchemaSync
   }

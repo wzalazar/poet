@@ -103,8 +103,8 @@ export class PoetInsightListener {
     }
   }
 
-  scanBitcoreBlock(block: bitcore.Block, height: number) {
-    function bitcoreTransactionToPoetTransaction(tx: bitcore.Transaction, index: number): BlockMetadata {
+  scanBitcoreBlock(block: bitcore.Block, height: number): void {
+    const bitcoreTransactionToPoetTransaction = (tx: bitcore.Transaction, index: number): any => { // TODO: BlockMetadata
       const poetData = this.getPoetData(tx)
       return poetData && {
         ...poetData,
@@ -127,8 +127,6 @@ export class PoetInsightListener {
     }
 
     this.notifyPoetData(blockInfo)
-
-    return blockInfo
   }
 
   private getPoetData = (tx: bitcore.Transaction): BlockMetadata => {
