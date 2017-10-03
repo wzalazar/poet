@@ -339,6 +339,7 @@ export class BlockchainService extends ClaimService {
     const lastBlockProcessed = await this.blockProcessedRepository.createQueryBuilder('blocks_processed')
       .where('blocks_processed.height is not null')
       .orderBy('blocks_processed.height', 'DESC')
+      .setLimit(1)
       .getOne()
 
     return lastBlockProcessed && lastBlockProcessed.height
