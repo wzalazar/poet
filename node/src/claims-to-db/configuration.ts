@@ -5,6 +5,9 @@ export interface ClaimsToDBConfiguration {
   readonly db: ConnectionConfiguration
   readonly minimumHeight: number
 }
+const defaultOptions: Partial<ClaimsToDBConfiguration> = {
+  minimumHeight: 1118188,
+}
 
 export function loadClaimsToDBConfiguration(path: string): ClaimsToDBConfiguration {
   if (!fs.existsSync(path)) {
@@ -12,5 +15,10 @@ export function loadClaimsToDBConfiguration(path: string): ClaimsToDBConfigurati
     process.exit()
   }
 
-  return JSON.parse(fs.readFileSync(path, 'utf8'))
+  const configuration = JSON.parse(fs.readFileSync(path, 'utf8'))
+
+  return {
+    ...defaultOptions,
+    ...configuration
+  }
 }

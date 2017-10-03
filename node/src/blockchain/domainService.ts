@@ -23,13 +23,11 @@ export class BlockchainService extends ClaimService {
 
   public certificationService: CertificationService;
   private eventService: EventService;
-  private minimumHeight: number;
 
-  constructor(minimumHeight: number) {
+  constructor() {
     super()
     this.certificationService = new CertificationService(this)
     this.eventService = new EventService(this.db)
-    this.minimumHeight = minimumHeight
   }
 
   async createOrUpdateClaimInfo(claim: PureClaim, txInfo: BlockMetadata) {
@@ -333,26 +331,17 @@ export class BlockchainService extends ClaimService {
     )
   }
 
-  async getLastProcessedBlock(): Promise<number> {
-    const allBlocks = await this.blockProcessedRepository.createQueryBuilder('blocks_processed')
-      .orderBy('blocks_processed.height', 'ASC')
-      .getMany()
-    if (!allBlocks || !allBlocks.length) {
-      return this.minimumHeight
-    }
-    let lastBlock = parseInt('' + allBlocks[0].height, 10)
-    for (let block of allBlocks) {
-      console.log('block', lastBlock)
-      if (block.height === lastBlock) {
-        continue;
-      }
-      if (block.height === lastBlock + 1) {
-        lastBlock = lastBlock + 1
-      } else {
-        return lastBlock
-      }
-    }
-    return lastBlock
+  /**
+   * @returns {Promise<number>} The height of the most recent bitcoin block processed,
+   * or null if no block has been processed yet.
+   */
+  async getLastProcessedBlock(): Promise<number | null> {
+    const lastBlockProcessed = await this.blockProcessedRepository.createQueryBuilder('blocks_processed')
+      .where('blocks_processed.height is not null')
+      .orderBy('blocks_processed.height', 'DESC')
+      .getOne()
+
+    return lastBlockProcessed && lastBlockProcessed.height
   }
 
   async storeBlockProcessed(block: BitcoinBlockMetadata) {

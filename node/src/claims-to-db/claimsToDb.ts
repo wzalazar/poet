@@ -13,7 +13,7 @@ export class ClaimsToDb {
 
   constructor(configuration: ClaimsToDBConfiguration) {
     this.configuration = configuration
-    this.blockchain = new BlockchainService(this.configuration.minimumHeight)
+    this.blockchain = new BlockchainService()
     this.queue = new Queue()
   }
 
@@ -21,7 +21,7 @@ export class ClaimsToDb {
     await this.blockchain.start(() => getConnection(this.configuration.db))
 
     console.log('Retrieving last processed block...')
-    const latest = await this.blockchain.getLastProcessedBlock()
+    const latest = await this.getLastProcessedBlock()
     console.log(`Latest processed block was ${latest}.`)
 
     console.log(`Initializing scan.`)
@@ -72,4 +72,12 @@ export class ClaimsToDb {
     }
   }
 
+  /**
+   * @returns {Promise<number>} The height of the most recent bitcoin block processed,
+   * or configuration.minimumHeight if no block has been processed yet.
+   */
+  private async getLastProcessedBlock(): Promise<number> {
+    const lastProcessedBlock = await this.blockchain.getLastProcessedBlock()
+    return lastProcessedBlock || this.configuration.minimumHeight
+  }
 }
