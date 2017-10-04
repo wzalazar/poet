@@ -3,6 +3,7 @@ import * as amqp from 'amqplib/callback_api'
 import * as Rx from 'rx'
 import { Channel } from "amqplib"
 import { Block, delay } from 'poet-js'
+import { Messages } from './Messages'
 
 import { BitcoinBlockMetadata, BlockMetadata } from './events'
 
@@ -12,6 +13,7 @@ const BITCOIN_TRANSACTION = 'bitcoinTransaction'
 const BLOCK_READY = 'blockReady'
 const SEND_BLOCK = 'sendBlock'
 const NORMALIZED_TX = 'normalizedTx'
+const BLOCK_TX_ID = 'blockTxId'
 
 export interface NormalizedData {
   txId: string
@@ -66,6 +68,10 @@ export class Queue {
     return this.consume(SEND_BLOCK) as Rx.Observable<Block>
   }
 
+  blockTxId(): Rx.Observable<Messages.ClaimBlockTxId> {
+    return this.consume(BLOCK_TX_ID) as Rx.Observable<Messages.ClaimBlockTxId>
+  }
+
   blockDownloaded(): Rx.Observable<Block> {
     return this.consume(BLOCK_READY) as Rx.Observable<Block>
   }
@@ -84,6 +90,10 @@ export class Queue {
 
   announceBlockToSend(block: Block) {
     return this.publish(SEND_BLOCK, block)
+  }
+
+  announceBlockTxId(claimBlockTxId: Messages.ClaimBlockTxId) {
+    return this.publish(BLOCK_TX_ID, claimBlockTxId)
   }
 
   announceBitcoinTransaction(poetTx: BlockMetadata) {

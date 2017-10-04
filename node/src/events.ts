@@ -24,3 +24,4 @@ export interface BitcoinBlockMetadata {
   timestamp: number
   poet: BlockMetadata[]
 }
+

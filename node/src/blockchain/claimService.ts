@@ -1,8 +1,9 @@
 import {Connection, Repository} from "typeorm";
 import { ClaimBuilder, Block as PureBlock, Claim as PureClaim } from 'poet-js'
+import { omit } from 'lodash';
 
 import {getHash} from "../helpers/torrentHash";
-import {BlockMetadata} from "../events";
+import { BlockMetadata } from "../events";
 import Claim from "./orm/claim";
 import BlockInfo from "./orm/blockInfo";
 import ClaimInfo from "./orm/claimInfo";
@@ -122,36 +123,31 @@ export class ClaimService {
   }
 
   async updateClaimInfoForBlock(blockInfo: BlockMetadata, block: PureBlock) {
-
     const results = []
 
-    for (let index in block.claims) {
-
-      const claim = block.claims[index]
-      results.push(await this.createOrUpdateClaimInfo(claim, { ...blockInfo, claimOrder: parseInt(index, 10) }))
-
+    for (let i = 0; i < block.claims.length; i++) {
+      results.push(await this.createOrUpdateClaimInfo(block.claims[i], blockInfo, i))
     }
+
     return results
   }
 
-  async createOrUpdateClaimInfo(claim: PureClaim, txInfo: BlockMetadata) {
+  async createOrUpdateClaimInfo(claim: PureClaim, blockMetadata: BlockMetadata, claimOrder?: number) {
+    const blockMetadataToClaimInfoLike = (blockMetadata: BlockMetadata) => ({
+      ...blockMetadata, // BlockMetadata and ClaimInfo share most properties...
+      hash: claim.id, // except 'hash', which is the claim.id in ClaimInfo...
+      blockHash: blockMetadata.hash, // but the blockHash in BlockMetadata
+      blockHeight: blockMetadata.height,
+      claimOrder
+    })
 
-    const existent = (await this.claimInfoRepository.findOne({ hash: claim.id })) as ClaimInfo
+    const existent = await this.claimInfoRepository.findOne({ hash: claim.id })
+    const newData = blockMetadataToClaimInfoLike(blockMetadata)
+    const entity = existent
+      ? this.claimInfoRepository.merge(existent, newData)
+      : this.claimInfoRepository.create(newData)
 
-    if (existent) {
-
-      return await this.claimInfoRepository.persist(Object.assign(existent, txInfo))
-
-    } else {
-
-      return await this.claimInfoRepository.persist(this.claimInfoRepository.create({
-        ...txInfo,
-        hash: claim.id,
-        blockHash: txInfo.hash,
-        blockHeight: txInfo.height,
-      }))
-
-    }
+    await this.claimInfoRepository.persist(entity)
   }
 
   async getBlock(id: string) {
@@ -245,7 +241,7 @@ export class ClaimService {
       const blockKey: keyof BlockMetadata = key as keyof BlockMetadata
 
       if (blockMetadata[blockKey] !== null && blockMetadata[blockKey] !== undefined) {
-        existent[blockKey] = blockMetadata[blockKey]
+        (existent as any)[blockKey] = blockMetadata[blockKey]
       }
 
     }

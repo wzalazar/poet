@@ -2,7 +2,8 @@ import { Block } from 'poet-js'
 
 import { BlockchainService } from '../blockchain/domainService'
 import { Queue } from '../queue'
-import { BitcoinBlockMetadata } from '../events'
+import { BitcoinBlockMetadata, BlockMetadata } from '../events'
+import { Messages } from '../Messages'
 import { getConnection } from '../blockchain/connection'
 import { ClaimsToDBConfiguration } from './configuration'
 
@@ -30,6 +31,7 @@ export class ClaimsToDb {
     this.queue.blockDownloaded().subscribeOnNext(this.blockDownloaded)
     this.queue.blocksToSend().subscribeOnNext(this.blocksToSend)
     this.queue.bitcoinBlock().subscribeOnNext(this.bitcoinBlock)
+    this.queue.blockTxId().subscribeOnNext(this.claimBlockTxId)
   }
 
   private blockDownloaded = (block: Block) => {
@@ -38,6 +40,11 @@ export class ClaimsToDb {
 
   private blocksToSend = (block: Block) => {
     this.storeBlock(block)
+  }
+
+  private claimBlockTxId = (claimBlockTxId: Messages.ClaimBlockTxId) => {
+    const { block, torrentHash, transactionHash } = claimBlockTxId
+    this.blockchain.updateClaimInfoForBlock({ torrentHash, transactionHash }, block)
   }
 
   private bitcoinBlock = async (block: BitcoinBlockMetadata) => {

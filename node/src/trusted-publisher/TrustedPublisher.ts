@@ -199,20 +199,24 @@ export class TrustedPublisher {
 
     const block: Block = ClaimBuilder.createBlock([...claims, ...certificates])
 
-    await this.timestampClaimBlock(block)
+    const torrentHash = await this.getTorrentHash(block)
+    const transactionHash = await this.timestampClaimBlock(torrentHash)
 
     try {
       await this.queue.announceBlockToSend(block)
+      await this.queue.announceBlockTxId({ transactionHash, torrentHash, block })
     } catch (error) {
-      console.log('Could not announce block', error, error.stack)
+      console.log('Could not announce Block', error, error.stack)
     }
 
     return block.claims
   }
 
-  private timestampClaimBlock = async (block: Block): Promise<void> => {
-    const id = await getHash(ClaimBuilder.serializeBlockForSave(block), block.id)
+  private getTorrentHash = async (block: Block) : Promise<string>  => {
+    return await getHash(ClaimBuilder.serializeBlockForSave(block), block.id)
+  }
 
+  private timestampClaimBlock = async (torrentHash: string): Promise<string> => {
     // TODO: const rawutxo = await InsightClient.Address.Utxos.get(poetAddress); const utxo = rawutxo.map(bitcore.Transaction.Utxo)
     const rawutxo = await this.getUtxo(this.configuration.bitcoinAddress)
 
@@ -230,7 +234,7 @@ export class TrustedPublisher {
     const data = Buffer.concat([
       Buffer.from(this.configuration.poetNetwork),
       Buffer.from(this.configuration.poetVersion), // TODO: Move this to poet-js
-      Buffer.from(id, 'hex')
+      Buffer.from(torrentHash, 'hex')
     ])
     const tx = new bitcore.Transaction()
       .from(utxo)
@@ -240,12 +244,13 @@ export class TrustedPublisher {
 
     console.log('\nBitcoin transaction hash is', tx.hash)
     console.log('Normalized transaction hash is', tx.nid)
-    console.log('Torrent hash is', id)
+    console.log('Torrent hash is', torrentHash)
 
     // TODO: const rawtx = tx.serialize(); const txPostResponse = await InsightClient.Transaction.send.post(rawtx)
-    const txPostResponse = await this.broadcastTx(tx)
+    const transactionHash = await this.broadcastTx(tx)
 
-    console.log('\nBroadcasted Tx:', txPostResponse)
+    console.log('\nBroadcasted Tx:', transactionHash)
+
+    return transactionHash;
   }
-
 }
