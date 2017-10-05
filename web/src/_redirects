@@ -1,0 +1,2 @@
+/api/*  https://app.po.et/api/:splat  200
+/home   https://google.com
