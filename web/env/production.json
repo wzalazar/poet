@@ -1,6 +1,6 @@
 {
   "api": {
-    "explorer": "/api/explorer/production",
+    "explorer": "/api/explorer",
     "user": "/api/user",
     "auth": {
       "host": "https://app.po.et",
