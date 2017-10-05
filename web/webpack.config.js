@@ -4,6 +4,11 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+const pathConfiguration = process.env.NODE_ENV === 'production' ? './env/production' : './env/development';
+
+console.log("NODE_ENV: ",process.env.NODE_ENV)
+console.log("Path configuration: ",pathConfiguration)
+
 const vendor = [
   'history',
   'bitcore-lib',
@@ -25,7 +30,7 @@ const vendor = [
   'socket.io-client',
 ];
 
-const production = !!process.env['PRODUCTION'];
+const production = !!process.env['production'];
 
 const extractor = new ExtractTextPlugin("styles.css")
 
@@ -59,7 +64,10 @@ module.exports = {
       path.resolve('./node_modules/'),
     ],
     extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.json'],
-    fallback: path.join(__dirname, "node_modules")
+    fallback: path.join(__dirname, "node_modules"),
+    alias: {
+      config: path.resolve(pathConfiguration)
+    }
   },
 
   resolveLoader: {
