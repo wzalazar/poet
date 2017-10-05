@@ -6,9 +6,6 @@ import { Router, Route, browserHistory } from "react-router";
 import { createPoetStore } from './store';
 import { Layout } from './components/Root';
 
-const config = require('config');
-console.log("config ",config)
-
 const { store, pages } = createPoetStore();
 
 const routes = pages.map((page, index) => page.routeHook('' + index)).reduce((a, b) => a.concat(b), []);

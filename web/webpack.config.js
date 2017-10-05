@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-const pathConfiguration = process.env.NODE_ENV === 'production' ? './env/production' : './env/development';
+const pathConfiguration = process.env.NODE_ENV === 'production' ? './env/production.json' : './env/development.json';
 
 console.log("NODE_ENV: ",process.env.NODE_ENV)
 console.log("Path configuration: ",pathConfiguration)
@@ -66,7 +66,7 @@ module.exports = {
     extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.json'],
     fallback: path.join(__dirname, "node_modules"),
     alias: {
-      config: path.resolve(pathConfiguration)
+      Configuration: path.resolve(pathConfiguration)
     }
   },
 

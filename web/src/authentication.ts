@@ -3,6 +3,9 @@ import { v4 } from 'uuid'
 
 import { Configuration } from './configuration';
 
+//TODO only for test
+console.log("Configuration ",Configuration)
+
 export const Authentication = new class {
   private socket: any;
   private currentlyConnected: boolean = false;
