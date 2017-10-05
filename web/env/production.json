@@ -1,6 +1,6 @@
 {
   "api": {
-    "explorer": "https://alpha.po.et/api/explorer/works",
+    "explorer": "https://alpha.po.et/api/explorer",
     "user": "/api/user",
     "auth": {
       "host": "https://app.po.et",
