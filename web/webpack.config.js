@@ -57,7 +57,7 @@ module.exports = {
   },
 
   // Enable sourcemaps for debugging webpack's output.
-  devtool: production ? 'cheap-module-source-map' : 'eval',
+  devtool: production ? '' : 'eval',
 
   resolve: {
     root: [
@@ -113,7 +113,6 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({ name: 'meta', chunks: ['vendor'], filename: "meta.js" }),
     new HtmlWebpackPlugin({ title: 'Poet App', template: 'src/index.html' }),
     extractor,
-    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
