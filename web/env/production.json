@@ -3,7 +3,7 @@
     "explorer": "/api/explorer/production",
     "user": "/api/user",
     "auth": {
-      "host": "http://app.po.et/",
+      "host": "https://app.po.et",
       "path": "/api/auth"
     },
     "mockApp": "/api/mockApp",
