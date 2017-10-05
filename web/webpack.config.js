@@ -3,6 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const pathConfiguration = process.env.NODE_ENV === 'production' ? './env/production.json' : './env/development.json';
 
@@ -30,7 +31,7 @@ const vendor = [
   'socket.io-client',
 ];
 
-const production = !!process.env['production'];
+const production = process.env.NODE_ENV === 'production';
 
 const extractor = new ExtractTextPlugin("styles.css")
 
@@ -120,6 +121,13 @@ module.exports = {
         'NODE_ENV': JSON.stringify('production')
       }
     }),
+    new CopyWebpackPlugin([
+      {
+        from: "./_redirects",
+        to: "./_redirects",
+        toType: "file"
+      },
+    ])
   ]
   : [
     new webpack.optimize.CommonsChunkPlugin({ name: "vendor", filename: "vendor.js" }),
@@ -127,6 +135,6 @@ module.exports = {
     new HtmlWebpackPlugin({ title: 'Poet App', template: 'src/index.html' }),
     extractor,
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoErrorsPlugin()
   ]
 };
