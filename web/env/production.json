@@ -1,9 +1,9 @@
 {
   "api": {
-    "explorer": "https://app.po.et/api/explorer",
+    "explorer": "/api/explorer",
     "user": "/api/user",
     "auth": {
-      "host": "https://app.po.et",
+      "host": "",
       "path": "/api/auth"
     },
     "mockApp": "/api/mockApp",
