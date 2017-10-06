@@ -1,9 +1,37 @@
 /**
  * This file contains configuration for the app.
  *
- * For simplicity and ease of use with an IDE, it's not a JSON file,
- * but in the future it'll be a Typescript interface and load the actual content from a JSON file
  */
- 
-const configuration = require('Configuration');
-export const Configuration = configuration;
+interface Auth {
+    readonly host: string;
+    readonly path: string;
+}
+
+interface Api {
+    readonly explorer: string;
+    readonly user: string;
+    readonly auth: Auth;
+    readonly mockApp: string;
+    readonly blockchain: string;
+}
+
+interface ImageUpload {
+    readonly maxWidth: number;
+    readonly maxHeight: number;
+}
+
+interface Pagination {
+    readonly limit: number;
+    readonly visiblePageCount: number;
+}
+
+interface Configuration {
+    readonly api: Api;
+    readonly imageUpload: ImageUpload;
+    readonly dateFormat: string;
+    readonly dateTimeFormat: string;
+    readonly pagination: Pagination;
+    readonly useMockSigner: boolean;
+}
+
+export const Configuration:Configuration = require("Configuration");
