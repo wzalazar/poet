@@ -31,7 +31,7 @@ const vendor = [
   'socket.io-client',
 ];
 
-const production = process.env.NODE_ENV === 'production';
+const production = process.env.NODE_ENV === 'production'
 
 const extractor = new ExtractTextPlugin("styles.css")
 
