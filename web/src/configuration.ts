@@ -31,3 +31,4 @@ interface Configuration {
 }
 
 export const Configuration: Configuration = require("Configuration")
+
