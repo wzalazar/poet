@@ -32,9 +32,7 @@ const vendor = [
   'socket.io-client',
 ];
 
-
 const extractor = new ExtractTextPlugin("styles.css")
-
 
 module.exports = {
   entry: {
