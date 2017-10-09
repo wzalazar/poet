@@ -3,7 +3,6 @@ import { v4 } from 'uuid'
 
 import { Configuration } from './configuration';
 
-
 export const Authentication = new class {
   private socket: any;
   private currentlyConnected: boolean = false;
