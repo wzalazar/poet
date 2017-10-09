@@ -1,7 +1,3 @@
-/**
- * This file contains configuration for the app.
- *
- */
 interface Auth {
     readonly host: string
     readonly path: string
