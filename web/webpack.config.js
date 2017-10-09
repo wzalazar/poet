@@ -6,7 +6,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const production = process.env.NODE_ENV === 'production'
-const pathConfiguration = production ? './env/production.json' : './env/development.json'
+const configurationPath = production ? './env/production.json' : './env/development.json'
 
 console.log("NODE_ENV: ", process.env.NODE_ENV)
 console.log("Path configuration: ", pathConfiguration)
@@ -67,7 +67,7 @@ module.exports = {
     extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.json'],
     fallback: path.join(__dirname, "node_modules"),
     alias: {
-      Configuration: path.resolve(pathConfiguration)
+      Configuration: path.resolve(configurationPath)
     }
   },
 
