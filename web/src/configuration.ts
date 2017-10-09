@@ -30,4 +30,4 @@ interface Configuration {
     readonly useMockSigner: boolean
 }
 
-export const Configuration:Configuration = require("Configuration")
+export const Configuration: Configuration = require("Configuration")
