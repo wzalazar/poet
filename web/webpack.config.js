@@ -9,7 +9,7 @@ const production = process.env.NODE_ENV === 'production'
 const configurationPath = production ? './env/production.json' : './env/development.json'
 
 console.log("NODE_ENV: ", process.env.NODE_ENV)
-console.log("Path configuration: ", pathConfiguration)
+console.log("Path configuration: ", configurationPath)
 
 const vendor = [
   'history',
