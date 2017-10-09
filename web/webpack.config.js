@@ -4,11 +4,12 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const production = process.env.NODE_ENV === 'production'
-const pathConfiguration = production ? './env/production.json' : './env/development.json';
 
-console.log("NODE_ENV: ",process.env.NODE_ENV)
-console.log("Path configuration: ",pathConfiguration)
+const production = process.env.NODE_ENV === 'production'
+const pathConfiguration = production ? './env/production.json' : './env/development.json'
+
+console.log("NODE_ENV: ", process.env.NODE_ENV)
+console.log("Path configuration: ", pathConfiguration)
 
 const vendor = [
   'history',
