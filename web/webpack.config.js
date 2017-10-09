@@ -4,8 +4,8 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-
-const pathConfiguration = process.env.NODE_ENV === 'production' ? './env/production.json' : './env/development.json';
+const production = process.env.NODE_ENV === 'production'
+const pathConfiguration = production ? './env/production.json' : './env/development.json';
 
 console.log("NODE_ENV: ",process.env.NODE_ENV)
 console.log("Path configuration: ",pathConfiguration)
@@ -31,7 +31,6 @@ const vendor = [
   'socket.io-client',
 ];
 
-const production = process.env.NODE_ENV === 'production'
 
 const extractor = new ExtractTextPlugin("styles.css")
 
